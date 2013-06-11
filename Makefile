@@ -1,89 +1,132 @@
-#!/usr/bin/make -f
-
-copy_files = \
-  .curlrc \
-  .npmrc \
-  .vimrc.local \
-  .wgetrc
-
-symlink_files = \
-  .bash_logout \
-  .bash_profile \
-  .bashrc \
-  .gitconfig \
-  .gemrc \
-  .gvimrc \
-  .hgrc \
-  .screenrc \
-  .tigrc \
-  .tmux.conf \
-  .vimrc
-
-touch_files = \
-  .bashrc.local \
-  .gitconfig.local \
-  .hgrc.local
-
-all_file_paths = $(sort \
-  $(foreach \
-    file, \
-    $(copy_files) $(symlink_files) $(touch_files), \
-    $(addprefix $$HOME/,$(file)) \
-  ) \
-)
-
-copy_file_paths = $(sort \
-  $(foreach \
-    file, \
-    $(copy_files), \
-    $(addprefix $(CURDIR)/*/,$(file)) \
-  ) \
-)
-
-symlink_file_paths = $(sort \
-  $(foreach \
-    file, \
-    $(symlink_files), \
-    $(addprefix $(CURDIR)/*/,$(file)) \
-  ) \
-)
-
-touch_file_paths = $(sort \
-  $(foreach \
-    file, \
-    $(touch_files), \
-    $(addprefix $$HOME/,$(file)) \
-  ) \
-)
-
-ifeq ($(wildcard $(CURDIR)/.git),)
-  $(error This Makefile must be execute in dotfiles dir)
-endif
-
+# set default target
 .DEFAULT_GOAL := all
 
+# change to use Bash
+SHELL := /bin/bash
+
+#-------------------------------------------------------------------------------
+
+# NOTE: need synchronize to .bashrc
+
+# Homebrew and Homebrew Cask directories
+homebrew_dir := $(HOME)/Homebrew
+caskroom_dir := $(HOME)/Caskroom
+
+# dotfiles directory
+dotfiles_dir := $(HOME)/.ghq/github.com/sasaplus1/dotfiles
+
+# use installed brew
+export PATH := $(homebrew_dir)/bin:$(PATH)
+
+#-------------------------------------------------------------------------------
+
+# get lowercased os name
+os := $(shell uname -s | tr 'A-Z' 'a-z')
+
+# flag of when execute in CI
+ci := $(CI)
+
+#-------------------------------------------------------------------------------
+
+# default target
 .PHONY: all
 all:
 	@echo 'targets:'
-	@echo '  all      show this message'
-	@echo '  clean    remove copied files, symlinks and touched files'
-	@echo '  setup    copy files, make symlinks and touch files'
+	@echo '  all               show this messages'
+	@echo '  setup             setup my environment'
+	@echo ''
+	@echo 'subtargets:'
+	@echo '  pre-setup-darwin  install bootstrapping for OS X'
+	@echo '  pre-setup-linux   install bootstrapping for Debian family'
+	@echo '  install-brew      install Homebrew/Linuxbrew'
+	@echo '  clone             clone dotfiles repository'
+	@echo '  provisioning      execute ansible-playbook'
 
+# setup my environment
 .PHONY: setup
-setup: copy symlink touch
+setup: pre-setup-$(os) clone provisioning
 
-.PHONY: clean
-clean:
-	@$(RM) $(all_file_paths)
+#-------------------------------------------------------------------------------
 
-.PHONY: copy
-copy:
-	-@ls -1 $(copy_file_paths) | xargs -I {} cp "{}" "$$HOME/{}"
+# pre-setup for OS X
+.PHONY: pre-setup-darwin
+pre-setup-darwin: install-brew
+pre-setup-darwin:
+	brew install ansible git
 
-.PHONY: symlink
-symlink:
-	-@ls -1 $(symlink_file_paths) | xargs -I {} ln -s "{}" "$$HOME/{}"
+#-------------------------------------------------------------------------------
 
-.PHONY: touch
-touch:
-	-@ls -1 $(touch_file_paths) | xargs -I {} touch "$$HOME/{}"
+# pre-setup for Debian family
+.PHONY: pre-setup-linux
+pre-setup-linux: install-brew
+pre-setup-linux:
+	sudo add-apt-repository --yes ppa:ansible/ansible
+	sudo apt-get update -qq
+	sudo apt-get install -qq --yes ansible git
+
+#-------------------------------------------------------------------------------
+
+define __install_brew_script
+  case '$(os)' in
+    darwin)
+      tarball=https://github.com/Homebrew/homebrew/tarball/master
+      ;;
+    linux)
+      tarball=https://github.com/Homebrew/linuxbrew/tarball/master
+      ;;
+    *)
+      echo 'brew is not supported for this platform.' 1>&2
+      exit 1
+      ;;
+  esac
+
+  if [ -e '$(homebrew_dir)/bin/brew' ]
+  then
+    echo "Homebrew/Linuxbrew is already installed."
+  else
+    mkdir -p '$(homebrew_dir)'
+    curl -fsSL $$tarball | tar xz --strip 1 -C '$(homebrew_dir)'
+  fi
+endef
+export __install_brew_script
+
+# install Homebrew/Linuxbrew
+.PHONY: install-brew
+install-brew:
+	$(SHELL) -c "$$__install_brew_script"
+
+#-------------------------------------------------------------------------------
+
+define __clone_script
+  if [ -d '$(dotfiles_dir)/.git' ]
+  then
+    echo 'dotfiles repository is already cloned.'
+  else
+    git clone $(repository) '$(dotfiles_dir)'
+  fi
+endef
+export __clone_script
+
+# clone dotfiles repository
+.PHONY: clone
+clone: repository := https://github.com/sasaplus1/dotfiles.git
+clone:
+	$(SHELL) -c "$$__clone_script"
+
+#-------------------------------------------------------------------------------
+
+# execute provisioning
+.PHONY: provisioning
+provisioning: options :=
+provisioning: options += --inventory-file=<(echo localhost),
+provisioning: options += --extra-vars='homebrew_dir=$(homebrew_dir)'
+provisioning: options += --extra-vars='caskroom_dir=$(caskroom_dir)'
+provisioning: options += --extra-vars='dotfiles_dir=$(dotfiles_dir)'
+provisioning: options += --extra-vars='home_dir=$(HOME)'
+provisioning: options += --connection=local
+ifndef ci
+provisioning: options += --ask-become-pass
+endif
+provisioning: playbook := '$(dotfiles_dir)/ansible/site.yml'
+provisioning:
+	ansible-playbook $(options) $(playbook)

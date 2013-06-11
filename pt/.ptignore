@@ -1,0 +1,16 @@
+tags
+*.sw[po]
+.*.sw[po]
+*.un~
+.*.un~
+*.min.*
+.DS_Store
+.git/*
+.hg/*
+.svn/*
+.bundle/*
+.sass-cache/*
+.node-gyp/*
+vendor/bundle/*
+node_modules/*
+bower_components/*

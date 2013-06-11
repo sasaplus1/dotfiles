@@ -1,0 +1,15 @@
+---
+- name: clone vim plugin repositories
+  git:
+    repo: '{{ item.uri }}'
+    dest: '{{ item.dest }}'
+  with_items: plugin_repositories
+  tags:
+    - vim
+
+- name: compile vimproc.vim library
+  shell: vim +'silent VimProcInstall' +'qall!'
+  args:
+    executable: /bin/bash
+  tags:
+    - vim

@@ -1,0 +1,10 @@
+---
+- name: install dependent packages
+  when: ansible_os_family == 'Debian'
+  become: yes
+  apt:
+    name: '{{ item.name }}'
+  with_items: dependencies
+  tags:
+    - ansible_apt
+    - apt

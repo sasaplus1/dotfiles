@@ -1,11 +1,28 @@
-set nocompatible
-scriptencoding utf-8
-
 " 動作環境識別変数 {{{
 
 let s:w32 = has('win32')
 let s:w64 = has('win64')
 let s:osx = has('mac') || has('macunix')
+
+let s:pt = executable('pt')
+
+" }}}
+
+" エンコーディング指定 {{{
+
+if has('multi_byte') && !s:w32 && s:w64
+  set encoding=utf-8
+endif
+
+scriptencoding utf-8
+
+" }}}
+
+" グループの初期化 {{{
+
+augroup vimrc
+  autocmd!
+augroup END
 
 " }}}
 
@@ -27,21 +44,9 @@ if exists('+shellslash')
   set shellslash
 endif
 
-" }}}
-
-" 端末のエンコーディング指定 {{{
-
-if has('multi_byte') && !s:w32 && !s:w64 && !s:osx
-  " 変数の値でsetする方法がわからない……
-  "let s:system_encoding=matchstr($LANG, '\.\zs.*\ze$')
-  "if s:system_encoding != ''
-  "  set termencoding=&s:system_encoding
-  "endif
-  "unlet s:system_encoding
-  if $LANG =~? '.UTF-8$'
-    set encoding=utf-8
-    set termencoding=utf-8
-  endif
+" ターミナルで起動した場合に256色にする
+if !has('gui_running')
+  set t_Co=256
 endif
 
 " }}}
@@ -49,155 +54,767 @@ endif
 " neobundle.vim {{{
 
 if has('vim_starting')
-  set runtimepath+=~/.bundle/neobundle.vim
+  set runtimepath+=~/.vim/bundle/neobundle.vim
 endif
 
-call neobundle#rc(expand('~/.bundle'))
+call neobundle#begin()
 
 " }}}
 
 " インストールするプラグイン {{{
 
+" neobundle.vim {{{
+
 NeoBundleFetch 'gh:Shougo/neobundle.vim.git'
+
+" ログを出力する
+let g:neobundle_log_filename = expand('~/.vim/bundle/neobundle.log')
+
+" ,ncでNeoBundleCleanを実行
+nnoremap ,nc :<C-u>NeoBundleClean<CR>
+
+" ,niでneobundle/installソースを実行
+nnoremap ,ni :<C-u>Unite neobundle/install:!<CR>
+
+" ,nuでneobundle/updateソースを実行
+nnoremap ,nu :<C-u>Unite neobundle/update -auto-quit<CR>
+
+" }}}
+
+" vimproc.vim {{{
+
+NeoBundle 'gh:Shougo/vimproc.vim.git', {
+      \ 'build' : {
+      \   'windows' : 'tools\\update-dll-mingw',
+      \   'cygwin' : 'make -f make_cygwin.mak',
+      \   'mac' : 'make',
+      \   'linux' : 'make',
+      \   'unix' : 'gmake',
+      \ },
+      \ }
+
+" }}}
 
 " unite.vim {{{
 
 NeoBundle 'gh:Shougo/unite.vim.git'
-NeoBundle 'gh:Shougo/unite-outline.git'
-NeoBundle 'gh:Shougo/unite-ssh.git'
-NeoBundle 'gh:tsukkee/unite-tag.git'
+
+let s:bundle = neobundle#get('unite.vim')
+function! s:bundle.hooks.on_source(bundle)
+  " デフォルトの設定
+  "   ウィンドウの高さを変更する
+  "   デフォルトで挿入モードにする
+  call unite#custom#profile('default', 'context', {
+        \ 'winheight' : 15,
+        \ 'start_insert' : 1,
+        \ })
+
+  " grepとfile_rec/*でファイルやディレクトリを無視する
+  call unite#custom#source(
+        \ 'grep,file_rec/async,file_rec/git',
+        \ 'ignore_pattern',
+        \ join([
+        \   'vendor/bundle',
+        \   '.bundle/',
+        \   '.sass-cache/',
+        \   '.node-gyp/',
+        \   'node_modules/',
+        \   'bower_components/',
+        \   '\.\(bmp\|gif\|jpe\?g\|png\|webp\|ai\|psd\)"\?$',
+        \   '\.min\.',
+        \ ], '\|'),
+        \ )
+
+  " directory_*でディレクトリを無視する
+  call unite#custom#source(
+        \ 'directory_mru,directory_rec/async',
+        \ 'ignore_pattern',
+        \ join([
+        \   'vendor/bundle',
+        \   '.bundle/',
+        \   '.sass-cache/',
+        \   '.node-gyp/',
+        \   'node_modules/',
+        \   'bower_components/',
+        \ ], '\|'),
+        \ )
+endfunction
+unlet s:bundle
+
+" ptが使用できる場合ptを使用してgrepする
+if s:pt
+  let g:unite_source_grep_command='pt'
+  let g:unite_source_grep_default_opts='--nocolor --nogroup --smart-case'
+  let g:unite_source_grep_recursive_opt=''
+  " NOTE:
+  "   ファイル名・ディレクトリ名の列挙だけならfindの方が速い
+  "   directory_rec/asyncで2回目以降にファイル名も混在してしまう
+  " let g:unite_source_rec_async_command='pt --nocolor --nogroup -g .'
+else
+  " unite-grepのオプションを変更する
+  " --line-number --ignore-case --extended-regexp --with-filename
+  let g:unite_source_grep_default_opts='-niEH'
+endif
+
+" F2と,ubでバッファ一覧
+nnoremap <F2> :<C-u>Unite buffer<CR>
+nnoremap ,ub :<C-u>Unite buffer<CR>
+
+" ,ugでgrep
+nnoremap ,ug :<C-u>Unite grep<CR>
+
+" ,ulで行一覧
+nnoremap ,ul :<C-u>Unite line<CR>
+
+" Shift-F2と,uoでアウトライン一覧
+nnoremap <S-F2> :<C-u>Unite -no-start-insert outline<CR>
+nnoremap ,uo :<C-u>Unite -no-start-insert outline<CR>
+
+" F3と,utでtagsの一覧を開く
+nnoremap <F3> :<C-u>Unite -no-start-insert tag<CR>
+nnoremap ,ut :<C-u>Unite -no-start-insert tag<CR>
+
+" Shift-F3と,uwでカーソル位置の単語をtagsから調べて飛ぶ
+nnoremap <S-F3> :<C-u>UniteWithCursorWord -no-start-insert -immediately tag<CR>
+nnoremap ,uw :<C-u>UniteWithCursorWord -no-start-insert -immediately tag<CR>
+
+" ,ufでバッファディレクトリのファイルとディレクトリの一覧
+nnoremap ,uf :<C-u>UniteWithBufferDir -no-start-insert file<CR>
+
+" ,uaでマッピングの一覧
+nnoremap ,ua :<C-u>Unite mapping<CR>
+
+" Ctrl-pでカレントディレクトリからファイルの一覧などを表示
+nnoremap <C-p> :<C-u>Unite buffer file file_mru file_rec/async:.<CR>
+
+" Ctrl-@で選択したディレクトリをVimFilerで開く
+nnoremap <C-@> :<C-u>Unite
+      \ -default-action=vimfiler
+      \ directory directory_mru directory_rec/async:. ghq
+      \ <CR>
+
+" Ctrl-^で選択したディレクトリからファイルを列挙する
+nnoremap <C-^> :<C-u>Unite
+      \ -default-action=rec/async
+      \ directory directory_mru directory_rec/async:. ghq
+      \ <CR>
+
+" Ctrl-_もしくはCtrl--でgrepする
+nnoremap <C-_> :<C-u>Unite -winheight=30 grep:.<CR>
 
 " }}}
 
-NeoBundle 'gh:Shougo/neocomplcache.git'
+" unite.vim sources {{{
 
-NeoBundle 'gh:Shougo/vimfiler.git', {
-      \ 'depends' : 'gh:Shougo/unite.vim.git'
+" NOTE:
+"   unite-で始まるプラグインは
+"   NeoBundleが自動的にunite_sourcesを付加する
+NeoBundleLazy 'gh:Shougo/unite-outline.git'
+NeoBundleLazy 'gh:Shougo/unite-ssh.git'
+NeoBundleLazy 'gh:tsukkee/unite-tag.git'
+NeoBundleLazy 'gh:sorah/unite-ghq.git'
+
+" }}}
+
+" neocomplete.vim {{{
+
+" Luaが使用できてVimが特定のバージョン以降なら有効にする
+NeoBundle 'gh:Shougo/neocomplete.vim.git', {
+      \ 'disabled' : !has('lua'),
+      \ 'vim_version' : '7.3.885',
       \ }
 
-NeoBundle 'gh:Shougo/vimproc.git', {
-      \ 'build' : {
-      \   'windows' : 'make -f make_mingw32.mak clean all',
-      \   'cygwin' : 'make -f make_cygwin.mak clean all',
-      \   'mac' : 'make -f make_mac.mak clean all',
-      \   'unix' : 'make -f make_unix.mak clean all'
-      \ }}
+" neocompleteがインストールされている場合
+if neobundle#is_installed('neocomplete.vim')
+  " README.md - Setting examplesよりキーマップの変更
+  inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 
-NeoBundle 'gh:Shougo/vimshell.git'
+  " 改行した際に補完を閉じる
+  inoremap <expr><CR>  neocomplete#smart_close_popup() . "\<CR>"
 
-NeoBundle 'gh:Shougo/vinarise.git',
-call neobundle#config('vinarise', {
-      \ 'lazy': 1,
+  " 補完を閉じ、文字を消す
+  inoremap <expr><C-h> neocomplete#smart_close_popup() . "\<C-h>"
+  inoremap <expr><BS> neocomplete#smart_close_popup() . "\<C-h>"
+  inoremap <expr><C-y>  neocomplete#close_popup()
+  " ペーストモードとキーバインドが被るのでコメントアウト
+  "inoremap <expr><C-e>  neocomplete#cancel_popup()
+endif
+
+" neocompleteを有効にする
+let g:neocomplete#enable_at_startup=1
+
+" 入力に大文字を含む場合
+let g:neocomplete#enable_smart_case=1
+
+" unite.vimのバッファの場合は補完しない
+let g:neocomplete#lock_buffer_name_pattern='\*unite\*'
+
+" }}}
+
+" neocomplcache.vim {{{
+
+" Luaが使用できない場合に有効にする
+NeoBundle 'gh:Shougo/neocomplcache.vim.git', {
+      \ 'disabled' : has('lua'),
+      \ }
+
+" neocomplcacheがインストールされている場合
+if neobundle#is_installed('neocomplcache')
+  " *neocomplcache-examples* よりキーマップの変更
+  inoremap <expr><CR>  neocomplcache#smart_close_popup() . "\<CR>"
+  inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+
+  " Vim標準の補完をneocomplcacheのものに置き換える
+  " http://vim-users.jp/2009/10/hack89/
+  inoremap <expr><C-x><C-f>  neocomplcache#manual_filename_complete()
+  inoremap <expr><C-j>  &filetype == 'vim' ? "\<C-x>\<C-v>\<C-p>" : neocomplcache#manual_omni_complete()
+endif
+
+" neocomplcacheを有効にする
+let g:neocomplcache_enable_at_startup=1
+
+" 入力に大文字を含む場合、大/小文字を無視しない
+let g:neocomplcache_enable_smart_case=1
+
+" キャメルケースの補完を有効にする
+let g:neocomplcache_enable_camel_case_completion=1
+
+" アンダースコアの補完を有効にする
+let g:neocomplcache_enable_underbar_completion=1
+
+" unite.vimのバッファの場合は補完しない
+let g:neocomplcache_lock_buffer_name_pattern='\*unite\*'
+
+" }}}
+
+" neossh.vim {{{
+
+NeoBundleLazy 'gh:Shougo/neossh.vim.git', {
+      \ 'autoload' : {
+      \   'command_prefix': 'VimFiler',
+      \ },
+      \ }
+
+" }}}
+
+" neoyank.vim {{{
+
+NeoBundleLazy 'gh:Shougo/neoyank.vim.git', {
+      \ 'autoload' : {
+      \   'unite_sources': ['history/yank'],
+      \ },
+      \ }
+
+" ,uyでヤンク履歴の一覧
+nnoremap ,uy :<C-u>Unite history/yank<CR>
+
+" }}}
+
+" neomru.vim {{{
+
+NeoBundleLazy 'gh:Shougo/neomru.vim.git', {
+      \ 'autoload' : {
+      \   'unite_sources' : [
+      \     'file_mru', 'directory_mru',
+      \     'neomru/file', 'neomru/directory',
+      \   ],
+      \ },
+      \ }
+
+" Ctrl-F2と,umで最近開いたファイル一覧
+nnoremap <C-F2> :<C-u>Unite file_mru<CR>
+nnoremap ,um :<C-u>Unite file_mru<CR>
+
+" }}}
+
+" vimfiler {{{
+
+NeoBundleLazy 'gh:Shougo/vimfiler.git', {
+      \ 'autoload' : {
+      \   'command_prefix' : 'VimFiler',
+      \   'explorer' : 1,
+      \   'mappings' : '<Plug>',
+      \ },
+      \ 'depends' : [
+      \   'gh:Shougo/unite.vim.git',
+      \   'gh:Shougo/neossh.vim.git',
+      \ ],
+      \ }
+
+" netrwを無効化する
+let g:loaded_netrwPlugin = 1
+
+" デフォルトのファイラにする
+let g:vimfiler_as_default_explorer=1
+
+" セーフモードをオフにする
+let g:vimfiler_safe_mode_by_default=0
+
+" F4と,vfで表示
+nnoremap <F4> :<C-u>VimFilerBufferDir<CR>
+nnoremap ,vf :<C-u>VimFilerBufferDir<CR>
+
+" Shift-F4と,vFとTでエクスプローラ風の表示
+nnoremap <S-F4> :<C-u>VimFilerBufferDir -split -simple -winwidth=35 -toggle -no-quit<CR>
+nnoremap ,vF :<C-u>VimFilerBufferDir -split -simple -winwidth=35 -toggle -no-quit<CR>
+nnoremap T :<C-u>VimFilerBufferDir -split -simple -winwidth=35 -toggle -no-quit<CR>
+
+" }}}
+
+" vimshell {{{
+
+NeoBundleLazy 'gh:Shougo/vimshell.vim.git', {
+      \ 'autoload' : {
+      \   'command_prefix': 'VimShell',
+      \ },
+      \ }
+
+" 大文字が入力された場合のみ大文字小文字を無視しない
+let g:vimshell_smart_case=1
+
+" プロンプトの上部にカレントディレクトリを表示する
+let g:vimshell_user_prompt='fnamemodify(getcwd(), ":~")'
+
+" プロンプトの表示を変更する
+if s:w32 || s:w64
+  let g:vimshell_prompt=$USERNAME.'@'.$USERDOMAIN.'$ '
+else
+  let g:vimshell_prompt=$USER.'@'.system('echo -n `hostname -s`').'$ '
+endif
+
+" シェルを起動する端末プログラムを指定する
+if s:w32 || s:w64
+  let g:vimshell_use_terminal_command='cmd.exe /C'
+else
+  let g:vimshell_use_terminal_command='sh -e'
+endif
+
+" F5と,vsで横分割表示
+nnoremap <F5> :<C-u>VimShellBufferDir -popup<CR>
+nnoremap ,vs :<C-u>VimShellBufferDir -popup<CR>
+
+" Shift-F5と,vSで縦分割表示
+nnoremap <S-F5> :<C-u>VimShellBufferDir -split<CR>
+nnoremap ,vS :<C-u>VimShellBufferDir -split<CR>
+
+" }}}
+
+" vinarise {{{
+
+NeoBundleLazy 'gh:Shougo/vinarise.git', {
       \ 'autoload' : {
       \   'commands' : 'Vinarise',
-      \ }})
+      \ },
+      \ }
+
+" }}}
+
+" vim-ref {{{
+
+NeoBundleLazy 'gh:thinca/vim-ref.git', {
+      \ 'autoload' : {
+      \   'commands' : [
+      \     'Ref',
+      \     'RefHistory',
+      \   ],
+      \   'unite_sources' : [
+      \     'ref/man',
+      \   ],
+      \ },
+      \ }
+
+" ,rmでmanをuniteで検索
+nnoremap ,rm :<C-u>Unite ref/man<CR>
+
+" }}}
+
+" vim-qfreplace {{{
 
 NeoBundleLazy 'gh:thinca/vim-qfreplace.git', {
       \ 'autoload' : {
-      \   'filetypes' : 'quickfix',
-      \ }}
+      \   'commands' : 'Qfreplace',
+      \ },
+      \ }
+
+" }}}
+
+" vim-quickrun {{{
 
 NeoBundle 'gh:thinca/vim-quickrun.git'
-NeoBundle 'gh:thinca/vim-ref.git'
 
-NeoBundleLazy 'gh:teramako/jscomplete-vim.git', {
+" }}}
+
+" gist-vim {{{
+
+NeoBundleLazy 'gh:mattn/gist-vim.git', {
+      \ 'autoload' : {
+      \   'commands': ['Gist'],
+      \ },
+      \ 'depends' : 'gh:mattn/webapi-vim.git',
+      \ }
+
+" 複数ファイルを取得する
+let g:gist_get_multiplefile = 1
+
+nnoremap ,gd :<C-u>Gist -d<CR>
+nnoremap ,ge :<C-u>Gist -s<Space>
+nnoremap ,gf :<C-u>Gist -f<CR>
+nnoremap ,gl :<C-u>Gist -l<CR>
+nnoremap ,gmp :<C-u>Gist -m -p -s<Space>
+nnoremap ,gmP :<C-u>Gist -m -P -s<Space>
+nnoremap ,gp :<C-u>Gist -p -s<Space>
+nnoremap ,gP :<C-u>Gist -P -s<Space>
+
+" }}}
+
+" open-browser.vim {{{
+
+NeoBundleLazy 'gh:tyru/open-browser.vim.git', {
+      \ 'autoload' : {
+      \   'functions' : 'OpenBrowser',
+      \   'command_prefix': 'OpenBrowser',
+      \   'mappings' : '<Plug>(openbrowser-smart-search)',
+      \ },
+      \ }
+
+" settings from http://vim-jp.org/vim-users-jp/2011/08/26/Hack-225.html
+
+" disable netrw's gx mapping.
+let g:netrw_nogx = 1
+
+nmap gx <Plug>(openbrowser-smart-search)
+vmap gx <Plug>(openbrowser-smart-search)
+
+" }}}
+
+" emmet-vim {{{
+
+NeoBundleLazy 'gh:mattn/emmet-vim.git', {
+      \ 'autoload' : {
+      \   'filetypes' : ['html', 'xml'],
+      \ },
+      \ }
+
+" 各種設定など
+let g:user_emmet_settings = {
+      \  'charset' : 'utf-8',
+      \  'lang' : 'ja',
+      \  'locale' : 'ja-JP',
+      \  'html' : {
+      \    'indentation' : ' ',
+      \    'snippets' : {
+      \      'html:5' : "<!DOCTYPE html>\n"
+      \               . "<html>\n"
+      \               . "<head>\n"
+      \               . "  <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge,chrome=1\">\n"
+      \               . "  <meta charset=\"utf-8\">\n"
+      \               . "  <title></title>\n"
+      \               . "</head>\n"
+      \               . "<body>\n"
+      \               . "  ${child}|\n"
+      \               . "</body>\n"
+      \               . "</html>",
+      \    }
+      \  }
+      \}
+
+" }}}
+
+" jscomplete-vim {{{
+
+NeoBundleLazy 'bb:teramako/jscomplete-vim.git', {
       \ 'autoload' : {
       \   'filetypes' : 'javascript',
-      \ }}
+      \ },
+      \ }
+
+let g:jscomplete_use = ['dom', 'moz', 'es6th']
+
+autocmd vimrc FileType javascript setlocal omnifunc=jscomplete#CompleteJS
+
+" }}}
+
+" tern_for_vim {{{
+
+NeoBundleLazy 'gh:marijnh/tern_for_vim.git', {
+      \ 'disabled' : !has('python'),
+      \ 'autoload' : {
+      \   'filetypes' : 'javascript',
+      \ },
+      \ 'build' : {
+      \   'others' : 'npm install -g tern'
+      \ },
+      \ 'build_commands' : 'npm',
+      \ 'external_commands' : 'tern',
+      \ }
+
+" }}}
+
+" vim-textobj-multiblock {{{
+
+NeoBundle 'gh:osyo-manga/vim-textobj-multiblock.git', {
+      \ 'depends' : 'gh:kana/vim-textobj-user.git',
+      \ }
+
+" map from http://d.hatena.ne.jp/osyo-manga/20130329/1364569153
+omap ab <Plug>(textobj-multiblock-a)
+omap ib <Plug>(textobj-multiblock-i)
+vmap ab <Plug>(textobj-multiblock-a)
+vmap ib <Plug>(textobj-multiblock-i)
+
+" }}}
+
+" vim-operator-surround {{{
+
+NeoBundle 'gh:rhysd/vim-operator-surround.git', {
+      \ 'depends' : [
+      \   'gh:kana/vim-operator-user.git',
+      \   'gh:osyo-manga/vim-textobj-multiblock.git',
+      \ ],
+      \ }
+
+" map from https://github.com/rhysd/vim-operator-surround
+map <silent>sa <Plug>(operator-surround-append)
+map <silent>sd <Plug>(operator-surround-delete)
+map <silent>sr <Plug>(operator-surround-replace)
+
+nmap <silent>sbd <Plug>(operator-surround-delete)<Plug>(textobj-multiblock-a)
+nmap <silent>sbr <Plug>(operator-surround-replace)<Plug>(textobj-multiblock-a)
+
+" }}}
+
+" vim-indent-guides {{{
+
+NeoBundle 'gh:nathanaelkane/vim-indent-guides.git'
+
+" インデントガイドの太さを1にする
+let g:indent_guides_guide_size = 1
+
+" 4レベル目のインデントからガイドを表示する
+let g:indent_guides_start_level = 4
+
+" 起動時に有効にする
+let g:indent_guides_enable_on_vim_startup = 1
+
+" 除外するファイルタイプ
+let g:indent_guides_exclude_filetypes = [
+      \ 'help',
+      \ 'unite',
+      \ 'vimfiler',
+      \ 'vimshell',
+      \ ]
+
+" }}}
+
+" eregex.vim {{{
+
+NeoBundle 'gh:othree/eregex.vim.git'
+
+" キーマップの変更などを行なわない
+let g:eregex_default_enable = 0
+
+" }}}
+
+" {{{
+
+NeoBundle 'gh:junegunn/vim-easy-align.git'
+
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap ga <Plug>(EasyAlign)
+
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)
+
+" }}}
+
+" vim-over {{{
+
+NeoBundleLazy 'gh:osyo-manga/vim-over.git', {
+      \ 'command_prefix' : 'OverCommandLine',
+      \ }
+
+" ,reでOverCommandLineを起動する
+nnoremap <silent>,re :<C-u>OverCommandLine<CR>
+
+" }}}
+
+" lightline.vim {{{
+
+NeoBundle 'gh:itchyny/lightline.vim.git'
+
+" }}}
 
 " syntax {{{
 
-if isdirectory($GOROOT . '/misc')
-  NeoBundleLocal $GOROOT/misc
-endif
+" vim-go-extra {{{
 
-NeoBundle 'gh:jelera/vim-javascript-syntax.git'
-NeoBundle 'gh:vim-scripts/JSON.vim.git'
-
-NeoBundleLazy 'gh:digitaltoad/vim-jade.git', {
+NeoBundleLazy 'gh:vim-jp/vim-go-extra.git', {
       \ 'autoload' : {
-      \   'filetypes': 'jade',
-      \ }}
+      \   'filetypes' : ['go'],
+      \ },
+      \ 'build' : {
+      \   'windows' : 'go get -u github.com/nsf/gocode',
+      \   'cygwin' : 'go get -u github.com/nsf/gocode',
+      \   'mac' : 'go get -u github.com/nsf/gocode',
+      \   'unix' : 'go get -u github.com/nsf/gocode',
+      \ },
+      \ }
 
-NeoBundleLazy 'gh:jsx/jsx.vim.git', {
+" *.goはGo
+autocmd vimrc BufNewFile,BufRead *.go setlocal filetype=go
+
+" Go編集時にerrをハイライトする
+" http://yuroyoro.hatenablog.com/entry/2014/08/12/144157
+autocmd vimrc FileType go :highlight goErr cterm=bold ctermfg=214
+autocmd vimrc FileType go :match goErr /\<err\>/
+
+" Go編集時はタブにする
+autocmd vimrc FileType go setlocal noexpandtab list tabstop=2 shiftwidth=2
+
+" }}}
+
+" JSON.vim {{{
+
+NeoBundleLazy 'gh:vim-scripts/JSON.vim.git', {
       \ 'autoload' : {
-      \   'filetypes' : 'jsx',
-      \ }}
+      \   'filetypes' : ['html', 'javascript'],
+      \ },
+      \ }
+
+" *.jsonはjson
+autocmd vimrc BufNewFile,BufRead *.json setlocal filetype=json
+
+" }}}
+
+" vim-javascript {{{
+
+NeoBundleLazy 'gh:pangloss/vim-javascript', {
+      \ 'autoload' : {
+      \   'filetypes' : ['html', 'javascript'],
+      \ },
+      \ }
+
+" }}}
+
+" html5.vim {{{
+
+NeoBundleLazy 'gh:othree/html5.vim.git', {
+      \ 'autoload' : {
+      \   'filetypes' : ['html'],
+      \ },
+      \ }
+
+" *.vueはHTML
+autocmd vimrc BufNewFile,BufRead *.vue setlocal filetype=html
+
+" }}}
+
+" vim-coffee-script {{{
 
 NeoBundleLazy 'gh:kchmck/vim-coffee-script.git', {
       \ 'autoload' : {
-      \   'filetypes' : 'coffee',
-      \ }}
+      \   'filetypes' : ['coffee', 'markdown'],
+      \ },
+      \ }
 
-NeoBundleLazy 'gh:leafgarland/typescript-vim.git', {
-      \ 'autoload' : {
-      \   'filetypes' : 'typescript',
-      \ }}
+" *.coffeeはcoffee
+autocmd vimrc BufNewFile,BufRead *.coffee setlocal filetype=coffee
+
+" }}}
+
+" vim-markdown {{{
 
 NeoBundleLazy 'gh:tpope/vim-markdown.git', {
       \ 'autoload' : {
       \   'filetypes' : 'markdown',
-      \ }}
+      \ },
+      \ }
+
+" *.md,*.markdown,*.mkd,*.mdown,*.mkdn,*.markはmarkdown
+autocmd vimrc BufNewFile,BufRead *.md,*.markdown,*.mkd,*.mdown,*.mkdn,*.mark setlocal filetype=markdown
+
+" }}}
+
+" vim-css3-syntax {{{
+
+NeoBundleLazy 'gh:hail2u/vim-css3-syntax.git', {
+      \ 'autoload' : {
+      \   'filetypes' : ['html', 'css'],
+      \ },
+      \ }
+
+" }}}
+
+" vim-less {{{
+
+NeoBundleLazy 'gh:groenewege/vim-less.git', {
+      \ 'autoload' : {
+      \   'filetypes' : ['less'],
+      \ },
+      \ }
+
+" }}}
+
+" vim-stylus {{{
+NeoBundleLazy 'gh:wavded/vim-stylus.git', {
+      \ 'autoload' : {
+      \   'filetypes' : ['stylus'],
+      \ },
+      \ }
+
+" }}}
+
+" vim-jade {{{
+
+NeoBundleLazy 'gh:digitaltoad/vim-jade.git', {
+      \ 'autoload' : {
+      \   'filetypes' : ['jade'],
+      \ },
+      \ }
+
+" *.jadeはjade
+autocmd vimrc BufNewFile,BufRead *.jade setlocal filetype=jade
+
+" }}}
+
+" typescript-vim {{{
+
+NeoBundleLazy 'gh:leafgarland/typescript-vim.git', {
+      \ 'autoload' : {
+      \   'filetypes' : ['typescript'],
+      \ },
+      \ }
+
+" *.tsはtypescript
+autocmd vimrc BufNewFile,BufRead *.ts setlocal filetype=typescript
+
+" }}}
+
+" delphi.vim {{{
 
 NeoBundleLazy 'gh:vim-scripts/delphi.vim.git', {
       \ 'autoload' : {
-      \   'filetypes' : 'delphi',
-      \ }}
+      \   'filetypes' : ['delphi'],
+      \ },
+      \ }
+
+" *.dprと*.lprと*.pasと*.ppはDelphi
+autocmd vimrc BufNewFile,BufRead *.dpr,*.lpr,*.pas,*.pp setlocal filetype=delphi
 
 " }}}
 
-NeoBundle 'gh:mattn/gist-vim.git', {
-      \   'depends' : 'gh:mattn/webapi-vim.git'
-      \ }
-
-NeoBundle 'gh:motemen/hatena-vim.git'
-
-" TweetVim {{{
-
-NeoBundle 'gh:basyura/TweetVim.git', {
-      \ 'depends' : [
-      \   'gh:basyura/twibill.vim.git',
-      \   'gh:tyru/open-browser.vim.git',
-      \   'gh:basyura/bitly.vim.git',
-      \   'gh:h1mesuke/unite-outline.git',
-      \   'gh:mattn/webapi-vim.git',
-      \   'gh:Shougo/unite.vim.git',
-      \ ]}
-
-NeoBundle 'gh:yomi322/neco-tweetvim.git', {
-      \   'depends' : [
-      \     'gh:basyura/TweetVim.git',
-      \     'gh:Shougo/neocomplcache.git'
-      \   ]
-      \ }
-NeoBundle 'gh:yomi322/unite-tweetvim.git', {
-      \   'depends' : [
-      \     'gh:basyura/TweetVim.git',
-      \     'gh:Shougo/unite.vim.git'
-      \   ]
-      \ }
-
 " }}}
 
-NeoBundleLazy 'gh:mattn/zencoding-vim.git', {
-      \ 'autoload' : {
-      \   'filetypes' : 'html',
-      \ }}
+call neobundle#end()
 
-NeoBundle 'gh:nathanaelkane/vim-indent-guides.git'
-NeoBundle 'gh:othree/eregex.vim.git'
-NeoBundle 'gh:scrooloose/syntastic.git'
-
-NeoBundle 'gh:Lokaltog/vim-powerline.git', {
-      \ 'gui': 1,
-      \ }
-
-filetype plugin on
-filetype indent on
+filetype plugin indent on
 
 " インストールされているかチェックする
 " インストールされていない場合はインストールをする
 NeoBundleCheck
+
+" 標準添付されているmatchit.vimを読み込む
+source $VIMRUNTIME/macros/matchit.vim
 
 " }}}
 
@@ -225,22 +842,22 @@ set shiftwidth=2   " インデント幅
 " ファイルタイプとか {{{
 
 " *.binと*.exeと*.dllはxxd
-autocmd BufNewFile,BufRead *.bin,*.exe,*.dll setlocal filetype=xxd
-
-" *.asはJavaScript
-autocmd BufNewFile,BufRead *.as setlocal filetype=javascript
+autocmd vimrc BufNewFile,BufRead *.bin,*.exe,*.dll setlocal filetype=xxd
 
 " *.xulはXML
-autocmd BufNewFile,BufRead *.xul setlocal filetype=xml
+autocmd vimrc BufNewFile,BufRead *.xul setlocal filetype=xml
 
 " CSS編集時のみタブにする
-autocmd FileType css setlocal noexpandtab list tabstop=8 shiftwidth=8
+autocmd vimrc FileType css setlocal noexpandtab list tabstop=8 shiftwidth=8
+
+" SCSS編集時のみタブにする
+autocmd vimrc FileType scss setlocal noexpandtab list tabstop=8 shiftwidth=8
 
 " Makefile編集時のみタブにする
-autocmd FileType make setlocal noexpandtab list tabstop=8 shiftwidth=8
+autocmd vimrc FileType make setlocal noexpandtab list tabstop=8 shiftwidth=8
 
 " Python編集時のみインデントのスペース数を4にする
-autocmd FileType python setlocal tabstop=4 shiftwidth=4
+autocmd vimrc FileType python setlocal tabstop=4 shiftwidth=4
 
 " }}}
 
@@ -249,9 +866,7 @@ autocmd FileType python setlocal tabstop=4 shiftwidth=4
 set fileencoding=utf-8  " デフォルトの文字コード
 set fileformat=unix     " デフォルトの改行コード
 
-set nobackup   " バックアップファイルを作らない
-set nobomb     " BOMを付加しない
-
+set nobomb  " BOMを付加しない
 set hidden  " バッファを閉じないで非表示にする
 
 if has('kaoriya') && has('guess_encode')
@@ -261,6 +876,9 @@ else
   " 開いたファイルに合っているものを順番に試す
   set fileencodings=ucs-bom,utf-8,cp932,euc-jp,utf-16,utf-16le,iso-2022-jp
 endif
+
+" 候補が1つだけの場合もポップアップメニューを表示する
+set completeopt+=menuone
 
 " タブや改行などをを指定した記号で表示
 " tab      タブ文字
@@ -273,10 +891,10 @@ set listchars=tab:>.,eol:$,trail:_,extends:\
 set backspace=indent,eol,start
 
 " 挿入モードを開始したときにペーストモードのキーバインドを設定する
-autocmd InsertEnter * set pastetoggle=<C-e>
+autocmd vimrc InsertEnter * set pastetoggle=<C-e>
 
 " 挿入モードから抜けるときにペーストモードを抜け、キーバインドも解除する
-autocmd InsertLeave * set nopaste pastetoggle=
+autocmd vimrc InsertLeave * set nopaste pastetoggle=
 
 " }}}
 
@@ -289,6 +907,12 @@ set nowrap        " 折り返ししない
 set showcmd       " コマンドを最下部に表示する
 set shortmess+=I  " 起動時のメッセージを表示しない
 
+set ttyfast     " 高速ターミナル接続を行なう
+"set lazyredraw  " キーボードから実行されないコマンドの実行で再描画しない
+
+" 一部の全角文字を全角の幅で扱う
+set ambiwidth=double
+
 " 折りたたみをインデントでする
 set foldmethod=indent
 
@@ -297,6 +921,32 @@ set laststatus=2
 
 " ステータスラインの表示を変更
 set statusline=%n\:%y%F\ \|%{(&fenc!=''?&fenc:&enc).'\|'.(&ff=='dos'?'crlf':&ff=='mac'?'cr':'lf').'\|'}%m%r%=<%l:%v>
+
+" 全角スペースに下線を引く
+highlight FullWidthSpace cterm=underline ctermfg=Blue
+autocmd vimrc WinEnter,WinLeave,BufRead,BufNew * match FullWidthSpace /　/
+
+" コメント中の特定の単語を強調表示する
+autocmd vimrc WinEnter,WinLeave,BufRead,BufNew,Syntax * call matchadd('Todo', '\W\zs\(TODO\|FIXME\|CHANGED\|XXX\|BUG\|HACK\|NOTE\|INFO\|IDEA\)')
+
+" ウィンドウを移動したらバッファ番号とフルパスを表示する
+autocmd vimrc WinEnter * execute "normal! 2\<C-g>"
+
+" Markdown内での強調表示
+" http://mattn.kaoriya.net/software/vim/20140523124903.htm
+let g:markdown_fenced_languages = [
+      \ 'coffee',
+      \ 'css',
+      \ 'erb=eruby',
+      \ 'html',
+      \ 'javascript',
+      \ 'js=javascript',
+      \ 'json',
+      \ 'ruby',
+      \ 'sass',
+      \ 'scss',
+      \ 'xml',
+      \ ]
 
 if exists('+vertsplit')
   " カレントウィンドウの右に分割する
@@ -323,6 +973,10 @@ vnoremap k gk
 "nnoremap 0 g0
 "vnoremap 0 g0
 
+" very magicをonにする
+" http://deris.hatenablog.jp/entry/2013/05/15/024932
+nnoremap / /\v
+
 " diff系
 nnoremap ,dg :<C-u>diffget<CR>
 nnoremap ,do :<C-u>diffoff<CR>
@@ -341,6 +995,13 @@ nnoremap <C-F4> :<C-u>bdelete<CR>
 nnoremap <C-Tab> :<C-u>bnext<CR>
 nnoremap <C-S-Tab> :<C-u>bprevious<CR>
 
+" (, )でバッファの移動
+nnoremap ( :<C-u>bprevious<CR>
+nnoremap ) :<C-u>bnext<CR>
+
+" バッファ番号とフルパスを表示する
+nnoremap <C-g> 2<C-g>
+
 " }}}
 
 " その他 {{{
@@ -357,386 +1018,25 @@ set tags+=./tags;
 " diffsplitは常に垂直分割する
 set diffopt+=vertical
 
-if s:w32 || s:w64
+" バックアップファイルの保存先を変更
+set backupdir=~/.backupdir,.,~/tmp,~/
+
+" スワップファイルの保存先を変更
+set directory=~/.swapdir,.,~/tmp,/var/tmp,/tmp
+
+" アンドゥファイルの保存先を指定する
+set undodir=~/.undodir,.,~/tmp,~/
+
+if s:pt
+  " ptコマンドを使用する場合の設定
+  set grepprg=pt\ --nogroup\ --nocolor
+elseif s:w32 || s:w64
   " grepコマンドでvimgrepを使用する
   set grepprg=internal
 else
   " 外部grepを使用する場合の設定
   set grepprg=grep\ -niEH
 endif
-
-" }}}
-
-" プラグインの設定とか {{{
-
-" delphi.vim {{{
-
-" *.dprと*.lprと*.pasと*.ppはDelphi
-autocmd BufNewFile,BufRead *.dpr,*.lpr,*.pas,*.pp setlocal filetype=delphi
-
-" }}}
-
-" gist-vim {{{
-
-" 複数ファイルを取得する
-let g:gist_get_multiplefile = 1
-
-nnoremap ,gd :<C-u>Gist -d<CR>
-nnoremap ,ge :<C-u>Gist -s<Space>
-nnoremap ,gf :<C-u>Gist -f<CR>
-nnoremap ,gl :<C-u>Gist -l<CR>
-nnoremap ,gmp :<C-u>Gist -m -p -s<Space>
-nnoremap ,gmP :<C-u>Gist -m -P -s<Space>
-nnoremap ,gp :<C-u>Gist -p -s<Space>
-nnoremap ,gP :<C-u>Gist -P -s<Space>
-
-" }}}
-
-" Go言語 {{{
-
-" *.goはGo
-autocmd BufNewFile,BufRead *.go setlocal filetype=go
-
-" Go編集時はタブにする
-autocmd FileType go setlocal noexpandtab list tabstop=2 shiftwidth=2
-
-" }}}
-
-" hatena-vim {{{
-
-" ユーザー名
-let g:hatena_user = 'sasaplus1'
-
-" 保存してもすぐに投稿しない
-let g:hatena_upload_on_write = 0
-
-" :w!でアップデートする
-let g:hatena_upload_on_write_bang = 1
-
-" 一時ファイル名
-let g:hatena_entry_file = '~/hatena_entry_file.htn'
-
-" *.htnはhatena
-autocmd BufNewFile,BufRead *.htn setlocal filetype=hatena
-
-" }}}
-
-" jscomplete-vim {{{
-
-" DOM系の補完リスト、Mozilla JavaScriptの追加リスト
-let g:jscomplete_use = ['dom', 'moz', 'es6th']
-
-" ファイルタイプがJavaScriptの場合に有効化
-autocmd FileType javascript setlocal omnifunc=jscomplete#CompleteJS
-
-" }}}
-
-" JSX {{{
-
-" *.jsxはjsx
-autocmd BufNewFile,BufRead *.jsx setlocal filetype=jsx
-
-" }}}
-
-" neocomplcache {{{
-
-" 候補が1つだけの場合もポップアップメニューを表示する
-set completeopt+=menuone
-
-" neocomplcacheを有効にする
-let g:neocomplcache_enable_at_startup=1
-
-" 入力に大文字を含む場合、大/小文字を無視しない
-let g:neocomplcache_enable_smart_case=1
-
-" キャメルケースの補完を有効にする
-let g:neocomplcache_enable_camel_case_completion=1
-
-" アンダースコアの補完を有効にする
-let g:neocomplcache_enable_underbar_completion=1
-
-" neocomplcacheがインストールされている場合
-if neobundle#is_installed('neocomplcache')
-
-  " *neocomplcache-examples* よりキーマップの変更
-  inoremap <expr><CR>  neocomplcache#smart_close_popup() . "\<CR>"
-  inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-
-  " Vim標準の補完をneocomplcacheのものに置き換える
-  " http://vim-users.jp/2009/10/hack89/
-  inoremap <expr><C-x><C-f>  neocomplcache#manual_filename_complete()
-  inoremap <expr><C-j>  &filetype == 'vim' ? "\<C-x>\<C-v>\<C-p>" : neocomplcache#manual_omni_complete()
-
-endif
-
-" }}}
-
-" neobundle {{{
-
-" ログを出力する
-let g:neobundle_log_filename = expand('~/.bundle/neobundle.log')
-
-" ,ncでNeoBundleCleanを実行
-nnoremap ,nc :<C-u>NeoBundleClean<CR>
-
-" ,niでneobundle/installソースを実行
-nnoremap ,ni :<C-u>Unite neobundle/install:!<CR>
-
-" ,nuでneobundle/updateソースを実行
-nnoremap ,nu :<C-u>Unite neobundle/update -auto-quit<CR>
-
-" }}}
-
-" ref {{{
-
-" ,rmでmanをuniteで検索
-nnoremap ,rm :<C-u>Unite ref/man<CR>
-
-" }}}
-
-" smartchr {{{
-
-"autocmd FileType javascript inoremap <buffer> <expr> -> smartchr#one_of('function', '->')
-
-" }}}
-
-" syntastic {{{
-
-" 保存時・チェック時にチェックする言語の指定
-let g:syntastic_mode_map = { 'mode': 'active',
-      \ 'active_filetypes': [],
-      \ 'passive_filetypes': ['javascript'] }
-
-" エラーが発生したときにQuickfixが表示されるように
-let g:syntastic_auto_loc_list = 1
-
-" JavaScriptのチェックにgjslintを使用する
-let g:syntastic_javascript_checker = 'gjslint'
-
-" gjslintで使用するオプションを指定する
-let g:syntastic_javascript_gjslint_conf = '--strict --nojsdoc'
-
-" ,scで構文チェック
-nnoremap ,sc :<C-u>SyntasticCheck<CR>
-
-" }}}
-
-" TweetVim {{{
-
-" 1ページに表示する最大数
-let g:tweetvim_tweet_per_page = 50
-
-" クライアント名を表示する
-let g:tweetvim_display_source = 1
-
-" ツイートした時刻を表示する
-let g:tweetvim_display_time = 1
-
-" F6と,uvでTweetVimのtimeline選択
-nnoremap <F6> :<C-u>Unite tweetvim<CR>
-nnoremap ,uv :<C-u>Unite tweetvim<CR>
-
-" S-F6でTwitter検索
-nnoremap <S-F6> :<C-u>Unite tweetvim/search_new<CR>
-
-" その他いろいろ
-nnoremap ,th :<C-u>TweetVimHomeTimeline<CR>
-nnoremap ,tm :<C-u>TweetVimMentions<CR>
-nnoremap ,ts :<C-u>TweetVimSay<CR>
-nnoremap ,tc :<C-u>TweetVimCommandSay<Space>
-nnoremap ,tr :<C-u>TweetVimSearch<Space>
-nnoremap ,tu :<C-u>TweetVimUserTimeline<Space>
-
-" }}}
-
-" typescript-vim {{{
-
-" *.tsはtypescript
-autocmd BufNewFile,BufRead *.ts setlocal filetype=typescript
-
-" }}}
-
-" unite.vim {{{
-
-" ウィンドウの高さを変更する
-let g:unite_winheight=15
-
-" unite-grepのオプションを変更する
-" --line-number --ignore-case --extended-regexp --with-filename
-let g:unite_source_grep_default_opts='-niEH'
-
-" unite-history/yankを有効化
-let g:unite_source_history_yank_enable=1
-
-" F2と,ubでバッファ一覧
-nnoremap <F2> :<C-u>Unite buffer<CR>
-nnoremap ,ub :<C-u>Unite buffer<CR>
-
-" Ctrl-F2と,umで最近開いたファイル一覧
-nnoremap <C-F2> :<C-u>Unite file_mru<CR>
-nnoremap ,um :<C-u>Unite file_mru<CR>
-
-" ,ugでgrep
-nnoremap ,ug :<C-u>Unite grep<CR>
-
-" Shift-F2と,uoでアウトライン一覧
-nnoremap <S-F2> :<C-u>Unite outline<CR>
-nnoremap ,uo :<C-u>Unite outline<CR>
-
-" F3と,utでtagsの一覧を開く
-nnoremap <F3> :<C-u>Unite tag<CR>
-nnoremap ,ut :<C-u>Unite tag<CR>
-
-" Shift-F3と,uwでカーソル位置の単語をtagsから調べて飛ぶ
-nnoremap <S-F3> :<C-u>UniteWithCursorWord -immediately tag<CR>
-nnoremap ,uw :<C-u>UniteWithCursorWord -immediately tag<CR>
-
-" ,ufでバッファディレクトリのファイルとディレクトリの一覧
-nnoremap ,uf :<C-u>UniteWithBufferDir file<CR>
-
-" ,uyでヤンク履歴の一覧
-nnoremap ,uy :<C-u>Unite history/yank<CR>
-
-" ,uaでマッピングの一覧
-nnoremap ,ua :<C-u>Unite mapping<CR>
-
-" カレントディレクトリからファイルの一覧などを表示
-nnoremap <C-p> :<C-u>execute
-      \ 'Unite'
-      \ '-start-insert'
-      \ 'buffer file_mru'
-      \ 'file:'.fnameescape(expand('%:p:h'))
-      \ 'file_rec:!:'.fnameescape(expand('%:p:h'))
-      \ <CR>
-
-" }}}
-
-" vim-coffee-script {{{
-
-" *.coffeeはcoffee
-autocmd BufNewFile,BufRead *.coffee setlocal filetype=coffee
-
-" }}}
-
-" vim-indent-guides {{{
-
-" インデントガイドの太さを1にする
-let g:indent_guides_guide_size = 1
-
-" 2レベル目のインデントからガイドを表示する
-let g:indent_guides_start_level = 2
-
-" ,itでインデントガイドの表示・非表示を切り替える
-nnoremap ,it :<C-u>IndentGuidesToggle<CR>
-
-" }}}
-
-" vim-markdown {{{
-
-" *.md,*.markdown,*.mkd,*.mdown,*.mkdn,*.markはmarkdown
-autocmd BufNewFile,BufRead *.md,*.markdown,*.mkd,*.mdown,*.mkdn,*.mark setlocal filetype=markdown
-
-" }}}
-
-" vim-powerline {{{
-
-" スペシャルシンボルを使わない
-let g:Powerline_symbols = 'compatible'
-
-" シンボルを上書きする
-let g:Powerline_symbols_override = {
-      \ 'LINE': 'Caret'
-      \ }
-
-" モード名を上書きする
-let g:Powerline_mode_n = 'Normal'
-let g:Powerline_mode_i = 'Insert'
-let g:Powerline_mode_R = 'Replace'
-let g:Powerline_mode_v = 'Visual'
-let g:Powerline_mode_V = 'Visual-Line'
-let g:Powerline_mode_cv = 'Visual-Block'
-let g:Powerline_mode_s = 'Select'
-let g:Powerline_mode_S = 'Select-Line'
-let g:Powerline_mode_cs = 'Select-Block'
-
-" ファイルへの相対パスを表示する
-let g:Powerline_stl_path_style = 'relative'
-
-" }}}
-
-" VimFiler {{{
-
-" デフォルトのファイラにする
-let g:vimfiler_as_default_explorer=1
-
-" F4と,vfで表示
-nnoremap <F4> :<C-u>VimFilerBufferDir<CR>
-nnoremap ,vf :<C-u>VimFilerBufferDir<CR>
-
-" Shift-F4と,vFでエクスプローラ風の表示
-nnoremap <S-F4> :<C-u>VimFilerBufferDir -split -simple -winwidth=35 -toggle -no-quit<CR>
-nnoremap ,vF :<C-u>VimFilerBufferDir -split -simple -winwidth=35 -toggle -no-quit<CR>
-
-" }}}
-
-" VimShell {{{
-
-" 大文字が入力された場合のみ大文字小文字を無視しない
-let g:vimshell_smart_case=1
-
-" プロンプトの上部にカレントディレクトリを表示する
-let g:vimshell_user_prompt='getcwd()'
-
-" プロンプトの表示を変更する
-if s:w32 || s:w64
-  let g:vimshell_prompt=$USERNAME.'@'.$USERDOMAIN.'$ '
-else
-  let g:vimshell_prompt=$USER.'@'.system('echo -n `hostname -s`').'$ '
-endif
-
-" シェルを起動する端末プログラムを指定する
-if s:w32 || s:w64
-  let g:vimshell_use_terminal_command='cmd.exe /C'
-else
-  let g:vimshell_use_terminal_command='sh -e'
-endif
-
-" F5と,vsで横分割表示
-nnoremap <F5> :<C-u>VimShellBufferDir -popup<CR>
-nnoremap ,vs :<C-u>VimShellBufferDir -popup<CR>
-
-" Shift-F5と,vSで縦分割表示
-nnoremap <S-F5> :<C-u>VimShellBufferDir -split<CR>
-nnoremap ,vS :<C-u>VimShellBufferDir -split<CR>
-
-" }}}
-
-" ZenCoding {{{
-
-" 各種設定など
-let g:user_zen_settings = {
-      \  'charset' : 'utf-8',
-      \  'lang' : 'ja',
-      \  'locale' : 'ja-JP',
-      \  'html' : {
-      \    'indentation' : '  ',
-      \    'snippets' : {
-      \      'html:5' : "<!DOCTYPE html>\n"
-      \               . "<html lang=\"${lang}\">\n"
-      \               . "<head>\n"
-      \               . "    <meta charset=\"${charset}\">\n"
-      \               . "    <title></title>\n"
-      \               . "</head>\n"
-      \               . "<body>\n  ${child}|\n</body>\n"
-      \               . "</html>",
-      \      'html:5s' : "<!DOCTYPE html>\n"
-      \                . "<meta charset=\"${charset}\">\n"
-      \                . "<title>${child}|</title>\n"
-      \    }
-      \  }
-      \}
-
-" }}}
 
 " }}}
 

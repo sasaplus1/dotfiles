@@ -1,0 +1,6 @@
+tags
+*.sw[po]
+.*.sw[po]
+*.un~
+.*.un~
+.DS_Store

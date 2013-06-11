@@ -1,9 +1,6 @@
-set line-graphics = "utf-8"
-set show-line-numbers = yes
-set show-refs = yes
-set show-rev-graph = yes
+set line-graphics = utf-8
 
 bind generic g move-first-line
 bind generic G move-last-line
-bind generic ^B move-page-up
-bind generic ^F move-page-down
+bind generic <Ctrl-B> move-page-up
+bind generic <Ctrl-F> move-page-down

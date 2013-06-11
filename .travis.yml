@@ -1,0 +1,15 @@
+os:
+  - linux
+  - osx
+sudo: true
+
+cache:
+  apt: true
+
+before_script:
+  - rm -rf $HOME/.bashrc $HOME/.bash_profile $HOME/.gitconfig $HOME/.vim
+script:
+  - curl -LSfs https://raw.githubusercontent.com/sasaplus1/dotfiles/master/Makefile | make setup -f -
+
+notifications:
+  email: false

@@ -1,0 +1,9 @@
+---
+common_taps:
+  - 'homebrew/dupes'
+  - 'homebrew/nginx'
+  - 'sona-tar/tools'
+
+osx_taps:
+  - 'caskroom/cask'
+  - 'caskroom/versions'

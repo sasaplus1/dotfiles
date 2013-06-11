@@ -1,0 +1,30 @@
+---
+- name: add apt repositories
+  when: ansible_os_family == 'Debian'
+  become: yes
+  apt_repository:
+    repo: '{{ item }}'
+  with_items: apt_repositories
+  tags:
+    - apt_sources
+    - apt
+
+- name: change to use JAIST mirror server
+  when: ansible_os_family == 'Debian'
+  become: yes
+  replace:
+    dest: /etc/apt/sources.list
+    regexp: //archive.ubuntu.com
+    replace: //ftp.jaist.ac.jp/pub/Linux
+    backup: yes
+  tags:
+    - apt_sources
+
+- name: update apt indexes
+  when: ansible_os_family == 'Debian'
+  become: yes
+  apt:
+    update_cache: yes
+  tags:
+    - apt_sources
+    - apt

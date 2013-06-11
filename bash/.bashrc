@@ -1,229 +1,327 @@
-# load .bashrc.first
-source "$HOME/.bashrc.first" 2>/dev/null
+# is interactive? {{{
+case "$-" in
+  *i*)
+    __interactive=1
+    ;;
+  *)
+    __interactive=
+    ;;
+esac
+# }}}
 
+#-------------------------------------------------------------------------------
 
+__main() {
+  # which platform? {{{
+  case "$OSTYPE" in
+    darwin*)
+      local __platform=osx
+      ;;
+    linux*)
+      local __platform=linux
+      ;;
+  esac
+  # }}}
 
-# bash-completion for OS X or Ubuntu
-if [ -z "$BASH_COMPLETION" ]
-then
-  if [ -r "$HOME/Binary/bash-completion/etc/bash_completion" ]
+  #-----------------------------------------------------------------------------
+
+  # synchronize for Makefile
+  local homebrew_dir=$HOME/Homebrew
+  local caskroom_dir=$HOME/Caskroom
+
+  # homebrew / linuxbrew {{{
+  local homebrew=$homebrew_dir
+  local homebrew_infopath=$homebrew/share/info
+  local homebrew_manpath=$homebrew/share/man
+  local homebrew_path=$homebrew/bin
+  export INFOPATH=$homebrew_infopath:${INFOPATH//$homebrew_infopath:/}
+  export MANPATH=$homebrew_manpath:${MANPATH//$homebrew_manpath:/}
+  export PATH=$homebrew_path:${PATH//$homebrew_path:/}
+
+  local homebrew_prefix=$(brew --prefix)
+
+  # for linuxbrew
+  if [ "x$__platform" = 'xlinux' ]
   then
-    bash_completion=$HOME/Binary/bash-completion/etc/bash_completion
-  elif [ -r "/etc/bash_completion" ]
-  then
-    bash_completion=/etc/bash_completion
+    # https://www.digitalocean.com/community/tutorials/how-to-install-and-use-linuxbrew-on-a-linux-vps
+    export PKG_CONFIG_PATH=$homebrew/lib64/pkgconfig:$homebrew/lib/pkgconfig:$PKG_CONFIG_PATH
+    export LD_LIBRARY_PATH=$homebrew/lib64:$homebrew/lib:$LD_LIBRARY_PATH
   fi
+  # }}}
 
-  [ -r "$bash_completion" ] &&
-    BASH_COMPLETION=$bash_completion &&
-    BASH_COMPLETION_DIR=${bash_completion}.d &&
-    BASH_COMPLETION_COMPAT_DIR=$BASH_COMPLETION_DIR
+  # homebrew-cask {{{
+  local homebrew_cask=$caskroom_dir
+  local homebrew_cask_dir=$HOME/Applications
+  export HOMEBREW_CASK_OPTS="--caskroom=$homebrew_cask"
+  export PATH=$homebrew_cask_dir:${PATH//$homebrew_cask_dir:/}
+  # }}}
 
-  # bash-completion
-  source "$BASH_COMPLETION" 2>/dev/null
-fi
-
-# ctags
-ctags=$HOME/Binary/ctags
-[ -d "$ctags" ] &&
-  ctags_manpath=$ctags/share/man &&
-  ctags_path=$ctags/bin &&
-  export MANPATH=$ctags_manpath:${MANPATH//$ctags_manpath:/} &&
-  export PATH=$ctags_path:${PATH//$ctags_path:/}
-
-# git
-git=/usr/local/git
-[ -d "$git" ] &&
-  git_manpath=$git/share/man &&
-  git_path=$git/bin &&
-  export MANPATH=$git_manpath:${MANPATH//$git_manpath:/} &&
-  export PATH=$git_path:${PATH//$git_path:/}
-
-# git-completion
-source "$git/contrib/completion/git-completion.bash" 2>/dev/null
-
-# heroku
-heroku=/usr/local/heroku
-[ -d "$heroku" ] &&
-  heroku_path=$heroku/bin &&
-  export PATH=$heroku_path:${PATH//$heroku_path:/}
-
-# tig
-tig=$HOME/Binary/tig
-[ -d "$tig" ] &&
-  tig_manpath=$tig/share/man &&
-  tig_path=$tig/bin &&
-  export MANPATH=$tig_manpath:${MANPATH//$tig_manpath:/} &&
-  export PATH=$tig_path:${PATH//$tig_path:/}
-
-# vcprompt
-vcprompt=$HOME/Binary/vcprompt
-[ -d "$vcprompt" ] &&
-  vcprompt_path=$vcprompt/bin &&
-  export PATH=$vcprompt_path:${PATH//$vcprompt_path:/}
-
-# z
-z=$HOME/Binary/z
-[ -d "$z" ] &&
-  export PATH=$z:${PATH//$z:/}
-touch $HOME/.z
-source $z/z.sh 2>/dev/null
-precmd() {
-  _z --add "$(pwd -P)"
-}
-
-
-
-# go
-go=$HOME/Binary/go
-[ -d "$go" ] &&
-  go_path=$go/bin &&
-  go_gopath=$HOME/.go &&
-  go_gopath_bin=$go_gopath/bin &&
-  export GOROOT=$go &&
-  export GOPATH=$go_gopath &&
-  export PATH=$go_path:${PATH//$go_path:/} &&
-  export PATH=$go_gopath_bin:${PATH//$go_gopath_bin:/}
-
-# nodebrew
-nodebrew=$HOME/.nodebrew/current/bin
-[ -d "$nodebrew" ] &&
-  export PATH=$nodebrew:${PATH//$nodebrew:/}
-
-# npm-completion
-source "$HOME/.npm_completion" 2>/dev/null
-
-# bower-completion
-source "$HOME/.bower_completion" 2>/dev/null
-
-# rbenv
-rbenv=$HOME/.rbenv/bin
-[ -d "$rbenv" ] &&
+  # rbenv {{{
+  local rbenv=$HOME/.rbenv/bin
   export PATH=$rbenv:${PATH//$rbenv:/}
-type rbenv >/dev/null 2>&1 && eval "$(rbenv init -)"
+  [ -n "$__interactive" ] &&
+    type rbenv >/dev/null 2>&1 &&
+    eval "$(rbenv init -)"
+  # }}}
 
-# pgvm
-pgvm_home=$HOME/.pgvm
-pgvm_home_bin=$pgvm_home/bin
-pgvm_home_env=$pgvm_home/environments/current/bin
-[ -d "$pgvm_home" ] &&
-  export pgvm_home &&
-  export PATH=$pgvm_home:${PATH//$pgvm_home:/} &&
-  export PATH=$pgvm_home_bin:${PATH//$pgvm_home_bin:/} &&
-  export PATH=$pgvm_home_env:${PATH//$pgvm_home_env:/}
+  # nodebrew {{{
+  local nodebrew=$HOME/.nodebrew/current/bin
+  export PATH=$nodebrew:${PATH//$nodebrew:/}
+  # }}}
 
+  # go {{{
+  local go_gopath=$HOME/.go
+  local go_gopath_bin=$go_gopath/bin
+  export GOPATH=$go_gopath
+  export PATH=$go_gopath_bin:${PATH//$go_gopath_bin:/}
+  # }}}
 
+  #-----------------------------------------------------------------------------
 
-# vim
-vim=$HOME/Binary/vim
-[ -d "$vim" ] &&
-  vim_manpath=$vim/share/man &&
-  vim_path=$vim/bin &&
-  export MANPATH=$vim_manpath:${MANPATH//$vim_manpath:/} &&
-  export PATH=$vim_path:${PATH//$vim_path:/} &&
-  export EDITOR=vim
+  # pgvm {{{
+  local pgvm_home=$HOME/.pgvm
+  local pgvm_home_bin=$pgvm_home/bin
+  local pgvm_home_env=$pgvm_home/environments/current/bin
+  [ -d "$pgvm_home" ] &&
+    export pgvm_home &&
+    export PATH=$pgvm_home:${PATH//$pgvm_home:/} &&
+    export PATH=$pgvm_home_bin:${PATH//$pgvm_home_bin:/} &&
+    export PATH=$pgvm_home_env:${PATH//$pgvm_home_env:/}
+  # }}}
 
-# MacVim
-macvim=/Applications/MacVim.app/Contents/MacOS
-[ -d "$macvim" ] &&
-  export PATH=$macvim:${PATH//$macvim:/}
-[ -x "$macvim/Vim" ] &&
-  alias vim="$macvim/Vim \"\$@\""
+  # cocproxy for nginx {{{
+  local cocproxy_dir=$HOME/.cocproxy
+  local cocproxy_conf=$HOME/.cocproxy.nginx.conf
+  [ -d "$cocproxy_dir" -a -f "$cocproxy_conf" ] &&
+    alias cocproxy="(cd \"$cocproxy_dir\" && nginx -p . -c \"$cocproxy_conf\")"
+  # }}}
 
+  # vim {{{
 
-# screen
-screen=$HOME/Binary/screen
-[ -d "$screen" ] &&
-  screen_manpath=$screen/share/man &&
-  screen_path=$screen/bin &&
-  export MANPATH=$screen_manpath:${MANPATH//$screen_manpath:/} &&
-  export PATH=$screen_path:${PATH//$screen_path:/}
+  # macvim
+  local macvim=/Applications/MacVim.app/Contents/MacOS
+  [ -d "$macvim" ] &&
+    export PATH=$macvim:${PATH//$macvim:/}
+  [ -x "$macvim/Vim" ] &&
+    alias vim="$macvim/Vim \"\$@\"" &&
+    export EDITOR=vim
 
-# tmux-MacOSX-pasteboard
-tmux_macosx_pasteboard=$HOME/Binary/tmux-MacOSX-pasteboard
-[ -d "$tmux_macosx_pasteboard" ] &&
-  export PATH=$tmux_macosx_pasteboard:${PATH//$tmux_macosx_pasteboard:/}
+  # macvim from homebrew-cask
+  local macvim=$HOME/Caskroom/macvim-kaoriya
+  [ -d "$macvim" ] &&
+    macvim=$macvim/$(ls $macvim)/MacVim.app/Contents/MacOS
+  [ -d "$macvim" ] &&
+    export PATH=$macvim:${PATH//$macvim:/}
+  [ -x "$macvim/Vim" ] &&
+    alias vim="$macvim/Vim \"\$@\"" &&
+    export EDITOR=vim
 
-# tmux and libevent
-tmux=$HOME/Binary/tmux
-libevent=$HOME/Binary/libevent
-[ -d "$tmux" -a -d "$libevent" ] &&
-  tmux_manpath=$tmux/share/man &&
-  tmux_path=$tmux/bin &&
-  export MANPATH=$tmux_manpath:${MANPATH//$tmux_manpath:/} &&
-  export PATH=$tmux_path:${PATH//$tmux_path:/}
+  # compile from source
+  local vim=$HOME/Binary/vim
+  [ -d "$vim" ] &&
+    local vim_manpath=$vim/share/man &&
+    local vim_path=$vim/bin &&
+    alias vim="$vim/bin/vim \"\$@\"" &&
+    export MANPATH=$vim_manpath:${MANPATH//$vim_manpath:/} &&
+    export PATH=$vim_path:${PATH//$vim_path:/} &&
+    export EDITOR=vim
 
-# tmux
-type tmux >/dev/null 2>&1 &&
-  alias tmux="LD_LIBRARY_PATH=$libevent/lib tmux"
+  # }}}
 
+  #-----------------------------------------------------------------------------
 
+  # ssh-agent {{{
+  local ssh_agent=/usr/bin/ssh-agent
+  local ssh_agent_info=$HOME/.ssh-agent-info
 
-
-
-# ssh-agent {{{
-ssh_agent=/usr/bin/ssh-agent
-ssh_agent_info=$HOME/.ssh-agent-info
-
-source "$ssh_agent_info" 2>/dev/null
-
-ssh-add -l >/dev/null 2>&1
-
-if [ "$?" -eq 2 -a -x "$ssh_agent" -a -z "$SSH_AGENT_PID" ]
-then
-  eval "$ssh_agent | grep -v 'echo' > $ssh_agent_info" 2>/dev/null
   source "$ssh_agent_info" 2>/dev/null
-fi
-# }}}
 
-# alias {{{
-case "$(uname)" in
-  Darwin)
-    alias ls='ls -G'
-  ;;
-  Linux)
-    alias crontab='crontab -i'
-    alias ls='ls --color=auto'
-    alias pbcopy='xsel --clipboard --input'
-    alias pbpaste='xsel --clipboard --output'
-  ;;
-esac # }}}
+  ssh-add -l >/dev/null 2>&1
 
-# history {{{
-[ -z "$LOADED_BASHRC" ] && export HISTSIZE=10000
-[ -z "$LOADED_BASHRC" ] && export HISTTIMEFORMAT='%Y/%m/%d %T '
+  if [ "$?" -eq 2 -a -x "$ssh_agent" -a -z "$SSH_AGENT_PID" ]
+  then
+    eval "$ssh_agent | grep -v 'echo' > $ssh_agent_info" 2>/dev/null
+    source "$ssh_agent_info" 2>/dev/null
+  fi
+  # }}}
 
-#share_history() {
-#  history -a
-#  history -c
-#  history -r
-#}
-#shopt -u histappend
-#PROMPT_COMMAND='share_history'
-# }}}
+  #-----------------------------------------------------------------------------
+
+  # bash-completion {{{
+  if [ -z "$BASH_COMPLETION" ]
+  then
+    case "$__platform" in
+      osx)
+        source "$homebrew_prefix/etc/bash_completion" 2>/dev/null
+        ;;
+      linux)
+        source /etc/bash_completion 2>/dev/null
+        ;;
+    esac
+
+    ###[ -r "$bash_completion" ] &&
+    ###  BASH_COMPLETION=$bash_completion &&
+    ###  BASH_COMPLETION_DIR=${bash_completion}.d &&
+    ###  BASH_COMPLETION_COMPAT_DIR=$BASH_COMPLETION_DIR
+    ###
+    ###source "$BASH_COMPLETION" 2>/dev/null
+  fi
+  # }}}
+
+  # nodebrew-completion
+  source "$HOME/.nodebrew/completions/bash/nodebrew-completion" 2>/dev/null
+
+  # npm-completion
+  source "$HOME/.npm_completion" 2>/dev/null
+
+  # bower-completion
+  source "$HOME/.bower_completion" 2>/dev/null
+
+  # up.sh
+  source "$HOME/.ghq/github.com/sasaplus1/up.sh/up.sh" 2>/dev/null
+
+  # z {{{
+  source "$homebrew_prefix/etc/profile.d/z.sh" 2>/dev/null
+  if [ "$?" -eq 0 ]
+  then
+    precmd() {
+      _z --add "$(pwd -P)"
+    }
+  fi
+  # }}}
+
+  #-----------------------------------------------------------------------------
+
+  # alias {{{
+  case "$__platform" in
+    osx)
+      alias ls='ls -G'
+      alias grep='grep --color=auto'
+      alias ios='open -a "iOS Simulator" || open -a "iPhone Simulator"'
+      ;;
+    linux)
+      alias crontab='crontab -i'
+      alias ls='ls --color=auto'
+      alias grep='grep --color=auto'
+      alias pbcopy='xsel --clipboard --input'
+      alias pbpaste='xsel --clipboard --output'
+      ;;
+  esac
+
+  alias memo='$EDITOR $(date +%FT%H-%M-%S).md'
+  alias server='python -m SimpleHTTPServer'
+  alias fake-dev='nginx -p . -c "$(find `ghq root` -type f -name fake-dev.conf)"'
+  # }}}
+}
+__main
+
+#-------------------------------------------------------------------------------
+
+# pager
+export PAGER=less
+
+# fix typo of path for cd command
+shopt -s cdspell
 
 # stop flow mode (disable C-s)
 stty stop undef
 
-# print repository type and branch name of current dir
-print_repos_info() {
-  type vcprompt >/dev/null 2>&1 && vcprompt -f '(%n:%b)'
+# PS1 {{{
+__print_exit_code() {
+  [ "$1" -ne 0 ] && echo -n " $1"
 }
 
-# /current/dir (hg/git/svn:branch)
+__print_repo_info() {
+  local info=$(vcprompt -f '%n:%b:%r' 2>/dev/null)
+  [ -n "$info" ] && echo -n " (${info%:})"
+}
+
+# /current/dir err (vcs:branch:rev)
 # username@hostname$ _
-export PS1=\
-'\[\033[01;32m\]\w\[\033[00m\] '\
-'\[\033[01;36m\]$(print_repos_info)\[\033[00m\]\n'\
-'\u@\h\$ '
+PS1=
+PS1=$PS1'\[\033[01;32m\]\w\[\033[00m\]'
+PS1=$PS1'\[\033[01;31m\]$(__print_exit_code $?)\[\033[00m\]'
+PS1=$PS1'\[\033[01;36m\]$(__print_repo_info)\[\033[00m\]'
+PS1=$PS1'\n\u@\h\$ '
 
+export PS1
+# }}}
 
+# history {{{
+if [ "$SHLVL" -eq 1 ]
+then
+  export HISTSIZE=10000
+  export HISTFILESIZE=10000
+  export HISTTIMEFORMAT='%Y/%m/%d %T '
+fi
+
+###share_history() {
+###  history -a
+###  history -c
+###  history -r
+###}
+###shopt -u histappend
+###PROMPT_COMMAND='share_history'
+# }}}
+
+# functions {{{
+
+# change to urxvt font size
+# from https://gist.github.com/anekos/5938365
+if type urxvt >/dev/null 2>&1
+then
+  set-urxvt-font-size() {
+    local old_name=$(grep -i '^\s*urxvt.font' "$HOME/.Xdefaults" | cut -d: -f2-)
+    local new_name=$(echo "$old_name" | sed -e 's/:\(pixel\)\?size=[0-9]\+/'":\1size=$1/")
+
+    [ -n "$TMUX" ] && printf '\ePtmux;\e'
+    printf '\e]50;%s\007' "$new_name"
+    [ -n "$TMUX" ] && printf '\e\\'
+  }
+fi
+
+# incremental search and change directory
+ccd() {
+  local root=$(git rev-parse --show-toplevel 2>/dev/null)
+  local tree=$(git ls-tree -dr --name-only --full-name --full-tree HEAD 2>/dev/null)
+
+  local trees=$(echo "$tree" | sed -e "s|^|$root/|")
+  local finds=$(eval "find `pwd` `echo $(cat $HOME/.findrc)` -or -maxdepth 3 -type d -print 2>/dev/null")
+  local hists=$(z -l | awk '{ print $2 }' 2>/dev/null)
+  local repos=$(ghq list -p 2>/dev/null)
+
+  local list=$(cat <(echo "$trees") <(echo "$finds") <(echo "$hists") <(echo "$repos"))
+
+  cd "$(echo "$list" | sort -u | peco --query="$*" 2>/dev/null)"
+}
+
+# incremental search and kill process
+kkill() {
+  local list=$(ps xo 'pid,user,uid,command' | sed -e '1d')
+  local target=$(echo "$list" | peco --query="$*" | awk '{ print $1 }')
+
+  [ -n "$target" ] && kill -9 "$target"
+}
+
+# import repositories
+import-repos() {
+  local repo1=$(ghs -s updated -u sasaplus1 | awk '{ print $1 }')
+  local repo2=$(ghs -s updated -u sasaplus1-prototype | awk '{ print $1 }')
+
+  cat <(echo "$repo1") <(echo "$repo2") | ghq import -p
+}
+
+# fetch repositories
+fetch-repos() {
+  ghq list | xargs -n1 -I{} git --git-dir=$(ghq root)/{}/.git fetch --verbose
+}
+
+# }}}
 
 # load .bashrc.local
 source "$HOME/.bashrc.local" 2>/dev/null
 
 # proxy settings {{{
-
 # export ftp_proxy=ftp://proxy:port
 # export FTP_PROXY=$ftp_proxy
 
@@ -235,22 +333,13 @@ source "$HOME/.bashrc.local" 2>/dev/null
 
 # export no_proxy=127.0.0.1,localhost
 # export NO_PROXY=$no_proxy
-
 # }}}
 
-# set load guard
-export LOADED_BASHRC=1
-
 # always use terminal multiplexer {{{
-if [ "$TERM" != 'screen' -a "$TERM" != 'dumb' ]
+if [ -n "$__interactive" -a "$TERM" != 'screen' -a "$TERM" != 'dumb' ]
 then
-  if type tmux >/dev/null 2>&1
-  then
-    tmux attach || tmux
-  elif type screen >/dev/null 2>&1
-  then
-    screen -rx || screen -D -RR
-  fi
-fi # }}}
+  tmux attach || screen -rx || tmux || screen -D -RR
+fi
+# }}}
 
 # vim:ft=sh:fdm=marker:fen:

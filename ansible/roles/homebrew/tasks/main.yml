@@ -1,0 +1,23 @@
+---
+- name: update Homebrew/Linuxbrew
+  homebrew:
+    update_homebrew: yes
+  tags:
+    - homebrew
+
+- name: install packages
+  homebrew:
+    name: '{{ item.name }}'
+    install_options: '{{ item.install_options | default(omit) }}'
+  with_items: common_packages
+  tags:
+    - homebrew
+
+- name: install packages for OS X
+  when: ansible_distribution == 'MacOSX'
+  homebrew:
+    name: '{{ item.name }}'
+    install_options: '{{ item.install_options | default(omit) }}'
+  with_items: osx_packages
+  tags:
+    - homebrew

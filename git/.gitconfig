@@ -1,12 +1,18 @@
 [alias]
+  export = "!sh -c 'git checkout-index -a -f --prefix=$1/' -"
+
+[alias]
+  amend = commit --amend --reuse-message=HEAD
   cdi = diff --cached
   cdif = diff --cached
   cdiff = diff --cached
   ci = commit -v
   cia = commit -a -v
   co = checkout
+  cp = cherry-pick
   di = diff
   dif = diff
+  fixup = commit --fixup
   gl = log --all --branches --graph
   glog = log --all --branches --graph
   ls = ls-files
@@ -42,6 +48,7 @@
 
 [core]
   editor = vim
+  excludesfile = ~/.gitignore
 
 [github]
   user = sasaplus1
@@ -51,10 +58,16 @@
   email = sasaplus1@gmail.com
 
 [include]
-  path = .gitconfig.local
+  path = ~/.gitconfig.local
 
 [push]
-  default = upstream
+  default = nothing
+
+[rebase]
+  autosquash = true
 
 ;[http]
 ;  proxy = "proxy:port"
+
+;[url "https://"]
+;  insteadOf = git://

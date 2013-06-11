@@ -1,0 +1,36 @@
+---
+- name: install nodebrew
+  shell: curl -L git.io/nodebrew | perl - setup
+  args:
+    creates: '{{ home_dir }}/.nodebrew/nodebrew'
+    executable: /bin/bash
+  tags:
+    - node.js
+
+- name: install node.js
+  shell: >
+    {{ nodebrew_bin }} install-binary {{ node_version }} &&
+    {{ nodebrew_bin }} use {{ node_version }}
+  args:
+    executable: /bin/bash
+  tags:
+    - node.js
+
+- name: install npm modules to global
+  npm:
+    name: '{{ item }}'
+    executable: '{{ home_dir }}/.nodebrew/current/bin/npm'
+    global: yes
+  with_items: common_npm_modules
+  tags:
+    - node.js
+
+- name: install npm modules to global for OS X
+  when: ansible_distribution == 'MacOSX'
+  npm:
+    name: '{{ item }}'
+    executable: '{{ home_dir }}/.nodebrew/current/bin/npm'
+    global: yes
+  with_items: osx_npm_modules
+  tags:
+    - node.js

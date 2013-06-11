@@ -1,0 +1,19 @@
+---
+- name: install dependent packages by apt
+  when: ansible_os_family == 'Debian'
+  become: yes
+  apt:
+    name: '{{ item.name }}'
+  with_items: dependencies.apt
+  tags:
+    - linuxbrew
+    - apt
+
+- name: install dependent packages by by Linuxbrew
+  when: ansible_os_family == 'Debian'
+  homebrew:
+    name: '{{ item.name }}'
+  with_items: dependencies.linuxbrew
+  tags:
+    - linuxbrew
+    - homebrew

@@ -1,0 +1,20 @@
+---
+- shell: rbenv versions | grep {{ ruby_version }}
+  args:
+    executable: /bin/bash
+  register: result
+  always_run: yes
+  failed_when: no
+  changed_when: result.rc != 0
+  tags:
+    - ruby
+
+- name: install ruby
+  when: result | changed
+  shell: >
+    rbenv install {{ ruby_version }} &&
+    rbenv global {{ ruby_version }}
+  args:
+    executable: /bin/bash
+  tags:
+    - ruby

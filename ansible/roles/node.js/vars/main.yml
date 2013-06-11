@@ -1,0 +1,11 @@
+---
+nodebrew_bin: '{{ home_dir }}/.nodebrew/nodebrew'
+
+node_version: 'stable'
+
+common_npm_modules:
+  - 'node-dev'
+  - 'npm-check-updates'
+
+osx_npm_modules:
+  - 'node-inspector'

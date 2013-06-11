@@ -1,0 +1,23 @@
+---
+- name: remove repository URI of dotfiles
+  shell: "git --git-dir='{{ dotfiles_dir }}/.git' remote remove origin"
+  args:
+    executable: /bin/bash
+  tags:
+    - dotfiles_remotes
+
+- name: add master repository URI of dotfiles
+  shell: "git --git-dir='{{ dotfiles_dir }}/.git' remote add origin {{ item }}"
+  args:
+    executable: /bin/bash
+  with_items: master_remotes
+  tags:
+    - dotfiles_remotes
+
+- name: add mirror repository URI of dotfiles
+  shell: "git --git-dir='{{ dotfiles_dir }}/.git' remote set-url --add origin {{ item }}"
+  args:
+    executable: /bin/bash
+  with_items: mirror_remotes
+  tags:
+    - dotfiles_remotes

@@ -1,0 +1,18 @@
+\(
+-name .git
+-or
+-name .hg
+-or
+-name .svn
+-or
+-name .bundle
+-or
+-name .sass-cache
+-or
+-name vendor
+-or
+-name node_modules
+-or
+-name bower_components
+\)
+-prune

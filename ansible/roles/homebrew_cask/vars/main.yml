@@ -1,0 +1,15 @@
+---
+osx_cask_packages:
+  - alfred
+  - chromium
+  - dropbox
+  - firefox-ja
+  - google-chrome
+  - google-chrome-canary
+# - gyazo
+  - macvim-kaoriya
+# - send-to-kindle
+# - simple-comic
+  - slate
+  - vagrant
+  - virtualbox

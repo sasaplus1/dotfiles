@@ -46,17 +46,15 @@ endif
 set guioptions-=T
 
 " 全角スペースに下線を引く
-augroup highlightZenkakuSpace
-  autocmd ColorScheme * highlight ZenkakuSpace cterm=underline ctermfg=lightblue gui=underline guifg=lightblue
-  autocmd VimEnter,WinEnter * match ZenkakuSpace /　/
-augroup END
+autocmd ColorScheme * highlight ZenkakuSpace gui=underline guifg=Cyan
+autocmd VimEnter,WinEnter * match ZenkakuSpace /　/
 
 " darkblueカラースキームにする
 colorscheme darkblue
 
 if (s:w32 || s:w64) && has('multi_byte_ime')
   " IMEがONになったらキャレットの色を変える
-  highlight CursorIM guifg=bg guibg=Green gui=NONE
+  highlight CursorIM gui=NONE guifg=bg guibg=Green
 endif
 
 if s:osx
