@@ -1,0 +1,58 @@
+[alias]
+latest = log --graph -l 5
+show = log --color=always --patch --rev
+slog = log --graph --style compact
+
+[diff]
+git = true
+
+[ui]
+editor = vim
+merge = vimdiff
+ssh = ssh -C
+username = sasaplus1 <sasaplus1@gmail.com>
+verbose = true
+
+[extensions]
+bookmarks =
+color =
+eol =
+fetch =
+graphlog =
+mq =
+pager =
+progress =
+rebase =
+record =
+transplant =
+
+[bookmarks]
+track.current = true
+
+[color]
+mode = auto
+
+status.modified = blue bold underline red_background
+status.added = green bold
+status.removed = red bold blue_background
+status.deleted = cyan bold underline
+status.unknown = magenta bold underline
+status.ignored = black bold
+
+diff.diffline = bold
+diff.extended = cyan bold
+diff.file_a = red bold
+diff.file_b = green bold
+diff.hunk = magenta
+diff.deleted = red
+diff.inserted = green
+diff.changed = white
+diff.trailingwhitespace = bold red_background
+
+%include ~/.hgrc.local
+
+#[http_proxy]
+#host = proxy:port
+
+#[color]
+#mode = win32

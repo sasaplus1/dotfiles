@@ -1,0 +1,60 @@
+[alias]
+  cdi = diff --cached
+  cdif = diff --cached
+  cdiff = diff --cached
+  ci = commit -v
+  cia = commit -a -v
+  co = checkout
+  di = diff
+  dif = diff
+  gl = log --all --branches --graph
+  glog = log --all --branches --graph
+  ls = ls-files
+  ref = reflog
+  sdi = diff --staged
+  sdif = diff --staged
+  sdiff = diff --staged
+  sl = log --all --branches --decorate --graph --oneline
+  slog = log --all --branches --decorate --graph --oneline
+  st = status --branch --short
+
+[alias]
+  backout = revert
+  up = checkout
+  update = checkout
+  branch-remote = branch -r
+  branches = branch -a
+  branches-remote = branch -r
+  forget = rm -r --cached
+  rollback = reset --soft
+  showconfig = config --list
+  sum = show
+  summary = show
+  tags = tag
+  unstage = reset HEAD --
+
+[color]
+  branche = auto
+  diff = auto
+  interactive = auto
+  status = auto
+  ui = auto
+
+[core]
+  editor = vim
+
+[github]
+  user = sasaplus1
+
+[user]
+  name = sasaplus1
+  email = sasaplus1@gmail.com
+
+[include]
+  path = .gitconfig.local
+
+[push]
+  default = upstream
+
+;[http]
+;  proxy = "proxy:port"
