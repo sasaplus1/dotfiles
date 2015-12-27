@@ -15,7 +15,6 @@ common_packages:
   - { name: 'peco'                                                                        }
   - { name: 'rbenv'                                                                       }
   - { name: 'rbenv-default-gems'                                                          }
-  - { name: 'rbenv-gem-rehash'                                                            }
   - { name: 'redis'                                                                       }
   - { name: 'ruby-build'                                                                  }
   - { name: 'sqlite'                                                                      }
