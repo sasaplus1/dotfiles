@@ -6,7 +6,13 @@ my dotfiles
 
 ## how to setup
 
-execute command below:
+execute command below if OS X:
+
+```
+$ xcode-select --install
+```
+
+and execute command below:
 
 ```console
 $ curl -LSfs https://raw.githubusercontent.com/sasaplus1/dotfiles/master/Makefile | make setup -f -
