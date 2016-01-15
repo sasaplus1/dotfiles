@@ -536,17 +536,17 @@ autocmd vimrc FileType javascript setlocal omnifunc=jscomplete#CompleteJS
 
 " tern_for_vim {{{
 
-NeoBundleLazy 'gh:marijnh/tern_for_vim.git', {
-      \ 'disabled' : !has('python'),
-      \ 'autoload' : {
-      \   'filetypes' : 'javascript',
-      \ },
-      \ 'build' : {
-      \   'others' : 'npm install -g tern'
-      \ },
-      \ 'build_commands' : 'npm',
-      \ 'external_commands' : 'tern',
-      \ }
+"NeoBundleLazy 'gh:marijnh/tern_for_vim.git', {
+"      \ 'disabled' : !has('python'),
+"      \ 'autoload' : {
+"      \   'filetypes' : 'javascript',
+"      \ },
+"      \ 'build' : {
+"      \   'others' : 'npm install -g tern'
+"      \ },
+"      \ 'build_commands' : 'npm',
+"      \ 'external_commands' : 'tern',
+"      \ }
 
 " }}}
 
