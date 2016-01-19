@@ -307,8 +307,9 @@ kkill() {
 import-repos() {
   local repo1=$(ghs -s updated -u sasaplus1 | awk '{ print $1 }')
   local repo2=$(ghs -s updated -u sasaplus1-prototype | awk '{ print $1 }')
+  local repo3=$(ghs -s updated -u sasaplus1-recipe | awk '{ print $1 }')
 
-  cat <(echo "$repo1") <(echo "$repo2") | ghq import -p
+  cat <(echo "$repo1") <(echo "$repo2") <(echo "$repo3") | ghq import -p
 }
 
 # fetch repositories
