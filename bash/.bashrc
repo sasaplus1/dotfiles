@@ -303,6 +303,11 @@ kkill() {
   [ -n "$target" ] && kill -9 "$target"
 }
 
+# incremental search and show man
+mman() {
+  man $(man -k . | peco --query="$*" | awk '{ gsub(/[()]/, " ", $1); split($1, args, " "); print args[2] " " args[1] }')
+}
+
 # import repositories
 import-repos() {
   local repo1=$(ghs -s updated -u sasaplus1 | awk '{ print $1 }')
