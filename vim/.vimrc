@@ -97,7 +97,9 @@ NeoBundle 'gh:Shougo/vimproc.vim.git', {
 
 " unite.vim {{{
 
-NeoBundle 'gh:Shougo/unite.vim.git'
+NeoBundleLazy 'gh:Shougo/unite.vim.git', {
+      \ 'pre_cmd' : 'Unite'
+      \ }
 
 let s:bundle = neobundle#get('unite.vim')
 function! s:bundle.hooks.on_source(bundle)
@@ -185,7 +187,7 @@ nnoremap ,uf :<C-u>UniteWithBufferDir -no-start-insert file<CR>
 nnoremap ,ua :<C-u>Unite mapping<CR>
 
 " Ctrl-pでカレントディレクトリからファイルの一覧などを表示
-nnoremap <C-p> :<C-u>Unite buffer file file_mru file_rec/async:.<CR>
+nnoremap <C-p> :<C-u>Unite buffer file file_mru file_rec/git file_rec/async:.<CR>
 
 " Ctrl-@で選択したディレクトリをVimFilerで開く
 nnoremap <C-@> :<C-u>Unite
@@ -206,13 +208,18 @@ nnoremap <C-_> :<C-u>Unite -winheight=30 grep:.<CR>
 
 " unite.vim sources {{{
 
-" NOTE:
-"   unite-で始まるプラグインは
-"   NeoBundleが自動的にunite_sourcesを付加する
-NeoBundleLazy 'gh:Shougo/unite-outline.git'
-NeoBundleLazy 'gh:Shougo/unite-ssh.git'
-NeoBundleLazy 'gh:tsukkee/unite-tag.git'
-NeoBundleLazy 'gh:sorah/unite-ghq.git'
+NeoBundleLazy 'gh:Shougo/unite-outline.git', {
+      \ 'on_source' : 'unite.vim'
+      \ }
+NeoBundleLazy 'gh:Shougo/unite-ssh.git', {
+      \ 'on_source' : 'unite.vim'
+      \ }
+NeoBundleLazy 'gh:tsukkee/unite-tag.git', {
+      \ 'on_source' : 'unite.vim'
+      \ }
+NeoBundleLazy 'gh:sorah/unite-ghq.git', {
+      \ 'on_source' : 'unite.vim'
+      \ }
 
 " }}}
 
@@ -290,9 +297,7 @@ let g:neocomplcache_lock_buffer_name_pattern='\*unite\*'
 " neossh.vim {{{
 
 NeoBundleLazy 'gh:Shougo/neossh.vim.git', {
-      \ 'autoload' : {
-      \   'command_prefix': 'VimFiler',
-      \ },
+      \ 'pre_cmd': 'VimFiler',
       \ }
 
 " }}}
@@ -300,9 +305,7 @@ NeoBundleLazy 'gh:Shougo/neossh.vim.git', {
 " neoyank.vim {{{
 
 NeoBundleLazy 'gh:Shougo/neoyank.vim.git', {
-      \ 'autoload' : {
-      \   'unite_sources': ['history/yank'],
-      \ },
+      \ 'on_source' : 'unite.vim',
       \ }
 
 " ,uyでヤンク履歴の一覧
@@ -312,13 +315,9 @@ nnoremap ,uy :<C-u>Unite history/yank<CR>
 
 " neomru.vim {{{
 
+"NeoBundle 'gh:Shougo/neomru.vim.git'
 NeoBundleLazy 'gh:Shougo/neomru.vim.git', {
-      \ 'autoload' : {
-      \   'unite_sources' : [
-      \     'file_mru', 'directory_mru',
-      \     'neomru/file', 'neomru/directory',
-      \   ],
-      \ },
+      \ 'on_source' : 'unite.vim',
       \ }
 
 " Ctrl-F2と,umで最近開いたファイル一覧
@@ -330,15 +329,15 @@ nnoremap ,um :<C-u>Unite file_mru<CR>
 " vimfiler {{{
 
 NeoBundleLazy 'gh:Shougo/vimfiler.git', {
-      \ 'autoload' : {
-      \   'command_prefix' : 'VimFiler',
-      \   'explorer' : 1,
-      \   'mappings' : '<Plug>',
-      \ },
       \ 'depends' : [
       \   'gh:Shougo/unite.vim.git',
       \   'gh:Shougo/neossh.vim.git',
       \ ],
+      \ 'pre_cmd' : [
+      \   'VimFiler',
+      \ ],
+      \ 'on_map' : '<Plug>',
+      \ 'on_path' : '.*',
       \ }
 
 " netrwを無効化する
@@ -364,9 +363,9 @@ nnoremap T :<C-u>VimFilerBufferDir -split -simple -winwidth=35 -toggle -no-quit<
 " vimshell {{{
 
 NeoBundleLazy 'gh:Shougo/vimshell.vim.git', {
-      \ 'autoload' : {
-      \   'command_prefix': 'VimShell',
-      \ },
+      \ 'pre_cmd' : [
+      \   'VimShell',
+      \ ],
       \ }
 
 " 大文字が入力された場合のみ大文字小文字を無視しない
@@ -402,9 +401,9 @@ nnoremap ,vS :<C-u>VimShellBufferDir -split<CR>
 " vinarise {{{
 
 NeoBundleLazy 'gh:Shougo/vinarise.git', {
-      \ 'autoload' : {
-      \   'commands' : 'Vinarise',
-      \ },
+      \ 'pre_cmd' : [
+      \   'Vinarise',
+      \ ],
       \ }
 
 " }}}
@@ -412,15 +411,10 @@ NeoBundleLazy 'gh:Shougo/vinarise.git', {
 " vim-ref {{{
 
 NeoBundleLazy 'gh:thinca/vim-ref.git', {
-      \ 'autoload' : {
-      \   'commands' : [
-      \     'Ref',
-      \     'RefHistory',
-      \   ],
-      \   'unite_sources' : [
-      \     'ref/man',
-      \   ],
-      \ },
+      \ 'pre_cmd' : [
+      \   'Ref',
+      \ ],
+      \ 'on_source' : 'unite.vim',
       \ }
 
 " ,rmでmanをuniteで検索
@@ -431,9 +425,7 @@ nnoremap ,rm :<C-u>Unite ref/man<CR>
 " vim-qfreplace {{{
 
 NeoBundleLazy 'gh:thinca/vim-qfreplace.git', {
-      \ 'autoload' : {
-      \   'commands' : 'Qfreplace',
-      \ },
+      \ 'on_cmd' : 'Qfreplace',
       \ }
 
 " }}}
@@ -447,10 +439,8 @@ NeoBundle 'gh:thinca/vim-quickrun.git'
 " gist-vim {{{
 
 NeoBundleLazy 'gh:mattn/gist-vim.git', {
-      \ 'autoload' : {
-      \   'commands': ['Gist'],
-      \ },
       \ 'depends' : 'gh:mattn/webapi-vim.git',
+      \ 'on_cmd': 'Gist',
       \ }
 
 " 複数ファイルを取得する
@@ -470,11 +460,9 @@ nnoremap ,gP :<C-u>Gist -P -s<Space>
 " open-browser.vim {{{
 
 NeoBundleLazy 'gh:tyru/open-browser.vim.git', {
-      \ 'autoload' : {
-      \   'functions' : 'OpenBrowser',
-      \   'command_prefix': 'OpenBrowser',
-      \   'mappings' : '<Plug>(openbrowser-smart-search)',
-      \ },
+      \ 'on_func' : 'OpenBrowser',
+      \ 'on_map' : '<Plug>(openbrowser-smart-search)',
+      \ 'pre_cmd': 'OpenBrowser',
       \ }
 
 " settings from http://vim-jp.org/vim-users-jp/2011/08/26/Hack-225.html
@@ -490,9 +478,7 @@ vmap gx <Plug>(openbrowser-smart-search)
 " emmet-vim {{{
 
 NeoBundleLazy 'gh:mattn/emmet-vim.git', {
-      \ 'autoload' : {
-      \   'filetypes' : ['html', 'xml'],
-      \ },
+      \ 'on_ft' : ['html', 'xml'],
       \ }
 
 " 各種設定など
@@ -523,9 +509,7 @@ let g:user_emmet_settings = {
 " jscomplete-vim {{{
 
 NeoBundleLazy 'bb:teramako/jscomplete-vim.git', {
-      \ 'autoload' : {
-      \   'filetypes' : 'javascript',
-      \ },
+      \ 'on_ft' : 'javascript',
       \ }
 
 let g:jscomplete_use = ['dom', 'moz', 'es6th']
@@ -630,7 +614,7 @@ nmap ga <Plug>(EasyAlign)
 " vim-over {{{
 
 NeoBundleLazy 'gh:osyo-manga/vim-over.git', {
-      \ 'command_prefix' : 'OverCommandLine',
+      \ 'pre_cmd' : 'OverCommandLine',
       \ }
 
 " ,reでOverCommandLineを起動する
@@ -649,15 +633,13 @@ NeoBundle 'gh:itchyny/lightline.vim.git'
 " vim-go-extra {{{
 
 NeoBundleLazy 'gh:vim-jp/vim-go-extra.git', {
-      \ 'autoload' : {
-      \   'filetypes' : ['go'],
-      \ },
       \ 'build' : {
       \   'windows' : 'go get -u github.com/nsf/gocode',
       \   'cygwin' : 'go get -u github.com/nsf/gocode',
       \   'mac' : 'go get -u github.com/nsf/gocode',
       \   'unix' : 'go get -u github.com/nsf/gocode',
       \ },
+      \ 'on_ft' : ['go'],
       \ }
 
 " *.goはGo
@@ -676,9 +658,7 @@ autocmd vimrc FileType go setlocal noexpandtab list tabstop=2 shiftwidth=2
 " JSON.vim {{{
 
 NeoBundleLazy 'gh:vim-scripts/JSON.vim.git', {
-      \ 'autoload' : {
-      \   'filetypes' : ['html', 'javascript'],
-      \ },
+      \ 'on_ft' : ['html', 'javascript'],
       \ }
 
 " *.jsonはjson
@@ -689,9 +669,7 @@ autocmd vimrc BufNewFile,BufRead *.json setlocal filetype=json
 " vim-javascript {{{
 
 NeoBundleLazy 'gh:pangloss/vim-javascript', {
-      \ 'autoload' : {
-      \   'filetypes' : ['html', 'javascript'],
-      \ },
+      \ 'on_ft' : ['html', 'javascript'],
       \ }
 
 " }}}
@@ -699,9 +677,7 @@ NeoBundleLazy 'gh:pangloss/vim-javascript', {
 " html5.vim {{{
 
 NeoBundleLazy 'gh:othree/html5.vim.git', {
-      \ 'autoload' : {
-      \   'filetypes' : ['html'],
-      \ },
+      \ 'on_ft' : ['html', 'php'],
       \ }
 
 " *.vueはHTML
@@ -712,9 +688,7 @@ autocmd vimrc BufNewFile,BufRead *.vue setlocal filetype=html
 " vim-coffee-script {{{
 
 NeoBundleLazy 'gh:kchmck/vim-coffee-script.git', {
-      \ 'autoload' : {
-      \   'filetypes' : ['coffee', 'markdown'],
-      \ },
+      \ 'on_ft' : ['coffee', 'markdown'],
       \ }
 
 " *.coffeeはcoffee
@@ -725,9 +699,7 @@ autocmd vimrc BufNewFile,BufRead *.coffee setlocal filetype=coffee
 " vim-markdown {{{
 
 NeoBundleLazy 'gh:tpope/vim-markdown.git', {
-      \ 'autoload' : {
-      \   'filetypes' : 'markdown',
-      \ },
+      \ 'on_ft' : 'markdown',
       \ }
 
 " *.md,*.markdown,*.mkd,*.mdown,*.mkdn,*.markはmarkdown
@@ -738,9 +710,7 @@ autocmd vimrc BufNewFile,BufRead *.md,*.markdown,*.mkd,*.mdown,*.mkdn,*.mark set
 " vim-css3-syntax {{{
 
 NeoBundleLazy 'gh:hail2u/vim-css3-syntax.git', {
-      \ 'autoload' : {
-      \   'filetypes' : ['html', 'css'],
-      \ },
+      \ 'on_ft' : ['html', 'css'],
       \ }
 
 " }}}
@@ -748,41 +718,33 @@ NeoBundleLazy 'gh:hail2u/vim-css3-syntax.git', {
 " vim-less {{{
 
 NeoBundleLazy 'gh:groenewege/vim-less.git', {
-      \ 'autoload' : {
-      \   'filetypes' : ['less'],
-      \ },
+      \ 'on_ft' : ['less'],
       \ }
 
 " }}}
 
 " vim-stylus {{{
 NeoBundleLazy 'gh:wavded/vim-stylus.git', {
-      \ 'autoload' : {
-      \   'filetypes' : ['stylus'],
-      \ },
+      \ 'on_ft' : ['stylus'],
       \ }
 
 " }}}
 
-" vim-jade {{{
+" vim-pug {{{
 
-NeoBundleLazy 'gh:digitaltoad/vim-jade.git', {
-      \ 'autoload' : {
-      \   'filetypes' : ['jade'],
-      \ },
+NeoBundleLazy 'gh:digitaltoad/vim-pug.git', {
+      \ 'on_ft' : ['jade', 'pug'],
       \ }
 
-" *.jadeはjade
-autocmd vimrc BufNewFile,BufRead *.jade setlocal filetype=jade
+" *.jade,*.pugはpug
+autocmd vimrc BufNewFile,BufRead *.jade,*.pug setlocal filetype=pug
 
 " }}}
 
 " typescript-vim {{{
 
 NeoBundleLazy 'gh:leafgarland/typescript-vim.git', {
-      \ 'autoload' : {
-      \   'filetypes' : ['typescript'],
-      \ },
+      \ 'on_ft' : ['typescript'],
       \ }
 
 " *.tsはtypescript
@@ -793,9 +755,7 @@ autocmd vimrc BufNewFile,BufRead *.ts setlocal filetype=typescript
 " delphi.vim {{{
 
 NeoBundleLazy 'gh:vim-scripts/delphi.vim.git', {
-      \ 'autoload' : {
-      \   'filetypes' : ['delphi'],
-      \ },
+      \ 'on_ft' : ['delphi'],
       \ }
 
 " *.dprと*.lprと*.pasと*.ppはDelphi
