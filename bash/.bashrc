@@ -319,7 +319,7 @@ import-repos() {
 
 # fetch repositories
 fetch-repos() {
-  ghq list | xargs -n1 -I{} git --git-dir=$(ghq root)/{}/.git fetch --verbose
+  ghq list -p | xargs -n1 -I{} git --git-dir={}/.git fetch --verbose
 }
 
 # }}}
