@@ -5,6 +5,7 @@ directories:
   - '{{ home_dir }}/.ghq'
   - '{{ home_dir }}/.go'
   - '{{ home_dir }}/.nodebrew'
+  - '{{ home_dir }}/.peco'
   - '{{ home_dir }}/.rbenv'
   - '{{ home_dir }}/.ssh'
   - '{{ home_dir }}/.swapdir'

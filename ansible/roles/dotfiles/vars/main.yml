@@ -11,6 +11,7 @@ symbolic_links:
   - { src: '{{ dotfiles_dir }}/mercurial/.hgrc',            dest: '{{ home_dir }}/.hgrc'                }
   - { src: '{{ dotfiles_dir }}/nginx/.cocproxy.nginx.conf', dest: '{{ home_dir }}/.cocproxy.nginx.conf' }
   - { src: '{{ dotfiles_dir }}/pt/.ptignore',               dest: '{{ home_dir }}/.ptignore'            }
+  - { src: '{{ dotfiles_dir }}/peco/config.json',           dest: '{{ home_dir }}/.peco/config.json'    }
   - { src: '{{ dotfiles_dir }}/ruby/.gemrc',                dest: '{{ home_dir }}/.gemrc'               }
   - { src: '{{ dotfiles_dir }}/screen/.screenrc',           dest: '{{ home_dir }}/.screenrc'            }
   - { src: '{{ dotfiles_dir }}/slate/.slate',               dest: '{{ home_dir }}/.slate'               }
