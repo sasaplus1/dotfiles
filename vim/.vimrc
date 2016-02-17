@@ -297,7 +297,7 @@ let g:neocomplcache_lock_buffer_name_pattern='\*unite\*'
 " neossh.vim {{{
 
 NeoBundleLazy 'gh:Shougo/neossh.vim.git', {
-      \ 'pre_cmd': 'VimFiler',
+      \ 'pre_cmd' : 'VimFiler',
       \ }
 
 " }}}
@@ -315,7 +315,6 @@ nnoremap ,uy :<C-u>Unite history/yank<CR>
 
 " neomru.vim {{{
 
-"NeoBundle 'gh:Shougo/neomru.vim.git'
 NeoBundleLazy 'gh:Shougo/neomru.vim.git', {
       \ 'on_source' : 'unite.vim',
       \ }
@@ -364,6 +363,7 @@ nnoremap T :<C-u>VimFilerBufferDir -split -simple -winwidth=35 -toggle -no-quit<
 
 NeoBundleLazy 'gh:Shougo/vimshell.vim.git', {
       \ 'pre_cmd' : [
+      \   'VimFiler',
       \   'VimShell',
       \ ],
       \ }
