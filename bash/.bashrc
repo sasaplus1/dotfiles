@@ -282,12 +282,12 @@ fi
 
 # incremental search and change directory, use find
 icd() {
-  cd "$(eval "find $HOME -maxdepth 20 `tr '\n' ' ' < $HOME/.findrc` -or -type d -print 2>/dev/null" | peco --query="$*")"
+  cd "$(eval "find $HOME -maxdepth 20 `tr '\n' ' ' < $HOME/.findrc` -or -type d -print 2>/dev/null" | peco --select-1 --query="$*")"
 }
 
 # incremental search and change directory, use mdfind
 mcd() {
-  cd "$(mdfind -onlyin $HOME 'kMDItemContentType == "public.folder" || kMDItemFSNodeCount > 0' | peco --query="$*")"
+  cd "$(mdfind -onlyin $HOME 'kMDItemContentType == "public.folder" || kMDItemFSNodeCount > 0' | peco --select-1 --query="$*")"
 }
 
 # incremental search and change directory
