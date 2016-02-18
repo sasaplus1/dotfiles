@@ -302,20 +302,20 @@ ccd() {
 
   local list=$(cat <(echo "$trees") <(echo "$finds") <(echo "$hists") <(echo "$repos"))
 
-  cd "$(echo "$list" | sort -u | peco --query="$*" 2>/dev/null)"
+  cd "$(echo "$list" | sort -u | peco --select-1 --query="$*" 2>/dev/null)"
 }
 
 # incremental search and kill process
 kkill() {
   local list=$(ps xo 'pid,user,uid,command' | sed -e '1d')
-  local target=$(echo "$list" | peco --query="$*" | awk '{ print $1 }')
+  local target=$(echo "$list" | peco --select-1 --query="$*" | awk '{ print $1 }')
 
   [ -n "$target" ] && kill -9 "$target"
 }
 
 # incremental search and show man
 mman() {
-  man $(man -k . | peco --query="$*" | awk '{ gsub(/[()]/, " ", $1); split($1, args, " "); print args[2] " " args[1] }')
+  man $(man -k . | peco --select-1 --query="$*" | awk '{ gsub(/[()]/, " ", $1); split($1, args, " "); print args[2] " " args[1] }')
 }
 
 # import repositories
