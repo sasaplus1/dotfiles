@@ -797,6 +797,11 @@ set tabstop=2      " タブ幅
 set softtabstop=0  " 機能無効
 set shiftwidth=2   " インデント幅
 
+if (v:version == 704 && has('patch338')) || v:version >= 705
+  " インデント付きで折り返す
+  set breakindent
+endif
+
 " }}}
 
 " ファイルタイプとか {{{
