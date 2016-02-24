@@ -348,6 +348,9 @@ let g:vimfiler_as_default_explorer=1
 " セーフモードをオフにする
 let g:vimfiler_safe_mode_by_default=0
 
+" 最大記憶ディレクトリ履歴を100にする
+let g:vimfiler_max_directories_history=100
+
 " F4と,vfで表示
 nnoremap <F4> :<C-u>VimFilerBufferDir<CR>
 nnoremap ,vf :<C-u>VimFilerBufferDir<CR>
