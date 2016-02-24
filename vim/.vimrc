@@ -680,8 +680,8 @@ NeoBundleLazy 'gh:othree/html5.vim.git', {
       \ 'on_ft' : ['html', 'php'],
       \ }
 
-" *.vueはHTML
-autocmd vimrc BufNewFile,BufRead *.vue setlocal filetype=html
+" *.ejsと*.vueはHTML
+autocmd vimrc BufNewFile,BufRead *.ejs,*.vue setlocal filetype=html
 
 " }}}
 
