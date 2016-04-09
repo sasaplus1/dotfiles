@@ -2,6 +2,7 @@ os:
   - linux
   - osx
 sudo: true
+dist: trusty
 
 cache:
   apt: true
