@@ -5,6 +5,7 @@ common_packages:
   - { name: 'docker'                                                                      }
   - { name: 'ghq'                                                                         }
   - { name: 'ghs'                                                                         }
+  - { name: 'gibo'                                                                        }
   - { name: 'git', install_options: 'with-brewed-curl,with-brewed-openssl,without-tcl-tk' }
   - { name: 'go'                                                                          }
   - { name: 'hub'                                                                         }
