@@ -210,7 +210,7 @@ __main() {
 
   alias memo='$EDITOR $(date +%FT%H-%M-%S).md'
   alias server='python -m SimpleHTTPServer'
-  alias fake-dev='nginx -p . -c "$(find `ghq root` -type f -name fake-dev.conf)"'
+  alias fake-dev='nginx -p . -c "$(ghq list -p fake-dev)/fake-dev.conf"'
   # }}}
 }
 __main
