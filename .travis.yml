@@ -1,11 +1,9 @@
 os:
   - linux
   - osx
-sudo: true
-dist: trusty
 
-cache:
-  apt: true
+sudo: required
+dist: trusty
 
 before_script:
   - rm -rf $HOME/.bashrc $HOME/.bash_profile $HOME/.gitconfig $HOME/.vim
