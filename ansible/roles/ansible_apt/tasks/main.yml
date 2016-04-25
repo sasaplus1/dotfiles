@@ -4,7 +4,7 @@
   become: yes
   apt:
     name: '{{ item.name }}'
-  with_items: dependencies
+  with_items: '{{ dependencies }}'
   tags:
     - ansible_apt
     - apt

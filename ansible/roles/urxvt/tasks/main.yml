@@ -4,6 +4,6 @@
   git:
     repo: '{{ item.uri }}'
     dest: '{{ item.dest }}'
-  with_items: extension_repositories
+  with_items: '{{ extension_repositories }}'
   tags:
     - urxvt

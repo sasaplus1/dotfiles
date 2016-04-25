@@ -3,6 +3,6 @@
   file:
     path: '{{ item }}'
     state: directory
-  with_items: directories
+  with_items: '{{ directories }}'
   tags:
     - directories

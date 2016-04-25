@@ -3,6 +3,6 @@
   when: ansible_distribution == 'MacOSX'
   homebrew_cask:
     name: '{{ item }}'
-  with_items: osx_cask_packages
+  with_items: '{{ osx_cask_packages }}'
   tags:
     - homebrew_cask

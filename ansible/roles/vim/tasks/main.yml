@@ -3,7 +3,7 @@
   git:
     repo: '{{ item.uri }}'
     dest: '{{ item.dest }}'
-  with_items: plugin_repositories
+  with_items: '{{ plugin_repositories }}'
   tags:
     - vim
 

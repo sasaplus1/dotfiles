@@ -10,7 +10,7 @@
   shell: "git --git-dir='{{ dotfiles_dir }}/.git' remote add origin {{ item }}"
   args:
     executable: /bin/bash
-  with_items: master_remotes
+  with_items: '{{ master_remotes }}'
   tags:
     - dotfiles_remotes
 
@@ -18,6 +18,6 @@
   shell: "git --git-dir='{{ dotfiles_dir }}/.git' remote set-url --add origin {{ item }}"
   args:
     executable: /bin/bash
-  with_items: mirror_remotes
+  with_items: '{{ mirror_remotes }}'
   tags:
     - dotfiles_remotes

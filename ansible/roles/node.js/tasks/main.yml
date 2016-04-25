@@ -21,7 +21,7 @@
     name: '{{ item }}'
     executable: '{{ home_dir }}/.nodebrew/current/bin/npm'
     global: yes
-  with_items: common_npm_modules
+  with_items: '{{ common_npm_modules }}'
   tags:
     - node.js
 
@@ -31,6 +31,6 @@
     name: '{{ item }}'
     executable: '{{ home_dir }}/.nodebrew/current/bin/npm'
     global: yes
-  with_items: osx_npm_modules
+  with_items: '{{ osx_npm_modules }}'
   tags:
     - node.js

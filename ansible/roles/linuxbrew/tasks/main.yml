@@ -4,7 +4,7 @@
   become: yes
   apt:
     name: '{{ item.name }}'
-  with_items: dependencies.apt
+  with_items: '{{ dependencies.apt }}'
   tags:
     - linuxbrew
     - apt
@@ -13,7 +13,7 @@
   when: ansible_os_family == 'Debian'
   homebrew:
     name: '{{ item.name }}'
-  with_items: dependencies.linuxbrew
+  with_items: '{{ dependencies.linuxbrew }}'
   tags:
     - linuxbrew
     - homebrew

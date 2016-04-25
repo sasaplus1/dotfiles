@@ -4,7 +4,7 @@
   become: yes
   apt_repository:
     repo: '{{ item }}'
-  with_items: apt_repositories
+  with_items: '{{ apt_repositories }}'
   tags:
     - apt_sources
     - apt
