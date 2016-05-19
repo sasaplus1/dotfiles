@@ -6,4 +6,5 @@ common_taps:
 
 osx_taps:
   - 'caskroom/cask'
+  - 'caskroom/fonts'
   - 'caskroom/versions'
