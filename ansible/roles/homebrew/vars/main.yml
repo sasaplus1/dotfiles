@@ -23,6 +23,7 @@ common_packages:
   - { name: 'the_silver_searcher'                                                         }
   - { name: 'tig'                                                                         }
   - { name: 'tmux'                                                                        }
+  - { name: 'tree'                                                                        }
   - { name: 'vcprompt'                                                                    }
   - { name: 'z'                                                                           }
 
