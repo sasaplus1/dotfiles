@@ -523,17 +523,17 @@ autocmd vimrc FileType javascript setlocal omnifunc=jscomplete#CompleteJS
 
 " tern_for_vim {{{
 
-"NeoBundleLazy 'gh:marijnh/tern_for_vim.git', {
-"      \ 'disabled' : !has('python'),
-"      \ 'autoload' : {
-"      \   'filetypes' : 'javascript',
-"      \ },
-"      \ 'build' : {
-"      \   'others' : 'npm install -g tern'
-"      \ },
-"      \ 'build_commands' : 'npm',
-"      \ 'external_commands' : 'tern',
-"      \ }
+NeoBundleLazy 'gh:marijnh/tern_for_vim.git', {
+      \ 'disabled' : !has('python'),
+      \ 'autoload' : {
+      \   'filetypes' : 'javascript',
+      \ },
+      \ 'build' : {
+      \   'others' : 'npm install -g tern'
+      \ },
+      \ 'build_commands' : 'npm',
+      \ 'external_commands' : 'tern',
+      \ }
 
 " }}}
 
@@ -847,6 +847,9 @@ endif
 
 " 候補が1つだけの場合もポップアップメニューを表示する
 set completeopt+=menuone
+
+" プレビューウィンドウを表示しない
+set completeopt-=preview
 
 " タブや改行などをを指定した記号で表示
 " tab      タブ文字
