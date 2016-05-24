@@ -33,5 +33,6 @@ osx_packages:
 # - { name: 'closure-linter'             }
   - { name: 'flow'                       }
   - { name: 'fswatch'                    }
+  - { name: 'mas'                        }
   - { name: 'reattach-to-user-namespace' }
   - { name: 'unar'                       }
