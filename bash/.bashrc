@@ -232,7 +232,17 @@ __print_exit_code() {
 }
 
 __print_repo_info() {
-  local info=$(vcprompt -f '%n:%b:%r' 2>/dev/null)
+  local gitsvn=$(git branch -r --list 'git-svn' 2>/dev/null)
+  local format=
+
+  if [ -n "$gitsvn" ]
+  then
+    format='%n-svn:%b:%r'
+  else
+    format='%n:%b:%r'
+  fi
+
+  local info=$(vcprompt -f "$format" 2>/dev/null)
   [ -n "$info" ] && echo -n " (${info%:})"
 }
 
