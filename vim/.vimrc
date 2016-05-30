@@ -528,8 +528,7 @@ NeoBundleLazy 'gh:marijnh/tern_for_vim.git', {
       \ 'autoload' : {
       \   'filetypes' : 'javascript',
       \ },
-      \ 'build' : 'npm install -g tern',
-      \ 'external_commands' : 'tern',
+      \ 'build' : 'npm install',
       \ }
 
 " }}}
