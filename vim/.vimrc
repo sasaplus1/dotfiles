@@ -428,6 +428,9 @@ nnoremap ,rm :<C-u>Unite ref/man<CR>
 " vim-qfreplace {{{
 
 NeoBundleLazy 'gh:thinca/vim-qfreplace.git', {
+      \ 'pre_cmd' : [
+      \   'VimFiler',
+      \ ],
       \ 'on_cmd' : 'Qfreplace',
       \ }
 
