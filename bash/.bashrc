@@ -197,12 +197,14 @@ __main() {
     osx)
       alias ls='ls -G'
       alias grep='grep --color=auto'
+      alias sed_ere='sed -E'
       alias ios='open -a "iOS Simulator" || open -a "iPhone Simulator"'
       ;;
     linux)
       alias crontab='crontab -i'
       alias ls='ls --color=auto'
       alias grep='grep --color=auto'
+      alias sed_ere='sed -e'
       alias pbcopy='xsel --clipboard --input'
       alias pbpaste='xsel --clipboard --output'
       ;;
