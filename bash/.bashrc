@@ -239,7 +239,7 @@ __print_repo_info() {
 
   if [ -n "$gitsvn" ]
   then
-    format='%n-svn:%b:%r'
+    format='git-svn:%b:%r'
   else
     format='%n:%b:%r'
   fi
@@ -292,56 +292,30 @@ then
   }
 fi
 
-# incremental search and change directory, use find
-icd() {
-  cd "$(eval "find $HOME -maxdepth 20 `tr '\n' ' ' < $HOME/.findrc` -or -type d -print 2>/dev/null" | peco --select-1 --query="$*")"
-}
-
-# incremental search and change directory, use mdfind
-mcd() {
-  cd "$(mdfind -onlyin $HOME 'kMDItemContentType == "public.folder" || kMDItemFSNodeCount > 0' | peco --select-1 --query="$*")"
-}
-
 # incremental search and change directory
 ccd() {
   local root=$(git rev-parse --show-toplevel 2>/dev/null)
-  local tree=$(git ls-tree -dr --name-only --full-name --full-tree HEAD 2>/dev/null)
 
-  local trees=$(echo "$tree" | sed -e "s|^|$root/|")
-  local finds=$(eval "find `pwd` `echo $(cat $HOME/.findrc)` -or -maxdepth 3 -type d -print 2>/dev/null")
-  local hists=$(z -l | awk '{ print $2 }' 2>/dev/null)
-  local repos=$(ghq list -p 2>/dev/null)
-
-  local list=$(cat <(echo "$trees") <(echo "$finds") <(echo "$hists") <(echo "$repos"))
-
-  cd "$(echo "$list" | sort -u | peco --select-1 --query="$*" 2>/dev/null)"
+  cd "$(
+    cat \
+      <(mdfind -onlyin $HOME "kMDItemContentType == public.folder && kMDItemFSName == '$1'c" 2>/dev/null) \
+      <(git ls-tree -dr --name-only --full-name HEAD 2>/dev/null | xargs printf "$root/%s\n" 2>/dev/null) \
+      <(find "$(pwd)" $(< $HOME/.findrc) -or -maxdepth 10 -type d -print 2>/dev/null) \
+      <(z -l | awk '{ print $2 }' 2>/dev/null) \
+      <(ghq list -p 2>/dev/null) \
+    | peco --select-1 2>/dev/null
+  )"
 }
 
 # incremental search and kill process
 kkill() {
-  local list=$(ps xo 'pid,user,uid,command' | sed -e '1d')
-  local target=$(echo "$list" | peco --select-1 --query="$*" | awk '{ print $1 }')
-
-  [ -n "$target" ] && kill -9 "$target"
+  local pid=$(ps xo pid,user,uid,command | sed -e 1d | peco --select-1 --query="$*" | awk '{ print $1 }')
+  [ -n "$pid" ] && kill -9 "$pid"
 }
 
 # incremental search and show man
 mman() {
-  man $(man -k . | peco --select-1 --query="$*" | awk '{ gsub(/[()]/, " ", $1); split($1, args, " "); print args[2] " " args[1] }')
-}
-
-# import repositories
-import-repos() {
-  local repo1=$(ghs -s updated -u sasaplus1 | awk '{ print $1 }')
-  local repo2=$(ghs -s updated -u sasaplus1-prototype | awk '{ print $1 }')
-  local repo3=$(ghs -s updated -u sasaplus1-recipe | awk '{ print $1 }')
-
-  cat <(echo "$repo1") <(echo "$repo2") <(echo "$repo3") | ghq import -p
-}
-
-# fetch repositories
-fetch-repos() {
-  ghq list -p | xargs -n1 -I{} git --git-dir={}/.git fetch --verbose
+  man $(man -k $* | peco --select-1 | sed_ere -e 's/([^(]+)\(([^)]+)\)/\2 \1/') 2>/dev/null
 }
 
 # }}}
