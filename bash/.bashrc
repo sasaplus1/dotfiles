@@ -292,6 +292,16 @@ then
   }
 fi
 
+# find file
+ff() {
+  [ -n "$1" ] && find "$(pwd)" $(< $HOME/.findrc) -type f -name $1 -print
+}
+
+# find directory
+fd() {
+  [ -n "$1" ] && find "$(pwd)" $(< $HOME/.findrc) -type d -name $1 -print
+}
+
 # incremental search and change directory
 ccd() {
   local root=$(git rev-parse --show-toplevel 2>/dev/null)
