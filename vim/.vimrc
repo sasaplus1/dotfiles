@@ -999,7 +999,7 @@ set undodir=~/.undodir,.,~/tmp,~/
 
 if s:pt
   " ptコマンドを使用する場合の設定
-  set grepprg=pt\ --nogroup\ --nocolor
+  set grepprg=pt\ --nocolor\ --nogroup\ --smart-case
 elseif s:w32 || s:w64
   " grepコマンドでvimgrepを使用する
   set grepprg=internal
