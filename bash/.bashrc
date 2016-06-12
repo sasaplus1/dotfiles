@@ -294,12 +294,12 @@ fi
 
 # find file
 ff() {
-  [ -n "$1" ] && find "$(pwd)" $(< $HOME/.findrc) -type f -name $1 -print
+  [ -n "$1" ] && find "$(pwd)" $(< $HOME/.findrc) -type f -iname $1 -print
 }
 
 # find directory
 fd() {
-  [ -n "$1" ] && find "$(pwd)" $(< $HOME/.findrc) -type d -name $1 -print
+  [ -n "$1" ] && find "$(pwd)" $(< $HOME/.findrc) -type d -iname $1 -print
 }
 
 # incremental search and change directory
