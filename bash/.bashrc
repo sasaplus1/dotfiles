@@ -230,7 +230,7 @@ stty stop undef
 
 # PS1 {{{
 __print_exit_code() {
-  [ "$1" -ne 0 ] && echo -n " $1"
+  [ "$1" -ne 0 ] && printf " $1"
 }
 
 __print_repo_info() {
@@ -245,7 +245,7 @@ __print_repo_info() {
   fi
 
   local info=$(vcprompt -f "$format" 2>/dev/null)
-  [ -n "$info" ] && echo -n " (${info%:})"
+  [ -n "$info" ] && printf " (${info%:})"
 }
 
 # /current/dir err (vcs:branch:rev)
@@ -284,7 +284,7 @@ if type urxvt >/dev/null 2>&1
 then
   set-urxvt-font-size() {
     local old_name=$(grep -i '^\s*urxvt.font' "$HOME/.Xdefaults" | cut -d: -f2-)
-    local new_name=$(echo "$old_name" | sed -e 's/:\(pixel\)\?size=[0-9]\+/'":\1size=$1/")
+    local new_name=$(printf "$old_name" | sed -e 's/:\(pixel\)\?size=[0-9]\+/'":\1size=$1/")
 
     [ -n "$TMUX" ] && printf '\ePtmux;\e'
     printf '\e]50;%s\007' "$new_name"
