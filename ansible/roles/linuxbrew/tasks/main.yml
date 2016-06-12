@@ -9,7 +9,7 @@
     - linuxbrew
     - apt
 
-- name: install dependent packages by by Linuxbrew
+- name: install dependent packages by Linuxbrew
   when: ansible_os_family == 'Debian'
   homebrew:
     name: '{{ item.name }}'
