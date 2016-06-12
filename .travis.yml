@@ -1,3 +1,5 @@
+language: c
+
 os:
   - linux
   - osx
@@ -6,6 +8,7 @@ sudo: required
 dist: trusty
 
 before_script:
+  - env
   - rm -rf $HOME/.bashrc $HOME/.bash_profile $HOME/.gitconfig $HOME/.vim
 script:
   - curl -LSfs https://raw.githubusercontent.com/sasaplus1/dotfiles/master/Makefile | make setup -f -
