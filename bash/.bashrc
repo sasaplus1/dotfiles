@@ -304,16 +304,12 @@ fd() {
 
 # incremental search and change directory
 ccd() {
-  local root=$(git rev-parse --show-toplevel 2>/dev/null)
-
   cd "$(
     cat \
-      <(mdfind -onlyin $HOME "kMDItemContentType == public.folder && kMDItemFSName == '$1'c" 2>/dev/null) \
-      <(git ls-tree -dr --name-only --full-name HEAD 2>/dev/null | xargs printf "$root/%s\n" 2>/dev/null) \
-      <(find "$(pwd)" $(< $HOME/.findrc) -maxdepth 10 -type d -print 2>/dev/null) \
-      <(z -l | awk '{ print $2 }' 2>/dev/null) \
-      <(ghq list -p 2>/dev/null) \
-    | peco --select-1 2>/dev/null
+      <(ghq list -p) \
+      <(z -l | awk '{ print $2 }') \
+      <(mdfind -onlyin "$(pwd)" "kMDItemContentType == public.folder" 2>/dev/null) |
+    peco --select-1
   )"
 }
 
