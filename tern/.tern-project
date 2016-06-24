@@ -2,7 +2,6 @@
   "libs": [
     "browser",
     "ecma5",
-    "jquery",
-    "underscore"
+    "jquery"
   ]
 }
