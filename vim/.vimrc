@@ -907,6 +907,7 @@ autocmd vimrc WinEnter * execute "normal! 2\<C-g>"
 let g:markdown_fenced_languages = [
       \ 'coffee',
       \ 'css',
+      \ 'diff',
       \ 'erb=eruby',
       \ 'html',
       \ 'javascript',
