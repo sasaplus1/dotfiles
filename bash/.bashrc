@@ -309,7 +309,7 @@ ccd() {
       <(ghq list -p) \
       <(z -l | awk '{ print $2 }') \
       <(mdfind -onlyin "$(pwd)" "kMDItemContentType == public.folder" 2>/dev/null) |
-    peco --select-1
+    peco --select-1 --query="$*"
   )"
 }
 
