@@ -180,6 +180,9 @@ __main() {
   # up.sh
   source "$HOME/.ghq/github.com/sasaplus1/up.sh/up.sh" 2>/dev/null
 
+  # down.sh
+  source "$HOME/.ghq/github.com/sasaplus1/down.sh/down.sh" 2>/dev/null
+
   # z {{{
   source "$homebrew_prefix/etc/profile.d/z.sh" 2>/dev/null
   if [ "$?" -eq 0 ]
