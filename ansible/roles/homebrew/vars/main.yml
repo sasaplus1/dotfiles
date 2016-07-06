@@ -14,6 +14,7 @@ common_packages:
   - { name: 'nginx-full', install_options: 'with-subs-filter-module'                      }
 # - { name: 'nodebrew'                                                                    }
   - { name: 'peco'                                                                        }
+  - { name: 'ranger'                                                                      }
   - { name: 'rbenv'                                                                       }
   - { name: 'rbenv-default-gems'                                                          }
   - { name: 'redis'                                                                       }
