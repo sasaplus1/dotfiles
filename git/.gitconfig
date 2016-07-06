@@ -40,7 +40,7 @@
   unstage = reset HEAD --
 
 [color]
-  branche = auto
+  branch = auto
   diff = auto
   interactive = auto
   status = auto
