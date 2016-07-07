@@ -232,8 +232,14 @@ shopt -s cdspell
 stty stop undef
 
 # PS1 {{{
+__seq_red='\e[01;31m'
+__seq_green='\e[01;32m'
+__seq_yellow='\e[01;33m'
+__seq_cyan='\e[01;36m'
+__seq_reset='\e[00m'
+
 __print_exit_code() {
-  [ "$1" -ne 0 ] && printf " $1"
+  [ "$1" -ne 0 ] && printf " ${__seq_red}%s${__seq_reset}" "$1"
 }
 
 __print_repo_info() {
@@ -248,18 +254,17 @@ __print_repo_info() {
   fi
 
   local info=$(vcprompt -f "$format" 2>/dev/null)
-  [ -n "$info" ] && printf " (${info%:})"
+  [ -n "$info" ] && printf " ${__seq_cyan}%s${__seq_reset}" "(${info%:})"
 }
 
 # /current/dir err (vcs:branch:rev)
 # username@hostname$ _
-PS1=
-PS1=$PS1'\[\033[01;32m\]\w\[\033[00m\]'
-PS1=$PS1'\[\033[01;31m\]$(__print_exit_code $?)\[\033[00m\]'
-PS1=$PS1'\[\033[01;36m\]$(__print_repo_info)\[\033[00m\]'
-PS1=$PS1'\n\u@\h\$ '
-
-export PS1
+export PS1=$(
+  printf "${__seq_green}%s${__seq_reset}" '\w'
+  printf '$(__print_exit_code $?)'
+  printf '$(__print_repo_info)'
+  printf '\n\u@\h\$ '
+)
 # }}}
 
 # history {{{
