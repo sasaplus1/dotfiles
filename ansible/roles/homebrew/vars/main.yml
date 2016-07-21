@@ -2,7 +2,7 @@
 common_packages:
   - { name: 'bash-completion'                                                             }
   - { name: 'ctags'                                                                       }
-  - { name: 'docker'                                                                      }
+# - { name: 'docker'                                                                      }
   - { name: 'ghq'                                                                         }
   - { name: 'ghs'                                                                         }
   - { name: 'gibo'                                                                        }
