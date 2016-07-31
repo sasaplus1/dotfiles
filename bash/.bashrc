@@ -64,6 +64,14 @@ __main() {
     eval "$(rbenv init -)"
   # }}}
 
+  # pyenv {{{
+  local pyenv=$HOME/.pyenv/shims
+  export PATH=$pyenv:${PATH//$pyenv:/}
+  [ -n "$__interactive" ] &&
+    type pyenv >/dev/null 2>&1 &&
+    eval "$(pyenv init -)"
+  # }}}
+
   # nodebrew {{{
   local nodebrew=$HOME/.nodebrew/current/bin
   export PATH=$nodebrew:${PATH//$nodebrew:/}
