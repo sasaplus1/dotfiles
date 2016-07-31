@@ -72,7 +72,7 @@ define __install_brew_script
       tarball=https://github.com/Homebrew/homebrew/tarball/master
       ;;
     linux)
-      tarball=https://github.com/Homebrew/linuxbrew/tarball/master
+      tarball=https://github.com/Linuxbrew/brew/tarball/master
       ;;
     *)
       echo 'brew is not supported for this platform.' 1>&2
