@@ -4,7 +4,7 @@ common_packages:
   - { name: 'ctags'                                                                       }
 # - { name: 'docker'                                                                      }
   - { name: 'ghq'                                                                         }
-  - { name: 'ghs'                                                                         }
+  - { name: 'sona-tar/homebrew-tools/ghs'                                                 }
   - { name: 'gibo'                                                                        }
   - { name: 'git', install_options: 'with-brewed-curl,with-brewed-openssl,without-tcl-tk' }
   - { name: 'go'                                                                          }
