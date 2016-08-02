@@ -221,6 +221,11 @@ __main() {
       ;;
   esac
 
+  if [ "$EDITOR" = 'vim' ]
+  then
+    alias vf='vim +VimFiler'
+  fi
+
   alias memo='$EDITOR $(date +%FT%H-%M-%S).md'
   alias server='python -m SimpleHTTPServer'
   alias fake-dev='nginx -p . -c "$(ghq list -p fake-dev)/fake-dev.conf"'
