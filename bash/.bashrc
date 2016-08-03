@@ -189,6 +189,7 @@ __main() {
   source "$HOME/.ghq/github.com/sasaplus1/up.sh/up.sh" 2>/dev/null
 
   # down.sh
+  export _DOWN_CMD=dw
   source "$HOME/.ghq/github.com/sasaplus1/down.sh/down.sh" 2>/dev/null
 
   # z {{{

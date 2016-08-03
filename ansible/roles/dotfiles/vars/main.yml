@@ -4,6 +4,7 @@ symbolic_links:
   - { src: '{{ dotfiles_dir }}/bash/.bash_logout',          dest: '{{ home_dir }}/.bash_logout'         }
   - { src: '{{ dotfiles_dir }}/bash/.bash_profile',         dest: '{{ home_dir }}/.bash_profile'        }
   - { src: '{{ dotfiles_dir }}/bash/.bashrc',               dest: '{{ home_dir }}/.bashrc'              }
+  - { src: '{{ dotfiles_dir }}/bash/.downrc',               dest: '{{ home_dir }}/.downrc'              }
   - { src: '{{ dotfiles_dir }}/bash/.findrc',               dest: '{{ home_dir }}/.findrc'              }
   - { src: '{{ dotfiles_dir }}/ctags/.ctags',               dest: '{{ home_dir }}/.ctags'               }
   - { src: '{{ dotfiles_dir }}/git/.gitconfig',             dest: '{{ home_dir }}/.gitconfig'           }
