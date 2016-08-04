@@ -21,6 +21,7 @@ common_packages:
   - { name: 'redis'                                                                       }
   - { name: 'ruby-build'                                                                  }
   - { name: 'sqlite'                                                                      }
+  - { name: 'textql'                                                                      }
   - { name: 'the_platinum_searcher'                                                       }
   - { name: 'the_silver_searcher'                                                         }
   - { name: 'tig'                                                                         }
