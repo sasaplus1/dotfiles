@@ -503,13 +503,14 @@ let g:user_emmet_settings = {
       \  'lang' : 'ja',
       \  'locale' : 'ja-JP',
       \  'html' : {
-      \    'indentation' : ' ',
+      \    'indentation' : '  ',
       \    'snippets' : {
       \      'html:5' : "<!DOCTYPE html>\n"
       \               . "<html>\n"
       \               . "<head>\n"
-      \               . "  <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge,chrome=1\">\n"
       \               . "  <meta charset=\"utf-8\">\n"
+      \               . "  <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge,chrome=1\">\n"
+      \               . "  <meta name=\"viewport\" content=\"width=device-width,initial-scale=1.0\">\n"
       \               . "  <title></title>\n"
       \               . "</head>\n"
       \               . "<body>\n"
