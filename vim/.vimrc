@@ -931,6 +931,20 @@ let g:markdown_fenced_languages = [
       \ 'xml',
       \ ]
 
+" Jekyllのための保存時刻自動入力設定
+" https://jekyllrb.com/docs/frontmatter/
+function! s:set_autodate_for_jekyll()
+  " バッファローカルなautodate.vimの設定
+  " http://nanasi.jp/articles/vim/autodate_vim.html
+  let b:autodate_lines=5
+  let b:autodate_keyword_pre="date: "
+  let b:autodate_keyword_post="$"
+  let b:autodate_format="%Y-%m-%d %H:%M:%S"
+endfunction
+
+" Markdownファイルを開いたときにだけ実行する
+autocmd vimrc BufNewFile,BufRead *.md,*.markdown,*.mkd,*.mdown,*.mkdn,*.mark call s:set_autodate_for_jekyll()
+
 if exists('+vertsplit')
   " カレントウィンドウの右に分割する
   set splitright
