@@ -168,6 +168,9 @@ else
   let g:unite_source_grep_default_opts='-niEH'
 endif
 
+" Bookmarkの保存ディレクトリを変更する
+let g:unite_source_bookmark_directory = expand('~/.unite')
+
 " F2と,ubでバッファ一覧
 nnoremap <F2> :<C-u>Unite buffer<CR>
 nnoremap ,ub :<C-u>Unite buffer<CR>
