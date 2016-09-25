@@ -52,6 +52,7 @@ setup: pre-setup-$(os) clone provisioning
 .PHONY: pre-setup-darwin
 pre-setup-darwin: install-brew
 pre-setup-darwin:
+	brew update
 	brew install ansible git
 
 #-------------------------------------------------------------------------------
