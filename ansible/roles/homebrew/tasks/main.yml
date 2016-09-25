@@ -10,6 +10,7 @@
     name: '{{ item.name }}'
     install_options: '{{ item.install_options | default(omit) }}'
   with_items: '{{ common_packages }}'
+  failed_when: false
   tags:
     - homebrew
 
@@ -19,5 +20,6 @@
     name: '{{ item.name }}'
     install_options: '{{ item.install_options | default(omit) }}'
   with_items: '{{ osx_packages }}'
+  failed_when: false
   tags:
     - homebrew

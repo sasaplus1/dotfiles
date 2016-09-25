@@ -4,5 +4,6 @@
   homebrew_cask:
     name: '{{ item }}'
   with_items: '{{ osx_cask_packages }}'
+  failed_when: false
   tags:
     - homebrew_cask
