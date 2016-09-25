@@ -93,7 +93,7 @@ export __install_brew_script
 # install Homebrew/Linuxbrew
 .PHONY: install-brew
 install-brew:
-	$(SHELL) -c "$$__install_brew_script"
+	$(SHELL) -x -c "$$__install_brew_script"
 
 #-------------------------------------------------------------------------------
 
