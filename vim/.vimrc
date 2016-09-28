@@ -6,6 +6,9 @@ let s:osx = has('mac') || has('macunix')
 
 let s:pt = executable('pt')
 
+let s:ver_704 = v:version == 704
+let s:ver_705_above = v:version >= 705
+
 " }}}
 
 " エンコーディング指定 {{{
@@ -813,7 +816,7 @@ set tabstop=2      " タブ幅
 set softtabstop=0  " 機能無効
 set shiftwidth=2   " インデント幅
 
-if (v:version == 704 && has('patch338')) || v:version >= 705
+if (s:ver_704 && has('patch338')) || s:ver_705_above
   " インデント付きで折り返す
   set breakindent
 endif
@@ -856,6 +859,11 @@ if has('kaoriya') && has('guess_encode')
 else
   " 開いたファイルに合っているものを順番に試す
   set fileencodings=ucs-bom,utf-8,cp932,euc-jp,utf-16,utf-16le,iso-2022-jp
+endif
+
+if (s:ver_704 && has("patch785")) || s:ver_705_above
+  " 改行コードを勝手に付加しない
+  set nofixeol
 endif
 
 " 候補が1つだけの場合もポップアップメニューを表示する
