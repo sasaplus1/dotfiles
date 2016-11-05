@@ -1,15 +1,15 @@
 ---
 osx_cask_packages:
-  - alfred
-  - chromium
-  - dropbox
-  - firefox-ja
-  - google-chrome
-  - google-chrome-canary
-# - gyazo
-  - macvim-kaoriya
-# - send-to-kindle
-# - simple-comic
-  - slate
-  - vagrant
-  - virtualbox
+  - { name: 'alfred'                                    }
+  - { name: 'chromium'                                  }
+  - { name: 'dropbox'                                   }
+  - { name: 'firefox', install_options: '--language=ja' }
+  - { name: 'google-chrome'                             }
+  - { name: 'google-chrome-canary'                      }
+# - { name: 'gyazo'                                     }
+  - { name: 'macvim-kaoriya'                            }
+# - { name: 'send-to-kindle'                            }
+# - { name: 'simple-comic'                              }
+  - { name: 'slate'                                     }
+  - { name: 'vagrant'                                   }
+  - { name: 'virtualbox'                                }
