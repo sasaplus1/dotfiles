@@ -275,13 +275,18 @@ __print_repo_info() {
   [ -n "$info" ] && printf " ${__seq_cyan}%s${__seq_reset}" "(${info%:})"
 }
 
+__print_run_in_vim() {
+  [ -n "$VIM" ] && printf "${__seq_cyan}(vim)${__seq_reset} "
+}
+
 # /current/dir err (vcs:branch:rev)
 # username@hostname$ _
 export PS1=$(
   printf "${__seq_green}%s${__seq_reset}" '\w'
   printf '$(__print_exit_code $?)'
   printf '$(__print_repo_info)'
-  printf '\n\u@\h\$ '
+  printf '\n'
+  printf '$(__print_run_in_vim)\u@\h\$ '
 )
 # }}}
 
