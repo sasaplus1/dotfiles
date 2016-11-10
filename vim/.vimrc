@@ -355,14 +355,21 @@ NeoBundleLazy 'gh:Shougo/vimfiler.git', {
       \ 'on_path' : '.*',
       \ }
 
+let s:bundle = neobundle#get('vimfiler')
+function! s:bundle.hooks.on_source(bundle)
+  " デフォルト設定を指定する
+  call vimfiler#custom#profile('default', 'context', {
+        \ 'auto_cd' : 1,
+        \ 'safe' : 0
+        \ })
+endfunction
+unlet s:bundle
+
 " netrwを無効化する
 let g:loaded_netrwPlugin = 1
 
 " デフォルトのファイラにする
 let g:vimfiler_as_default_explorer=1
-
-" セーフモードをオフにする
-let g:vimfiler_safe_mode_by_default=0
 
 " 最大記憶ディレクトリ履歴を100にする
 let g:vimfiler_max_directories_history=100
