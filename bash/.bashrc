@@ -355,6 +355,10 @@ mman() {
   man $(man -k $* | peco --select-1 | sed_ere -e 's/([^(]+)\(([^)]+)\)/\2 \1/') 2>/dev/null
 }
 
+vvim() {
+  vim $(git ls-files | peco --select-1 --query="$*")
+}
+
 # }}}
 
 # load .bashrc.local
