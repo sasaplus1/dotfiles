@@ -192,6 +192,10 @@ __main() {
   export _DOWN_CMD=dw
   source "$HOME/.ghq/github.com/sasaplus1/down.sh/down.sh" 2>/dev/null
 
+  # sandbox.sh
+  export _SANDBOX_CMD=sb
+  source "$HOME/.ghq/github.com/sasaplus1/sandbox.sh/sandbox.sh" 2>/dev/null
+
   # z {{{
   source "$homebrew_prefix/etc/profile.d/z.sh" 2>/dev/null
   if [ "$?" -eq 0 ]
