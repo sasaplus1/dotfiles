@@ -1023,16 +1023,16 @@ nnoremap ) :<C-u>bnext<CR>
 nnoremap <C-g> 2<C-g>
 
 " pecoで選択したファイルを開く
-" function! OpenByPeco()
-"   let l:dir=system('cd "$(pwd)" && git rev-parse --show-toplevel | tr -d "\n"')
-" 
-"   for filename in split(system('git ls-files --full-name | peco --select-1'), '\n')
-"     execute "e" join([l:dir, '/', filename], '')
-"   endfor
-" 
-"   redraw
-" endfunction
-" nnoremap ,e :call OpenByPeco()<CR>
+function! OpenByPeco()
+  let l:dir=system('cd "$(pwd)" && git rev-parse --show-toplevel | tr -d "\n"')
+
+  for filename in split(system('git ls-files --full-name | peco --select-1'), '\n')
+    execute 'e' join([l:dir, '/', filename], '')
+  endfor
+
+  redraw!
+endfunction
+nnoremap ,e :call OpenByPeco()<CR>
 
 " }}}
 
