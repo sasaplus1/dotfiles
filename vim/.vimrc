@@ -832,6 +832,11 @@ endif
 
 " ファイルタイプとか {{{
 
+" 判別できないシェルスクリプトはBashとする
+if !s:w32 && !s:w64
+  let g:is_bash=1
+endif
+
 " *.binと*.exeと*.dllはxxd
 autocmd vimrc BufNewFile,BufRead *.bin,*.exe,*.dll setlocal filetype=xxd
 
