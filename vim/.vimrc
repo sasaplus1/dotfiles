@@ -698,6 +698,9 @@ NeoBundleLazy 'gh:pangloss/vim-javascript', {
       \ 'on_ft' : ['html', 'javascript'],
       \ }
 
+" JSDocのハイライトを有効化する
+let g:javascript_plugin_jsdoc=1
+
 " }}}
 
 " html5.vim {{{
