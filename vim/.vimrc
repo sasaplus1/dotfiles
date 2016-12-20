@@ -359,7 +359,6 @@ let s:bundle = neobundle#get('vimfiler')
 function! s:bundle.hooks.on_source(bundle)
   " デフォルト設定を指定する
   call vimfiler#custom#profile('default', 'context', {
-        \ 'auto_cd' : 1,
         \ 'safe' : 0
         \ })
 endfunction
