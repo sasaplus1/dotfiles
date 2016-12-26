@@ -647,6 +647,12 @@ nnoremap <silent>,re :<C-u>OverCommandLine<CR>
 
 " }}}
 
+" editorconfig {{{
+
+NeoBundle 'gh:editorconfig/editorconfig-vim.git'
+
+" }}}
+
 " lightline.vim {{{
 
 NeoBundle 'gh:itchyny/lightline.vim.git'
