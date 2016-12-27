@@ -1032,8 +1032,15 @@ nnoremap <C-g> 2<C-g>
 
 " pecoで選択したファイルを開く
 function! OpenTheFileInGitReposWithPeco()
-  let l:dir=system('git rev-parse --show-toplevel | tr "\n" "/"')
-  for l:file in split(system('git ls-files --full-name | sed -e "s|^|'.l:dir.'|" | peco --select-1'), '\n')
+  let l:root_dir=system('git rev-parse --show-toplevel | tr "\n" "/"')
+
+  let l:command=printf(
+        \ 'git ls-files --full-name "%s" | sed -e "s|^|%s|" | peco --select-1',
+        \ l:root_dir,
+        \ l:root_dir,
+        \ )
+
+  for l:file in split(system(l:command), '\n')
     execute 'e' l:file
   endfor
 
