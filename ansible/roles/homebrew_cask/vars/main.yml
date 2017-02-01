@@ -1,7 +1,7 @@
 ---
 osx_cask_packages:
   - { name: 'alfred'                                    }
-  - { name: 'chromium'                                  }
+# - { name: 'chromium'                                  }
   - { name: 'docker'                                    }
   - { name: 'dropbox'                                   }
   - { name: 'firefox', install_options: '--language=ja' }
