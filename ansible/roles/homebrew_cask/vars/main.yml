@@ -5,6 +5,8 @@ osx_cask_packages:
   - { name: 'docker'                                    }
   - { name: 'dropbox'                                   }
   - { name: 'firefox', install_options: '--language=ja' }
+  - { name: 'font-inconsolata'                          }
+  - { name: 'font-migmix-1p'                            }
   - { name: 'google-chrome'                             }
   - { name: 'google-chrome-canary'                      }
 # - { name: 'gyazo'                                     }
