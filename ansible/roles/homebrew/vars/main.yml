@@ -1,29 +1,29 @@
 ---
 common_packages:
   - { name: 'bash-completion'                                                             }
-  - { name: 'ctags'                                                                       }
+# - { name: 'ctags'                                                                       }
 # - { name: 'docker'                                                                      }
   - { name: 'ghq'                                                                         }
   - { name: 'sona-tar/homebrew-tools/ghs'                                                 }
   - { name: 'gibo'                                                                        }
   - { name: 'git', install_options: 'with-brewed-curl,with-brewed-openssl,without-tcl-tk' }
   - { name: 'go'                                                                          }
-  - { name: 'hub'                                                                         }
-  - { name: 'jq'                                                                          }
-  - { name: 'mercurial'                                                                   }
+# - { name: 'hub'                                                                         }
+# - { name: 'jq'                                                                          }
+# - { name: 'mercurial'                                                                   }
   - { name: 'nginx-full', install_options: 'with-subs-filter-module'                      }
 # - { name: 'nodebrew'                                                                    }
   - { name: 'peco'                                                                        }
   - { name: 'pyenv'                                                                       }
-  - { name: 'ranger'                                                                      }
+# - { name: 'ranger'                                                                      }
   - { name: 'rbenv'                                                                       }
   - { name: 'rbenv-default-gems'                                                          }
   - { name: 'redis'                                                                       }
   - { name: 'ruby-build'                                                                  }
   - { name: 'sqlite'                                                                      }
-  - { name: 'textql'                                                                      }
+# - { name: 'textql'                                                                      }
   - { name: 'the_platinum_searcher'                                                       }
-  - { name: 'the_silver_searcher'                                                         }
+# - { name: 'the_silver_searcher'                                                         }
   - { name: 'tig'                                                                         }
   - { name: 'tmux'                                                                        }
   - { name: 'tree'                                                                        }
@@ -31,11 +31,11 @@ common_packages:
   - { name: 'z'                                                                           }
 
 osx_packages:
-  - { name: 'android-platform-tools'     }
+# - { name: 'android-platform-tools'     }
   - { name: 'brew-cask'                  }
 # - { name: 'closure-linter'             }
-  - { name: 'flow'                       }
-  - { name: 'fswatch'                    }
+# - { name: 'flow'                       }
+# - { name: 'fswatch'                    }
   - { name: 'mas'                        }
   - { name: 'reattach-to-user-namespace' }
-  - { name: 'unar'                       }
+# - { name: 'unar'                       }
