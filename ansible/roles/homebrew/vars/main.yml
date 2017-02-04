@@ -32,7 +32,7 @@ common_packages:
 
 osx_packages:
 # - { name: 'android-platform-tools'     }
-  - { name: 'brew-cask'                  }
+# - { name: 'brew-cask'                  }
 # - { name: 'closure-linter'             }
 # - { name: 'flow'                       }
 # - { name: 'fswatch'                    }
