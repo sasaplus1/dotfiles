@@ -125,7 +125,7 @@ provisioning: options += --extra-vars='caskroom_dir=$(caskroom_dir)'
 provisioning: options += --extra-vars='dotfiles_dir=$(dotfiles_dir)'
 provisioning: options += --extra-vars='home_dir=$(HOME)'
 provisioning: options += --connection=local
-provisioning: options += --skip-tags='ruby'
+provisioning: options += --skip-tags='extra'
 ifndef ci
 provisioning: options += --ask-become-pass
 endif

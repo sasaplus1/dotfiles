@@ -5,6 +5,7 @@
     dest: '{{ item.dest }}'
   with_items: '{{ plugin_repositories }}'
   tags:
+    - extra
     - vim
 
 - name: compile vimproc.vim library
@@ -12,4 +13,5 @@
   args:
     executable: /bin/bash
   tags:
+    - extra
     - vim

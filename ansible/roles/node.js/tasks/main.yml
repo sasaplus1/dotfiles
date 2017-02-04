@@ -14,6 +14,7 @@
   args:
     executable: /bin/bash
   tags:
+    - extra
     - node.js
 
 - name: install npm modules to global
@@ -23,6 +24,7 @@
     global: yes
   with_items: '{{ common_npm_modules }}'
   tags:
+    - extra
     - node.js
 
 - name: install npm modules to global for OS X
@@ -33,4 +35,5 @@
     global: yes
   with_items: '{{ osx_npm_modules }}'
   tags:
+    - extra
     - node.js
