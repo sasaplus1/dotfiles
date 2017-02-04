@@ -2,7 +2,7 @@
 - name: install cask packages for OS X
   when: ansible_distribution == 'MacOSX'
   homebrew_cask:
-    name: '{{ item }}'
+    name: '{{ item.name }}'
     install_options: '{{ item.install_options | default(omit) }}'
   with_items: '{{ osx_cask_packages }}'
   failed_when: false
