@@ -1,18 +1,19 @@
 ---
 osx_cask_packages:
-  - { name: 'alfred'                                    }
-# - { name: 'chromium'                                  }
-  - { name: 'docker'                                    }
-  - { name: 'dropbox'                                   }
-  - { name: 'firefox', install_options: '--language=ja' }
-  - { name: 'font-inconsolata'                          }
-  - { name: 'font-migmix-1p'                            }
-  - { name: 'google-chrome'                             }
-  - { name: 'google-chrome-canary'                      }
-# - { name: 'gyazo'                                     }
-  - { name: 'macvim-kaoriya'                            }
-# - { name: 'send-to-kindle'                            }
-# - { name: 'simple-comic'                              }
-  - { name: 'slate'                                     }
-  - { name: 'vagrant'                                   }
-  - { name: 'virtualbox'                                }
+  - { name: 'alfred'                                                    }
+# - { name: 'chromium'                                                  }
+  - { name: 'docker'                                                    }
+  - { name: 'dropbox'                                                   }
+  - { name: 'firefox',                 install_options: '--language=ja' }
+  - { name: 'firefoxdeveloperedition', install_options: '--language=ja' }
+  - { name: 'font-inconsolata'                                          }
+  - { name: 'font-migmix-1p'                                            }
+  - { name: 'google-chrome'                                             }
+  - { name: 'google-chrome-canary'                                      }
+# - { name: 'gyazo'                                                     }
+  - { name: 'macvim-kaoriya'                                            }
+# - { name: 'send-to-kindle'                                            }
+# - { name: 'simple-comic'                                              }
+  - { name: 'slate'                                                     }
+  - { name: 'vagrant'                                                   }
+  - { name: 'virtualbox'                                                }
