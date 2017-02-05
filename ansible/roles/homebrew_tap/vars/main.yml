@@ -7,3 +7,4 @@ osx_taps:
   - 'caskroom/cask'
   - 'caskroom/fonts'
   - 'caskroom/versions'
+  - 'delphinus/macvim-kaoriya'
