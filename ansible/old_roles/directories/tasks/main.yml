@@ -1,8 +1,0 @@
----
-- name: create directories
-  file:
-    path: '{{ item }}'
-    state: directory
-  with_items: '{{ directories }}'
-  tags:
-    - directories

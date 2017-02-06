@@ -1,4 +1,0 @@
----
-dependencies:
-  - { name: 'aptitude'   }
-  - { name: 'python-apt' }

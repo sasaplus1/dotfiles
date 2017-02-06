@@ -1,4 +1,0 @@
----
-dependencies:
-  - { role: 'homebrew_tap' }
-  - { role: 'homebrew'     }

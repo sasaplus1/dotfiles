@@ -1,5 +1,0 @@
----
-plugin_repositories:
-  - { uri: 'https://github.com/Shougo/neobundle.vim.git', dest: '{{ home_dir }}/.vim/bundle/neobundle.vim' }
-  - { uri: 'https://github.com/Shougo/unite.vim.git',     dest: '{{ home_dir }}/.vim/bundle/unite.vim'     }
-  - { uri: 'https://github.com/Shougo/vimproc.vim.git',   dest: '{{ home_dir }}/.vim/bundle/vimproc.vim'   }
