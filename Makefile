@@ -119,7 +119,7 @@ clone:
 # execute provisioning
 .PHONY: provisioning
 provisioning: options :=
-provisioning: options += --inventory-file=<(printf -- localhost),
+provisioning: options += --inventory-file=<(printf -- 127.0.0.1),
 provisioning: options += --extra-vars='homebrew_dir=$(homebrew_dir)'
 provisioning: options += --extra-vars='caskroom_dir=$(caskroom_dir)'
 provisioning: options += --extra-vars='dotfiles_dir=$(dotfiles_dir)'

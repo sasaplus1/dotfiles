@@ -1,4 +1,4 @@
-- hosts: localhost
+- hosts: 127.0.0.1
 
   vars:
     pkg_config_dirs:
