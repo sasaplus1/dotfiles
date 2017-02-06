@@ -1,5 +1,5 @@
 ---
-- name: create symbolic links
+- name: create symbolic links of config files
   file:
     src: '{{ item.src }}'
     dest: '{{ item.dest }}'

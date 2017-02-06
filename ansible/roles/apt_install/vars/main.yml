@@ -1,0 +1,28 @@
+---
+packages:
+
+  # - { name: 'build-essential'      }
+  # - { name: 'curl'                 }
+  # - { name: 'git'                  }
+  # - { name: 'libbz2-dev'           }
+  # - { name: 'libcurl4-openssl-dev' }
+  # - { name: 'libexpat-dev'         }
+  # - { name: 'libncurses-dev'       }
+  # - { name: 'm4'                   }
+  # - { name: 'ruby'                 }
+  # - { name: 'texinfo'              }
+  # - { name: 'zlib1g-dev'           }
+
+  # linuxbrew
+  #- { name: 'python-dev' }
+
+  # linuxbrew
+  - { name: 'build-essential'   }
+  - { name: 'curl'              }
+  - { name: 'git'               }
+  - { name: 'python-setuptools' }
+  - { name: 'ruby'              }
+
+  # ansible
+  - { name: 'aptitude'   }
+  - { name: 'python-apt' }

@@ -1,0 +1,17 @@
+---
+- name: remove origin remote
+  command: "git --git-dir='{{ dotfiles_dir }}/.git' remote remove origin"
+  tags:
+    - git_remote
+
+- name: add master remote
+  command: "git --git-dir='{{ dotfiles_dir }}/.git' remote add origin {{ item }}"
+  with_items: '{{ master_remotes }}'
+  tags:
+    - git_remote
+
+- name: add mirror remote
+  command: "git --git-dir='{{ dotfiles_dir }}/.git' remote set-url --add origin {{ item }}"
+  with_items: '{{ mirror_remotes }}'
+  tags:
+    - git_remote

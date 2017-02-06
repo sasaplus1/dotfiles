@@ -1,0 +1,3 @@
+---
+extension_repositories:
+  - { uri: 'https://github.com/muennich/urxvt-perls.git', dest: '{{ home_dir }}/.urxvt/urxvt-perls' }

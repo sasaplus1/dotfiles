@@ -40,11 +40,11 @@ all:
 	@echo '  pre-setup-linux   install bootstrapping for Debian family'
 	@echo '  install-brew      install Homebrew/Linuxbrew'
 	@echo '  clone             clone dotfiles repository'
-	@echo '  provisioning      execute ansible-playbook'
+	@echo '  provision         execute ansible-playbook'
 
 # setup my environment
 .PHONY: setup
-setup: pre-setup-$(os) clone provisioning
+setup: pre-setup-$(os) clone provision
 
 #-------------------------------------------------------------------------------
 
@@ -116,19 +116,19 @@ clone:
 
 #-------------------------------------------------------------------------------
 
-# execute provisioning
-.PHONY: provisioning
-provisioning: options :=
-provisioning: options += --inventory-file=<(printf -- 127.0.0.1),
-provisioning: options += --extra-vars='homebrew_dir=$(homebrew_dir)'
-provisioning: options += --extra-vars='caskroom_dir=$(caskroom_dir)'
-provisioning: options += --extra-vars='dotfiles_dir=$(dotfiles_dir)'
-provisioning: options += --extra-vars='home_dir=$(HOME)'
-provisioning: options += --connection=local
-provisioning: options += --skip-tags='extra'
+# execute provision
+.PHONY: provision
+provision: options :=
+provision: options += --inventory-file=<(printf -- 127.0.0.1),
+provision: options += --extra-vars='homebrew_dir=$(homebrew_dir)'
+provision: options += --extra-vars='caskroom_dir=$(caskroom_dir)'
+provision: options += --extra-vars='dotfiles_dir=$(dotfiles_dir)'
+provision: options += --extra-vars='home_dir=$(HOME)'
+provision: options += --connection=local
 ifndef ci
-provisioning: options += --ask-become-pass
+provision: options += --ask-become-pass
+provision: options += -vv
 endif
-provisioning: playbook := '$(dotfiles_dir)/ansible/site.yml'
-provisioning:
+provision: playbook := '$(dotfiles_dir)/ansible/site.yml'
+provision:
 	ansible-playbook $(options) $(playbook)

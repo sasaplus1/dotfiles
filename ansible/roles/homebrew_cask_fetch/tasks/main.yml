@@ -1,0 +1,26 @@
+---
+- name: create fetch directory
+  when: ansible_os_family == 'Darwin'
+  file:
+    path: '{{ home_dir }}/Downloads/Cask'
+    state: directory
+    mode: 0755
+  tags:
+    - homebrew_cask_fetch
+
+- name: update Homebrew
+  when: ansible_os_family == 'Darwin'
+  homebrew:
+    update_homebrew: yes
+  tags:
+    - homebrew_cask_fetch
+
+- name: fetch packages
+  when: ansible_os_family == 'Darwin'
+  command: '{{ homebrew_dir }}/bin/brew cask fetch {{ item.name }} {{ item.install_options | default(omit) }}'
+  with_items: '{{ packages }}'
+  environment:
+    HOMEBREW_CACHE: '{{ home_dir }}/Downloads'
+  failed_when: false
+  tags:
+    - homebrew_cask_fetch

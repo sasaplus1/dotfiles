@@ -1,0 +1,16 @@
+---
+- name: update Homebrew
+  when: ansible_os_family == 'Debian'
+  homebrew:
+    update_homebrew: yes
+  tags:
+    - linuxbrew_install
+
+- name: install packages
+  when: ansible_os_family == 'Debian'
+  homebrew:
+    name: '{{ item.name }}'
+    install_options: '{{ item.install_options | default(omit) }}'
+  with_items: '{{ packages }}'
+  tags:
+    - linuxbrew_install

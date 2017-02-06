@@ -1,17 +1,17 @@
 ---
-- name: add repositories
+- name: add taps
   homebrew_tap:
-    tap: '{{ item }}'
-  with_items: '{{ common_taps }}'
+    tap: '{{ item.repo }}'
+  with_items: '{{ taps.common }}'
   failed_when: false
   tags:
     - homebrew_tap
 
-- name: add repositories for OS X
-  when: ansible_distribution == 'MacOSX'
+- name: add taps for macOS
+  when: ansible_os_family == 'Darwin'
   homebrew_tap:
-    tap: '{{ item }}'
-  with_items: '{{ osx_taps }}'
+    tap: '{{ item.repo }}'
+  with_items: '{{ taps.macos }}'
   failed_when: false
   tags:
     - homebrew_tap

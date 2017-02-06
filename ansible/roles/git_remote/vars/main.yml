@@ -1,0 +1,6 @@
+---
+master_remotes:
+  - 'ssh://git@github.com/sasaplus1/dotfiles.git'
+
+mirror_remotes:
+  - 'ssh://git@bitbucket.org/sasaplus1/dotfiles.git'

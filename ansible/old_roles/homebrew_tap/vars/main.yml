@@ -1,0 +1,10 @@
+---
+common_taps:
+  - 'homebrew/dupes'
+  - 'homebrew/nginx'
+
+osx_taps:
+  - 'caskroom/cask'
+  - 'caskroom/fonts'
+  - 'caskroom/versions'
+  - 'delphinus/macvim-kaoriya'
