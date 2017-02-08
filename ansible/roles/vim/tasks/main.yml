@@ -6,3 +6,8 @@
   with_items: '{{ repositories }}'
   tags:
     - vim
+
+- name: build vimproc library
+  command: "vim +'silent VimProcInstall' +'qall!'"
+  tags:
+    - vim
