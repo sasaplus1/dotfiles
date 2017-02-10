@@ -1,16 +1,4 @@
 ---
-- name: set defaults
-  when: ansible_os_family == 'Darwin'
-  osx_defaults:
-    domain: '{{ item.domain | default(omit) }}'
-    key: '{{ item.key }}'
-    type: '{{ item.type }}'
-    value: '{{ item.value }}'
-  with_items: '{{ configs.common }}'
-  failed_when: false
-  tags:
-    - set_defaults
-
 - name: set secret defaults
   when: ansible_os_family == 'Darwin'
   osx_defaults:
@@ -18,7 +6,7 @@
     key: '{{ item.key }}'
     type: '{{ item.type }}'
     value: '{{ item.value }}'
-  with_items: '{{ configs.secret }}'
+  with_items: '{{ configs }}'
   failed_when: false
   tags:
     - set_defaults

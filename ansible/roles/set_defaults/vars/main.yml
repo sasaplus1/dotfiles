@@ -1,49 +1,8 @@
 ---
 configs:
 
-  common:
+  # 隠しファイルを表示する
+  - { domain: com.apple.finder, key: AppleShowAllFiles, type: bool, value: true }
 
-    # リピート入力認識までの時間
-    - { key: InitialKeyRepeat, type: int, value: 15 }
-
-    # キーのリピート
-    - { key: KeyRepeat, type: int, value: 2 }
-
-    # F1、F2などのすべてのキーを標準のファンクションキーとして使用する
-    - { key: com.apple.keyboard.fnState, type: bool, value: true }
-
-    # スクロールの方向 : ナチュラルにしない
-    - { key: com.apple.trackpad.scaling, type: bool, value: false }
-
-    # ページ間をスワイプしない
-    - { key: AppleEnableSwipeNavigateWithScrolls, type: bool, value: false }
-
-    # iPhoneを挿したときに写真を起動しない
-    - { domain: com.apple.ImageCapture, key: disableHotPlug, type: bool, value: false }
-
-    # Dockのアイコンをズームする
-    - { domain: com.apple.dock, key: magnification, type: bool, value: true }
-
-    # Dockを隠す
-    - { domain: com.apple.dock, key: autohide, type: bool, value: true }
-
-    # 操作スペースを自動的に並べ替えない
-    - { domain: com.apple.dock, key: mru-spaces, type: bool, value: false }
-
-    # ウィンドウをアプリケーションごとにグループ化しない
-    - { domain: com.apple.dock, key: expose-group-by-app, type: bool, value: false }
-
-    # タップでクリックとする
-    - { domain: com.apple.driver.AppleMultitouchTrackpad, key: Clicking, type: bool, value: true }
-    - { domain: com.apple.driver.AppleBluetoothMultitouch.trackpad, key: Clicking, type: bool, value: true }
-
-  secret:
-
-    # すべての拡張子を表示する
-    - { key: AppleShowAllExtensions, type: bool, value: true }
-
-    # 隠しファイルを表示する
-    - { domain: com.apple.finder, key: AppleShowAllFiles, type: bool, value: true }
-
-    # Finder上部にパスを表示する
-    - { domain: com.apple.finder, key: _FXShowPosixPathInTitle, type: bool, value: true }
+  # Finder上部にパスを表示する
+  - { domain: com.apple.finder, key: _FXShowPosixPathInTitle, type: bool, value: true }
