@@ -851,6 +851,9 @@ autocmd vimrc BufNewFile,BufRead *.bin,*.exe,*.dll setlocal filetype=xxd
 " *.xulはXML
 autocmd vimrc BufNewFile,BufRead *.xul setlocal filetype=xml
 
+" HTML編集時にシンタックスハイライトを400桁までに制限する
+autocmd vimrc FileType html setlocal synmaxcol=400
+
 " CSS編集時のみタブにする
 autocmd vimrc FileType css setlocal noexpandtab list tabstop=8 shiftwidth=8
 
@@ -913,6 +916,9 @@ autocmd vimrc InsertLeave * set nopaste pastetoggle=
 " 表示とか {{{
 
 syntax enable  " シンタックスハイライト
+
+" シンタックスハイライトを200桁までに制限する
+set synmaxcol=200
 
 set number        " 行番号を表示する
 set nowrap        " 折り返ししない
