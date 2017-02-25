@@ -52,6 +52,10 @@ if !has('gui_running')
   set t_Co=256
 endif
 
+" defaults.vimで設定される値を上書きする
+set scrolloff=0
+set mouse=
+
 " }}}
 
 " neobundle.vim {{{
