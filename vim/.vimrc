@@ -47,14 +47,16 @@ if exists('+shellslash')
   set shellslash
 endif
 
-" ターミナルで起動した場合に256色にする
+" ターミナルで起動した場合
 if !has('gui_running')
+  " 256色にする
   set t_Co=256
+  " マウス操作を受け付けない
+  set mouse=
 endif
 
 " defaults.vimで設定される値を上書きする
 set scrolloff=0
-set mouse=
 
 " }}}
 
