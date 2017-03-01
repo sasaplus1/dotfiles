@@ -960,7 +960,6 @@ autocmd vimrc WinEnter * execute "normal! 2\<C-g>"
 " Markdown内での強調表示
 " http://mattn.kaoriya.net/software/vim/20140523124903.htm
 let g:markdown_fenced_languages = [
-      \ 'coffee',
       \ 'css',
       \ 'diff',
       \ 'erb=eruby',
