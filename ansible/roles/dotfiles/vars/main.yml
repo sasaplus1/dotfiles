@@ -9,6 +9,7 @@ symbolic_links:
   - { src: '{{ dotfiles_dir }}/ctags/.ctags',               dest: '{{ home_dir }}/.ctags'               }
   - { src: '{{ dotfiles_dir }}/git/.gitconfig',             dest: '{{ home_dir }}/.gitconfig'           }
   - { src: '{{ dotfiles_dir }}/git/.gitignore',             dest: '{{ home_dir }}/.gitignore'           }
+  - { src: '{{ dotfiles_dir }}/locate/.locate.rc',          dest: '{{ home_dir }}/.locate.rc'           }
   - { src: '{{ dotfiles_dir }}/mercurial/.hgrc',            dest: '{{ home_dir }}/.hgrc'                }
   - { src: '{{ dotfiles_dir }}/nginx/.cocproxy.nginx.conf', dest: '{{ home_dir }}/.cocproxy.nginx.conf' }
   - { src: '{{ dotfiles_dir }}/pt/.ptignore',               dest: '{{ home_dir }}/.ptignore'            }

@@ -215,6 +215,8 @@ __main() {
       alias grep='grep --color=auto'
       alias sed_ere='sed -E'
       alias ios='open -a "iOS Simulator" || open -a "iPhone Simulator"'
+      alias updatedb='LOCATE_CONFIG=$HOME/.locate.rc /usr/libexec/locate.updatedb'
+      alias locate='locate -d "$HOME/.locate.database"'
       ;;
     linux)
       alias crontab='crontab -i'
