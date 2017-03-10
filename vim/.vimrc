@@ -861,12 +861,6 @@ autocmd vimrc BufNewFile,BufRead *.xul setlocal filetype=xml
 " HTML編集時にシンタックスハイライトを400桁までに制限する
 autocmd vimrc FileType html setlocal synmaxcol=400
 
-" CSS編集時のみタブにする
-autocmd vimrc FileType css setlocal noexpandtab list tabstop=8 shiftwidth=8
-
-" SCSS編集時のみタブにする
-autocmd vimrc FileType scss setlocal noexpandtab list tabstop=8 shiftwidth=8
-
 " Makefile編集時のみタブにする
 autocmd vimrc FileType make setlocal noexpandtab list tabstop=8 shiftwidth=8
 
