@@ -55,6 +55,9 @@
   preloadindex = true
   quotepath = false
 
+[diff]
+  indentHeuristic = true
+
 [github]
   user = sasaplus1
 
