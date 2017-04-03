@@ -1,6 +1,5 @@
 ---
 directories:
-  - '{{ home_dir }}/.backupdir'
   - '{{ home_dir }}/.cocproxy'
   - '{{ home_dir }}/.ghq'
   - '{{ home_dir }}/.go'
@@ -8,10 +7,11 @@ directories:
   - '{{ home_dir }}/.peco'
   - '{{ home_dir }}/.rbenv'
   - '{{ home_dir }}/.ssh'
-  - '{{ home_dir }}/.swapdir'
-  - '{{ home_dir }}/.undodir'
   - '{{ home_dir }}/.urxvt'
   - '{{ home_dir }}/.vim'
+  - '{{ home_dir }}/.vim/backup'
+  - '{{ home_dir }}/.vim/swap'
+  - '{{ home_dir }}/.vim/undo'
   - '{{ home_dir }}/Applications'
   - '{{ home_dir }}/Binary'
   - '{{ home_dir }}/Caskroom'

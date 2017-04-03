@@ -1,0 +1,611 @@
+" base {{{
+
+if &compatible
+  set nocompatible
+endif
+
+if has('multi_byte_encoding')
+  set encoding=utf-8
+endif
+
+scriptencoding utf-8
+
+" }}}
+
+" Python3 {{{
+
+let s:python_dir = $HOME . '/.pyenv/versions/3.6.0'
+let s:python_bin = s:python_dir . '/bin/python3.6'
+
+if executable(s:python_bin)
+  let $PYTHONHOME = s:python_dir
+  execute 'set pythonthreedll=' . s:python_bin
+endif
+
+if has('python3')
+  python3 import sys
+endif
+
+" }}}
+
+"-------------------------------------------------------------------------------
+
+let s:is_win32 = has('win32')
+let s:is_win64 = has('win64')
+let s:is_macos = has('mac') || has('macunix')
+
+let s:is_vim_ver704 = (v:version == 704)
+let s:is_vim_ver705_above = (v:version >= 705)
+
+let s:is_executable_ag = executable('ag')
+let s:is_executable_pt = executable('pt')
+
+if exists('+shellslash')
+  set shellslash
+endif
+
+if !has('gui_running')
+  " 256色にする
+  set t_Co=256
+  " マウス操作を受け付けない
+  set mouse=
+endif
+
+if filereadable($VIMRUNTIME . '/macros/matchit.vim')
+  " 標準添付されているmatchit.vimを読み込む
+  source $VIMRUNTIME/macros/matchit.vim
+endif
+
+if has('kaoriya') && has('guess_encode')
+  " 文字コードの自動判別
+  set fileencodings=guess
+else
+  " 開いたファイルに合っているものを順番に試す
+  set fileencodings=ucs-bom,utf-8,cp932,euc-jp,utf-16,utf-16le,iso-2022-jp
+endif
+
+if (s:is_vim_ver704 && has("patch785")) || s:is_vim_ver705_above
+  " 改行コードを勝手に付加しない
+  set nofixeol
+endif
+
+if exists('+vertsplit')
+  " カレントウィンドウの右に分割する
+  set splitright
+endif
+
+if s:is_executable_pt
+  " ptコマンドを使用する場合の設定
+  set grepprg=pt\ --nocolor\ --nogroup\ --smart-case
+elseif s:is_win32 || s:is_win64
+  " grepコマンドでvimgrepを使用する
+  set grepprg=internal
+else
+  " 外部grepを使用する場合の設定
+  set grepprg=grep\ -niEH
+endif
+
+"-------------------------------------------------------------------------------
+
+" dein {{{
+
+if (v:version >= 704 || has('nvim')) && executable('git')
+
+  let s:plugin_dir = $HOME . '/.vim/dein'
+  let s:dein_repos = s:plugin_dir . '/repos/github.com/Shougo/dein.vim'
+
+  if !isdirectory(s:dein_repos)
+    execute '!git clone https://github.com/Shougo/dein.vim' s:dein_repos
+  endif
+
+  execute 'set runtimepath+=' . s:dein_repos
+
+  if dein#load_state(s:plugin_dir)
+    call dein#begin(s:plugin_dir)
+
+    " Shougo/dein.vim {{{
+    call dein#add(s:dein_repos)
+    " }}}
+
+    " Shougo/vimfiler {{{
+    function! s:hook_add_vimfiler() abort
+      " F4と,vfで表示
+      nnoremap <F4> :<C-u>VimFilerBufferDir<CR>
+      nnoremap ,vf :<C-u>VimFilerBufferDir<CR>
+      " Shift-F4と,vFとTでエクスプローラ風の表示
+      nnoremap <S-F4> :<C-u>VimFilerBufferDir -split -simple -winwidth=35 -toggle -no-quit<CR>
+      nnoremap ,vF :<C-u>VimFilerBufferDir -split -simple -winwidth=35 -toggle -no-quit<CR>
+      nnoremap T :<C-u>VimFilerBufferDir -split -simple -winwidth=35 -toggle -no-quit<CR>
+    endfunction
+
+    function! s:hook_post_source_vimfiler() abort
+      " デフォルト設定を指定する
+      call vimfiler#custom#profile('default', 'context', {
+            \ 'safe' : 0
+            \ })
+    endfunction
+
+    function! s:hook_source_vimfiler() abort
+      " netrwを無効化する
+      let g:loaded_netrw = 1
+      let g:loaded_netrwPlugin = 1
+      let g:loaded_netrwSettings = 1
+      let g:loaded_netrwFileHandlers = 1
+      " デフォルトのファイラにする
+      let g:vimfiler_as_default_explorer = 1
+      " 最大記憶ディレクトリ履歴を100にする
+      let g:vimfiler_max_directories_history = 100
+    endfunction
+
+    call dein#add('Shougo/unite.vim', {
+          \ 'lazy' : 1,
+          \ })
+    call dein#add('Shougo/vimfiler', {
+          \ 'depends' : 'unite.vim',
+          \ 'hook_add' : function('s:hook_add_vimfiler'),
+          \ 'hook_post_source' : function('s:hook_post_source_vimfiler'),
+          \ 'hook_source' : function('s:hook_source_vimfiler'),
+          \ 'lazy' : 1,
+          \ 'on_map' : '<Plug>',
+          \ 'on_path' : '.*',
+          \ })
+    " }}}
+
+    " Shougo/denite.nvim & Shougo/neomru.vim {{{
+    function! s:hook_add_denite_nvim() abort
+      " F2と,ubでバッファ一覧
+      nnoremap <F2> :<C-u>Denite buffer<CR>
+      nnoremap ,ub :<C-u>Denite buffer<CR>
+
+      let l:sources = [
+            \ 'buffer',
+            \  "`finddir('.git', ';') != '' ? 'file_rec/git' : 'file_rec'`",
+            \ ]
+
+      if dein#tap('neomru.vim')
+        " Ctrl-F2と,umで最近開いたファイル一覧
+        nnoremap <C-F2> :<C-u>Denite file_mru<CR>
+        nnoremap ,um :<C-u>Denite file_mru<CR>
+
+        " Ctrl-pにfile_mruのソースを追加する
+        call add(l:sources, 'file_mru')
+      endif
+
+      if dein#tap('vim-denite-ghq')
+        " Ctrl-pにghqのソースを追加する
+        call add(l:sources, 'ghq')
+      endif
+
+      " Ctrl-pでカレントディレクトリからファイルの一覧などを表示
+      execute 'nnoremap <C-p> :<C-u>Denite ' . join(l:sources, ' ') . '<CR>'
+    endfunction
+
+    function! s:hook_post_source_denite_nvim() abort
+      " ptを使った検索を設定する
+      if executable('pt')
+        call denite#custom#var('file_rec', 'command', [
+              \ 'pt', '--follow', '--nocolor', '--nogroup', '-g:', '',
+              \ ])
+        call denite#custom#var('grep', 'command', ['pt'])
+        call denite#custom#var('grep', 'default_opts', [
+              \ '--nogroup', '--nocolor', '--smart-case',
+              \ ])
+        call denite#custom#var('grep', 'recursive_opts', [])
+        call denite#custom#var('grep', 'pattern_opt', [])
+        call denite#custom#var('grep', 'separator', ['--'])
+        call denite#custom#var('grep', 'final_opts', [])
+      endif
+
+      " file_rec/gitのsourceを作る
+      call denite#custom#alias('source', 'file_rec/git', 'file_rec')
+      call denite#custom#var('file_rec/git', 'command', [
+            \ 'git', 'ls-files', '-co', '--exclude-standard', '--full-name',
+            \ ])
+
+      " 挿入モードでもC-n, C-pで行を移動できるようにする
+      call denite#custom#map('insert', '<C-n>', '<denite:move_to_next_line>', 'noremap')
+      call denite#custom#map('insert', '<C-p>', '<denite:move_to_previous_line>', 'noremap')
+    endfunction
+
+    call dein#add('Shougo/neomru.vim', {
+          \ 'lazy' : 1,
+          \ })
+    call dein#add('Jagua/vim-denite-ghq', {
+          \ 'lazy' : 1,
+          \ 'on_if' : 'has("python3") && executable("ghq")',
+          \ })
+    call dein#add('Shougo/denite.nvim', {
+          \ 'depends' : [
+          \   'neomru.vim',
+          \   'vim-denite-ghq',
+          \ ],
+          \ 'hook_add' : function('s:hook_add_denite_nvim'),
+          \ 'hook_post_source' : function('s:hook_post_source_denite_nvim'),
+          \ 'lazy' : 1,
+          \ 'on_if' : 'has("python3")',
+          \ })
+    " }}}
+
+    " Shougo/deoplete.nvim & carlitux/deoplete-ternjs {{{
+"    function! s:hook_source_deoplete_nvim() abort
+"      let g:deoplete#enable_at_startup = 1
+"      set completeopt=menuone,noinsert,noselect
+"    endfunction
+"
+"
+"    call dein#add('Shougo/deoplete.nvim', {
+"          \ 'on_if' : 'has("python3")',
+"          \ 'hook_source' : function('s:hook_source_deoplete_nvim'),
+"          \ 'hook_post_source' : '',
+"          \ })
+"    call dein#add('carlitux/deoplete-ternjs', {
+"          \ 'build' : 'npm install -g tern',
+"          \ 'depends' : 'deoplete.nvim',
+"          \ 'lazy' : 1,
+"          \ 'on_if' : '&filetype == javascript',
+"          \ })
+    " }}}
+
+    " call dein#add('ternjs/tern_for_vim', {
+    "       \ 'on_if' : '&filetype == javascript'
+    "       \ })
+
+    " editorconfig/editorconfig-vim {{{
+    call dein#add('editorconfig/editorconfig-vim', {
+          \ 'on_if' : 'has("python") || has("python3")',
+          \ })
+    " }}}
+
+    " itchyny/lightline.vim {{{
+    call dein#add('itchyny/lightline.vim')
+    " }}}
+
+    " thinca/vim-quickrun {{{
+    " call dein#add('thinca/vim-quickrun')
+    " }}}
+
+    " vim-qfreplace {{{
+    call dein#add('thinca/vim-qfreplace', {
+          \ 'lazy' : 1,
+          \ 'on_cmd' : 'Qfreplace',
+          \ })
+    " }}}
+
+    " othree/eregex.vim {{{
+    function! s:hook_source_eregex_vim() abort
+      " キーマップの変更を行なわない
+      let g:eregex_default_enable = 0
+    endfunction
+
+    call dein#add('othree/eregex.vim', {
+          \ 'hook_source' : function('s:hook_source_eregex_vim'),
+          \ })
+    " }}}
+
+    " osyo-manga/vim-textobj-multiblock {{{
+    function! s:hook_source_vim_textobj_multiblock() abort
+      " map from http://d.hatena.ne.jp/osyo-manga/20130329/1364569153
+      omap ab <Plug>(textobj-multiblock-a)
+      omap ib <Plug>(textobj-multiblock-i)
+      vmap ab <Plug>(textobj-multiblock-a)
+      vmap ib <Plug>(textobj-multiblock-i)
+    endfunction
+
+    call dein#add('kana/vim-textobj-user', {
+          \ 'lazy' : 1,
+          \ })
+    call dein#add('osyo-manga/vim-textobj-multiblock', {
+          \ 'depends' : 'vim-textobj-user',
+          \ 'hook_source' : function('s:hook_source_vim_textobj_multiblock'),
+          \ 'lazy' : 1,
+          \ 'on_event' : 'InsertEnter',
+          \ })
+    " }}}
+
+    " rhysd/vim-operator-surround {{{
+    function! s:hook_source_vim_operator_surround() abort
+      " map from https://github.com/rhysd/vim-operator-surround
+      map <silent>sa <Plug>(operator-surround-append)
+      map <silent>sd <Plug>(operator-surround-delete)
+      map <silent>sr <Plug>(operator-surround-replace)
+      nmap <silent>sbd <Plug>(operator-surround-delete)<Plug>(textobj-multiblock-a)
+      nmap <silent>sbr <Plug>(operator-surround-replace)<Plug>(textobj-multiblock-a)
+    endfunction
+
+    call dein#add('kana/vim-operator-user', {
+          \ 'lazy' : 1,
+          \ })
+    call dein#add('rhysd/vim-operator-surround', {
+          \ 'depends' : [
+          \   'vim-operator-user',
+          \   'vim-textobj-multiblock',
+          \ ],
+          \ 'hook_source' : function('s:hook_source_vim_operator_surround'),
+          \ 'lazy' : 1,
+          \ 'on_event' : 'InsertEnter',
+          \ })
+    " }}}
+
+    " gist-vim {{{
+    function! s:hook_add_gist_vim() abort
+      nnoremap ,gd :<C-u>Gist -d<CR>
+      nnoremap ,ge :<C-u>Gist -s<Space>
+      nnoremap ,gf :<C-u>Gist -f<CR>
+      nnoremap ,gl :<C-u>Gist -l<CR>
+      nnoremap ,gmp :<C-u>Gist -m -p -s<Space>
+      nnoremap ,gmP :<C-u>Gist -m -P -s<Space>
+      nnoremap ,gp :<C-u>Gist -p -s<Space>
+      nnoremap ,gP :<C-u>Gist -P -s<Space>
+    endfunction
+
+    function! s:hook_source_gist_vim() abort
+      " 複数ファイルを取得する
+      let g:gist_get_multiplefile = 1
+    endfunction
+
+    call dein#add('mattn/webapi-vim', {
+          \ 'lazy' : 1,
+          \ })
+    call dein#add('mattn/gist-vim', {
+          \ 'depends' : 'webapi-vim',
+          \ 'hook_add' : function('s:hook_add_gist_vim'),
+          \ 'hook_source' : function('s:hook_source_gist_vim'),
+          \ 'lazy' : 1,
+          \ 'on_cmd' : 'Gist',
+          \ })
+    " }}}
+
+    call dein#end()
+  endif
+
+  if dein#check_install()
+    call dein#install()
+  endif
+
+  " フックを自分で呼ぶ
+  call dein#call_hook('source')
+  autocmd VimEnter * call dein#call_hook('post_source')
+
+  filetype plugin indent on
+
+endif
+
+" }}}
+
+augroup vimrc
+  autocmd!
+augroup END
+
+" defaults.vimで設定される値を上書きする
+set scrolloff=0
+
+" 検索とか {{{
+
+set incsearch   " インクリメンタルサーチ
+set ignorecase  " 大文字小文字を区別しない
+set smartcase   " 検索文字列に大文字を含む場合は区別する
+set wrapscan    " 最後まで検索したら先頭に戻る
+set hlsearch    " 検索文字列をハイライトする
+
+" }}}
+
+" インデントとか {{{
+
+set expandtab    " タブの代わりに半角スペースを挿入する
+set smartindent  " 高度な自動インデント
+
+set tabstop=2      " タブ幅
+set softtabstop=0  " 機能無効
+set shiftwidth=2   " インデント幅
+
+" *.binと*.exeと*.dllはxxd
+autocmd vimrc BufNewFile,BufRead *.bin,*.exe,*.dll setlocal filetype=xxd
+
+" *.xulはXML
+autocmd vimrc BufNewFile,BufRead *.xul setlocal filetype=xml
+
+" HTML編集時にシンタックスハイライトを400桁までに制限する
+autocmd vimrc FileType html setlocal synmaxcol=400
+
+" Makefile編集時のみタブにする
+autocmd vimrc FileType make setlocal noexpandtab list tabstop=8 shiftwidth=8
+
+" Python編集時のみインデントのスペース数を4にする
+autocmd vimrc FileType python setlocal tabstop=4 shiftwidth=4
+
+" バッファとか {{{
+
+set fileencoding=utf-8  " デフォルトの文字コード
+set fileformat=unix     " デフォルトの改行コード
+
+set nobomb  " BOMを付加しない
+set hidden  " バッファを閉じないで非表示にする
+
+" 候補が1つだけの場合もポップアップメニューを表示する
+set completeopt+=menuone
+
+" プレビューウィンドウを表示しない
+set completeopt-=preview
+
+" タブや改行などをを指定した記号で表示
+" tab      タブ文字
+" eol:     行末
+" trail:   行末の半角スペース
+" extends: 折り返しされた行の末尾
+set listchars=tab:>.,eol:$,trail:_,extends:\
+
+" バックスペースでいろいろ消せるように
+set backspace=indent,eol,start
+
+" 挿入モードを開始したときにペーストモードのキーバインドを設定する
+autocmd vimrc InsertEnter * set pastetoggle=<C-e>
+
+" 挿入モードから抜けるときにペーストモードを抜け、キーバインドも解除する
+autocmd vimrc InsertLeave * set nopaste pastetoggle=
+
+" }}}
+
+" 表示とか {{{
+
+syntax enable  " シンタックスハイライト
+
+" シンタックスハイライトを200桁までに制限する
+set synmaxcol=200
+
+set number        " 行番号を表示する
+set nowrap        " 折り返ししない
+set showcmd       " コマンドを最下部に表示する
+set shortmess+=I  " 起動時のメッセージを表示しない
+
+set ttyfast     " 高速ターミナル接続を行なう
+"set lazyredraw  " キーボードから実行されないコマンドの実行で再描画しない
+
+" 一部の全角文字を全角の幅で扱う
+set ambiwidth=double
+
+" 折りたたみをインデントでする
+set foldmethod=indent
+
+" ステータスラインを常に表示する
+set laststatus=2
+
+" ステータスラインの表示を変更
+set statusline=%n\:%y%F\ \|%{(&fenc!=''?&fenc:&enc).'\|'.(&ff=='dos'?'crlf':&ff=='mac'?'cr':'lf').'\|'}%m%r%=<%l:%v>
+
+" 全角スペースに下線を引く
+highlight FullWidthSpace cterm=underline ctermfg=Blue
+autocmd vimrc WinEnter,WinLeave,BufRead,BufNew * match FullWidthSpace /　/
+
+" コメント中の特定の単語を強調表示する
+autocmd vimrc WinEnter,WinLeave,BufRead,BufNew,Syntax * call matchadd('Todo', '\W\zs\(TODO\|FIXME\|CHANGED\|XXX\|BUG\|HACK\|NOTE\|INFO\|IDEA\)')
+
+" ウィンドウを移動したらバッファ番号とフルパスを表示する
+autocmd vimrc WinEnter * execute "normal! 2\<C-g>"
+
+" Markdown内での強調表示
+" http://mattn.kaoriya.net/software/vim/20140523124903.htm
+let g:markdown_fenced_languages = []
+call add(g:markdown_fenced_languages, 'css')
+call add(g:markdown_fenced_languages, 'diff')
+call add(g:markdown_fenced_languages, 'erb=eruby')
+call add(g:markdown_fenced_languages, 'html')
+call add(g:markdown_fenced_languages, 'javascript')
+call add(g:markdown_fenced_languages, 'js=javascript')
+call add(g:markdown_fenced_languages, 'json')
+call add(g:markdown_fenced_languages, 'ruby')
+call add(g:markdown_fenced_languages, 'sass')
+call add(g:markdown_fenced_languages, 'scss')
+call add(g:markdown_fenced_languages, 'sh')
+call add(g:markdown_fenced_languages, 'xml')
+
+" Jekyllのための保存時刻自動入力設定
+" https://jekyllrb.com/docs/frontmatter/
+function! s:set_autodate_for_jekyll()
+  " バッファローカルなautodate.vimの設定
+  " http://nanasi.jp/articles/vim/autodate_vim.html
+  let b:autodate_lines=5
+  let b:autodate_keyword_pre="date: "
+  let b:autodate_keyword_post="$"
+  let b:autodate_format="%Y-%m-%d %H:%M:%S"
+endfunction
+
+" Markdownファイルを開いたときにだけ実行する
+autocmd vimrc BufNewFile,BufRead *.md,*.markdown,*.mkd,*.mdown,*.mkdn,*.mark call s:set_autodate_for_jekyll()
+
+" }}}
+
+" キーマップとか {{{
+
+" 論理行でなく表示行で移動する
+nnoremap j gj
+vnoremap j gj
+
+nnoremap k gk
+vnoremap k gk
+
+"nnoremap $ g$
+"vnoremap $ g$
+
+"nnoremap ^ g^
+"vnoremap ^ g^
+
+"nnoremap 0 g0
+"vnoremap 0 g0
+
+" very magicをonにする
+" http://deris.hatenablog.jp/entry/2013/05/15/024932
+nnoremap / /\v
+
+" diff系
+nnoremap ,dg :<C-u>diffget<CR>
+nnoremap ,do :<C-u>diffoff<CR>
+nnoremap ,dO :<C-u>diffoff!<CR>
+nnoremap ,dt :<C-u>diffthis<CR>
+nnoremap ,du :<C-u>diffupdate<CR>
+
+" F1を無効化
+noremap <F1> <Nop>
+noremap! <F1> <Nop>
+
+" C-F4でバッファの削除
+nnoremap <C-F4> :<C-u>bdelete<CR>
+
+" C-Tab, C-S-Tabでバッファの移動
+nnoremap <C-Tab> :<C-u>bnext<CR>
+nnoremap <C-S-Tab> :<C-u>bprevious<CR>
+
+" (, )でバッファの移動
+nnoremap ( :<C-u>bprevious<CR>
+nnoremap ) :<C-u>bnext<CR>
+
+" バッファ番号とフルパスを表示する
+nnoremap <C-g> 2<C-g>
+
+" pecoで選択したファイルを開く
+function! OpenTheFileInGitReposWithPeco()
+  let l:root_dir=system('git rev-parse --show-toplevel | tr "\n" "/"')
+
+  let l:command=printf(
+        \ 'git ls-files --full-name "%s" | sed -e "s|^|%s|" | peco --select-1',
+        \ l:root_dir,
+        \ l:root_dir,
+        \ )
+
+  for l:file in split(system(l:command), '\n')
+    execute 'e' l:file
+  endfor
+
+  redraw!
+endfunction
+nnoremap ,e :call OpenTheFileInGitReposWithPeco()<CR>
+
+" }}}
+
+" その他 {{{
+
+" 日本語のヘルプを優先して表示する
+set helplang=ja,en
+
+" ファイルパスなどを最長補完して全てのマッチを表示する
+set wildmode=list:longest
+
+" tagsファイルを上位のディレクトリにさかのぼって検索する
+set tags+=./tags;
+
+" diffsplitは常に垂直分割する
+set diffopt+=vertical
+
+" バックアップファイルの保存先を変更
+set backupdir=~/.vim/backup,.,~/tmp,~/
+
+" スワップファイルの保存先を変更
+set directory=~/.vim/swap,.,~/tmp,/var/tmp,/tmp
+
+" アンドゥファイルの保存先を指定する
+set undodir=~/.vim/undo,.,~/tmp,~/
+
+" }}}
+
+set secure
+
+" vim:ft=vim:fdm=marker:fen:
