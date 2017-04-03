@@ -1,3 +1,15 @@
+let s:is_win32 = has('win32')
+let s:is_win64 = has('win64')
+let s:is_osx = has('mac') || has('macunix')
+
+let s:is_vim_ver704 = (v:version == 704)
+let s:is_vim_ver705_above = (v:version >= 705)
+
+let s:is_executable_ag = executable('ag')
+let s:is_executable_pt = executable('pt')
+
+" ------------------------------------------------
+
 " 動作環境識別変数 {{{
 
 let s:w32 = has('win32')
@@ -239,9 +251,9 @@ nnoremap <C-_> :<C-u>Unite -winheight=30 grep:.<CR>
 " NeoBundleLazy 'gh:tsukkee/unite-tag.git', {
 "       \ 'on_source' : 'unite.vim'
 "       \ }
-" NeoBundleLazy 'gh:sorah/unite-ghq.git', {
-"       \ 'on_source' : 'unite.vim'
-"       \ }
+NeoBundleLazy 'gh:sorah/unite-ghq.git', {
+      \ 'on_source' : 'unite.vim'
+      \ }
 
 " }}}
 
@@ -352,7 +364,6 @@ nnoremap ,um :<C-u>Unite file_mru<CR>
 NeoBundleLazy 'gh:Shougo/vimfiler.git', {
       \ 'depends' : [
       \   'gh:Shougo/unite.vim.git',
-      \   'gh:Shougo/neossh.vim.git',
       \ ],
       \ 'pre_cmd' : [
       \   'VimFiler',
@@ -609,7 +620,7 @@ let g:indent_guides_guide_size = 1
 let g:indent_guides_start_level = 4
 
 " 起動時に有効にする
-let g:indent_guides_enable_on_vim_startup = 1
+let g:indent_guides_enable_on_vim_startup = 0
 
 " 除外するファイルタイプ
 let g:indent_guides_exclude_filetypes = [
