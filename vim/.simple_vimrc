@@ -1,5 +1,3 @@
-" base {{{
-
 if &compatible
   set nocompatible
 endif
@@ -10,7 +8,9 @@ endif
 
 scriptencoding utf-8
 
-" }}}
+augroup vimrc
+  autocmd!
+augroup END
 
 " Python3 {{{
 
@@ -30,16 +30,6 @@ endif
 
 "-------------------------------------------------------------------------------
 
-let s:is_win32 = has('win32')
-let s:is_win64 = has('win64')
-let s:is_macos = has('mac') || has('macunix')
-
-let s:is_vim_ver704 = (v:version == 704)
-let s:is_vim_ver705_above = (v:version >= 705)
-
-let s:is_executable_ag = executable('ag')
-let s:is_executable_pt = executable('pt')
-
 if exists('+shellslash')
   set shellslash
 endif
@@ -58,13 +48,14 @@ endif
 
 if has('kaoriya') && has('guess_encode')
   " 文字コードの自動判別
-  set fileencodings=guess
+  set fileencodings=guess,ucs-bom,iso-2022-jp-3,utf-8,euc-jp,cp932
 else
   " 開いたファイルに合っているものを順番に試す
-  set fileencodings=ucs-bom,utf-8,cp932,euc-jp,utf-16,utf-16le,iso-2022-jp
+  set fileencodings=ucs-bom,iso-2022-jp-3,utf-8,euc-jp,cp932
+  "set fileencodings=ucs-bom,utf-8,cp932,euc-jp,utf-16,utf-16le,iso-2022-jp
 endif
 
-if (s:is_vim_ver704 && has("patch785")) || s:is_vim_ver705_above
+if (v:version == 704 && has("patch785")) || v:version >= 705
   " 改行コードを勝手に付加しない
   set nofixeol
 endif
@@ -74,10 +65,10 @@ if exists('+vertsplit')
   set splitright
 endif
 
-if s:is_executable_pt
+if executable('pt')
   " ptコマンドを使用する場合の設定
   set grepprg=pt\ --nocolor\ --nogroup\ --smart-case
-elseif s:is_win32 || s:is_win64
+elseif has('win32') || has('win64')
   " grepコマンドでvimgrepを使用する
   set grepprg=internal
 else
@@ -222,11 +213,12 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \ 'hook_add' : function('s:hook_add_denite_nvim'),
           \ 'hook_post_source' : function('s:hook_post_source_denite_nvim'),
           \ 'lazy' : 1,
+          \ 'on_cmd' : 'Denite',
           \ 'on_if' : 'has("python3")',
           \ })
     " }}}
 
-    " Shougo/deoplete.nvim & carlitux/deoplete-ternjs {{{
+    " TODO: Shougo/deoplete.nvim & carlitux/deoplete-ternjs {{{
 "    function! s:hook_source_deoplete_nvim() abort
 "      let g:deoplete#enable_at_startup = 1
 "      set completeopt=menuone,noinsert,noselect
@@ -247,7 +239,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     " }}}
 
     " call dein#add('ternjs/tern_for_vim', {
-    "       \ 'on_if' : '&filetype == javascript'
+    "       \ 'on_ft' : 'javascript'
     "       \ })
 
     " editorconfig/editorconfig-vim {{{
@@ -281,6 +273,9 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \ 'hook_source' : function('s:hook_source_eregex_vim'),
           \ })
     " }}}
+
+    " TODO: emmet
+    " TODO: jscomplete-vim
 
     " osyo-manga/vim-textobj-multiblock {{{
     function! s:hook_source_vim_textobj_multiblock() abort
@@ -355,6 +350,83 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \ })
     " }}}
 
+    " othree/html5.vim {{{
+    function! s:hook_add_html5_vim() abort
+      " *.ejsと*.vueをのファイルタイプをHTMLとする
+      autocmd vimrc BufNewFile,BufRead *.ejs,*.vue setlocal filetype=html
+    endfunction
+
+    call dein#add('othree/html5.vim', {
+          \ 'hook_add' : function('s:hook_add_html5_vim'),
+          \ 'lazy' : 1,
+          \ 'on_ft' : [
+          \   'html5',
+          \   'php',
+          \ ],
+          \ })
+    " }}}
+
+    " pangloss/vim-javascript {{{
+    function! s:hook_source_vim_javascript() abort
+      " JSDocのハイライトを有効化する
+      let g:javascript_plugin_jsdoc = 1
+    endfunction
+
+    call dein#add('pangloss/vim-javascript', {
+          \ 'hook_source' : function('s:hook_source_vim_javascript'),
+          \ 'lazy' : 1,
+          \ 'on_ft' : [
+          \   'javascript',
+          \   'html',
+          \ ],
+          \ })
+    " }}}
+
+    " hail2u/vim-css3-syntax {{{
+    call dein#add('hail2u/vim-css3-syntax', {
+          \ 'lazy' : 1,
+          \ 'on_ft' : [
+          \   'css',
+          \   'html',
+          \   'scss',
+          \ ],
+          \ })
+    " }}}
+
+    " digitaltoad/vim-pug {{{
+    call dein#add('digitaltoad/vim-pug', {
+          \ 'lazy' : 1,
+          \ 'on_ft' : 'pug',
+          \ })
+    " }}}
+
+    " vim-jp/vim-go-extra {{{
+    function! s:hook_add_vim_go_extra() abort
+      " Go編集時にerrをハイライトする
+      " http://yuroyoro.hatenablog.com/entry/2014/08/12/144157
+      autocmd vimrc FileType go :highlight goErr cterm=bold ctermfg=214
+      autocmd vimrc FileType go :match goErr /\<err\>/
+      " Go編集時はタブにする
+      autocmd vimrc FileType go setlocal noexpandtab list tabstop=2 shiftwidth=2
+    endfunction
+
+    function! s:hook_post_update_vim_go_extra() abort
+      if executable('gocode')
+        execute '!go get -u github.com/nsf/gocode'
+      endif
+      if executable('golint')
+        execute '!go get -u github.com/golang/lint/golint'
+      endif
+    endfunction
+
+    call dein#add('vim-jp/vim-go-extra', {
+          \ 'hook_add' : function('s:hook_add_vim_go_extra'),
+          \ 'hook_post_update' : function('s:hook_post_update_vim_go_extra'),
+          \ 'lazy' : 1,
+          \ 'on_ft' : 'go',
+          \ })
+    " }}}
+
     call dein#end()
   endif
 
@@ -371,10 +443,6 @@ if (v:version >= 704 || has('nvim')) && executable('git')
 endif
 
 " }}}
-
-augroup vimrc
-  autocmd!
-augroup END
 
 " defaults.vimで設定される値を上書きする
 set scrolloff=0
@@ -484,19 +552,20 @@ autocmd vimrc WinEnter * execute "normal! 2\<C-g>"
 
 " Markdown内での強調表示
 " http://mattn.kaoriya.net/software/vim/20140523124903.htm
-let g:markdown_fenced_languages = []
-call add(g:markdown_fenced_languages, 'css')
-call add(g:markdown_fenced_languages, 'diff')
-call add(g:markdown_fenced_languages, 'erb=eruby')
-call add(g:markdown_fenced_languages, 'html')
-call add(g:markdown_fenced_languages, 'javascript')
-call add(g:markdown_fenced_languages, 'js=javascript')
-call add(g:markdown_fenced_languages, 'json')
-call add(g:markdown_fenced_languages, 'ruby')
-call add(g:markdown_fenced_languages, 'sass')
-call add(g:markdown_fenced_languages, 'scss')
-call add(g:markdown_fenced_languages, 'sh')
-call add(g:markdown_fenced_languages, 'xml')
+let g:markdown_fenced_languages = [
+      \ 'css',
+      \ 'diff',
+      \ 'erb=eruby',
+      \ 'html',
+      \ 'javascript',
+      \ 'js=javascript',
+      \ 'json',
+      \ 'ruby',
+      \ 'sass',
+      \ 'scss',
+      \ 'sh',
+      \ 'xml',
+      \ ]
 
 " Jekyllのための保存時刻自動入力設定
 " https://jekyllrb.com/docs/frontmatter/
@@ -562,13 +631,12 @@ nnoremap ) :<C-u>bnext<CR>
 nnoremap <C-g> 2<C-g>
 
 " pecoで選択したファイルを開く
-function! OpenTheFileInGitReposWithPeco()
-  let l:root_dir=system('git rev-parse --show-toplevel | tr "\n" "/"')
-
-  let l:command=printf(
+function! PecoOpen()
+  let l:rootdir = system('git rev-parse --show-toplevel | tr "\n" "/"')
+  let l:command = printf(
         \ 'git ls-files --full-name "%s" | sed -e "s|^|%s|" | peco --select-1',
-        \ l:root_dir,
-        \ l:root_dir,
+        \ l:rootdir,
+        \ l:rootdir,
         \ )
 
   for l:file in split(system(l:command), '\n')
@@ -577,7 +645,24 @@ function! OpenTheFileInGitReposWithPeco()
 
   redraw!
 endfunction
-nnoremap ,e :call OpenTheFileInGitReposWithPeco()<CR>
+nnoremap ,e :<C-u>call PecoOpen()<CR>
+
+"function! OpenTheFileInGitReposWithPeco()
+"  let l:root_dir=system('git rev-parse --show-toplevel | tr "\n" "/"')
+"
+"  let l:command=printf(
+"        \ 'git ls-files --full-name "%s" | sed -e "s|^|%s|" | peco --select-1',
+"        \ l:root_dir,
+"        \ l:root_dir,
+"        \ )
+"
+"  for l:file in split(system(l:command), '\n')
+"    execute 'e' l:file
+"  endfor
+"
+"  redraw!
+"endfunction
+"nnoremap ,e :call OpenTheFileInGitReposWithPeco()<CR>
 
 " }}}
 
