@@ -3,6 +3,13 @@
   "libs": [
     "browser",
     "ecma5",
+    "ecma6",
     "jquery"
-  ]
+  ],
+  "plugin": {
+    "es_modules": {
+    },
+    "node": {
+    }
+  }
 }
