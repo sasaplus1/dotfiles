@@ -2,15 +2,19 @@ if &compatible
   set nocompatible
 endif
 
-if has('vim_starting')
-  if (has('win32') || has('win64')) && !has('gui_running')
-    set encoding=cp932
-  elseif has('multi_byte_encoding')
-    set encoding=utf-8
-  endif
+" TODO: http://www.kawaz.jp/pukiwiki/?vim#cb691f26
+
+set encoding=utf-8
+set fileformat=unix
+
+if has('multi_byte')
+  scriptencoding utf-8
 endif
 
-scriptencoding utf-8
+if !has('gui_running')
+  " 256色にする
+  set t_Co=256
+endif
 
 augroup vimrc
   autocmd!
@@ -18,10 +22,14 @@ augroup END
 
 " Lua {{{
 
-if executable('luajit')
+if executable('luajit') && exists('&luadll')
   let s:lua_dir = $HOME . '/Homebrew/lib'
   let s:lua_bin = s:lua_dir . '/libluajit.dylib'
+
   execute 'set luadll=' . s:lua_bin
+
+  unlet s:lua_bin
+  unlet s:lua_dir
 endif
 
 " }}}
@@ -31,14 +39,18 @@ endif
 let s:python_dir = $HOME . '/.pyenv/versions/3.6.0'
 let s:python_bin = s:python_dir . '/bin/python'
 
-if executable(s:python_bin)
+if executable(s:python_bin) && exists('&pythonthreedll')
   let $PYTHONHOME = s:python_dir
+
   execute 'set pythonthreedll=' . s:python_bin
+
+  if has('python3')
+    python3 import sys
+  endif
 endif
 
-if has('python3')
-  python3 import sys
-endif
+unlet s:python_bin
+unlet s:python_dir
 
 " }}}
 
@@ -70,6 +82,22 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     " }}}
 
     " Shougo/vimfiler {{{
+    function! s:hook_post_update_vimproc_vim() abort
+      if dein#util#_is_windows()
+        let l:make = 'tools\\update-dll-mingw'
+      elseif has('win32unix')
+        let l:make = 'make -f make_cygwin.mak'
+      elseif executable('gmake')
+        let l:make = 'gmake'
+      else
+        let l:make = 'make'
+      endif
+
+      let l:command = join(['cd', '"' . dein#get('vimproc.vim').path . '"', '&&', l:make])
+
+      call system(l:command)
+    endfunction
+
     function! s:hook_post_source_vimfiler() abort
       " デフォルト設定を指定する
       call vimfiler#custom#profile('default', 'context', {
@@ -99,11 +127,19 @@ if (v:version >= 704 || has('nvim')) && executable('git')
       nnoremap T :<C-u>VimFilerBufferDir -split -simple -winwidth=35 -toggle -no-quit<CR>
     endfunction
 
+    call dein#add('Shougo/vimproc.vim', {
+          \ 'hook_post_update' : function('s:hook_post_update_vimproc_vim'),
+          \ 'lazy' : 1,
+          \ })
     call dein#add('Shougo/unite.vim', {
+          \ 'depends' : 'vimproc.vim',
           \ 'lazy' : 1,
           \ })
     call dein#add('Shougo/vimfiler', {
-          \ 'depends' : 'unite.vim',
+          \ 'depends' : [
+          \   'unite.vim',
+          \   'vimproc.vim',
+          \ ],
           \ 'hook_post_source' : function('s:hook_post_source_vimfiler'),
           \ 'hook_source' : function('s:hook_source_vimfiler'),
           \ 'lazy' : 1,
@@ -236,7 +272,9 @@ if (v:version >= 704 || has('nvim')) && executable('git')
 
     " ternjs/tern_for_vim {{{
     function! s:hook_post_update_tern_for_vim() abort
-      call system('cd "' . dein#get('tern_for_vim').path . '" && npm install')
+      let l:command = join(['cd', '"' . dein#get('tern_for_vim').path . '"', '&&', 'npm', 'install'])
+
+      call system(l:command)
     endfunction
 
     function! s:hook_source_tern_for_vim() abort
@@ -364,7 +402,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \ })
     " }}}
 
-    " gist-vim {{{
+    " mattn/gist-vim {{{
     function! s:hook_add_gist_vim() abort
       nnoremap ,gd :<C-u>Gist -d<CR>
       nnoremap ,ge :<C-u>Gist -s<Space>
@@ -393,12 +431,27 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \ })
     " }}}
 
+    " tyru/open-browser.vim {{{
+    function! s:hook_source_open_browser_vim() abort
+      let g:netrw_nogx = 1
+      nmap gx <Plug>(openbrowser-smart-search)
+      vmap gx <Plug>(openbrowser-smart-search)
+    endfunction
+
+    call dein#add('tyru/open-browser.vim', {
+          \ 'hook_source' : function('s:hook_source_open_browser_vim'),
+          \ 'lazy' : 1,
+          \ 'on_cmd' : 'OpenBrowser',
+          \ 'on_map' : 'gx',
+          \ })
+    " }}}
+
     " vim-jp/vim-go-extra {{{
     function! s:hook_add_vim_go_extra() abort
       " Go編集時にerrをハイライトする
       " http://yuroyoro.hatenablog.com/entry/2014/08/12/144157
-      autocmd vimrc FileType go :highlight goErr cterm=bold ctermfg=214
-      autocmd vimrc FileType go :match goErr /\<err\>/
+      autocmd vimrc FileType go highlight goErr cterm=bold ctermfg=214
+      autocmd vimrc FileType go match goErr /\<err\>/
       " Go編集時はタブにする
       autocmd vimrc FileType go setlocal noexpandtab list tabstop=2 shiftwidth=2
     endfunction
@@ -513,18 +566,33 @@ let g:loaded_zipPlugin = 1
 
 " }}}
 
+" Markdown内での強調表示
+" http://mattn.kaoriya.net/software/vim/20140523124903.htm
+let g:markdown_fenced_languages = [
+      \ 'css',
+      \ 'diff',
+      \ 'erb=eruby',
+      \ 'html',
+      \ 'javascript',
+      \ 'js=javascript',
+      \ 'json',
+      \ 'ruby',
+      \ 'sass',
+      \ 'scss',
+      \ 'sh',
+      \ 'xml',
+      \ ]
+
 if exists('+shellslash')
   set shellslash
 endif
 
-if exists('+vertsplit')
+if has('vertsplit')
   " カレントウィンドウの右に分割する
   set splitright
 endif
 
 if !has('gui_running')
-  " 256色にする
-  set t_Co=256
   " マウス操作を受け付けない
   set mouse=
 endif
@@ -537,7 +605,13 @@ else
   " https://github.com/Shougo/shougo-s-github/blob/b12435cdded41c7d77822b2a0a97beeab09b8d2c/vim/rc/init.rc.vim#L28-L29
   set fileencodings=ucs-bom,iso-2022-jp-3,utf-8,euc-jp,cp932
 " set fileencodings=ucs-bom,utf-8,cp932,euc-jp,utf-16,utf-16le,iso-2022-jp
+
+
+  set fileencodings=iso-2022-jp,ucs-bom,utf-8,euc-jp,cp932,default,latin1
 endif
+
+"set fileencoding=utf-8  " デフォルトの文字コード
+"set fileformat=unix     " デフォルトの改行コード
 
 if (v:version == 704 && has("patch785")) || v:version >= 705
   " 改行コードを勝手に付加しない
@@ -575,15 +649,6 @@ set tags+=./tags;
 " diffsplitは常に垂直分割する
 set diffopt+=vertical
 
-" バックアップファイルの保存先を変更
-set backupdir=~/.vim/backup,.,~/tmp,~/
-
-" スワップファイルの保存先を変更
-set directory=~/.vim/swap,.,~/tmp,/var/tmp,/tmp
-
-" アンドゥファイルの保存先を指定する
-set undodir=~/.vim/undo,.,~/tmp,~/
-
 set incsearch   " インクリメンタルサーチ
 set ignorecase  " 大文字小文字を区別しない
 set smartcase   " 検索文字列に大文字を含む場合は区別する
@@ -596,6 +661,80 @@ set smartindent  " 高度な自動インデント
 set tabstop=2      " タブ幅
 set softtabstop=0  " 機能無効
 set shiftwidth=2   " インデント幅
+
+set nobomb  " BOMを付加しない
+set hidden  " バッファを閉じないで非表示にする
+
+" 候補が1つだけの場合もポップアップメニューを表示する
+set completeopt+=menuone,noinsert,noselect
+
+" プレビューウィンドウを表示しない
+set completeopt-=preview
+
+" タブや改行などをを指定した記号で表示
+" tab      タブ文字
+" eol:     行末
+" trail:   行末の半角スペース
+" extends: 折り返しされた行の末尾
+set listchars=tab:>.,eol:$,trail:_,extends:\
+
+" バックスペースでいろいろ消せるように
+set backspace=indent,eol,start
+
+" シンタックスハイライトを200桁までに制限する
+set synmaxcol=200
+
+set number        " 行番号を表示する
+set nowrap        " 折り返ししない
+set showcmd       " コマンドを最下部に表示する
+set shortmess+=I  " 起動時のメッセージを表示しない
+
+set ttyfast     " 高速ターミナル接続を行なう
+"set lazyredraw  " キーボードから実行されないコマンドの実行で再描画しない
+
+" 一部の全角文字を全角の幅で扱う
+if exists('multi_byte')
+  set ambiwidth=double
+endif
+
+" 折りたたみをインデントでする
+set foldmethod=indent
+
+" ステータスラインを常に表示する
+set laststatus=2
+
+" ステータスラインの表示を変更
+set statusline=%n\:%y%F\ \|%{(&fenc!=''?&fenc:&enc).'\|'.(&ff=='dos'?'crlf':&ff=='mac'?'cr':'lf').'\|'}%m%r%=<%l:%v>
+
+" バックアップファイルの保存先を変更 {{{
+
+if !isdirectory($HOME . '/.vim/backup')
+  call mkdir($HOME . '/.vim/backup', 'p')
+endif
+
+set backupdir=~/.vim/backup,.,~/tmp,~/
+
+" }}}
+
+" スワップファイルの保存先を変更 {{{
+
+if !isdirectory($HOME . '/.vim/swap')
+  call mkdir($HOME . '/.vim/swap', 'p')
+endif
+
+set directory=~/.vim/swap,.,~/tmp,/var/tmp,/tmp
+
+" }}}
+
+" アンドゥファイルの保存先を指定する {{{
+
+if !isdirectory($HOME . '/.vim/undo')
+  call mkdir($HOME . '/.vim/undo', 'p')
+endif
+
+set undodir=~/.vim/undo,.,~/tmp,~/
+
+" }}}
 
 " *.binと*.exeと*.dllはxxd
 autocmd vimrc BufNewFile,BufRead *.bin,*.exe,*.dll setlocal filetype=xxd
@@ -628,83 +767,21 @@ autocmd vimrc WinEnter * execute "normal! 2\<C-g>"
 highlight FullWidthSpace cterm=underline ctermfg=Blue
 autocmd vimrc WinEnter,WinLeave,BufRead,BufNew * match FullWidthSpace /　/
 
-set fileencoding=utf-8  " デフォルトの文字コード
-set fileformat=unix     " デフォルトの改行コード
-
-set nobomb  " BOMを付加しない
-set hidden  " バッファを閉じないで非表示にする
-
-" 候補が1つだけの場合もポップアップメニューを表示する
-set completeopt+=menuone,noinsert,noselect
-
-" プレビューウィンドウを表示しない
-set completeopt-=preview
-
-" タブや改行などをを指定した記号で表示
-" tab      タブ文字
-" eol:     行末
-" trail:   行末の半角スペース
-" extends: 折り返しされた行の末尾
-set listchars=tab:>.,eol:$,trail:_,extends:\
-
-" バックスペースでいろいろ消せるように
-set backspace=indent,eol,start
-
-syntax enable  " シンタックスハイライト
-
-" シンタックスハイライトを200桁までに制限する
-set synmaxcol=200
-
-set number        " 行番号を表示する
-set nowrap        " 折り返ししない
-set showcmd       " コマンドを最下部に表示する
-set shortmess+=I  " 起動時のメッセージを表示しない
-
-set ttyfast     " 高速ターミナル接続を行なう
-"set lazyredraw  " キーボードから実行されないコマンドの実行で再描画しない
-
-" 一部の全角文字を全角の幅で扱う
-set ambiwidth=double
-
-" 折りたたみをインデントでする
-set foldmethod=indent
-
-" ステータスラインを常に表示する
-set laststatus=2
-
-" ステータスラインの表示を変更
-set statusline=%n\:%y%F\ \|%{(&fenc!=''?&fenc:&enc).'\|'.(&ff=='dos'?'crlf':&ff=='mac'?'cr':'lf').'\|'}%m%r%=<%l:%v>
-
-" Markdown内での強調表示
-" http://mattn.kaoriya.net/software/vim/20140523124903.htm
-let g:markdown_fenced_languages = [
-      \ 'css',
-      \ 'diff',
-      \ 'erb=eruby',
-      \ 'html',
-      \ 'javascript',
-      \ 'js=javascript',
-      \ 'json',
-      \ 'ruby',
-      \ 'sass',
-      \ 'scss',
-      \ 'sh',
-      \ 'xml',
-      \ ]
-
 " Jekyllのための保存時刻自動入力設定
 " https://jekyllrb.com/docs/frontmatter/
 function! s:set_autodate_for_jekyll()
   " バッファローカルなautodate.vimの設定
   " http://nanasi.jp/articles/vim/autodate_vim.html
-  let b:autodate_lines=5
-  let b:autodate_keyword_pre="date: "
-  let b:autodate_keyword_post="$"
-  let b:autodate_format="%Y-%m-%d %H:%M:%S"
+  let b:autodate_lines = 5
+  let b:autodate_keyword_pre = 'date: '
+  let b:autodate_keyword_post = '$'
+  let b:autodate_format = '%Y-%m-%d %H:%M:%S'
 endfunction
 
 " Markdownファイルを開いたときにだけ実行する
 autocmd vimrc BufNewFile,BufRead *.md,*.markdown,*.mkd,*.mdown,*.mkdn,*.mark call s:set_autodate_for_jekyll()
+
+" キーマップ {{{
 
 " 論理行でなく表示行で移動する
 nnoremap j gj
@@ -750,6 +827,13 @@ nnoremap ) :<C-u>bnext<CR>
 
 " バッファ番号とフルパスを表示する
 nnoremap <C-g> 2<C-g>
+
+" }}}
+
+if has('syntax')
+  " シンタックスハイライト
+  syntax enable
+endif
 
 set secure
 
