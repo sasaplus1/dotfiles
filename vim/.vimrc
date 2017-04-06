@@ -2,8 +2,12 @@ if &compatible
   set nocompatible
 endif
 
-if has('multi_byte_encoding')
-  set encoding=utf-8
+if has('vim_starting')
+  if (has('win32') || has('win64')) && !has('gui_running')
+    set encoding=cp932
+  elseif has('multi_byte_encoding')
+    set encoding=utf-8
+  endif
 endif
 
 scriptencoding utf-8
@@ -66,16 +70,6 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     " }}}
 
     " Shougo/vimfiler {{{
-    function! s:hook_add_vimfiler() abort
-      " F4と,vfで表示
-      nnoremap <F4> :<C-u>VimFilerBufferDir<CR>
-      nnoremap ,vf :<C-u>VimFilerBufferDir<CR>
-      " Shift-F4と,vFとTでエクスプローラ風の表示
-      nnoremap <S-F4> :<C-u>VimFilerBufferDir -split -simple -winwidth=35 -toggle -no-quit<CR>
-      nnoremap ,vF :<C-u>VimFilerBufferDir -split -simple -winwidth=35 -toggle -no-quit<CR>
-      nnoremap T :<C-u>VimFilerBufferDir -split -simple -winwidth=35 -toggle -no-quit<CR>
-    endfunction
-
     function! s:hook_post_source_vimfiler() abort
       " デフォルト設定を指定する
       call vimfiler#custom#profile('default', 'context', {
@@ -93,6 +87,16 @@ if (v:version >= 704 || has('nvim')) && executable('git')
       let g:vimfiler_as_default_explorer = 1
       " 最大記憶ディレクトリ履歴を100にする
       let g:vimfiler_max_directories_history = 100
+
+      " NOTE: 遅延読み込みされた後にキーマップを設定する
+
+      " F4と,vfで表示
+      nnoremap <F4> :<C-u>VimFilerBufferDir<CR>
+      nnoremap ,vf :<C-u>VimFilerBufferDir<CR>
+      " Shift-F4と,vFとTでエクスプローラ風の表示
+      nnoremap <S-F4> :<C-u>VimFilerBufferDir -split -simple -winwidth=35 -toggle -no-quit<CR>
+      nnoremap ,vF :<C-u>VimFilerBufferDir -split -simple -winwidth=35 -toggle -no-quit<CR>
+      nnoremap T :<C-u>VimFilerBufferDir -split -simple -winwidth=35 -toggle -no-quit<CR>
     endfunction
 
     call dein#add('Shougo/unite.vim', {
@@ -100,11 +104,16 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \ })
     call dein#add('Shougo/vimfiler', {
           \ 'depends' : 'unite.vim',
-          \ 'hook_add' : function('s:hook_add_vimfiler'),
           \ 'hook_post_source' : function('s:hook_post_source_vimfiler'),
           \ 'hook_source' : function('s:hook_source_vimfiler'),
           \ 'lazy' : 1,
-          \ 'on_map' : '<Plug>',
+          \ 'on_map' : [
+          \   '<F4>',
+          \   ',vf',
+          \   '<S-F4>',
+          \   ',vF',
+          \   'T',
+          \ ],
           \ 'on_path' : '.*',
           \ })
     " }}}
@@ -130,9 +139,6 @@ if (v:version >= 704 || has('nvim')) && executable('git')
         " Ctrl-pにghqのソースを追加する
         call add(l:sources, 'ghq')
       endif
-
-      " すぐにウィンドウを閉じれるようにする
-      autocmd vimrc FileType denite setlocal timeoutlen=0
 
       " Ctrl-pでカレントディレクトリからファイルの一覧などを表示
       execute 'nnoremap <C-p> :<C-u>Denite ' . join(l:sources, ' ') . '<CR>'
@@ -229,22 +235,31 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     " }}}
 
     " ternjs/tern_for_vim {{{
+    function! s:hook_post_update_tern_for_vim() abort
+      call system('cd "' . dein#get('tern_for_vim').path . '" && npm install')
+    endfunction
+
     function! s:hook_source_tern_for_vim() abort
-      let g:tern#command = ['tern']
+      let l:tern_dir = dein#get('tern_for_vim').path
+      let l:tern_bin = l:tern_dir . '/node_modules/.bin/tern'
+
+      let g:tern#command = [l:tern_bin]
       let g:tern#arguments = ['--persistent']
 
-      autocmd vimrc FileType javascript setlocal omnifunc=tern#Complete
+      if executable(l:tern_bin)
+        autocmd vimrc FileType javascript setlocal omnifunc=tern#Complete
+      endif
     endfunction
 
     call dein#add('ternjs/tern_for_vim', {
-          \ 'hook_post_update' : 'npm install -g tern',
+          \ 'hook_post_update' : function('s:hook_post_update_tern_for_vim'),
           \ 'hook_source' : function('s:hook_source_tern_for_vim'),
           \ 'lazy' : 1,
           \ 'on_ft' : [
           \   'javascript',
           \   'html',
           \ ],
-          \ 'on_if' : 'has("python") && v:version >= 703'
+          \ 'on_if' : 'v:version >= 703 && (has("python") || has("python3"))'
           \ })
     " }}}
 
@@ -306,10 +321,10 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     " osyo-manga/vim-textobj-multiblock {{{
     function! s:hook_source_vim_textobj_multiblock() abort
       " map from http://d.hatena.ne.jp/osyo-manga/20130329/1364569153
-      omap ab <Plug>(textobj-multiblock-a)
-      omap ib <Plug>(textobj-multiblock-i)
-      vmap ab <Plug>(textobj-multiblock-a)
-      vmap ib <Plug>(textobj-multiblock-i)
+      omap <silent>ab <Plug>(textobj-multiblock-a)
+      omap <silent>ib <Plug>(textobj-multiblock-i)
+      vmap <silent>ab <Plug>(textobj-multiblock-a)
+      vmap <silent>ib <Plug>(textobj-multiblock-i)
     endfunction
 
     call dein#add('kana/vim-textobj-user', {
@@ -320,6 +335,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \ 'hook_source' : function('s:hook_source_vim_textobj_multiblock'),
           \ 'lazy' : 1,
           \ 'on_event' : 'InsertEnter',
+          \ 'on_map' : '<Plug>',
           \ })
     " }}}
 
@@ -344,6 +360,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \ 'hook_source' : function('s:hook_source_vim_operator_surround'),
           \ 'lazy' : 1,
           \ 'on_event' : 'InsertEnter',
+          \ 'on_map' : '<Plug>',
           \ })
     " }}}
 
@@ -458,16 +475,15 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     " }}}
 
     call dein#end()
-    call dein#save_state()
   endif
 
-  if dein#check_install()
+  if has('vim_starting') && dein#check_install()
     call dein#install()
   endif
 
   " フックを自分で呼ぶ
   call dein#call_hook('source')
-  autocmd VimEnter * call dein#call_hook('post_source')
+  autocmd vimrc VimEnter * call dein#call_hook('post_source')
 
   filetype plugin indent on
 
