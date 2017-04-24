@@ -83,7 +83,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
 
     " Shougo/vimfiler {{{
     function! s:hook_post_update_vimproc_vim() abort
-      if dein#util#_is_windows()
+      if has('win32') || has('win64')
         let l:make = 'tools\\update-dll-mingw'
       elseif has('win32unix')
         let l:make = 'make -f make_cygwin.mak'
@@ -106,11 +106,6 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     endfunction
 
     function! s:hook_source_vimfiler() abort
-      " netrwを無効化する
-      let g:loaded_netrw = 1
-      let g:loaded_netrwPlugin = 1
-      let g:loaded_netrwSettings = 1
-      let g:loaded_netrwFileHandlers = 1
       " デフォルトのファイラにする
       let g:vimfiler_as_default_explorer = 1
       " 最大記憶ディレクトリ履歴を100にする
@@ -182,6 +177,9 @@ if (v:version >= 704 || has('nvim')) && executable('git')
       " ,ulで行一覧
       nnoremap ,ul :<C-u>Denite line<CR>
 
+      " ,uyでレジスタ一覧
+      nnoremap ,uy :<C-u>Denite register<CR>
+
       " F2と,ubでバッファ一覧
       nnoremap <F2> :<C-u>Denite buffer<CR>
       nnoremap ,ub :<C-u>Denite buffer<CR>
@@ -203,10 +201,13 @@ if (v:version >= 704 || has('nvim')) && executable('git')
         call denite#custom#var('grep', 'final_opts', [])
       endif
 
+      "call denite#custom#alias('filter', 'matcher_ignore_globs', 'additional_matcher_ignore_globs')
+      "call denite#custom#var('filter', 'additional_matcher_ignore_globs', [])
+
       " file_rec/gitのsourceを作る
       call denite#custom#alias('source', 'file_rec/git', 'file_rec')
       call denite#custom#var('file_rec/git', 'command', [
-            \ 'sh', '-c', 'git ls-files -co --exclude-standard "$(git rev-parse --show-toplevel)"',
+            \ 'bash', '-c', 'git ls-files -co --exclude-standard "$(git rev-parse --show-toplevel)"',
             \ ])
 
       " 挿入モードでもCtrl-n, Ctrl-pで行を移動できるようにする
@@ -246,14 +247,31 @@ if (v:version >= 704 || has('nvim')) && executable('git')
       let g:neocomplete#auto_completion_start_length = 1
       let g:neocomplete#sources#buffer#cache_limit_size = 50000
 
+      if !exists('g:neocomplete#keyword_patterns')
+        let g:neocomplete#keyword_patterns = {}
+      endif
+      let g:neocomplete#keyword_patterns._ = '\h\w*'
+
+      "if !exists('g:neocomplete#sources')
+      "  let g:neocomplete#sources = {}
+      "endif
+      "let g:neocomplete#sources._ = ['buffer']
+      "let g:neocomplete#sources.javascript = ['buffer', 'omni']
+
+      "if !exists('g:neocomplete#sources#omni#input_patterns')
+      "  let g:neocomplete#sources#omni#input_patterns = {}
+      "endif
+      "let g:neocomplete#sources#omni#input_patterns.javascript = '[^. \t]\.\w*'
+
+      " let g:neocomplete_omni_function_list = ['tern#Complete', 'jscomplete#CompleteJS']
+
       if !exists('g:neocomplete#force_omni_input_patterns')
         let g:neocomplete#force_omni_input_patterns = {}
       endif
-
       let g:neocomplete#force_omni_input_patterns.javascript = '[^. \t]\.\w*'
 
       " README.md - Setting examplesよりキーマップの変更
-      inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
+      inoremap <expr><Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 
       " 改行した際に補完を閉じる
       inoremap <expr><CR> neocomplete#smart_close_popup() . "\<CR>"
@@ -261,7 +279,9 @@ if (v:version >= 704 || has('nvim')) && executable('git')
       " 補完を閉じ、文字を消す
       inoremap <expr><C-h> neocomplete#smart_close_popup() . "\<C-h>"
       inoremap <expr><BS> neocomplete#smart_close_popup() . "\<C-h>"
-      inoremap <expr><C-y> neocomplete#close_popup()
+
+      inoremap <expr><C-g> neocomplete#undo_completion()
+      inoremap <expr><C-l> neocomplete#complete_common_string()
     endfunction
 
     call dein#add('Shougo/neocomplete.vim', {
@@ -278,13 +298,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     endfunction
 
     function! s:hook_source_tern_for_vim() abort
-      let l:tern_dir = dein#get('tern_for_vim').path
-      let l:tern_bin = l:tern_dir . '/node_modules/.bin/tern'
-
-      let g:tern#command = [l:tern_bin]
-      let g:tern#arguments = ['--persistent']
-
-      if executable(l:tern_bin)
+      if executable('tern')
         autocmd vimrc FileType javascript setlocal omnifunc=tern#Complete
       endif
     endfunction
@@ -298,6 +312,18 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \   'html',
           \ ],
           \ 'on_if' : 'v:version >= 703 && (has("python") || has("python3"))'
+          \ })
+    " }}}
+
+    " teramako/jscomplete-vim {{{
+    call dein#add('https://bitbucket.org/teramako/jscomplete-vim', {
+          \ 'lazy' : 1
+          \ })
+    " }}}
+
+    " othree/jspc.vim {{{
+    call dein#add('othree/jspc.vim', {
+          \ 'lazy' : 1
           \ })
     " }}}
 
@@ -373,7 +399,11 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \ 'hook_source' : function('s:hook_source_vim_textobj_multiblock'),
           \ 'lazy' : 1,
           \ 'on_event' : 'InsertEnter',
-          \ 'on_map' : '<Plug>',
+          \ 'on_map' : [
+          \   '<Plug>',
+          \   'c',
+          \   'd',
+          \ ],
           \ })
     " }}}
 
@@ -446,6 +476,13 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \ })
     " }}}
 
+    " rbtnn/vimconsole.vim {{{
+    call dein#add('rbtnn/vimconsole.vim', {
+          \ 'lazy' : 1,
+          \ 'on_ft' : 'vim',
+          \ })
+    " }}}
+
     " vim-jp/vim-go-extra {{{
     function! s:hook_add_vim_go_extra() abort
       " Go編集時にerrをハイライトする
@@ -496,7 +533,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     " othree/html5.vim {{{
     function! s:hook_add_html5_vim() abort
       " *.ejsと*.vueをのファイルタイプをHTMLとする
-      autocmd vimrc BufNewFile,BufRead *.ejs,*.vue setlocal filetype=html
+      autocmd vimrc BufNewFile,BufRead *.{ejs,vue} setlocal filetype=html
     endfunction
 
     call dein#add('othree/html5.vim', {
@@ -530,17 +567,27 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     call dein#end()
   endif
 
-  if has('vim_starting') && dein#check_install()
+  if dein#check_install()
     call dein#install()
   endif
 
-  " フックを自分で呼ぶ
+  " sourceフックを呼ぶ
   call dein#call_hook('source')
+
+  " post_sourceフックを呼ぶようにする
   autocmd vimrc VimEnter * call dein#call_hook('post_source')
 
-  filetype plugin indent on
+  unlet s:plugin_dir
+  unlet s:dein_repos
 
 endif
+
+if has('syntax')
+  " シンタックスハイライト
+  syntax enable
+endif
+
+filetype plugin indent on
 
 " }}}
 
@@ -597,7 +644,7 @@ if !has('gui_running')
   set mouse=
 endif
 
-if has('kaoriya') && has('guess_encode')
+if has('guess_encode')
   " 文字コードの自動判別
   set fileencodings=guess,ucs-bom,iso-2022-jp-3,utf-8,euc-jp,cp932
 else
@@ -605,8 +652,6 @@ else
   " https://github.com/Shougo/shougo-s-github/blob/b12435cdded41c7d77822b2a0a97beeab09b8d2c/vim/rc/init.rc.vim#L28-L29
   set fileencodings=ucs-bom,iso-2022-jp-3,utf-8,euc-jp,cp932
 " set fileencodings=ucs-bom,utf-8,cp932,euc-jp,utf-16,utf-16le,iso-2022-jp
-
-
   set fileencodings=iso-2022-jp,ucs-bom,utf-8,euc-jp,cp932,default,latin1
 endif
 
@@ -737,7 +782,7 @@ set undodir=~/.vim/undo,.,~/tmp,~/
 " }}}
 
 " *.binと*.exeと*.dllはxxd
-autocmd vimrc BufNewFile,BufRead *.bin,*.exe,*.dll setlocal filetype=xxd
+autocmd vimrc BufNewFile,BufRead *.{bin,exe,dll} setlocal filetype=xxd
 
 " *.xulはXML
 autocmd vimrc BufNewFile,BufRead *.xul setlocal filetype=xml
@@ -752,7 +797,7 @@ autocmd vimrc FileType make setlocal noexpandtab list tabstop=8 shiftwidth=8
 autocmd vimrc FileType python setlocal tabstop=4 shiftwidth=4
 
 " 挿入モードを開始したときにペーストモードのキーバインドを設定する
-autocmd vimrc InsertEnter * set pastetoggle=<C-e>
+autocmd vimrc InsertEnter * set pastetoggle=<C-t>
 
 " 挿入モードから抜けるときにペーストモードを抜け、キーバインドも解除する
 autocmd vimrc InsertLeave * set nopaste pastetoggle=
@@ -779,7 +824,17 @@ function! s:set_autodate_for_jekyll()
 endfunction
 
 " Markdownファイルを開いたときにだけ実行する
-autocmd vimrc BufNewFile,BufRead *.md,*.markdown,*.mkd,*.mdown,*.mkdn,*.mark call s:set_autodate_for_jekyll()
+autocmd vimrc BufNewFile,BufRead *.{md,markdown,mkd,mdown,mkdn,mark} call s:set_autodate_for_jekyll()
+
+" JavaScriptの著名なモジュールの設定ファイルをJSONとして開く
+autocmd vimrc BufNewFile,BufRead .{babel,eslint,stylelint,textlint}rc setlocal filetype=json
+
+" TODO: イベントの見直しが必要？
+"autocmd vimrc BufNewFile,BufRead *.md,*.markdown,*.mkd,*.mdown,*.mkdn,*.mark setlocal filetype=markdown
+
+"autocmd vimrc BufNewFile,BufRead *.json setlocal filetype=json
+
+"autocmd vimrc BufNewFile,BufRead *.js,*.jsx setlocal filetype=javascript
 
 " キーマップ {{{
 
@@ -829,11 +884,6 @@ nnoremap ) :<C-u>bnext<CR>
 nnoremap <C-g> 2<C-g>
 
 " }}}
-
-if has('syntax')
-  " シンタックスハイライト
-  syntax enable
-endif
 
 set secure
 
