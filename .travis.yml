@@ -18,7 +18,16 @@ matrix:
         xcode6.4
 
 sudo:
-  required
+  false
+
+addons:
+  apt:
+    sources:
+      - sourceline:
+          'ppa:ansible/ansible'
+    packages:
+      - ansible
+      - git
 
 language:
   c
@@ -27,12 +36,13 @@ git:
   depth:
     3
 
-before_script:
-  - env
-  - rm -rf $HOME/.bashrc $HOME/.bash_profile $HOME/.gitconfig $HOME/.vim
-script:
-  - curl -LSfs https://raw.githubusercontent.com/sasaplus1/dotfiles/master/Makefile | make setup -f -
-
 notifications:
   email:
     false
+
+before_script:
+  - env
+  - rm -rf $HOME/.bashrc $HOME/.bash_profile $HOME/.gitconfig $HOME/.vim
+
+script:
+  - curl -LSfs https://raw.githubusercontent.com/sasaplus1/dotfiles/master/Makefile | make setup -f -
