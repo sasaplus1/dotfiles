@@ -5,8 +5,6 @@
   apt_repository:
     repo: '{{ item }}'
   with_items: '{{ repositories }}'
-  ignore_errors: yes
-  # failed_when: false
   tags:
     - add_apt_repository
 
@@ -18,7 +16,5 @@
     regexp: //archive.ubuntu.com
     replace: //ftp.jaist.ac.jp/pub/Linux
     backup: yes
-  ignore_errors: yes
-  # failed_when: false
   tags:
     - add_apt_repository

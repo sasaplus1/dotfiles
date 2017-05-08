@@ -26,6 +26,9 @@ os := $(shell uname -s | tr 'A-Z' 'a-z')
 # flag of when execute in CI
 ci := $(CI)
 
+# flag of when execute in Travis-CI
+travis := $(TRAVIS)
+
 #-------------------------------------------------------------------------------
 
 # default target
@@ -125,6 +128,9 @@ provision: options += --extra-vars='caskroom_dir=$(caskroom_dir)'
 provision: options += --extra-vars='dotfiles_dir=$(dotfiles_dir)'
 provision: options += --extra-vars='home_dir=$(HOME)'
 provision: options += --connection=local
+ifdef travis
+provision: options += --skip-tags=add_apt_repository
+endif
 ifndef ci
 provision: options += --ask-become-pass
 provision: options += -vv
