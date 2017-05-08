@@ -298,6 +298,7 @@ then
   export HISTSIZE=10000
   export HISTFILESIZE=10000
   export HISTTIMEFORMAT='%Y/%m/%d %T '
+  export HISTCONTROL=ignoredups:erasedups
 fi
 
 ###share_history() {
@@ -305,8 +306,8 @@ fi
 ###  history -c
 ###  history -r
 ###}
-###shopt -u histappend
-###PROMPT_COMMAND='share_history'
+###shopt -s histappend
+###export PROMPT_COMMAND='share_history'
 # }}}
 
 # functions {{{
