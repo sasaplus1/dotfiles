@@ -3,8 +3,6 @@ language: c
 matrix:
   include:
     - os: linux
-      dist: precise
-    - os: linux
       dist: trusty
     - os: osx
       osx_image: xcode8.2
