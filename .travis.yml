@@ -49,5 +49,5 @@ before_script:
   - rm -rf $HOME/.bashrc $HOME/.bash_profile $HOME/.gitconfig $HOME/.vim
 
 script:
-  - if [ "$TRAVIS_OS_NAME" = 'osx'   ]; then curl -LSfs https://raw.githubusercontent.com/sasaplus1/dotfiles/$TRAVIS_BRANCH/Makefile | make setup -f -          ; fi
-  - if [ "$TRAVIS_OS_NAME" = 'linux' ]; then curl -LSfs https://raw.githubusercontent.com/sasaplus1/dotfiles/$TRAVIS_BRANCH/Makefile | make clone provision -f -; fi
+  - if [ "$TRAVIS_OS_NAME" = 'osx'   ]; then curl -LSfs https://raw.githubusercontent.com/sasaplus1/dotfiles/${TRAVIS_BRANCH}/Makefile | make setup -f -          ; fi
+  - if [ "$TRAVIS_OS_NAME" = 'linux' ]; then curl -LSfs https://raw.githubusercontent.com/sasaplus1/dotfiles/${TRAVIS_BRANCH}/Makefile | make clone provision -f -; fi

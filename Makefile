@@ -103,7 +103,14 @@ define __clone_script
   then
     echo 'dotfiles repository is already cloned.'
   else
-    git clone $(repository) '$(dotfiles_dir)'
+    if [ -n "$$TRAVIS_BRANCH" ]
+    then
+      branch=$$TRAVIS_BRANCH
+    else
+      branch=master
+    fi
+
+    git clone --branch="$$branch" $(repository) '$(dotfiles_dir)'
   fi
 endef
 export __clone_script
