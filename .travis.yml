@@ -32,7 +32,7 @@ matrix:
       sudo:
         false
       script:
-        - curl -LSfs "$MAKEFILE" | make clone provision -f -
+        - curl -LSfs "$MAKEFILE" | make install-brew clone provision -f -
     - os:
         linux
       dist:
@@ -40,7 +40,7 @@ matrix:
       sudo:
         false
       script:
-        - curl -LSfs "$MAKEFILE" | make clone provision -f -
+        - curl -LSfs "$MAKEFILE" | make install-brew clone provision -f -
     - os:
         linux
       dist:
@@ -48,7 +48,7 @@ matrix:
       sudo:
         required
       script:
-        - curl -LSfs "$MAKEFILE" | make clone provision -f -
+        - curl -LSfs "$MAKEFILE" | make setup -f -
     - os:
         linux
       dist:
@@ -56,7 +56,7 @@ matrix:
       sudo:
         required
       script:
-        - curl -LSfs "$MAKEFILE" | make clone provision -f -
+        - curl -LSfs "$MAKEFILE" | make setup -f -
     - os:
         osx
       osx_image:
