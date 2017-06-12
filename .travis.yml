@@ -31,6 +31,9 @@ matrix:
         precise
       sudo:
         false
+      env:
+        global:
+          - SKIP_TAGS=add_apt_repository
       script:
         - curl -LSfs "$MAKEFILE" | make install-brew clone provision -f -
     - os:
@@ -39,6 +42,9 @@ matrix:
         trusty
       sudo:
         false
+      env:
+        global:
+          - SKIP_TAGS=add_apt_repository
       script:
         - curl -LSfs "$MAKEFILE" | make install-brew clone provision -f -
     - os:

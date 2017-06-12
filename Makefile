@@ -26,6 +26,9 @@ os := $(shell uname -s | tr 'A-Z' 'a-z')
 # flag of when execute in CI
 ci := $(CI)
 
+# skip-tags of Ansible
+skip_tags := $(SKIP_TAGS)
+
 #-------------------------------------------------------------------------------
 
 # default target
@@ -131,6 +134,9 @@ provision: options += --extra-vars='homebrew_dir=$(homebrew_dir)'
 provision: options += --extra-vars='caskroom_dir=$(caskroom_dir)'
 provision: options += --extra-vars='dotfiles_dir=$(dotfiles_dir)'
 provision: options += --extra-vars='home_dir=$(HOME)'
+ifdef skip_tags
+provision: options += --skip-tags='$(skip_tags)'
+endif
 provision: options += --connection=local
 ifndef ci
 provision: options += --ask-become-pass
