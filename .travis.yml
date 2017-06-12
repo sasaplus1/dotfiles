@@ -8,36 +8,50 @@ matrix:
         precise
       sudo:
         false
+      script:
+        - curl -LSfs "$MAKEFILE" | make clone provision -f -
     - os:
         linux
       dist:
         trusty
       sudo:
         false
+      script:
+        - curl -LSfs "$MAKEFILE" | make clone provision -f -
     - os:
         linux
       dist:
         precise
       sudo:
         required
+      script:
+        - curl -LSfs "$MAKEFILE" | make clone provision -f -
     - os:
         linux
       dist:
         trusty
       sudo:
         required
+      script:
+        - curl -LSfs "$MAKEFILE" | make clone provision -f -
     - os:
         osx
       osx_image:
         xcode8.2
+      script:
+        - curl -LSfs "$MAKEFILE" | make setup -f -
     - os:
         osx
       osx_image:
         xcode8
+      script:
+        - curl -LSfs "$MAKEFILE" | make setup -f -
     - os:
         osx
       osx_image:
         xcode6.4
+      script:
+        - curl -LSfs "$MAKEFILE" | make setup -f -
 
 addons:
   apt:
@@ -61,12 +75,8 @@ notifications:
 
 before_script:
   - env
-  - rm -rf $HOME/.bashrc $HOME/.bash_profile $HOME/.gitconfig $HOME/.vim
+# - rm -rf $HOME/.bashrc $HOME/.bash_profile $HOME/.gitconfig $HOME/.vim
 
 env:
   global:
-    - MAKEFILE=https://raw.githubusercontent.com/sasaplus1/dotfiles/$TRAVIS_BRANCH/Makefile
-
-script:
-  - if [ "$TRAVIS_OS_NAME" = 'osx'   ]; then curl -LSfs "$MAKEFILE" | make setup -f -          ; fi
-  - if [ "$TRAVIS_OS_NAME" = 'linux' ]; then curl -LSfs "$MAKEFILE" | make clone provision -f -; fi
+    - MAKEFILE=https://raw.githubusercontent.com/sasaplus1/dotfiles/${TRAVIS_BRANCH}/Makefile
