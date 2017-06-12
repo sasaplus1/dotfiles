@@ -1,3 +1,26 @@
+language:
+  c
+
+git:
+  depth:
+    3
+
+env:
+  global:
+    - MAKEFILE=https://raw.githubusercontent.com/sasaplus1/dotfiles/${TRAVIS_BRANCH}/Makefile
+
+addons:
+  apt:
+    sources:
+      - sourceline:
+          'ppa:ansible/ansible'
+    packages:
+      - ansible
+      - git
+
+before_script:
+  - env
+
 matrix:
   fast_finish:
     true
@@ -53,30 +76,6 @@ matrix:
       script:
         - curl -LSfs "$MAKEFILE" | make setup -f -
 
-addons:
-  apt:
-    sources:
-      - sourceline:
-          'ppa:ansible/ansible'
-    packages:
-      - ansible
-      - git
-
-language:
-  c
-
-git:
-  depth:
-    3
-
 notifications:
   email:
     false
-
-before_script:
-  - env
-# - rm -rf $HOME/.bashrc $HOME/.bash_profile $HOME/.gitconfig $HOME/.vim
-
-env:
-  global:
-    - MAKEFILE=https://raw.githubusercontent.com/sasaplus1/dotfiles/${TRAVIS_BRANCH}/Makefile
