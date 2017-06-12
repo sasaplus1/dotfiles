@@ -4,10 +4,26 @@ matrix:
         linux
       dist:
         precise
+      sudo:
+        false
     - os:
         linux
       dist:
         trusty
+      sudo:
+        false
+    - os:
+        linux
+      dist:
+        precise
+      sudo:
+        required
+    - os:
+        linux
+      dist:
+        trusty
+      sudo:
+        required
     - os:
         osx
       osx_image:
@@ -20,9 +36,6 @@ matrix:
         osx
       osx_image:
         xcode6.4
-
-sudo:
-  false
 
 addons:
   apt:
@@ -48,6 +61,10 @@ before_script:
   - env
   - rm -rf $HOME/.bashrc $HOME/.bash_profile $HOME/.gitconfig $HOME/.vim
 
+env:
+  global:
+    - MAKEFILE=https://raw.githubusercontent.com/sasaplus1/dotfiles/$TRAVIS_BRANCH/Makefile
+
 script:
-  - if [ "$TRAVIS_OS_NAME" = 'osx'   ]; then curl -LSfs https://raw.githubusercontent.com/sasaplus1/dotfiles/$TRAVIS_BRANCH/Makefile | make setup -f -          ; fi
-  - if [ "$TRAVIS_OS_NAME" = 'linux' ]; then curl -LSfs https://raw.githubusercontent.com/sasaplus1/dotfiles/$TRAVIS_BRANCH/Makefile | make clone provision -f -; fi
+  - if [ "$TRAVIS_OS_NAME" = 'osx'   ]; then curl -LSfs "$MAKEFILE" | make setup -f -          ; fi
+  - if [ "$TRAVIS_OS_NAME" = 'linux' ]; then curl -LSfs "$MAKEFILE" | make clone provision -f -; fi
