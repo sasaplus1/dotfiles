@@ -33,7 +33,7 @@ matrix:
         false
       env:
         global:
-          - SKIP_TAGS=add_apt_repository,apt_install
+          - SKIP_TAGS=add_apt_repository,apt_install,urxvt
       script:
         - curl -LSfs "$MAKEFILE" | make install-brew clone provision -f -
     - os:
@@ -44,7 +44,7 @@ matrix:
         false
       env:
         global:
-          - SKIP_TAGS=add_apt_repository,apt_install
+          - SKIP_TAGS=add_apt_repository,apt_install,urxvt
       script:
         - curl -LSfs "$MAKEFILE" | make install-brew clone provision -f -
     - os:
