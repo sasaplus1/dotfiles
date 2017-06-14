@@ -30,28 +30,6 @@ matrix:
       dist:
         precise
       sudo:
-        false
-      env:
-        global:
-          - SKIP_TAGS=add_apt_repository,apt_install,urxvt
-      script:
-        - curl -LSfs "$MAKEFILE" | make install-brew clone provision -f -
-    - os:
-        linux
-      dist:
-        trusty
-      sudo:
-        false
-      env:
-        global:
-          - SKIP_TAGS=add_apt_repository,apt_install,urxvt
-      script:
-        - curl -LSfs "$MAKEFILE" | make install-brew clone provision -f -
-    - os:
-        linux
-      dist:
-        precise
-      sudo:
         required
       env:
         global:
