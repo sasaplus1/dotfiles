@@ -8,6 +8,7 @@ git:
 env:
   global:
     - MAKEFILE=https://raw.githubusercontent.com/sasaplus1/dotfiles/${TRAVIS_BRANCH}/Makefile
+    - SKIP_TAGS=homebrew_install,homebrew_cask_fetch,homebrew_cask_install
 
 addons:
   apt:
@@ -31,9 +32,6 @@ matrix:
         precise
       sudo:
         required
-      env:
-        global:
-          - SKIP_TAGS=homebrew_install,homebrew_cask_fetch,homebrew_cask_install
       script:
         - curl -LSfs "$MAKEFILE" | make setup -f -
     - os:
@@ -42,36 +40,24 @@ matrix:
         trusty
       sudo:
         required
-      env:
-        global:
-          - SKIP_TAGS=homebrew_install,homebrew_cask_fetch,homebrew_cask_install
       script:
         - curl -LSfs "$MAKEFILE" | make setup -f -
     - os:
         osx
       osx_image:
         xcode8.2
-      env:
-        global:
-          - SKIP_TAGS=homebrew_install,homebrew_cask_fetch,homebrew_cask_install
       script:
         - curl -LSfs "$MAKEFILE" | make setup -f -
     - os:
         osx
       osx_image:
         xcode8
-      env:
-        global:
-          - SKIP_TAGS=homebrew_install,homebrew_cask_fetch,homebrew_cask_install
       script:
         - curl -LSfs "$MAKEFILE" | make setup -f -
     - os:
         osx
       osx_image:
         xcode6.4
-      env:
-        global:
-          - SKIP_TAGS=homebrew_install,homebrew_cask_fetch,homebrew_cask_install
       script:
         - curl -LSfs "$MAKEFILE" | make setup -f -
 
