@@ -1,0 +1,56 @@
+" *.binと*.exeと*.dllはxxd
+autocmd vimrc BufNewFile,BufRead *.{bin,exe,dll} setlocal filetype=xxd
+
+" *.xulはXML
+autocmd vimrc BufNewFile,BufRead *.xul setlocal filetype=xml
+
+" HTML編集時にシンタックスハイライトを400桁までに制限する
+autocmd vimrc FileType html setlocal synmaxcol=400
+
+" Makefile編集時のみタブにする
+autocmd vimrc FileType make setlocal noexpandtab list tabstop=8 shiftwidth=8
+
+" Python編集時のみインデントのスペース数を4にする
+autocmd vimrc FileType python setlocal tabstop=4 shiftwidth=4
+
+" 挿入モードを開始したときにペーストモードのキーバインドを設定する
+autocmd vimrc InsertEnter * set pastetoggle=<C-t>
+
+" 挿入モードから抜けるときにペーストモードを抜け、キーバインドも解除する
+autocmd vimrc InsertLeave * set nopaste pastetoggle=
+
+" コメント中の特定の単語を強調表示する
+autocmd vimrc WinEnter,WinLeave,BufRead,BufNew,Syntax * call matchadd('Todo', '\W\zs\(TODO\|FIXME\|CHANGED\|XXX\|BUG\|HACK\|NOTE\|INFO\|IDEA\)')
+
+" ウィンドウを移動したらバッファ番号とフルパスを表示する
+autocmd vimrc WinEnter * execute "normal! 2\<C-g>"
+
+" 全角スペースに下線を引く
+highlight FullWidthSpace cterm=underline ctermfg=Blue
+autocmd vimrc WinEnter,WinLeave,BufRead,BufNew * match FullWidthSpace /　/
+
+" Jekyllのための保存時刻自動入力設定
+" https://jekyllrb.com/docs/frontmatter/
+function! s:set_autodate_for_jekyll()
+  " バッファローカルなautodate.vimの設定
+  " http://nanasi.jp/articles/vim/autodate_vim.html
+  let b:autodate_lines = 5
+  let b:autodate_keyword_pre = 'date: '
+  let b:autodate_keyword_post = '$'
+  let b:autodate_format = '%Y-%m-%d %H:%M:%S'
+endfunction
+
+" Markdownファイルを開いたときにだけ実行する
+autocmd vimrc BufNewFile,BufRead *.{md,markdown,mkd,mdown,mkdn,mark} call s:set_autodate_for_jekyll()
+
+" JavaScriptの著名なモジュールの設定ファイルをJSONとして開く
+autocmd vimrc BufNewFile,BufRead .{babel,eslint,stylelint,textlint}rc setlocal filetype=json
+
+" TODO: イベントの見直しが必要？
+"autocmd vimrc BufNewFile,BufRead *.md,*.markdown,*.mkd,*.mdown,*.mkdn,*.mark setlocal filetype=markdown
+
+"autocmd vimrc BufNewFile,BufRead *.json setlocal filetype=json
+
+"autocmd vimrc BufNewFile,BufRead *.js,*.jsx setlocal filetype=javascript
+
+" vim:ft=vim:fdm=marker:fen:

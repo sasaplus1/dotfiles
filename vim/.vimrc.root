@@ -1,0 +1,95 @@
+if &compatible
+  set nocompatible
+endif
+
+" TODO: http://www.kawaz.jp/pukiwiki/?vim#cb691f26
+
+set encoding=utf-8
+set fileformat=unix
+
+if has('multi_byte')
+  scriptencoding utf-8
+endif
+
+if !has('gui_running')
+  " 256色にする
+  set t_Co=256
+endif
+
+" Lua {{{
+
+" luaコマンドが使用できないがluadllが指定できluajitコマンドが使用できる場合
+if !has('lua') && exists('&luadll') && executable('luajit')
+  let s:lua_dir = $HOME . '/Homebrew/lib'
+  let s:lua_bin = s:lua_dir . '/libluajit.dylib'
+
+  execute 'set luadll=' . s:lua_bin
+
+  unlet s:lua_bin
+  unlet s:lua_dir
+endif
+
+" }}}
+
+" Python3 {{{
+
+if exists('&pythonthreedll')
+  let s:python_dir = $HOME . '/.pyenv/versions/3.6.0'
+  let s:python_bin = s:python_dir . '/bin/python'
+
+  if executable(s:python_bin)
+    let $PYTHONHOME = s:python_dir
+
+    execute 'set pythonthreedll=' . s:python_bin
+
+    if has('python3')
+      python3 import sys
+    endif
+  endif
+
+  unlet s:python_bin
+  unlet s:python_dir
+endif
+
+" }}}
+
+" グループの初期化 {{{
+
+augroup vimrc
+  autocmd!
+augroup END
+
+" }}}
+
+" 分割した設定ファイルを読み込む {{{
+
+" symlink先のファイルパスを解決
+let s:vimrc_file = resolve($MYVIMRC)
+" ファイル名を取り除く
+let s:vimrc_dir = fnamemodify(s:vimrc_file, ':h')
+
+execute 'source' s:vimrc_dir . '/.vimrc.plugin'
+execute 'source' s:vimrc_dir . '/.vimrc.config'
+execute 'source' s:vimrc_dir . '/.vimrc.autocmd'
+execute 'source' s:vimrc_dir . '/.vimrc.map'
+
+unlet s:vimrc_file
+unlet s:vimrc_dir
+
+" }}}
+
+" 環境固有の設定を読み込む {{{
+
+let s:vimrc_local = $HOME . '/.vimrc.local'
+
+if filereadable(s:vimrc_local)
+  execute 'source' s:vimrc_local
+endif
+
+unlet s:vimrc_local
+
+" }}}
+
+set secure
+
+" vim:ft=vim:fdm=marker:fen:

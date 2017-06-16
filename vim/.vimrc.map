@@ -1,0 +1,46 @@
+" 論理行でなく表示行で移動する
+nnoremap j gj
+vnoremap j gj
+
+nnoremap k gk
+vnoremap k gk
+
+"nnoremap $ g$
+"vnoremap $ g$
+
+"nnoremap ^ g^
+"vnoremap ^ g^
+
+"nnoremap 0 g0
+"vnoremap 0 g0
+
+" very magicをonにする
+" http://deris.hatenablog.jp/entry/2013/05/15/024932
+nnoremap / /\v
+
+" diff系
+nnoremap ,dg :<C-u>diffget<CR>
+nnoremap ,do :<C-u>diffoff<CR>
+nnoremap ,dO :<C-u>diffoff!<CR>
+nnoremap ,dt :<C-u>diffthis<CR>
+nnoremap ,du :<C-u>diffupdate<CR>
+
+" F1を無効化
+noremap <F1> <Nop>
+noremap! <F1> <Nop>
+
+" C-F4でバッファの削除
+nnoremap <C-F4> :<C-u>bdelete<CR>
+
+" C-Tab, C-S-Tabでバッファの移動
+nnoremap <C-Tab> :<C-u>bnext<CR>
+nnoremap <C-S-Tab> :<C-u>bprevious<CR>
+
+" (, )でバッファの移動
+nnoremap ( :<C-u>bprevious<CR>
+nnoremap ) :<C-u>bnext<CR>
+
+" バッファ番号とフルパスを表示する
+nnoremap <C-g> 2<C-g>
+
+" vim:ft=vim:fdm=marker:fen:
