@@ -34,7 +34,7 @@ endif
 " Python3 {{{
 
 if exists('&pythonthreedll')
-  let s:python_dir = $HOME . '/.pyenv/versions/3.6.0'
+  let s:python_dir = $HOME . '/.pyenv/versions/3.6.1'
   let s:python_bin = s:python_dir . '/bin/python'
 
   if executable(s:python_bin)
