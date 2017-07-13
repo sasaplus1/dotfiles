@@ -429,12 +429,15 @@ if (v:version >= 704 || has('nvim')) && executable('git')
 
     " vim-jp/vim-go-extra {{{
     function! s:hook_add_vim_go_extra() abort
-      " Go編集時にerrをハイライトする
-      " http://yuroyoro.hatenablog.com/entry/2014/08/12/144157
-      autocmd vimrc FileType go highlight goErr cterm=bold ctermfg=214
-      autocmd vimrc FileType go match goErr /\<err\>/
       " Go編集時はタブにする
       autocmd vimrc FileType go setlocal noexpandtab list tabstop=2 shiftwidth=2
+      " Go編集時にerrをハイライトする
+      " http://yuroyoro.hatenablog.com/entry/2014/08/12/144157
+      highlight goHighlight cterm=bold ctermfg=214
+      autocmd vimrc FileType go call matchadd('goHighlight', '\<\%(_\|err\)\>')
+      " 末尾のセミコロンをハイライトする
+      highlight goSemicolon cterm=bold ctermfg=DarkRed
+      autocmd vimrc FileType go call matchadd('goSemicolon', ';\ze\s*$')
     endfunction
 
     function! s:hook_post_update_vim_go_extra() abort
