@@ -1,5 +1,5 @@
 " .vimrcを再読み込みする {{{
-nnoremap ,w :source $MYVIMRC<CR>
+nnoremap ,w :<C-u>source $MYVIMRC<CR>
 " }}}
 
 " ghqの管理リポジトリにpecoでcdする {{{
@@ -15,7 +15,7 @@ function! ChangeDirectory() abort
   execute 'cd' fnameescape(l:directory)
 endfunction
 
-nnoremap ,c :call ChangeDirectory()<CR>
+nnoremap ,c :<C-u>call ChangeDirectory()<CR>
 " }}}
 
 " カレントディレクトリのリポジトリのファイルをpecoで開く {{{
@@ -29,7 +29,7 @@ function! OpenFile() abort
   endfor
 endfunction
 
-nnoremap ,e :call OpenFile()<CR>
+nnoremap ,e :<C-u>call OpenFile()<CR>
 " }}}
 
 " ghqの管理リポジトリを選択してからpecoでファイルを開く {{{
@@ -53,7 +53,7 @@ function! OpenFileAfterSelectRepository() abort
   endfor
 endfunction
 
-nnoremap ,r :call OpenFileAfterSelectRepository()<CR>
+nnoremap ,r :<C-u>call OpenFileAfterSelectRepository()<CR>
 " }}}
 
 " vim:ft=vim:fdm=marker:fen:
