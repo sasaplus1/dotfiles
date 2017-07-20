@@ -6,6 +6,7 @@ taps:
     - { repo: 'homebrew/nginx' }
 
   macos:
-    - { repo: 'caskroom/fonts'           }
-    - { repo: 'caskroom/versions'        }
-    - { repo: 'delphinus/macvim-kaoriya' }
+    - { repo: 'caskroom/fonts'                  }
+    - { repo: 'caskroom/versions'               }
+    - { repo: 'delphinus/macvim-kaoriya'        }
+    - { repo: 'universal-ctags/universal-ctags' }
