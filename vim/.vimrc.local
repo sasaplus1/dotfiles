@@ -8,7 +8,7 @@ function! ChangeDirectory() abort
     return
   endif
 
-  execute printf('cd "%s"', l:directory)
+  execute 'cd' fnameescape(l:directory)
 endfunction
 
 nnoremap ,c :call ChangeDirectory()<CR>
@@ -21,7 +21,7 @@ function! OpenFile() abort
   redraw!
 
   for l:file in split(l:files, '\n')
-    execute 'e' l:file
+    execute 'edit' fnameescape(l:file)
   endfor
 endfunction
 
@@ -45,7 +45,7 @@ function! OpenFileAfterSelectRepository() abort
   redraw!
 
   for l:file in split(l:files, '\n')
-    execute printf('e "%s/%s"', l:directory, l:file)
+    execute 'edit' fnameescape(printf('%s/%s', l:directory, l:file))
   endfor
 endfunction
 
