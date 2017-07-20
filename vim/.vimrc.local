@@ -1,3 +1,7 @@
+" .vimrcを再読み込みする {{{
+nnoremap ,w :source $MYVIMRC<CR>
+" }}}
+
 " ghqの管理リポジトリにpecoでcdする {{{
 function! ChangeDirectory() abort
   let l:directory = expand(system('ghq list -p | peco | tr -d "\n"'))
