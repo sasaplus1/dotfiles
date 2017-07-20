@@ -94,91 +94,91 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \ })
     " }}}
 
-    " Shougo/denite.nvim & Shougo/neomru.vim {{{
-    function! s:hook_add_denite_nvim() abort
-      " Ctrl-pで使用するソース
-      let l:sources = [
-            \ 'buffer',
-            \  "`finddir('.git', ';') != '' ? 'file_rec/git' : 'file_rec'`",
-            \ ]
-
-      if dein#tap('neomru.vim')
-        " Ctrl-F2と,umで最近開いたファイル一覧
-        nnoremap <C-F2> :<C-u>Denite file_mru<CR>
-        nnoremap ,um :<C-u>Denite file_mru<CR>
-
-        " Ctrl-pにfile_mruのソースを追加する
-        call add(l:sources, 'file_mru')
-      endif
-
-      if dein#tap('vim-denite-ghq')
-        " Ctrl-pにghqのソースを追加する
-        call add(l:sources, 'ghq')
-      endif
-
-      " Ctrl-pでカレントディレクトリからファイルの一覧などを表示
-      execute 'nnoremap <C-p> :<C-u>Denite ' . join(l:sources, ' ') . '<CR>'
-
-      " ,ulで行一覧
-      nnoremap ,ul :<C-u>Denite line<CR>
-
-      " ,uyでレジスタ一覧
-      nnoremap ,uy :<C-u>Denite register<CR>
-
-      " F2と,ubでバッファ一覧
-      nnoremap <F2> :<C-u>Denite buffer<CR>
-      nnoremap ,ub :<C-u>Denite buffer<CR>
-    endfunction
-
-    function! s:hook_post_source_denite_nvim() abort
-      " ptを使った検索を設定する
-      if executable('pt')
-        call denite#custom#var('file_rec', 'command', [
-              \ 'pt', '--follow', '--nocolor', '--nogroup', '-g:', '',
-              \ ])
-        call denite#custom#var('grep', 'command', ['pt'])
-        call denite#custom#var('grep', 'default_opts', [
-              \ '--nogroup', '--nocolor', '--smart-case',
-              \ ])
-        call denite#custom#var('grep', 'recursive_opts', [])
-        call denite#custom#var('grep', 'pattern_opt', [])
-        call denite#custom#var('grep', 'separator', ['--'])
-        call denite#custom#var('grep', 'final_opts', [])
-      endif
-
-      "call denite#custom#alias('filter', 'matcher_ignore_globs', 'additional_matcher_ignore_globs')
-      "call denite#custom#var('filter', 'additional_matcher_ignore_globs', [])
-
-      " file_rec/gitのsourceを作る
-      call denite#custom#alias('source', 'file_rec/git', 'file_rec')
-      call denite#custom#var('file_rec/git', 'command', [
-            \ 'bash', '-c', 'git ls-files -co --exclude-standard "$(git rev-parse --show-toplevel)"',
-            \ ])
-
-      " 挿入モードでもCtrl-n, Ctrl-pで行を移動できるようにする
-      call denite#custom#map('insert', '<C-n>', '<denite:move_to_next_line>', 'noremap')
-      call denite#custom#map('insert', '<C-p>', '<denite:move_to_previous_line>', 'noremap')
-    endfunction
-
-    call dein#add('Shougo/neomru.vim', {
-          \ 'lazy' : 1,
-          \ })
-    call dein#add('Jagua/vim-denite-ghq', {
-          \ 'lazy' : 1,
-          \ 'on_if' : 'has("python3") && executable("ghq")',
-          \ })
-    call dein#add('Shougo/denite.nvim', {
-          \ 'depends' : [
-          \   'neomru.vim',
-          \   'vim-denite-ghq',
-          \ ],
-          \ 'hook_add' : function('s:hook_add_denite_nvim'),
-          \ 'hook_post_source' : function('s:hook_post_source_denite_nvim'),
-          \ 'lazy' : 1,
-          \ 'on_cmd' : 'Denite',
-          \ 'on_if' : 'has("python3") && v:version >= 800',
-          \ })
-    " }}}
+"    " Shougo/denite.nvim & Shougo/neomru.vim {{{
+"    function! s:hook_add_denite_nvim() abort
+"      " Ctrl-pで使用するソース
+"      let l:sources = [
+"            \ 'buffer',
+"            \  "`finddir('.git', ';') != '' ? 'file_rec/git' : 'file_rec'`",
+"            \ ]
+"
+"      if dein#tap('neomru.vim')
+"        " Ctrl-F2と,umで最近開いたファイル一覧
+"        nnoremap <C-F2> :<C-u>Denite file_mru<CR>
+"        nnoremap ,um :<C-u>Denite file_mru<CR>
+"
+"        " Ctrl-pにfile_mruのソースを追加する
+"        call add(l:sources, 'file_mru')
+"      endif
+"
+"      if dein#tap('vim-denite-ghq')
+"        " Ctrl-pにghqのソースを追加する
+"        call add(l:sources, 'ghq')
+"      endif
+"
+"      " Ctrl-pでカレントディレクトリからファイルの一覧などを表示
+"      execute 'nnoremap <C-p> :<C-u>Denite ' . join(l:sources, ' ') . '<CR>'
+"
+"      " ,ulで行一覧
+"      nnoremap ,ul :<C-u>Denite line<CR>
+"
+"      " ,uyでレジスタ一覧
+"      nnoremap ,uy :<C-u>Denite register<CR>
+"
+"      " F2と,ubでバッファ一覧
+"      nnoremap <F2> :<C-u>Denite buffer<CR>
+"      nnoremap ,ub :<C-u>Denite buffer<CR>
+"    endfunction
+"
+"    function! s:hook_post_source_denite_nvim() abort
+"      " ptを使った検索を設定する
+"      if executable('pt')
+"        call denite#custom#var('file_rec', 'command', [
+"              \ 'pt', '--follow', '--nocolor', '--nogroup', '-g:', '',
+"              \ ])
+"        call denite#custom#var('grep', 'command', ['pt'])
+"        call denite#custom#var('grep', 'default_opts', [
+"              \ '--nogroup', '--nocolor', '--smart-case',
+"              \ ])
+"        call denite#custom#var('grep', 'recursive_opts', [])
+"        call denite#custom#var('grep', 'pattern_opt', [])
+"        call denite#custom#var('grep', 'separator', ['--'])
+"        call denite#custom#var('grep', 'final_opts', [])
+"      endif
+"
+"      "call denite#custom#alias('filter', 'matcher_ignore_globs', 'additional_matcher_ignore_globs')
+"      "call denite#custom#var('filter', 'additional_matcher_ignore_globs', [])
+"
+"      " file_rec/gitのsourceを作る
+"      call denite#custom#alias('source', 'file_rec/git', 'file_rec')
+"      call denite#custom#var('file_rec/git', 'command', [
+"            \ 'bash', '-c', 'git ls-files -co --exclude-standard "$(git rev-parse --show-toplevel)"',
+"            \ ])
+"
+"      " 挿入モードでもCtrl-n, Ctrl-pで行を移動できるようにする
+"      call denite#custom#map('insert', '<C-n>', '<denite:move_to_next_line>', 'noremap')
+"      call denite#custom#map('insert', '<C-p>', '<denite:move_to_previous_line>', 'noremap')
+"    endfunction
+"
+"    call dein#add('Shougo/neomru.vim', {
+"          \ 'lazy' : 1,
+"          \ })
+"    call dein#add('Jagua/vim-denite-ghq', {
+"          \ 'lazy' : 1,
+"          \ 'on_if' : 'has("python3") && executable("ghq")',
+"          \ })
+"    call dein#add('Shougo/denite.nvim', {
+"          \ 'depends' : [
+"          \   'neomru.vim',
+"          \   'vim-denite-ghq',
+"          \ ],
+"          \ 'hook_add' : function('s:hook_add_denite_nvim'),
+"          \ 'hook_post_source' : function('s:hook_post_source_denite_nvim'),
+"          \ 'lazy' : 1,
+"          \ 'on_cmd' : 'Denite',
+"          \ 'on_if' : 'has("python3") && v:version >= 800',
+"          \ })
+"    " }}}
 
     " Shougo/neocomplete.vim {{{
     function! s:hook_source_neocomplete_vim() abort
@@ -232,6 +232,42 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     call dein#add('Shougo/neocomplete.vim', {
           \ 'on_if' : 'has("lua") && (v:version == 703 && has("patch885")) || v:version >= 704',
           \ 'hook_source' : function('s:hook_source_neocomplete_vim'),
+          \ })
+    " }}}
+
+    " ctrlpvim/ctrlp.vim {{{
+    function! s:hook_add_ctrlpvim_ctrlpvim() abort
+      " <C-p>のコマンドを変更する
+      let g:ctrlp_cmd = 'CtrlPMixed'
+
+      " NOTE: https://kamiya555.github.io/2016/07/24/vim-ctrlp/
+      " キャッシュディレクトリ
+      let g:ctrlp_cache_dir = $HOME . '/.cache/ctrlp'
+      " キャッシュを終了時に削除しない
+      let g:ctrlp_clear_cache_on_exit = 0
+      " 遅延再描画
+      let g:ctrlp_lazy_update = 1
+      " ルートパスと認識させるためのファイル
+      let g:ctrlp_root_markers = ['Gemfile', 'package.json']
+      " CtrlPのウィンドウ最大高さ
+      let g:ctrlp_max_height = 20
+      " 無視するディレクトリの正規表現の一部
+      let l:ignore_dirs = 'bower_components|node_modules|vendor'
+      " 無視するドットで始まるディレクトリの正規表現の一部
+      let l:ignore_dot_dirs = 'git|hg|svn|bundle|sass-cache|node-gyp|cache'
+      " 無視するファイルの正規表現の一部
+      let l:ignore_files = 'exe|so|dll|bmp|gif|ico|jpe?g|png|webp|ai|psd'
+      " 無視するファイルとディレクトリの設定
+      let g:ctrlp_custom_ignore = {
+            \ 'dir' : printf('\v[\/]%%(%%(%s)|\.%%(%s))$', l:ignore_dirs, l:ignore_dot_dirs),
+            \ 'file' : printf('\v\.%%(%s)$', l:ignore_files),
+            \ }
+    endfunction
+
+    call dein#add('ctrlpvim/ctrlp.vim', {
+          \ 'hook_add' : function('s:hook_add_ctrlpvim_ctrlpvim'),
+          \ 'lazy' : 1,
+          \ 'on_if' : 'v:version >= 700',
           \ })
     " }}}
 
