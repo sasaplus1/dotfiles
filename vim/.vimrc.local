@@ -1,11 +1,55 @@
-scriptencoding utf-8
+" ghqの管理リポジトリにpecoでcdする {{{
+function! ChangeDirectory() abort
+  let l:directory = expand(system('ghq list -p | peco | tr -d "\n"'))
 
-" NeoBundle {{{
+  redraw!
 
-" 使用するプロトコルを変更する
-"let g:neobundle#types#git#default_protocol='https'
-"let g:neobundle#types#hg#default_protocol='https'
+  if !isdirectory(l:directory)
+    return
+  endif
 
+  execute printf('cd "%s"', l:directory)
+endfunction
+
+nnoremap ,c :call ChangeDirectory()<CR>
+" }}}
+
+" カレントディレクトリのリポジトリのファイルをpecoで開く {{{
+function! OpenFile() abort
+  let l:files = system('git ls-files -co --exclude-standard | peco')
+
+  redraw!
+
+  for l:file in split(l:files, '\n')
+    execute 'e' l:file
+  endfor
+endfunction
+
+nnoremap ,e :call OpenFile()<CR>
+" }}}
+
+" ghqの管理リポジトリを選択してからpecoでファイルを開く {{{
+function! OpenFileAfterSelectRepository() abort
+  let l:directory = system('ghq list -p | peco | tr -d "\n"')
+
+  if !isdirectory(l:directory)
+    redraw!
+    return
+  endif
+
+  let l:files = system(printf(
+        \ 'git --git-dir="%s" ls-files --exclude-standard | peco',
+        \ l:directory . '/.git',
+        \ ))
+
+  redraw!
+
+  for l:file in split(l:files, '\n')
+    execute printf('e "%s/%s"', l:directory, l:file)
+  endfor
+endfunction
+
+nnoremap ,r :call OpenFileAfterSelectRepository()<CR>
 " }}}
 
 " vim:ft=vim:fdm=marker:fen:
