@@ -237,9 +237,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
 
     " ternjs/tern_for_vim {{{
     function! s:hook_post_update_tern_for_vim() abort
-      let l:command = join(['cd', '"' . dein#get('tern_for_vim').path . '"', '&&', 'npm', 'install'])
-
-      call system(l:command)
+      call system(printf('cd "%s" && npm install', dein#get('tern_for_vim').path))
     endfunction
 
     function! s:hook_source_tern_for_vim() abort
