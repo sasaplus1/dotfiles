@@ -251,16 +251,26 @@ if (v:version >= 704 || has('nvim')) && executable('git')
       let g:ctrlp_root_markers = ['Gemfile', 'package.json']
       " CtrlPのウィンドウ最大高さ
       let g:ctrlp_max_height = 20
+
       " 無視するディレクトリの正規表現の一部
       let l:ignore_dirs = 'bower_components|node_modules|vendor'
       " 無視するドットで始まるディレクトリの正規表現の一部
       let l:ignore_dot_dirs = 'git|hg|svn|bundle|sass-cache|node-gyp|cache'
       " 無視するファイルの正規表現の一部
       let l:ignore_files = 'exe|so|dll|bmp|gif|ico|jpe?g|png|webp|ai|psd'
+
       " 無視するファイルとディレクトリの設定
       let g:ctrlp_custom_ignore = {
             \ 'dir' : printf('\v[\/]%%(%%(%s)|\.%%(%s))$', l:ignore_dirs, l:ignore_dot_dirs),
             \ 'file' : printf('\v\.%%(%s)$', l:ignore_files),
+            \ }
+
+      " キーマッピングを変更する
+      let g:ctrlp_prompt_mappings = {
+            \ 'PrtSelectMove("j")' : ['<C-n>', '<Down>'],
+            \ 'PrtSelectMove("k")' : ['<C-p>', '<Up>'],
+            \ 'PrtHistory(-1)' : ['<C-j>'],
+            \ 'PrtHistory(1)' : ['<C-k>'],
             \ }
     endfunction
 
