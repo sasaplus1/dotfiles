@@ -272,6 +272,13 @@ if (v:version >= 704 || has('nvim')) && executable('git')
             \ 'PrtHistory(-1)' : ['<C-j>'],
             \ 'PrtHistory(1)' : ['<C-k>'],
             \ }
+
+      " ,umで最近開いたファイル一覧
+      nnoremap ,um :<C-u>CtrlPMRUFiles<CR>
+      " ,ulで行一覧
+      nnoremap ,ul :<C-u>CtrlPLine<CR>
+      " ,ubでバッファ一覧
+      nnoremap ,ub :<C-u>CtrlPBuffer<CR>
     endfunction
 
     call dein#add('ctrlpvim/ctrlp.vim', {
