@@ -437,7 +437,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
       highlight goHighlight cterm=bold ctermfg=214
       autocmd vimrc FileType go call matchadd('goHighlight', '\<\%(_\|err\)\>')
       " 末尾のセミコロンをハイライトする
-      highlight goSemicolon cterm=bold ctermfg=DarkRed
+      highlight goSemicolon cterm=bold ctermfg=White ctermbg=Red
       autocmd vimrc FileType go call matchadd('goSemicolon', ';\ze\s*$')
     endfunction
 
