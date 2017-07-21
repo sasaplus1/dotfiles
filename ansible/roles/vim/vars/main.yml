@@ -1,5 +1,5 @@
 ---
 repositories:
-  - { repo: 'https://github.com/Shougo/neobundle.vim.git', dest: '{{ home_dir }}/.vim/bundle/neobundle.vim' }
-  - { repo: 'https://github.com/Shougo/unite.vim.git',     dest: '{{ home_dir }}/.vim/bundle/unite.vim'     }
-  - { repo: 'https://github.com/Shougo/vimproc.vim.git',   dest: '{{ home_dir }}/.vim/bundle/vimproc.vim'   }
+  - { repo: 'https://github.com/Shougo/neobundle.vim.git', dest: '{{ home_dir }}/.vim/dein/repos/github.com/Shougo/neobundle.vim' }
+  - { repo: 'https://github.com/Shougo/unite.vim.git',     dest: '{{ home_dir }}/.vim/dein/repos/github.com/Shougo/unite.vim'     }
+  - { repo: 'https://github.com/Shougo/vimproc.vim.git',   dest: '{{ home_dir }}/.vim/dein/repos/github.com/Shougo/vimproc.vim'   }
