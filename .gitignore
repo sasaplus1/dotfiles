@@ -1,4 +1,9 @@
-### https://raw.github.com/github/gitignore/8edb8a95c4c4b3dce71a378aaaf89275510b9cef/Global/Vagrant.gitignore
+### https://raw.github.com/github/gitignore/8edb8a95c4c4b3dce71a378aaaf89275510b9cef/Global/ansible.gitignore
+
+*.retry
+
+
+### https://raw.github.com/github/gitignore/8edb8a95c4c4b3dce71a378aaaf89275510b9cef/Global/vagrant.gitignore
 
 # General
 .vagrant/
