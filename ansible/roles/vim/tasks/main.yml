@@ -10,6 +10,6 @@
 - name: build vimproc library
   command: 'make'
   args:
-    chdir: '{{ vimproc.directory }}'
+    chdir: '{{ vimproc_directory }}'
   tags:
     - vim

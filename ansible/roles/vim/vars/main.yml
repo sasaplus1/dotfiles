@@ -4,5 +4,4 @@ repositories:
   - { repo: 'https://github.com/Shougo/unite.vim.git',     dest: '{{ home_dir }}/.vim/dein/repos/github.com/Shougo/unite.vim'     }
   - { repo: 'https://github.com/Shougo/vimproc.vim.git',   dest: '{{ home_dir }}/.vim/dein/repos/github.com/Shougo/vimproc.vim'   }
 
-vimproc:
-  - { directory: '{{ home_dir }}/.vim/dein/repos/github.com/Shougo/vimproc.vim' }
+vimproc_directory: '{{ home_dir }}/.vim/dein/repos/github.com/Shougo/vimproc.vim'
