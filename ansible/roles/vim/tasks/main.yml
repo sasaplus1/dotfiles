@@ -8,6 +8,6 @@
     - vim
 
 - name: build vimproc library
-  command: "vim +'silent VimProcInstall' +'qall!'"
+  shell: "vim +'silent VimProcInstall' +'qall!'"
   tags:
     - vim
