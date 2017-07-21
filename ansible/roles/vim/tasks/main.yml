@@ -8,6 +8,8 @@
     - vim
 
 - name: build vimproc library
-  shell: "vim +'silent VimProcInstall' +'qall!'"
+  command: 'make'
+  args:
+    chdir: '{{ vimproc.directory }}'
   tags:
     - vim
