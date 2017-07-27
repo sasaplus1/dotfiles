@@ -175,7 +175,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
 "          \ 'hook_add' : function('s:hook_add_denite_nvim'),
 "          \ 'hook_post_source' : function('s:hook_post_source_denite_nvim'),
 "          \ 'lazy' : 1,
-"          \ 'on_cmd' : 'Denite',
+"          \ 'on_cmd' : '<Plug>(Denite',
 "          \ 'on_if' : 'has("python3") && v:version >= 800',
 "          \ })
 "    " }}}
@@ -284,7 +284,9 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     call dein#add('ctrlpvim/ctrlp.vim', {
           \ 'hook_add' : function('s:hook_add_ctrlpvim_ctrlpvim'),
           \ 'lazy' : 1,
+          \ 'on_cmd' : '<Plug>(CtrlP',
           \ 'on_if' : 'v:version >= 700',
+          \ 'on_map' : '<C-p>',
           \ })
     " }}}
 
@@ -336,7 +338,10 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     " thinca/vim-quickrun {{{
     call dein#add('thinca/vim-quickrun', {
           \ 'lazy' : 1,
-          \ 'on_cmd' : 'QuickRun',
+          \ 'on_cmd' : [
+          \   'QuickRun',
+          \   '<Plug>(quick',
+          \ ],
           \ 'on_map' : '<Leader>r',
           \ })
     " }}}
@@ -394,13 +399,24 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \ 'depends' : 'vim-textobj-user',
           \ 'hook_source' : function('s:hook_source_vim_textobj_multiblock'),
           \ 'lazy' : 1,
+          \ 'on_cmd' : '<Plug>(textobj-multiblock-',
           \ 'on_event' : 'InsertEnter',
           \ 'on_map' : [
-          \   '<Plug>',
           \   'c',
           \   'd',
           \ ],
           \ })
+"    call dein#add('osyo-manga/vim-textobj-multiblock', {
+"          \ 'depends' : 'vim-textobj-user',
+"          \ 'hook_source' : function('s:hook_source_vim_textobj_multiblock'),
+"          \ 'lazy' : 1,
+"          \ 'on_cmd' : '<Plug>(textobj-multiblock',
+"          \ 'on_event' : 'InsertEnter',
+"          \ 'on_map' : [
+"          \   'c',
+"          \   'd',
+"          \ ],
+"          \ })
     " }}}
 
     " rhysd/vim-operator-surround {{{
@@ -423,8 +439,8 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \ ],
           \ 'hook_source' : function('s:hook_source_vim_operator_surround'),
           \ 'lazy' : 1,
+          \ 'on_cmd' : '<Plug>(operator-surround-',
           \ 'on_event' : 'InsertEnter',
-          \ 'on_map' : '<Plug>',
           \ })
     " }}}
 
@@ -467,7 +483,12 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     call dein#add('tyru/open-browser.vim', {
           \ 'hook_source' : function('s:hook_source_open_browser_vim'),
           \ 'lazy' : 1,
-          \ 'on_cmd' : 'OpenBrowser',
+          \ 'on_cmd' : [
+          \   'OpenBrowser',
+          \   'OpenBrowserSearch',
+          \   'OpenBrowserSmartSearch',
+          \   '<Plug>(openbrowser-',
+          \ ],
           \ 'on_map' : 'gx',
           \ })
     " }}}
