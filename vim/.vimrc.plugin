@@ -249,8 +249,11 @@ if (v:version >= 704 || has('nvim')) && executable('git')
       let g:ctrlp_lazy_update = 1
       " ルートパスと認識させるためのファイル
       let g:ctrlp_root_markers = ['Gemfile', 'package.json']
-      " CtrlPのウィンドウ最大高さ
-      let g:ctrlp_max_height = 20
+
+      " ドットで始まるファイルやディレクトリを表示する
+      let g:ctrlp_show_hidden = 1
+      " ウィンドウに関する設定
+      let g:ctrlp_match_window = 'bottom,order:ttb,min:20,max:20,results:20'
 
       " 無視するディレクトリの正規表現の一部
       let l:ignore_dirs = 'bower_components|node_modules|vendor'
