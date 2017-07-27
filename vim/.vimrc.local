@@ -28,6 +28,7 @@ function! OpenRepositoryFile() abort
     return
   endif
 
+  " サブディレクトリでもリポジトリのファイルが取得できるようパスを指定する
   let l:command = printf(
         \ "git ls-files -co --exclude-standard --full-name '%s' | peco",
         \ l:directory
@@ -59,9 +60,11 @@ function! OpenRepositoryFileAfterSelectRepository() abort
     return
   endif
 
+  " リポジトリ外から実行することがあるので--git-dirで指定する
   let l:command = printf(
-        \ "git ls-files -co --exclude-standard --full-name '%s' | peco",
-        \ l:directory
+        \ "git --git-dir='%s' ls-files -co --exclude-standard '%s' | peco",
+        \ l:directory . '/.git',
+        \ l:directory . '/'
         \ )
 
   let l:files = split(system(l:command), '\n')
@@ -73,7 +76,7 @@ function! OpenRepositoryFileAfterSelectRepository() abort
   endif
 
   for l:file in l:files
-    execute 'edit' fnameescape(printf('%s/%s', l:directory, l:file))
+    execute 'edit' fnameescape(l:file)
   endfor
 endfunction
 

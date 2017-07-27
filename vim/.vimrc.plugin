@@ -494,10 +494,10 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     " }}}
 
     " rbtnn/vimconsole.vim {{{
-    call dein#add('rbtnn/vimconsole.vim', {
-          \ 'lazy' : 1,
-          \ 'on_ft' : 'vim',
-          \ })
+"    call dein#add('rbtnn/vimconsole.vim', {
+"          \ 'lazy' : 1,
+"          \ 'on_ft' : 'vim',
+"          \ })
     " }}}
 
     " vim-jp/vim-go-extra {{{
