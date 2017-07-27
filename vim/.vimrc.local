@@ -4,7 +4,7 @@ nnoremap ,w :<C-u>source $MYVIMRC<CR>
 
 " ghqの管理リポジトリにpecoでcdする {{{
 function! ChangeDirectory() abort
-  let l:directory = expand(system('ghq list -p | peco | tr -d "\n"'))
+  let l:directory = expand(system("ghq list -p | peco | tr -d '\n'"))
 
   redraw!
 
@@ -20,22 +20,38 @@ nnoremap ,c :<C-u>call ChangeDirectory()<CR>
 " }}}
 
 " カレントディレクトリのリポジトリのファイルをpecoで開く {{{
-function! OpenFile() abort
-  let l:files = system('git ls-files -co --exclude-standard | peco')
+function! OpenRepositoryFile() abort
+  let l:directory = system("git rev-parse --show-toplevel | tr -d '\n'")
+
+  if !isdirectory(l:directory)
+    echoerr 'current directory is not within a git repository'
+    return
+  endif
+
+  let l:command = printf(
+        \ "git ls-files -co --exclude-standard --full-name '%s' | peco",
+        \ l:directory
+        \ )
+
+  let l:files = split(system(l:command), '\n')
 
   redraw!
 
-  for l:file in split(l:files, '\n')
-    execute 'edit' fnameescape(l:file)
+  if len(l:files) == 0
+    return
+  endif
+
+  for l:file in l:files
+    execute 'edit' fnameescape(printf('%s/%s', l:directory, l:file))
   endfor
 endfunction
 
-nnoremap ,e :<C-u>call OpenFile()<CR>
+nnoremap ,e :<C-u>call OpenRepositoryFile()<CR>
 " }}}
 
 " ghqの管理リポジトリを選択してからpecoでファイルを開く {{{
-function! OpenFileAfterSelectRepository() abort
-  let l:directory = system('ghq list -p | peco | tr -d "\n"')
+function! OpenRepositoryFileAfterSelectRepository() abort
+  let l:directory = system("ghq list -p | peco | tr -d '\n'")
 
   if !isdirectory(l:directory)
     redraw!
@@ -43,19 +59,25 @@ function! OpenFileAfterSelectRepository() abort
     return
   endif
 
-  let l:files = system(printf(
-        \ 'git --git-dir="%s" ls-files --exclude-standard | peco',
-        \ l:directory . '/.git',
-        \ ))
+  let l:command = printf(
+        \ "git ls-files -co --exclude-standard --full-name '%s' | peco",
+        \ l:directory
+        \ )
+
+  let l:files = split(system(l:command), '\n')
 
   redraw!
 
-  for l:file in split(l:files, '\n')
+  if len(l:files) == 0
+    return
+  endif
+
+  for l:file in l:files
     execute 'edit' fnameescape(printf('%s/%s', l:directory, l:file))
   endfor
 endfunction
 
-nnoremap ,r :<C-u>call OpenFileAfterSelectRepository()<CR>
+nnoremap ,r :<C-u>call OpenRepositoryFileAfterSelectRepository()<CR>
 " }}}
 
 " vim:ft=vim:fdm=marker:fen:
