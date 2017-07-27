@@ -9,6 +9,7 @@ function! ChangeDirectory() abort
   redraw!
 
   if !isdirectory(l:directory)
+    echoerr printf('"%s" is not a directory', l:directory)
     return
   endif
 
@@ -38,6 +39,7 @@ function! OpenFileAfterSelectRepository() abort
 
   if !isdirectory(l:directory)
     redraw!
+    echoerr printf('"%s" is not a directory', l:directory)
     return
   endif
 
