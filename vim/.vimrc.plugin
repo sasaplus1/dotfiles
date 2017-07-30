@@ -18,7 +18,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
 
   " runtimepathに追加されていなかったら追加する
   if &runtimepath !~# s:dein_repos
-    execute 'set runtimepath+=' . s:dein_repos
+    execute 'set' 'runtimepath+=' . s:dein_repos
   endif
 
   if dein#load_state(s:plugin_dir)
