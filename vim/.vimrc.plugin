@@ -38,9 +38,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
         let l:make = 'make'
       endif
 
-      let l:command = join(['cd', '"' . dein#get('vimproc.vim').path . '"', '&&', l:make])
-
-      call system(l:command)
+      call system(printf('cd "%s" && %s', dein#get('vimproc.vim').path, l:make))
     endfunction
 
     function! s:hook_post_source_vimfiler() abort
