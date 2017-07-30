@@ -1,7 +1,17 @@
-" NOTE:
-"   see: :help no-eval-feature
-"   see: https://stackoverflow.com/questions/27451637/what-is-1-testing-against-in-if-1-finish-in-a-vimscript
 if 1
+  " NOTE:
+  "   :help no-eval-feature
+  "   https://stackoverflow.com/q/27451637
+
+  if &compatible
+    set nocompatible
+  endif
+
+  if has('multi_byte')
+    set encoding=utf-8
+    scriptencoding utf-8
+  endif
+
   " symlink先のファイルパスを解決
   let s:vimrc_file = resolve($MYVIMRC)
   " ファイル名を取り除く

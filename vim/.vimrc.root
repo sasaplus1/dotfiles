@@ -1,20 +1,4 @@
-if &compatible
-  set nocompatible
-endif
-
 " TODO: http://www.kawaz.jp/pukiwiki/?vim#cb691f26
-
-set encoding=utf-8
-set fileformat=unix
-
-if has('multi_byte')
-  scriptencoding utf-8
-endif
-
-if !has('gui_running')
-  " 256色にする
-  set t_Co=256
-endif
 
 " Lua {{{
 
