@@ -9,8 +9,17 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     execute '!git clone https://github.com/Shougo/dein.vim' s:dein_repos
   endif
 
-  execute 'set runtimepath&'
-  execute 'set runtimepath+=' . s:dein_repos
+  " NOTE:
+  "   リセットしてしまうとkaoriyaのスクリプトが読み込まれない
+  "   $VIM/vimrc を参照のこと
+  "
+  " リセットする
+  " set runtimepath&
+
+  " runtimepathに追加されていなかったら追加する
+  if &runtimepath !~# s:dein_repos
+    execute 'set runtimepath+=' . s:dein_repos
+  endif
 
   if dein#load_state(s:plugin_dir)
     call dein#begin(s:plugin_dir)
