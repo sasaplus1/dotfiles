@@ -62,8 +62,9 @@
   user = sasaplus1
 
 [user]
-  name = sasaplus1
-  email = sasaplus1@gmail.com
+;  email = sasaplus1@gmail.com
+;  name = sasaplus1
+  useConfigOnly = true
 
 [include]
   path = ~/.gitconfig.local
