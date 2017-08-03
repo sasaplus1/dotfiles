@@ -2,9 +2,10 @@
 taps:
 
   common:
-    - { repo: 'homebrew/dupes' }
-    - { repo: 'homebrew/nginx' }
-    - { repo: 'sonatard/tools' }
+    - { repo: 'homebrew/dupes'    }
+    - { repo: 'homebrew/nginx'    }
+    - { repo: 'monochromegane/pt' }
+    - { repo: 'sonatard/tools'    }
 
   macos:
     - { repo: 'caskroom/fonts'                  }

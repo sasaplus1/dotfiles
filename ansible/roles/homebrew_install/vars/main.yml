@@ -13,6 +13,7 @@ packages:
   # - { name: 'hub'                                                                                          }
   # - { name: 'jq'                                                                                           }
   # - { name: 'mercurial'                                                                                    }
+    - { name: 'monochromegane/pt/pt'                                                                         }
     - { name: 'nginx-full',           install_options: 'with-subs-filter-module'                             }
   # - { name: 'nodebrew'                                                                                     }
     - { name: 'peco'                                                                                         }
@@ -24,7 +25,6 @@ packages:
     - { name: 'ruby-build'                                                                                   }
     - { name: 'sqlite'                                                                                       }
   # - { name: 'textql'                                                                                       }
-    - { name: 'the_platinum_searcher'                                                                        }
   # - { name: 'the_silver_searcher'                                                                          }
     - { name: 'tig'                                                                                          }
     - { name: 'tmux'                                                                                         }
