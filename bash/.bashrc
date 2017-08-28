@@ -353,6 +353,14 @@ kkill() {
   [ -n "$pid" ] && kill -9 "$pid"
 }
 
+docker-remove-containers() {
+  docker ps -a | sed 1d | peco | awk '{ print $1 }' | xargs docker rm
+}
+
+docker-remove-images() {
+  docker images | sed 1d | peco | awk '{ print $3 }' | xargs docker rmi
+}
+
 # }}}
 
 # load .bashrc.local
