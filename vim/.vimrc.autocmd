@@ -1,11 +1,11 @@
 " *.binと*.exeと*.dllはxxd
-autocmd vimrc BufNewFile,BufRead *.{bin,exe,dll} setlocal filetype=xxd
+autocmd vimrc BufNewFile,BufRead *.{bin,exe,dll} setfiletype xxd
 
 " *.jsxと*.mjsはJavaScript
-autocmd vimrc BufNewFile,BufRead *.{jsx,mjs} setlocal filetype=javascript
+autocmd vimrc BufNewFile,BufRead *.{jsx,mjs} setfiletype javascript
 
 " *.xulはXML
-autocmd vimrc BufNewFile,BufRead *.xul setlocal filetype=xml
+autocmd vimrc BufNewFile,BufRead *.xul setfiletype xml
 
 " HTML編集時にシンタックスハイライトを400桁までに制限する
 autocmd vimrc FileType html setlocal synmaxcol=400
@@ -23,7 +23,7 @@ autocmd vimrc InsertEnter * set pastetoggle=<C-t>
 autocmd vimrc InsertLeave * set nopaste pastetoggle=
 
 " コメント中の特定の単語を強調表示する
-autocmd vimrc VimEnter * call matchadd('Todo', '\<\%(TODO\|FIXME\|CHANGED\|XXX\|BUG\|HACK\|NOTE\|INFO\|IDEA\)\>')
+autocmd vimrc WinEnter,WinLeave,BufRead,BufNew * call matchadd('Todo', '\<\%(TODO\|FIXME\|CHANGED\|XXX\|BUG\|HACK\|NOTE\|INFO\|IDEA\)\>')
 
 " ウィンドウを移動したらバッファ番号とフルパスを表示する
 autocmd vimrc WinEnter * execute "normal! 2\<C-g>"
@@ -46,12 +46,10 @@ endfunction
 " Markdownファイルを開いたときにだけ実行する
 autocmd vimrc BufNewFile,BufRead *.{md,markdown,mkd,mdown,mkdn,mark} call s:set_autodate_for_jekyll()
 
+" いくつかの拡張子をMarkdownとして開く
+autocmd vimrc BufNewFile,BufRead *.{md,markdown,mkd,mdown,mkdn,mark} setfiletype markdown
+
 " JavaScriptの著名なモジュールの設定ファイルをJSONとして開く
-autocmd vimrc BufNewFile,BufRead .{babel,eslint,stylelint,textlint}rc setlocal filetype=json
-
-" TODO: イベントの見直しが必要？
-"autocmd vimrc BufNewFile,BufRead *.md,*.markdown,*.mkd,*.mdown,*.mkdn,*.mark setlocal filetype=markdown
-
-"autocmd vimrc BufNewFile,BufRead *.json setlocal filetype=json
+autocmd vimrc BufNewFile,BufRead .{babel,eslint,stylelint,textlint}rc setfiletype json
 
 " vim:ft=vim:fdm=marker:fen:
