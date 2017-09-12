@@ -43,4 +43,10 @@ nnoremap ) :<C-u>bnext<CR>
 " バッファ番号とフルパスを表示する
 nnoremap <C-g> 2<C-g>
 
+" C-kでオムニ補完
+inoremap <C-k> <C-x><C-o>
+
+" Tabで補完時に次の候補へ移動
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+
 " vim:ft=vim:fdm=marker:fen:
