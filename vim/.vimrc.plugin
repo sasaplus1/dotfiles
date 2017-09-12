@@ -505,6 +505,35 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \ })
     " }}}
 
+    " nathanaelkane/vim-indent-guides {{{
+    function! s:hook_source_vim_indent_guides() abort
+      " インデントガイドの太さを1にする
+      let g:indent_guides_guide_size = 1
+
+      " 4レベル目のインデントからガイドを表示する
+      let g:indent_guides_start_level = 4
+
+      " 起動時に有効にする
+      let g:indent_guides_enable_on_vim_startup = 0
+
+      " 除外するファイルタイプ
+      let g:indent_guides_exclude_filetypes = [
+            \ 'help',
+            \ 'unite',
+            \ 'vimfiler',
+            \ 'vimshell',
+            \ ]
+    endfunction
+
+    call dein#add('nathanaelkane/vim-indent-guides.git', {
+          \ 'hook_source' : function('s:hook_source_vim_indent_guides'),
+          \ 'lazy' : 1,
+          \ 'on_map' : [
+          \   '<Leader>ig',
+          \ ],
+          \ })
+    " }}}
+
     " rbtnn/vimconsole.vim {{{
 "    call dein#add('rbtnn/vimconsole.vim', {
 "          \ 'lazy' : 1,
