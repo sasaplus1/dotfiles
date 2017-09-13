@@ -262,6 +262,19 @@ if (v:version >= 704 || has('nvim')) && executable('git')
       " ウィンドウに関する設定
       let g:ctrlp_match_window = 'bottom,order:ttb,min:20,max:20,results:20'
 
+      " スペースを無視する
+      " https://github.com/ctrlpvim/ctrlp.vim/issues/196
+      let g:ctrlp_abbrev = {
+            \ 'gmode' : 'i',
+            \ 'abbrevs' : [
+            \   {
+            \     'pattern' : ' ',
+            \     'expanded' : '',
+            \     'mode' : 'fprz',
+            \   },
+            \ ],
+            \ }
+
       " 無視するディレクトリの正規表現の一部
       let l:ignore_dirs = 'bower_components|node_modules|vendor'
       " 無視するドットで始まるディレクトリの正規表現の一部
