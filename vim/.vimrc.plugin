@@ -418,7 +418,6 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \ 'hook_source' : function('s:hook_source_vim_textobj_multiblock'),
           \ 'lazy' : 1,
           \ 'on_cmd' : '<Plug>(textobj-multiblock-',
-          \ 'on_event' : 'InsertEnter',
           \ 'on_map' : [
           \   'c',
           \   'd',
@@ -458,7 +457,13 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \ 'hook_source' : function('s:hook_source_vim_operator_surround'),
           \ 'lazy' : 1,
           \ 'on_cmd' : '<Plug>(operator-surround-',
-          \ 'on_event' : 'InsertEnter',
+          \ 'on_map' : [
+          \   'sa',
+          \   'sd',
+          \   'sr',
+          \   'sbd',
+          \   'sbr',
+          \ ],
           \ })
     " }}}
 
