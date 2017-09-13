@@ -320,16 +320,8 @@ if (v:version >= 704 || has('nvim')) && executable('git')
       call system(printf('cd "%s" && npm install', dein#get('tern_for_vim').path))
     endfunction
 
-    function! s:hook_source_tern_for_vim() abort
-      if executable('tern')
-        autocmd vimrc FileType javascript setlocal omnifunc=tern#Complete
-        autocmd vimrc FileType javascript inoremap <expr><buffer> . ".\<C-x>\<C-o>"
-      endif
-    endfunction
-
     call dein#add('ternjs/tern_for_vim', {
           \ 'hook_post_update' : function('s:hook_post_update_tern_for_vim'),
-          \ 'hook_source' : function('s:hook_source_tern_for_vim'),
           \ 'lazy' : 1,
           \ 'on_ft' : [
           \   'javascript',
