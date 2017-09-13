@@ -331,17 +331,17 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \ })
     " }}}
 
-    " teramako/jscomplete-vim {{{
-    call dein#add('https://bitbucket.org/teramako/jscomplete-vim', {
-          \ 'lazy' : 1
-          \ })
-    " }}}
+"    " teramako/jscomplete-vim {{{
+"    call dein#add('https://bitbucket.org/teramako/jscomplete-vim', {
+"          \ 'lazy' : 1
+"          \ })
+"    " }}}
 
-    " othree/jspc.vim {{{
-    call dein#add('othree/jspc.vim', {
-          \ 'lazy' : 1
-          \ })
-    " }}}
+"    " othree/jspc.vim {{{
+"    call dein#add('othree/jspc.vim', {
+"          \ 'lazy' : 1
+"          \ })
+"    " }}}
 
     " editorconfig/editorconfig-vim {{{
     call dein#add('editorconfig/editorconfig-vim', {
