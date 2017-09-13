@@ -1,18 +1,18 @@
 " 論理行でなく表示行で移動する
-nnoremap j gj
-vnoremap j gj
+nnoremap <silent> j gj
+vnoremap <silent> j gj
 
-nnoremap k gk
-vnoremap k gk
+nnoremap <silent> k gk
+vnoremap <silent> k gk
 
-"nnoremap $ g$
-"vnoremap $ g$
+"nnoremap <silent> $ g$
+"vnoremap <silent> $ g$
 
-"nnoremap ^ g^
-"vnoremap ^ g^
+"nnoremap <silent> ^ g^
+"vnoremap <silent> ^ g^
 
-"nnoremap 0 g0
-"vnoremap 0 g0
+"nnoremap <silent> 0 g0
+"vnoremap <silent> 0 g0
 
 " very magicをonにする
 " http://deris.hatenablog.jp/entry/2013/05/15/024932
@@ -30,8 +30,8 @@ noremap <F1> <Nop>
 noremap! <F1> <Nop>
 
 " (, )でバッファの移動
-nnoremap ( :<C-u>bprevious<CR>
-nnoremap ) :<C-u>bnext<CR>
+nnoremap <silent> ( :<C-u>bprevious<CR>
+nnoremap <silent> ) :<C-u>bnext<CR>
 
 " バッファ番号とフルパスを表示する
 nnoremap <C-g> 2<C-g>
