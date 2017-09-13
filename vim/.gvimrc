@@ -66,4 +66,11 @@ endif
 
 " }}}
 
+" C-F4でバッファの削除
+nnoremap <silent> <C-F4> :<C-u>bdelete<CR>
+
+" C-Tab, C-S-Tabでバッファの移動
+nnoremap <silent> <C-Tab> :<C-u>bnext<CR>
+nnoremap <silent> <C-S-Tab> :<C-u>bprevious<CR>
+
 " vim:ft=vim:fdm=marker:fen:

@@ -29,13 +29,6 @@ nnoremap ,du :<C-u>diffupdate<CR>
 noremap <F1> <Nop>
 noremap! <F1> <Nop>
 
-" C-F4でバッファの削除
-nnoremap <C-F4> :<C-u>bdelete<CR>
-
-" C-Tab, C-S-Tabでバッファの移動
-nnoremap <C-Tab> :<C-u>bnext<CR>
-nnoremap <C-S-Tab> :<C-u>bprevious<CR>
-
 " (, )でバッファの移動
 nnoremap ( :<C-u>bprevious<CR>
 nnoremap ) :<C-u>bnext<CR>
