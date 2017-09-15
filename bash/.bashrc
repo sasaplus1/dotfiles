@@ -381,7 +381,7 @@ source "$HOME/.bashrc.local" 2>/dev/null
 # }}}
 
 # always use terminal multiplexer {{{
-if [ -n "$__interactive" -a "$TERM" != 'screen' -a "$TERM" != 'dumb' ]
+if [ -n "$__interactive" -a -z "$VIM" ] && [[ ! "$TERM" =~ screen|dumb ]]
 then
   tmux attach || screen -rx || tmux || screen -D -RR
 fi
