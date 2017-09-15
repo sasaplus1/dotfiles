@@ -42,4 +42,10 @@ inoremap <C-k> <C-x><C-o>
 " Tabで補完時に次の候補へ移動
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 
+" S-Tabで補完時に前の候補へ移動
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
+" Enterで補完時に決定
+inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
+
 " vim:ft=vim:fdm=marker:fen:
