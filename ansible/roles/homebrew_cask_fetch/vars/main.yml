@@ -9,6 +9,7 @@ packages:
   - { name: 'google-chrome'                                             }
   - { name: 'google-chrome-canary'                                      }
 # - { name: 'gyazo'                                                     }
+  - { name: 'kap'                                                       }
   - { name: 'macvim-kaoriya'                                            }
 # - { name: 'send-to-kindle'                                            }
 # - { name: 'simple-comic'                                              }
