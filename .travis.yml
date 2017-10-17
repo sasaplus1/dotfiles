@@ -12,12 +12,6 @@ matrix:
     - os:
         linux
       dist:
-        precise
-      sudo:
-        required
-    - os:
-        linux
-      dist:
         trusty
       sudo:
         required
