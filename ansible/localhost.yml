@@ -18,8 +18,6 @@
       '{{ pkg_config_dirs | join(":") }}'
     LD_LIBRARY_PATH:
       '{{ ld_library_dirs | join(":") }}'
-    HOMEBREW_CASK_OPTS:
-      '--caskroom={{ caskroom_dir }}'
 
   roles:
     - { role: 'git_remote'            }

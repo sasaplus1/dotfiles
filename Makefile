@@ -10,7 +10,6 @@ SHELL := /bin/bash
 
 # Homebrew and Homebrew Cask directories
 homebrew_dir := $(HOME)/Homebrew
-caskroom_dir := $(HOME)/Caskroom
 
 # dotfiles directory
 dotfiles_dir := $(HOME)/.ghq/github.com/sasaplus1/dotfiles
@@ -131,7 +130,6 @@ clone:
 provision: options :=
 provision: options += --inventory-file=<(printf -- 127.0.0.1),
 provision: options += --extra-vars='homebrew_dir=$(homebrew_dir)'
-provision: options += --extra-vars='caskroom_dir=$(caskroom_dir)'
 provision: options += --extra-vars='dotfiles_dir=$(dotfiles_dir)'
 provision: options += --extra-vars='home_dir=$(HOME)'
 ifdef skip_tags

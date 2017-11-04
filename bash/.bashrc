@@ -27,7 +27,6 @@ __main() {
 
   # synchronize for Makefile
   local homebrew_dir=$HOME/Homebrew
-  local caskroom_dir=$HOME/Caskroom
 
   # homebrew / linuxbrew {{{
   local homebrew=$homebrew_dir
@@ -47,13 +46,6 @@ __main() {
     export PKG_CONFIG_PATH=$homebrew/lib64/pkgconfig:$homebrew/lib/pkgconfig:$PKG_CONFIG_PATH
     export LD_LIBRARY_PATH=$homebrew/lib64:$homebrew/lib:$LD_LIBRARY_PATH
   fi
-  # }}}
-
-  # homebrew-cask {{{
-  local homebrew_cask=$caskroom_dir
-  local homebrew_cask_dir=$HOME/Applications
-  export HOMEBREW_CASK_OPTS="--caskroom=$homebrew_cask"
-  export PATH=$homebrew_cask_dir:${PATH//$homebrew_cask_dir:/}
   # }}}
 
   # rbenv {{{
