@@ -17,6 +17,7 @@ vnoremap <silent> k gk
 " very magicをonにする
 " http://deris.hatenablog.jp/entry/2013/05/15/024932
 nnoremap / /\v
+nnoremap ? ?\v
 
 " diff系
 nnoremap ,dg :<C-u>diffget<CR>
