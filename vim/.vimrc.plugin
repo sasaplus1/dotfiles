@@ -405,41 +405,6 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \ })
     " }}}
 
-    " osyo-manga/vim-textobj-multiblock {{{
-    function! s:hook_source_vim_textobj_multiblock() abort
-      " map from http://d.hatena.ne.jp/osyo-manga/20130329/1364569153
-      omap <silent>ab <Plug>(textobj-multiblock-a)
-      omap <silent>ib <Plug>(textobj-multiblock-i)
-      vmap <silent>ab <Plug>(textobj-multiblock-a)
-      vmap <silent>ib <Plug>(textobj-multiblock-i)
-    endfunction
-
-    call dein#add('kana/vim-textobj-user', {
-          \ 'lazy' : 1,
-          \ })
-    call dein#add('osyo-manga/vim-textobj-multiblock', {
-          \ 'depends' : 'vim-textobj-user',
-          \ 'hook_source' : function('s:hook_source_vim_textobj_multiblock'),
-          \ 'lazy' : 1,
-          \ 'on_cmd' : '<Plug>(textobj-multiblock-',
-          \ 'on_map' : [
-          \   'c',
-          \   'd',
-          \ ],
-          \ })
-"    call dein#add('osyo-manga/vim-textobj-multiblock', {
-"          \ 'depends' : 'vim-textobj-user',
-"          \ 'hook_source' : function('s:hook_source_vim_textobj_multiblock'),
-"          \ 'lazy' : 1,
-"          \ 'on_cmd' : '<Plug>(textobj-multiblock',
-"          \ 'on_event' : 'InsertEnter',
-"          \ 'on_map' : [
-"          \   'c',
-"          \   'd',
-"          \ ],
-"          \ })
-    " }}}
-
     " rhysd/vim-operator-surround {{{
     function! s:hook_source_vim_operator_surround() abort
       " map from https://github.com/rhysd/vim-operator-surround
