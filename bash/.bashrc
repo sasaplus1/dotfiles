@@ -345,12 +345,19 @@ kkill() {
   [ -n "$pid" ] && kill -9 "$pid"
 }
 
-docker-rm() {
+# remove docker containers
+d-rm() {
   docker ps -a | sed 1d | peco | awk '{ print $1 }' | xargs docker rm
 }
 
-docker-rmi() {
+# remove docker images
+d-rmi() {
   docker images | sed 1d | peco | awk '{ print $3 }' | xargs docker rmi
+}
+
+# execute command in container
+d-sh() {
+  docker exec -it $(docker ps | sed 1d | peco | awk '{ print $1 }' | sed -n 1p) $1
 }
 
 # }}}
