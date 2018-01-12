@@ -11,6 +11,7 @@ packages:
 # - { name: 'gyazo'                                                     }
   - { name: 'kap'                                                       }
   - { name: 'macvim-kaoriya'                                            }
+  - { name: 'ngrok'                                                     }
 # - { name: 'send-to-kindle'                                            }
 # - { name: 'simple-comic'                                              }
   - { name: 'slate'                                                     }
