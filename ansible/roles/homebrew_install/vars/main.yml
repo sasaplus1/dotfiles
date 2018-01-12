@@ -13,6 +13,7 @@ packages:
   # - { name: 'hub'                                                                                          }
   # - { name: 'jq'                                                                                           }
   # - { name: 'mercurial'                                                                                    }
+    - { name: 'mitmproxy'                                                                                    }
     - { name: 'monochromegane/pt/pt'                                                                         }
     - { name: 'nginx-full',           install_options: 'with-subs-filter-module'                             }
   # - { name: 'nodebrew'                                                                                     }
