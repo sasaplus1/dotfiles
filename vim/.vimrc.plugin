@@ -229,24 +229,21 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \ })
     " }}}
 
-    " ternjs/tern_for_vim {{{
-    function! s:hook_post_update_tern_for_vim() abort
-      call system(printf('cd "%s" && npm install', dein#get('tern_for_vim').path))
-    endfunction
-
-    call dein#add('ternjs/tern_for_vim', {
-          \ 'hook_post_update' : function('s:hook_post_update_tern_for_vim'),
-          \ 'lazy' : 1,
-          \ 'on_ft' : [
-          \   'javascript',
-          \   'html',
-          \ ],
-          \ 'on_if' : 'v:version >= 703 && (has("python") || has("python3"))'
-          \ })
-    " }}}
-
     " w0rp/ale {{{
     call dein#add('w0rp/ale')
+    " }}}
+
+    " Quramy/tsuquyomi {{{
+    function! s:hook_source_tsuquyomi() abort
+      " JavaScriptを開いたときに有効にする
+      let g:tsuquyomi_javascript_support = 1
+    endfunction
+
+    call dein#add('Quramy/tsuquyomi', {
+          \ 'hook_source' : function('s:hook_source_tsuquyomi'),
+          \ 'lazy' : 1,
+          \ 'on_ft' : 'javascript',
+          \ })
     " }}}
 
     " editorconfig/editorconfig-vim {{{
