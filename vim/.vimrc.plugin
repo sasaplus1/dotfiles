@@ -234,16 +234,16 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     " }}}
 
     " Quramy/tsuquyomi {{{
-    function! s:hook_source_tsuquyomi() abort
-      " JavaScriptを開いたときに有効にする
-      let g:tsuquyomi_javascript_support = 1
-    endfunction
+    " function! s:hook_source_tsuquyomi() abort
+    "   " JavaScriptを開いたときに有効にする
+    "   let g:tsuquyomi_javascript_support = 1
+    " endfunction
 
-    call dein#add('Quramy/tsuquyomi', {
-          \ 'hook_source' : function('s:hook_source_tsuquyomi'),
-          \ 'lazy' : 1,
-          \ 'on_ft' : 'javascript',
-          \ })
+    " call dein#add('Quramy/tsuquyomi', {
+    "       \ 'hook_source' : function('s:hook_source_tsuquyomi'),
+    "       \ 'lazy' : 1,
+    "       \ 'on_ft' : 'javascript',
+    "       \ })
     " }}}
 
     " editorconfig/editorconfig-vim {{{
@@ -446,7 +446,9 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \ 'hook_add' : function('s:hook_add_vim_go_extra'),
           \ 'hook_post_update' : function('s:hook_post_update_vim_go_extra'),
           \ 'lazy' : 1,
-          \ 'on_ft' : 'go',
+          \ 'on_ft' : [
+          \   'go',
+          \ ],
           \ })
     " }}}
 
@@ -455,7 +457,9 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     " digitaltoad/vim-pug {{{
     call dein#add('digitaltoad/vim-pug', {
           \ 'lazy' : 1,
-          \ 'on_ft' : 'pug',
+          \ 'on_ft' : [
+          \   'pug',
+          \ ],
           \ })
     " }}}
 
