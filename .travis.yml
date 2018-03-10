@@ -18,7 +18,11 @@ matrix:
     - os:
         osx
       osx_image:
-        xcode8.2
+        xcode9.3beta
+    - os:
+        osx
+      osx_image:
+        xcode9.2
     - os:
         osx
       osx_image:
