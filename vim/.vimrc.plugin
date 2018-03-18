@@ -230,7 +230,23 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     " }}}
 
     " w0rp/ale {{{
-    call dein#add('w0rp/ale')
+    function! s:hook_source_ale() abort
+      " linterの設定
+      let g:ale_linters = {
+            \ 'vue' : ['eslint'],
+            \ }
+      " fixerの設定
+      let g:ale_fixers = {
+            \ 'javascript' : ['eslint'],
+            \ 'javascript.jsx' : ['eslint'],
+            \ }
+      " 保存時fixする
+      autocmd vimrc FileType javascript let b:ale_fix_on_save = 1
+    endfunction
+
+    call dein#add('w0rp/ale', {
+          \ 'hook_source' : function('s:hook_source_ale'),
+          \ })
     " }}}
 
     " Quramy/tsuquyomi {{{
