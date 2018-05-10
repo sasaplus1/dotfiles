@@ -255,18 +255,23 @@ __print_exit_code() {
 }
 
 __print_repo_info() {
-  local gitsvn=$(git branch -r --list 'git-svn' 2>/dev/null)
-  local format=
+  local vcs=
 
-  if [ -n "$gitsvn" ]
+  if [ -n "$(git branch -r --list 'git-svn' 2>/dev/null)" ]
   then
-    format='git-svn:%b:%r'
+    vcs="$(vcprompt -f 'git-svn:%b:%r' 2>/dev/null)"
   else
-    format='%n:%b:%r'
+    vcs="$(vcprompt -f '%n:%b:%r' 2>/dev/null)"
   fi
 
-  local info=$(vcprompt -f "$format" 2>/dev/null)
-  [ -n "$info" ] && printf " ${__seq_cyan}%s${__seq_reset}" "(${info%:})"
+  # local config=
+
+  # if [ -z "$(git config --local --get user.name)" -a -z "$(git config --local --get user.email)" ]
+  # then
+  #   config='user.name/user.email'
+  # fi
+
+  [ -n "$vcs" ] && printf " ${__seq_cyan}(%s)${__seq_reset} ${__seq_red}%s${__seq_reset}" "${vcs%:}" # "$config"
 }
 
 __print_run_in_vim() {

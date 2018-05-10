@@ -1,5 +1,6 @@
 [alias]
   export = "!sh -c 'git checkout-index -a -f --prefix=$1/' -"
+  set-user = "!sh -c 'git config --local user.name sasaplus1 && git config --local user.email sasaplus1@gmail.com'"
 
 [alias]
   amend = commit --amend --reuse-message=HEAD
