@@ -10,7 +10,7 @@ packages:
     - { name: 'gibo'                                                                                         }
     - { name: 'git',                  install_options: 'with-brewed-curl,with-brewed-openssl,without-tcl-tk' }
     - { name: 'go'                                                                                           }
-  # - { name: 'hub'                                                                                          }
+    - { name: 'hub'                                                                                          }
   # - { name: 'jq'                                                                                           }
   # - { name: 'mercurial'                                                                                    }
     - { name: 'mitmproxy'                                                                                    }
