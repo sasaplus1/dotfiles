@@ -78,6 +78,11 @@ __main() {
 
   #-----------------------------------------------------------------------------
 
+  # hub {{{
+  type hub >/dev/null 2>&1 &&
+    alias git='hub'
+  # }}}
+
   # pgvm {{{
   local pgvm_home=$HOME/.pgvm
   local pgvm_home_bin=$pgvm_home/bin
