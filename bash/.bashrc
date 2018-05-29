@@ -78,6 +78,12 @@ __main() {
 
   #-----------------------------------------------------------------------------
 
+  # adb/android-platform-tools {{{
+  local android_platform_tools=$HOME/Library/Android/sdk/platform-tools
+  [ -d "$android_platform_tools" ] &&
+    export PATH=$android_platform_tools:${PATH//$android_platform_tools:/}
+  # }}}
+
   # hub {{{
   type hub >/dev/null 2>&1 &&
     alias git='hub'
