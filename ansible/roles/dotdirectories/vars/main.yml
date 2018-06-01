@@ -19,7 +19,7 @@ directories:
   - '{{ home_dir }}/Binary'
   - '{{ home_dir }}/Caskroom'
   - '{{ home_dir }}/Homebrew'
-# - '{{ home_dir }}/Repos'
+  - '{{ home_dir }}/Repos'
 # - '{{ home_dir }}/Repos/git'
 # - '{{ home_dir }}/Repos/hg'
 # - '{{ home_dir }}/Repos/svn'
