@@ -2,7 +2,7 @@
 packages:
   - { name: 'alfred'                                                    }
 # - { name: 'chromium'                                                  }
-# - { name: 'docker'                                                    }
+  - { name: 'docker'                                                    }
 # - { name: 'dropbox'                                                   }
   - { name: 'firefox',                 install_options: '--language=ja' }
   - { name: 'firefoxdeveloperedition', install_options: '--language=ja' }
