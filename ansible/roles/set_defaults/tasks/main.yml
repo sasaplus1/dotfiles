@@ -2,7 +2,7 @@
 - name: set secret defaults
   when: ansible_os_family == 'Darwin'
   osx_defaults:
-    domain: '{{ item.domain | default(omit) }}'
+    domain: '{{ item.domain | default() }}'
     key: '{{ item.key }}'
     type: '{{ item.type }}'
     value: '{{ item.value }}'

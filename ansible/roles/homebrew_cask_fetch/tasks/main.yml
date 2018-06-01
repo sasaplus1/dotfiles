@@ -17,7 +17,7 @@
 
 - name: fetch packages
   when: ansible_os_family == 'Darwin'
-  command: '{{ homebrew_dir }}/bin/brew cask fetch {{ item.name }} {{ item.install_options | default(omit) }}'
+  command: '{{ homebrew_dir }}/bin/brew cask fetch {{ item.name }} {{ item.install_options | default() }}'
   with_items: '{{ packages }}'
   environment:
     HOMEBREW_CACHE: '{{ home_dir }}/Downloads'

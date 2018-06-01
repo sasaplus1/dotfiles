@@ -8,7 +8,7 @@
 - name: install packages
   homebrew:
     name: '{{ item.name }}'
-    install_options: '{{ item.install_options | default(omit) }}'
+    install_options: '{{ item.install_options | default() }}'
   with_items: '{{ packages.common }}'
   failed_when: false
   tags:
@@ -18,7 +18,7 @@
   when: ansible_os_family == 'Darwin'
   homebrew:
     name: '{{ item.name }}'
-    install_options: '{{ item.install_options | default(omit) }}'
+    install_options: '{{ item.install_options | default() }}'
   with_items: '{{ packages.macos }}'
   failed_when: false
   tags:

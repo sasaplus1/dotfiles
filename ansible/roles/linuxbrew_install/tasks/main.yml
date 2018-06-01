@@ -10,7 +10,7 @@
   when: ansible_os_family == 'Debian'
   homebrew:
     name: '{{ item.name }}'
-    install_options: '{{ item.install_options | default(omit) }}'
+    install_options: '{{ item.install_options | default() }}'
   with_items: '{{ packages }}'
   tags:
     - linuxbrew_install
