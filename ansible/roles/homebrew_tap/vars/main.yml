@@ -2,13 +2,12 @@
 taps:
 
   common:
-    - { repo: 'homebrew/dupes'    }
-    - { repo: 'homebrew/nginx'    }
+    - { repo: 'denji/nginx'       }
     - { repo: 'monochromegane/pt' }
     - { repo: 'sonatard/tools'    }
 
   macos:
-    - { repo: 'caskroom/fonts'                  }
-    - { repo: 'caskroom/versions'               }
     - { repo: 'delphinus/macvim-kaoriya'        }
+    - { repo: 'homebrew/cask-fonts'             }
+    - { repo: 'homebrew/cask-versions'          }
     - { repo: 'universal-ctags/universal-ctags' }
