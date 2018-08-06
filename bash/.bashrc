@@ -85,8 +85,8 @@ __main() {
   # }}}
 
   # hub {{{
-  type hub >/dev/null 2>&1 &&
-    alias git='hub'
+  # type hub >/dev/null 2>&1 &&
+  #   alias git='hub'
   # }}}
 
   # pgvm {{{
