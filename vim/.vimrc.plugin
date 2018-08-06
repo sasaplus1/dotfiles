@@ -233,14 +233,22 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     function! s:hook_source_ale() abort
       " linterの設定
       let g:ale_linters = {
+            \ 'css' : ['stylelint'],
             \ 'javascript' : ['eslint'],
             \ 'javascript.jsx' : ['eslint'],
+            \ 'json' : ['jq'],
+            \ 'scss' : ['stylelint'],
+            \ 'typescript' : ['tslint'],
             \ 'vue' : ['eslint'],
             \ }
       " fixerの設定
       let g:ale_fixers = {
+            \ 'css' : ['prettier'],
             \ 'javascript' : ['prettier'],
             \ 'javascript.jsx' : ['prettier'],
+            \ 'json' : ['prettier'],
+            \ 'scss' : ['prettier'],
+            \ 'typescript' : ['prettier'],
             \ }
       " 保存時fixする
       autocmd vimrc FileType javascript let b:ale_fix_on_save = 1
