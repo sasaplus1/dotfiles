@@ -243,15 +243,19 @@ if (v:version >= 704 || has('nvim')) && executable('git')
             \ }
       " fixerの設定
       let g:ale_fixers = {
-            \ 'css' : ['prettier'],
-            \ 'javascript' : ['prettier'],
-            \ 'javascript.jsx' : ['prettier'],
+            \ 'css' : ['prettier', 'stylelint'],
+            \ 'javascript' : ['eslint'],
+            \ 'javascript.jsx' : ['eslint'],
             \ 'json' : ['prettier'],
-            \ 'scss' : ['prettier'],
-            \ 'typescript' : ['prettier'],
+            \ 'scss' : ['prettier', 'stylelint'],
+            \ 'typescript' : ['tslint'],
             \ }
       " 保存時fixする
+      autocmd vimrc FileType css let b:ale_fix_on_save = 1
       autocmd vimrc FileType javascript let b:ale_fix_on_save = 1
+      autocmd vimrc FileType json let b:ale_fix_on_save = 1
+      autocmd vimrc FileType scss let b:ale_fix_on_save = 1
+      autocmd vimrc FileType typescript let b:ale_fix_on_save = 1
     endfunction
 
     call dein#add('w0rp/ale', {
