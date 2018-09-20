@@ -350,7 +350,6 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     call dein#add('rhysd/vim-operator-surround', {
           \ 'depends' : [
           \   'vim-operator-user',
-          \   'vim-textobj-multiblock',
           \ ],
           \ 'hook_source' : function('s:hook_source_vim_operator_surround'),
           \ 'lazy' : 1,
