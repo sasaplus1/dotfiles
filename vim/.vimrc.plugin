@@ -256,6 +256,9 @@ if (v:version >= 704 || has('nvim')) && executable('git')
       autocmd vimrc FileType json let b:ale_fix_on_save = 1
       autocmd vimrc FileType scss let b:ale_fix_on_save = 1
       autocmd vimrc FileType typescript let b:ale_fix_on_save = 1
+      " ファイルのカレントディレクトリから実行する
+      " monorepo毎に.eslintignoreがある場合などに有効
+      autocmd vimrc BufNewFile,BufRead * let b:ale_command_wrapper = printf("cd '%s' && %s", expand("%:p:h"), '%*')
     endfunction
 
     call dein#add('w0rp/ale', {
