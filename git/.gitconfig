@@ -26,6 +26,7 @@
   sdiff = diff --staged
   sl = log --all --branches --decorate --graph --oneline
   slog = log --all --branches --decorate --graph --oneline
+  squash = commit --squash
   st = status --branch --short
 
 [alias]
