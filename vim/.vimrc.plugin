@@ -281,7 +281,10 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     call dein#add('Quramy/tsuquyomi', {
           \ 'hook_source' : function('s:hook_source_tsuquyomi'),
           \ 'lazy' : 1,
-          \ 'on_ft' : 'javascript',
+          \ 'on_ft' : [
+          \   'javascript',
+          \   'typescript',
+          \ ],
           \ })
     " }}}
 
