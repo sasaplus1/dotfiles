@@ -269,16 +269,20 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     " }}}
 
     " Quramy/tsuquyomi {{{
-    " function! s:hook_source_tsuquyomi() abort
-    "   " JavaScriptを開いたときに有効にする
-    "   let g:tsuquyomi_javascript_support = 1
-    " endfunction
+    function! s:hook_source_tsuquyomi() abort
+      " quickfixを表示しない
+      let g:tsuquyomi_disable_quickfix = 1
+      " JavaScriptを開いたときに有効にする
+      let g:tsuquyomi_javascript_support = 1
+      " シングルクォートを使ってimportを生成する
+      let g:tsuquyomi_single_quote_import = 1
+    endfunction
 
-    " call dein#add('Quramy/tsuquyomi', {
-    "       \ 'hook_source' : function('s:hook_source_tsuquyomi'),
-    "       \ 'lazy' : 1,
-    "       \ 'on_ft' : 'javascript',
-    "       \ })
+    call dein#add('Quramy/tsuquyomi', {
+          \ 'hook_source' : function('s:hook_source_tsuquyomi'),
+          \ 'lazy' : 1,
+          \ 'on_ft' : 'javascript',
+          \ })
     " }}}
 
     " editorconfig/editorconfig-vim {{{
