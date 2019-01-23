@@ -560,6 +560,19 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \ })
     " }}}
 
+    " styled-components/vim-styled-components {{{
+    function! s:hook_source_vim_styled_components() abort
+    endfunction
+
+    call dein#add('styled-components/vim-styled-components', {
+          \ 'hook_source' : function('s:hook_source_vim_styled_components'),
+          \ 'lazy' : 1,
+          \ 'on_ft' : [
+          \   'javascript',
+          \ ],
+          \ })
+    " }}}
+
     " mxw/vim-jsx {{{
     function! s:hook_source_vim_jsx() abort
       " 拡張子が.jsxでなくても強調表示を有効化する
