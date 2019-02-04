@@ -89,16 +89,16 @@ __main() {
   #   alias git='hub'
   # }}}
 
-  # pgvm {{{
-  local pgvm_home=$HOME/.pgvm
-  local pgvm_home_bin=$pgvm_home/bin
-  local pgvm_home_env=$pgvm_home/environments/current/bin
-  [ -d "$pgvm_home" ] &&
-    export pgvm_home &&
-    export PATH=$pgvm_home:${PATH//$pgvm_home:/} &&
-    export PATH=$pgvm_home_bin:${PATH//$pgvm_home_bin:/} &&
-    export PATH=$pgvm_home_env:${PATH//$pgvm_home_env:/}
-  # }}}
+  # # pgvm {{{
+  # local pgvm_home=$HOME/.pgvm
+  # local pgvm_home_bin=$pgvm_home/bin
+  # local pgvm_home_env=$pgvm_home/environments/current/bin
+  # [ -d "$pgvm_home" ] &&
+  #   export pgvm_home &&
+  #   export PATH=$pgvm_home:${PATH//$pgvm_home:/} &&
+  #   export PATH=$pgvm_home_bin:${PATH//$pgvm_home_bin:/} &&
+  #   export PATH=$pgvm_home_env:${PATH//$pgvm_home_env:/}
+  # # }}}
 
   # cocproxy for nginx {{{
   local cocproxy_dir=$HOME/.cocproxy
@@ -185,19 +185,12 @@ __main() {
   # npm-completion
   source "$HOME/.npm_completion" 2>/dev/null
 
-  # bower-completion
-  source "$HOME/.bower_completion" 2>/dev/null
-
   # up.sh
   source "$HOME/.ghq/github.com/sasaplus1/up.sh/up.sh" 2>/dev/null
 
   # down.sh
   export _DOWN_CMD=dw
   source "$HOME/.ghq/github.com/sasaplus1/down.sh/down.sh" 2>/dev/null
-
-  # sandbox.sh
-  export _SANDBOX_CMD=sb
-  source "$HOME/.ghq/github.com/sasaplus1/sandbox.sh/sandbox.sh" 2>/dev/null
 
   # z {{{
   source "$homebrew_prefix/etc/profile.d/z.sh" 2>/dev/null
@@ -289,6 +282,10 @@ __print_run_in_vim() {
   [ -n "$VIM" ] && printf "${__seq_cyan}(vim)${__seq_reset} "
 }
 
+__print_use_yarn() {
+  [ -n "$(git ls-files yarn.lock 2>/dev/null)" ] && printf "${__seq_yellow}[yarn]${__seq_reset} "
+}
+
 # /current/dir err (vcs:branch:rev)
 # username@hostname$ _
 export PS1=$(
@@ -296,7 +293,7 @@ export PS1=$(
   printf '$(__print_exit_code $?)'
   printf '$(__print_repo_info)'
   printf '\n'
-  printf '$(__print_run_in_vim)\u@\h\$ '
+  printf '$(__print_run_in_vim)$(__print_use_yarn)\u@\h\$ '
 )
 # }}}
 
@@ -398,7 +395,8 @@ source "$HOME/.bashrc.local" 2>/dev/null
 # always use terminal multiplexer {{{
 if [ -n "$__interactive" -a -z "$VIM" ] && [[ ! "$TERM" =~ screen|dumb ]]
 then
-  tmux attach || screen -rx || tmux || screen -D -RR
+  # tmux attach || screen -rx || tmux || screen -D -RR
+  tmux || screen -D -RR
 fi
 # }}}
 
