@@ -1,17 +1,16 @@
-# is interactive? {{{
-case "$-" in
-  *i*)
-    __interactive=1
-    ;;
-  *)
-    __interactive=
-    ;;
-esac
-# }}}
-
-#-------------------------------------------------------------------------------
-
+# main {{{
 __main() {
+  # is interactive? {{{
+  case "$-" in
+    *i*)
+      local __interactive=1
+      ;;
+    *)
+      local __interactive=
+      ;;
+  esac
+  # }}}
+
   # which platform? {{{
   case "$OSTYPE" in
     darwin*)
@@ -83,22 +82,6 @@ __main() {
   [ -d "$android_platform_tools" ] &&
     export PATH=$android_platform_tools:${PATH//$android_platform_tools:/}
   # }}}
-
-  # hub {{{
-  # type hub >/dev/null 2>&1 &&
-  #   alias git='hub'
-  # }}}
-
-  # # pgvm {{{
-  # local pgvm_home=$HOME/.pgvm
-  # local pgvm_home_bin=$pgvm_home/bin
-  # local pgvm_home_env=$pgvm_home/environments/current/bin
-  # [ -d "$pgvm_home" ] &&
-  #   export pgvm_home &&
-  #   export PATH=$pgvm_home:${PATH//$pgvm_home:/} &&
-  #   export PATH=$pgvm_home_bin:${PATH//$pgvm_home_bin:/} &&
-  #   export PATH=$pgvm_home_env:${PATH//$pgvm_home_env:/}
-  # # }}}
 
   # cocproxy for nginx {{{
   local cocproxy_dir=$HOME/.cocproxy
@@ -224,112 +207,99 @@ __main() {
       ;;
   esac
 
-  if [ "$EDITOR" = 'vim' ]
-  then
-    alias vf='vim +VimFiler'
-  fi
-
   alias memo='$EDITOR $(date +%FT%H-%M-%S).md'
   alias server='python -m SimpleHTTPServer'
   alias fake-dev='nginx -p . -c "$(ghq list -p fake-dev)/fake-dev.conf"'
   # }}}
+
+  #-----------------------------------------------------------------------------
+
+  # pager
+  export PAGER=less
+
+  # fix typo of path for cd command
+  shopt -s cdspell
+
+  # stop flow mode (disable C-s)
+  stty stop undef
+
+  # history {{{
+  if [ "$SHLVL" -eq 1 ]
+  then
+    export HISTSIZE=10000
+    export HISTFILESIZE=10000
+    export HISTTIMEFORMAT='%Y/%m/%d %T '
+    export HISTCONTROL=ignoredups:erasedups
+  fi
+
+  ###share_history() {
+  ###  history -a
+  ###  history -c
+  ###  history -r
+  ###}
+  ###shopt -s histappend
+  ###export PROMPT_COMMAND='share_history'
+  # }}}
+
+  # change to urxvt font size
+  # from https://gist.github.com/anekos/5938365
+  if type urxvt >/dev/null 2>&1
+  then
+    set-urxvt-font-size() {
+      local old_name=$(grep -i '^\s*urxvt.font' "$HOME/.Xdefaults" | cut -d: -f2-)
+      local new_name=$(printf "$old_name" | sed -e 's/:\(pixel\)\?size=[0-9]\+/'":\1size=$1/")
+
+      [ -n "$TMUX" ] && printf '\ePtmux;\e'
+      printf '\e]50;%s\007' "$new_name"
+      [ -n "$TMUX" ] && printf '\e\\'
+    }
+  fi
 }
 __main
-
-#-------------------------------------------------------------------------------
-
-# pager
-export PAGER=less
-
-# fix typo of path for cd command
-shopt -s cdspell
-
-# stop flow mode (disable C-s)
-stty stop undef
+unset -f __main
+# }}}
 
 # PS1 {{{
-__seq_red='\e[01;31m'
-__seq_green='\e[01;32m'
-__seq_yellow='\e[01;33m'
-__seq_cyan='\e[01;36m'
-__seq_reset='\e[00m'
+
+__color_red='\e[01;31m'
+__color_green='\e[01;32m'
+__color_yellow='\e[01;33m'
+__color_cyan='\e[01;36m'
+__color_reset='\e[00m'
 
 __print_exit_code() {
-  [ "$1" -ne 0 ] && printf " ${__seq_red}%s${__seq_reset}" "$1"
+  [ "$1" -ne 0 ] && printf -- " ${__color_red}%s${__color_reset}" "$1"
 }
 
 __print_repo_info() {
-  local vcs=
+  local -r vcs="$(vcprompt -f '%n:%b:%r' 2>/dev/null)"
 
-  if [ -n "$(git branch -r --list 'git-svn' 2>/dev/null)" ]
-  then
-    vcs="$(vcprompt -f 'git-svn:%b:%r' 2>/dev/null)"
-  else
-    vcs="$(vcprompt -f '%n:%b:%r' 2>/dev/null)"
-  fi
-
-  # local config=
-
-  # if [ -z "$(git config --local --get user.name)" -a -z "$(git config --local --get user.email)" ]
-  # then
-  #   config='user.name/user.email'
-  # fi
-
-  [ -n "$vcs" ] && printf " ${__seq_cyan}(%s)${__seq_reset} ${__seq_red}%s${__seq_reset}" "${vcs%:}" # "$config"
+  [ -n "$vcs" ] && printf -- " ${__color_cyan}(%s)${__color_reset}" "${vcs%:}"
 }
 
-__print_run_in_vim() {
-  [ -n "$VIM" ] && printf "${__seq_cyan}(vim)${__seq_reset} "
+__print_has_yarn() {
+  [ -n "$(git ls-files yarn.lock 2>/dev/null)" ] && printf -- " ${__seq_yellow}(yarn)${__seq_reset}"
 }
 
-__print_use_yarn() {
-  [ -n "$(git ls-files yarn.lock 2>/dev/null)" ] && printf "${__seq_yellow}[yarn]${__seq_reset} "
+__print_vim_term() {
+  [ -n "$VIM" ] && printf -- "${__color_cyan}(vim)${__color_reset} "
 }
 
-# /current/dir err (vcs:branch:rev)
-# username@hostname$ _
+# /current/dir err (vcs:branch:rev) (yarn)
+# (vim) username@hostname$ _
 export PS1=$(
-  printf "${__seq_green}%s${__seq_reset}" '\w'
-  printf '$(__print_exit_code $?)'
-  printf '$(__print_repo_info)'
-  printf '\n'
-  printf '$(__print_run_in_vim)$(__print_use_yarn)\u@\h\$ '
+  printf -- \
+    "${__color_green}%s${__color_reset}%s%s%s\n%s\u@\h$ " \
+    '\w' \
+    '$(__print_exit_code $?)' \
+    '$(__print_repo_info)' \
+    '$(__print_has_yarn)' \
+    '$(__print_vim_term)'
 )
-# }}}
 
-# history {{{
-if [ "$SHLVL" -eq 1 ]
-then
-  export HISTSIZE=10000
-  export HISTFILESIZE=10000
-  export HISTTIMEFORMAT='%Y/%m/%d %T '
-  export HISTCONTROL=ignoredups:erasedups
-fi
-
-###share_history() {
-###  history -a
-###  history -c
-###  history -r
-###}
-###shopt -s histappend
-###export PROMPT_COMMAND='share_history'
 # }}}
 
 # functions {{{
-
-# change to urxvt font size
-# from https://gist.github.com/anekos/5938365
-if type urxvt >/dev/null 2>&1
-then
-  set-urxvt-font-size() {
-    local old_name=$(grep -i '^\s*urxvt.font' "$HOME/.Xdefaults" | cut -d: -f2-)
-    local new_name=$(printf "$old_name" | sed -e 's/:\(pixel\)\?size=[0-9]\+/'":\1size=$1/")
-
-    [ -n "$TMUX" ] && printf '\ePtmux;\e'
-    printf '\e]50;%s\007' "$new_name"
-    [ -n "$TMUX" ] && printf '\e\\'
-  }
-fi
 
 # find file
 ff() {
@@ -392,10 +362,26 @@ source "$HOME/.bashrc.local" 2>/dev/null
 # export NO_PROXY=$no_proxy
 # }}}
 
+# is interactive? {{{
+case "$-" in
+  *i*)
+    interactive=1
+    ;;
+  *)
+    interactive=
+    ;;
+esac
+# }}}
+
 # always use terminal multiplexer {{{
-if [ -n "$__interactive" -a -z "$VIM" ] && [[ ! "$TERM" =~ screen|dumb ]]
+if [ -n "$interactive" -a -z "$VIM" ] && [[ ! "$TERM" =~ screen|dumb ]]
 then
+  unset -v interactive
+
+  # attach session if exist session
   # tmux attach || screen -rx || tmux || screen -D -RR
+
+  # attach new session
   tmux || screen -D -RR
 fi
 # }}}
