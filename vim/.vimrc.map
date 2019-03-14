@@ -37,6 +37,11 @@ nnoremap <silent> ) :<C-u>bnext<CR>
 " バッファ番号とフルパスを表示する
 nnoremap <C-g> 2<C-g>
 
+" スネークケースをキャメルケースにする
+vnoremap c :<C-u>'<,'>s/_\(\a\)/\u\1/g<CR>
+" キャメルケースをスネークケースにする
+vnoremap _ :<C-u>'<,'>s/\(\L\)/_\l\1/g<CR>
+
 " C-kでオムニ補完
 inoremap <C-k> <C-x><C-o>
 
