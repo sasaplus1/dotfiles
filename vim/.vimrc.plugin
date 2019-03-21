@@ -258,11 +258,11 @@ if (v:version >= 704 || has('nvim')) && executable('git')
             \ }
       " fixerの設定
       let g:ale_fixers = {
-            \ 'css' : ['prettier', 'stylelint'],
+            \ 'css' : ['stylelint'],
             \ 'javascript' : ['eslint'],
             \ 'javascript.jsx' : ['eslint'],
             \ 'json' : ['prettier'],
-            \ 'scss' : ['prettier', 'stylelint'],
+            \ 'scss' : ['stylelint'],
             \ 'typescript' : ['tslint'],
             \ }
       " 保存時fixする
