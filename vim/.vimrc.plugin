@@ -35,69 +35,27 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \ })
     " }}}
 
-    " Shougo/vimfiler {{{
-    function! s:hook_post_update_vimproc_vim() abort
-      if has('win32') || has('win64')
-        let l:make = 'tools\\update-dll-mingw'
-      elseif has('win32unix')
-        let l:make = 'make -f make_cygwin.mak'
-      elseif executable('gmake')
-        let l:make = 'gmake'
-      else
-        let l:make = 'make'
-      endif
-
-      call system(printf('cd "%s" && %s', dein#get('vimproc.vim').path, l:make))
+    " francoiscabrol/ranger.vim {{{
+    function! s:hook_post_source_ranger() abort
+      " ,vfで表示
+      nnoremap ,vf :<C-u>Ranger<CR>
     endfunction
 
-    function! s:hook_post_source_vimfiler() abort
-      " デフォルト設定を指定する
-      call vimfiler#custom#profile('default', 'context', {
-            \ 'safe' : 0
-            \ })
+    function! s:hook_source_ranger() abort
+      " netrwでなくrangerで処理をする
+      let g:ranger_replace_netrw = 1
+      " デフォルトのキーマップを使用しない
+      let g:ranger_map_keys = 0
     endfunction
 
-    function! s:hook_source_vimfiler() abort
-      " デフォルトのファイラにする
-      let g:vimfiler_as_default_explorer = 1
-      " 最大記憶ディレクトリ履歴を100にする
-      let g:vimfiler_max_directories_history = 100
-
-      " NOTE: 遅延読み込みされた後にキーマップを設定する
-
-      " F4と,vfで表示
-      nnoremap <F4> :<C-u>VimFilerBufferDir<CR>
-      nnoremap ,vf :<C-u>VimFilerBufferDir<CR>
-      " Shift-F4と,vFとTでエクスプローラ風の表示
-      nnoremap <S-F4> :<C-u>VimFilerBufferDir -split -simple -winwidth=35 -toggle -no-quit<CR>
-      nnoremap ,vF :<C-u>VimFilerBufferDir -split -simple -winwidth=35 -toggle -no-quit<CR>
-      nnoremap T :<C-u>VimFilerBufferDir -split -simple -winwidth=35 -toggle -no-quit<CR>
-    endfunction
-
-    call dein#add('Shougo/vimproc.vim', {
-          \ 'hook_post_update' : function('s:hook_post_update_vimproc_vim'),
+    call dein#add('francoiscabrol/ranger.vim', {
+          \ 'hook_post_source' : function('s:hook_post_source_ranger'),
+          \ 'hook_source' : function('s:hook_source_ranger'),
           \ 'lazy' : 1,
-          \ })
-    call dein#add('Shougo/unite.vim', {
-          \ 'depends' : 'vimproc.vim',
-          \ 'lazy' : 1,
-          \ })
-    call dein#add('Shougo/vimfiler', {
-          \ 'depends' : [
-          \   'unite.vim',
-          \   'vimproc.vim',
-          \ ],
-          \ 'hook_post_source' : function('s:hook_post_source_vimfiler'),
-          \ 'hook_source' : function('s:hook_source_vimfiler'),
-          \ 'lazy' : 1,
+          \ 'on_if' : 'executable("ranger")',
           \ 'on_map' : [
-          \   '<F4>',
           \   ',vf',
-          \   '<S-F4>',
-          \   ',vF',
-          \   'T',
           \ ],
-          \ 'on_path' : '.*',
           \ })
     " }}}
 
@@ -107,8 +65,6 @@ if (v:version >= 704 || has('nvim')) && executable('git')
       let g:neocomplete#enable_at_startup = 1
       " 入力に大文字を含む場合
       let g:neocomplete#enable_smart_case = 1
-      " unite.vimのバッファの場合は補完しない
-      let g:neocomplete#lock_buffer_name_pattern = '\*unite\*'
 
       let g:neocomplete#auto_completion_start_length = 1
       let g:neocomplete#sources#buffer#cache_limit_size = 50000
