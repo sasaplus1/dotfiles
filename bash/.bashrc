@@ -340,7 +340,7 @@ d-rmi() {
 
 # execute command in container
 d-sh() {
-  docker exec -it $(docker ps | sed 1d | peco | awk '{ print $1 }' | sed -n 1p) $1
+  docker exec -it $(docker ps | sed 1d | peco | awk '{ print $1 }' | sed -n 1p) ${1:-sh}
 }
 
 # }}}
