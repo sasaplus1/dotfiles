@@ -349,16 +349,6 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \ })
     " }}}
 
-    " mattn/emmet-vim {{{
-    call dein#add('mattn/emmet-vim', {
-          \ 'lazy' : 1,
-          \ 'on_ft' : [
-          \   'html',
-          \   'xml',
-          \ ],
-          \ })
-    " }}}
-
     " rhysd/vim-operator-surround {{{
     function! s:hook_source_vim_operator_surround() abort
       " map from https://github.com/rhysd/vim-operator-surround
