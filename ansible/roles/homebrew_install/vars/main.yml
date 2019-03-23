@@ -15,11 +15,12 @@ packages:
   # - { name: 'mercurial'                                                                                    }
     - { name: 'mitmproxy'                                                                                    }
     - { name: 'monochromegane/pt/pt'                                                                         }
+  # - { name: 'neovim'                                                                                       }
     - { name: 'nginx-full',           install_options: 'with-subs-filter-module'                             }
   # - { name: 'nodebrew'                                                                                     }
     - { name: 'peco'                                                                                         }
     - { name: 'pyenv'                                                                                        }
-  # - { name: 'ranger'                                                                                       }
+    - { name: 'ranger'                                                                                       }
     - { name: 'rbenv'                                                                                        }
     - { name: 'rbenv-default-gems'                                                                           }
     - { name: 'redis'                                                                                        }
