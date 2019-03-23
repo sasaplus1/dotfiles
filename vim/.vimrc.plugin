@@ -95,7 +95,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     endfunction
 
     call dein#add('prabirshrestha/async.vim', {
-          \ 'on_if' : 'v:version >= 800',
+          \ 'on_if' : 'v:version >= 800 || has("nvim")',
           \ })
     call dein#add('prabirshrestha/vim-lsp', {
           \ 'depends' : [
@@ -103,7 +103,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \ ],
           \ 'hook_post_source' : function('s:hook_post_source_vim_lsp'),
           \ 'hook_source' : function('s:hook_source_vim_lsp'),
-          \ 'on_if' : 'v:version >= 800',
+          \ 'on_if' : 'v:version >= 800 || has("nvim")',
           \ })
 
     function! s:hook_sourc_asyncomplete_vim() abort
@@ -116,10 +116,10 @@ if (v:version >= 704 || has('nvim')) && executable('git')
 
     call dein#add('prabirshrestha/asyncomplete.vim', {
           \ 'hook_source' : function('s:hook_sourc_asyncomplete_vim'),
-          \ 'on_if' : 'v:version >= 800',
+          \ 'on_if' : 'v:version >= 800 || has("nvim")',
           \ })
     call dein#add('prabirshrestha/asyncomplete-lsp.vim', {
-          \ 'on_if' : 'v:version >= 800',
+          \ 'on_if' : 'v:version >= 800 || has("nvim")',
           \ })
     " }}}
 
@@ -245,7 +245,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
 
     call dein#add('w0rp/ale', {
           \ 'hook_source' : function('s:hook_source_ale'),
-          \ 'on_if' : 'v:version >= 800 && has("timers") && has("job") && has("channel")',
+          \ 'on_if' : '(v:version >= 800 && has("timers") && has("job") && has("channel")) || has("nvim")',
           \ })
     " }}}
 
