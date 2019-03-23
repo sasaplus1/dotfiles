@@ -59,56 +59,67 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \ })
     " }}}
 
-    " Shougo/neocomplete.vim {{{
-    function! s:hook_source_neocomplete_vim() abort
-      " neocompleteを有効にする
-      let g:neocomplete#enable_at_startup = 1
-      " 入力に大文字を含む場合
-      let g:neocomplete#enable_smart_case = 1
-
-      let g:neocomplete#auto_completion_start_length = 1
-      let g:neocomplete#sources#buffer#cache_limit_size = 50000
-
-      if !exists('g:neocomplete#keyword_patterns')
-        let g:neocomplete#keyword_patterns = {}
+    " prabirshrestha/vim-lsp {{{
+    function! s:hook_post_source_vim_lsp() abort
+      " https://github.com/prabirshrestha/vim-lsp/wiki/Servers-TypeScript
+      if executable('typescript-language-server')
+        autocmd User lsp_setup call lsp#register_server({
+              \ 'name' : 'typescript-language-server',
+              \ 'cmd' : {server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
+              \ 'root_uri' : {server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'tsconfig.json'))},
+              \ 'whitelist' : ['typescript', 'typescript.tsx'],
+              \ })
+        autocmd User lsp_setup call lsp#register_server({
+              \ 'name' : 'typescript-language-server',
+              \ 'cmd' : {server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
+              \ 'root_uri' : {server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'tsconfig.json'))},
+              \ 'whitelist' : ['javascript', 'javascript.jsx'],
+              \ })
       endif
-      let g:neocomplete#keyword_patterns._ = '\h\w*'
-
-      "if !exists('g:neocomplete#sources')
-      "  let g:neocomplete#sources = {}
-      "endif
-      "let g:neocomplete#sources._ = ['buffer']
-      "let g:neocomplete#sources.javascript = ['buffer', 'omni']
-
-      "if !exists('g:neocomplete#sources#omni#input_patterns')
-      "  let g:neocomplete#sources#omni#input_patterns = {}
-      "endif
-      "let g:neocomplete#sources#omni#input_patterns.javascript = '[^. \t]\.\w*'
-
-      " let g:neocomplete_omni_function_list = ['tern#Complete', 'jscomplete#CompleteJS']
-
-      if !exists('g:neocomplete#force_omni_input_patterns')
-        let g:neocomplete#force_omni_input_patterns = {}
+      " https://mattn.kaoriya.net/software/lang/go/20181217000056.htm
+      if executable('golsp')
+        autocmd User lsp_setup call lsp#register_server({
+              \ 'name' : 'go-lang',
+              \ 'cmd' : {server_info->['golsp', '-mode', 'stdio']},
+              \ 'whitelist' : ['go'],
+              \ })
+        autocmd FileType go setlocal omnifunc=lsp#complete
       endif
-      let g:neocomplete#force_omni_input_patterns.javascript = '[^. \t]\.\w*'
-
-      " README.md - Setting examplesよりキーマップの変更
-      inoremap <expr><Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-
-      " 改行した際に補完を閉じる
-      inoremap <expr><CR> neocomplete#smart_close_popup() . "\<CR>"
-
-      " 補完を閉じ、文字を消す
-      inoremap <expr><C-h> neocomplete#smart_close_popup() . "\<C-h>"
-      inoremap <expr><BS> neocomplete#smart_close_popup() . "\<C-h>"
-
-      inoremap <expr><C-g> neocomplete#undo_completion()
-      inoremap <expr><C-l> neocomplete#complete_common_string()
     endfunction
 
-    call dein#add('Shougo/neocomplete.vim', {
-          \ 'on_if' : 'has("lua") && (v:version == 703 && has("patch885")) || v:version >= 704',
-          \ 'hook_source' : function('s:hook_source_neocomplete_vim'),
+    function! s:hook_source_vim_lsp() abort
+      " aleを使うのでLSPによる警告を無効にする
+      let g:lsp_diagnostics_enabled = 0
+      " 非同期補完
+      let g:lsp_async_completion = 1
+    endfunction
+
+    call dein#add('prabirshrestha/async.vim', {
+          \ 'on_if' : 'v:version >= 800',
+          \ })
+    call dein#add('prabirshrestha/vim-lsp', {
+          \ 'depends' : [
+          \   'async.vim'
+          \ ],
+          \ 'hook_post_source' : function('s:hook_post_source_vim_lsp'),
+          \ 'hook_source' : function('s:hook_source_vim_lsp'),
+          \ 'on_if' : 'v:version >= 800',
+          \ })
+
+    function! s:hook_sourc_asyncomplete_vim() abort
+      " 重複を除く
+      let g:asyncomplete_remove_duplicates = 1
+      " fuzzy smart completion
+      let g:asyncomplete_smart_completion = 1
+      let g:asyncomplete_auto_popup = 1
+    endfunction
+
+    call dein#add('prabirshrestha/asyncomplete.vim', {
+          \ 'hook_source' : function('s:hook_sourc_asyncomplete_vim'),
+          \ 'on_if' : 'v:version >= 800',
+          \ })
+    call dein#add('prabirshrestha/asyncomplete-lsp.vim', {
+          \ 'on_if' : 'v:version >= 800',
           \ })
     " }}}
 
