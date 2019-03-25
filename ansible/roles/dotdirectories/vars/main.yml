@@ -1,6 +1,8 @@
 ---
 directories:
   - '{{ home_dir }}/.cocproxy'
+  - '{{ home_dir }}/.config/nvim'
+  - '{{ home_dir }}/.config/ranger'
   - '{{ home_dir }}/.ghq'
   - '{{ home_dir }}/.go'
   - '{{ home_dir }}/.go/bin'

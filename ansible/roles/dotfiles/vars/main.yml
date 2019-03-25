@@ -1,27 +1,30 @@
 ---
 symbolic_links:
-  - { src: '{{ dotfiles_dir }}/X11/.Xdefaults',             dest: '{{ home_dir }}/.Xdefaults'           }
-  - { src: '{{ dotfiles_dir }}/bash/.bash_logout',          dest: '{{ home_dir }}/.bash_logout'         }
-  - { src: '{{ dotfiles_dir }}/bash/.bash_profile',         dest: '{{ home_dir }}/.bash_profile'        }
-  - { src: '{{ dotfiles_dir }}/bash/.bashrc',               dest: '{{ home_dir }}/.bashrc'              }
-  - { src: '{{ dotfiles_dir }}/bash/.downrc',               dest: '{{ home_dir }}/.downrc'              }
-  - { src: '{{ dotfiles_dir }}/bash/.findrc',               dest: '{{ home_dir }}/.findrc'              }
-  - { src: '{{ dotfiles_dir }}/ctags/.ctags',               dest: '{{ home_dir }}/.ctags'               }
-  - { src: '{{ dotfiles_dir }}/git/.gitconfig',             dest: '{{ home_dir }}/.gitconfig'           }
-  - { src: '{{ dotfiles_dir }}/git/.gitignore',             dest: '{{ home_dir }}/.gitignore'           }
-  - { src: '{{ dotfiles_dir }}/locate/.locate.rc',          dest: '{{ home_dir }}/.locate.rc'           }
-  - { src: '{{ dotfiles_dir }}/mercurial/.hgrc',            dest: '{{ home_dir }}/.hgrc'                }
-  - { src: '{{ dotfiles_dir }}/nginx/.cocproxy.nginx.conf', dest: '{{ home_dir }}/.cocproxy.nginx.conf' }
-  - { src: '{{ dotfiles_dir }}/pt/.ptignore',               dest: '{{ home_dir }}/.ptignore'            }
-  - { src: '{{ dotfiles_dir }}/peco/config.json',           dest: '{{ home_dir }}/.peco/config.json'    }
-  - { src: '{{ dotfiles_dir }}/ruby/.gemrc',                dest: '{{ home_dir }}/.gemrc'               }
-  - { src: '{{ dotfiles_dir }}/screen/.screenrc',           dest: '{{ home_dir }}/.screenrc'            }
-  - { src: '{{ dotfiles_dir }}/slate/.slate',               dest: '{{ home_dir }}/.slate'               }
-  - { src: '{{ dotfiles_dir }}/tern/.tern-project',         dest: '{{ home_dir }}/.tern-project'        }
-  - { src: '{{ dotfiles_dir }}/tig/.tigrc',                 dest: '{{ home_dir }}/.tigrc'               }
-  - { src: '{{ dotfiles_dir }}/tmux/.tmux.conf',            dest: '{{ home_dir }}/.tmux.conf'           }
-  - { src: '{{ dotfiles_dir }}/vim/.gvimrc',                dest: '{{ home_dir }}/.gvimrc'              }
-  - { src: '{{ dotfiles_dir }}/vim/.vimrc',                 dest: '{{ home_dir }}/.vimrc'               }
+  - { src: '{{ dotfiles_dir }}/X11/.Xdefaults',             dest: '{{ home_dir }}/.Xdefaults'                 }
+  - { src: '{{ dotfiles_dir }}/bash/.bash_logout',          dest: '{{ home_dir }}/.bash_logout'               }
+  - { src: '{{ dotfiles_dir }}/bash/.bash_profile',         dest: '{{ home_dir }}/.bash_profile'              }
+  - { src: '{{ dotfiles_dir }}/bash/.bashrc',               dest: '{{ home_dir }}/.bashrc'                    }
+  - { src: '{{ dotfiles_dir }}/bash/.downrc',               dest: '{{ home_dir }}/.downrc'                    }
+  - { src: '{{ dotfiles_dir }}/bash/.findrc',               dest: '{{ home_dir }}/.findrc'                    }
+  - { src: '{{ dotfiles_dir }}/ctags/.ctags',               dest: '{{ home_dir }}/.ctags'                     }
+  - { src: '{{ dotfiles_dir }}/git/.gitconfig',             dest: '{{ home_dir }}/.gitconfig'                 }
+  - { src: '{{ dotfiles_dir }}/git/.gitignore',             dest: '{{ home_dir }}/.gitignore'                 }
+  - { src: '{{ dotfiles_dir }}/locate/.locate.rc',          dest: '{{ home_dir }}/.locate.rc'                 }
+  - { src: '{{ dotfiles_dir }}/mercurial/.hgrc',            dest: '{{ home_dir }}/.hgrc'                      }
+  - { src: '{{ dotfiles_dir }}/nginx/.cocproxy.nginx.conf', dest: '{{ home_dir }}/.cocproxy.nginx.conf'       }
+  - { src: '{{ dotfiles_dir }}/pt/.ptignore',               dest: '{{ home_dir }}/.ptignore'                  }
+  - { src: '{{ dotfiles_dir }}/peco/config.json',           dest: '{{ home_dir }}/.peco/config.json'          }
+  - { src: '{{ dotfiles_dir }}/ranger/commands.py',         dest: '{{ home_dir }}/.config/ranger/commands.py' }
+  - { src: '{{ dotfiles_dir }}/ranger/rc.conf',             dest: '{{ home_dir }}/.config/ranger/rc.conf'     }
+  - { src: '{{ dotfiles_dir }}/ruby/.gemrc',                dest: '{{ home_dir }}/.gemrc'                     }
+  - { src: '{{ dotfiles_dir }}/screen/.screenrc',           dest: '{{ home_dir }}/.screenrc'                  }
+  - { src: '{{ dotfiles_dir }}/slate/.slate',               dest: '{{ home_dir }}/.slate'                     }
+  - { src: '{{ dotfiles_dir }}/tern/.tern-project',         dest: '{{ home_dir }}/.tern-project'              }
+  - { src: '{{ dotfiles_dir }}/tig/.tigrc',                 dest: '{{ home_dir }}/.tigrc'                     }
+  - { src: '{{ dotfiles_dir }}/tmux/.tmux.conf',            dest: '{{ home_dir }}/.tmux.conf'                 }
+  - { src: '{{ dotfiles_dir }}/vim/.gvimrc',                dest: '{{ home_dir }}/.gvimrc'                    }
+  - { src: '{{ dotfiles_dir }}/vim/.vimrc',                 dest: '{{ home_dir }}/.vimrc'                     }
+  - { src: '{{ dotfiles_dir }}/vim/.vimrc',                 dest: '{{ home_dir }}/.config/nvim/init.vim'      }
 
 config_files:
   - { src: '{{ dotfiles_dir }}/curl/.curlrc',      dest: '{{ home_dir }}/.curlrc'             }
