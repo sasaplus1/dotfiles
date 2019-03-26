@@ -48,7 +48,16 @@ if (v:version >= 704 || has('nvim')) && executable('git')
       let g:ranger_map_keys = 0
     endfunction
 
+    call dein#add('rbgrouleff/bclose.vim', {
+          \ 'lazy' : 1,
+          \ 'on_if' : 'has("nvim")',
+          \ })
+
+    " NOTE: Neovimの時だけdependsを追加する
     call dein#add('francoiscabrol/ranger.vim', {
+          \ 'depends' : [
+          \   has('nvim') ? 'bclose.vim' : ''
+          \ ],
           \ 'hook_post_source' : function('s:hook_post_source_ranger'),
           \ 'hook_source' : function('s:hook_source_ranger'),
           \ 'lazy' : 1,
