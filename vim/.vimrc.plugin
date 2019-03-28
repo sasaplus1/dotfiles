@@ -332,6 +332,12 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \ })
     " }}}
 
+    " kana/vim-operator-user {{{
+    call dein#add('kana/vim-operator-user', {
+          \ 'lazy' : 1,
+          \ })
+    " }}}
+
     " rhysd/vim-operator-surround {{{
     function! s:hook_source_vim_operator_surround() abort
       " map from https://github.com/rhysd/vim-operator-surround
@@ -342,9 +348,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
       nmap <silent>sbr <Plug>(operator-surround-replace)<Plug>(textobj-multiblock-a)
     endfunction
 
-    call dein#add('kana/vim-operator-user', {
-          \ 'lazy' : 1,
-          \ })
+    " kana/vim-operator-userに依存している
     call dein#add('rhysd/vim-operator-surround', {
           \ 'depends' : [
           \   'vim-operator-user',
@@ -358,6 +362,30 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \   'sr',
           \   'sbd',
           \   'sbr',
+          \ ],
+          \ })
+    " }}}
+
+    " tyru/operator-camelize.vim {{{
+    function! s:hook_source_operator_camelize() abort
+      vmap <silent>c <Plug>(operator-camelize)
+      vmap <silent>_ <Plug>(operator-decamelize)
+    endfunction
+
+    " kana/vim-operator-userに依存している
+    call dein#add('tyru/operator-camelize.vim', {
+          \ 'depends' : [
+          \   'vim-operator-user',
+          \ ],
+          \ 'hook_source' : function('s:hook_source_operator_camelize'),
+          \ 'lazy' : 1,
+          \ 'on_cmd' : [
+          \   '<Plug>(operator-camelize-',
+          \   '<Plug>(operator-decamelize-',
+          \ ],
+          \ 'on_map' : [
+          \   'c',
+          \   '_',
           \ ],
           \ })
     " }}}
