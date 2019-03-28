@@ -28,4 +28,3 @@
     - { role: 'homebrew_cask_install' }
     - { role: 'set_defaults'          }
     - { role: 'urxvt'                 }
-    - { role: 'vim'                   }
