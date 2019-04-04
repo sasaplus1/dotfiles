@@ -19,9 +19,6 @@ autocmd vimrc FileType python setlocal tabstop=4 shiftwidth=4
 " Go編集時はタブにする
 autocmd vimrc FileType go setlocal noexpandtab list tabstop=2 shiftwidth=2
 
-" JavaScript編集時のみドットを入力したらオムニ補完を表示する
-autocmd vimrc FileType javascript inoremap <expr><buffer> . ".\<C-x>\<C-o>"
-
 " 挿入モードを開始したときにペーストモードのキーバインドを設定する
 autocmd vimrc InsertEnter * set pastetoggle=<C-t>
 
