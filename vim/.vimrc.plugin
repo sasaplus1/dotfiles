@@ -90,7 +90,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
               \ 'whitelist' : ['typescript', 'typescript.tsx'],
               \ })
         " 編集時ドットを入力したら補完を表示する
-        autocmd vimrc FileType javascript,typescript inoremap <expr><buffer> . '.\<C-n>'
+        autocmd vimrc FileType javascript,typescript inoremap <expr><buffer> . ".\<C-n>"
       endif
       " https://mattn.kaoriya.net/software/lang/go/20181217000056.htm
       if executable('golsp')
