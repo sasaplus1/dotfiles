@@ -228,32 +228,68 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     " }}}
 
     " w0rp/ale {{{
+    function! s:fix_with_eslint_plugin_prettier(dir) abort
+      let l:node_modules_dir = finddir('node_modules', a:dir . ';')
+
+      if l:node_modules_dir == ''
+        return
+      endif
+
+      let l:eslint_plugin_prettier_dir = fnamemodify(l:node_modules_dir . '/eslint-plugin-prettier', ':p:h')
+
+      if isdirectory(l:eslint_plugin_prettier_dir)
+        let b:ale_fixers = {
+              \ 'javascript' : ['eslint'],
+              \ 'javascript.jsx' : ['eslint'],
+              \ 'typescript' : ['eslint'],
+              \ }
+      endif
+    endfunction
+
+    function! s:fix_with_stylelint_prettier(dir) abort
+      let l:node_modules_dir = finddir('node_modules', a:dir . ';')
+
+      if l:node_modules_dir == ''
+        return
+      endif
+
+      let l:stylelint_prettier_dir = fnamemodify(l:node_modules_dir . '/stylelint-prettier', ':p:h')
+
+      if isdirectory(l:stylelint_prettier_dir)
+        let b:ale_fixers = {
+              \ 'css' : ['stylelint'],
+              \ 'scss' : ['stylelint'],
+              \ }
+      endif
+    endfunction
+
     function! s:hook_source_ale() abort
       " linterの設定
       let g:ale_linters = {
             \ 'css' : ['stylelint'],
             \ 'javascript' : ['eslint'],
             \ 'javascript.jsx' : ['eslint'],
-            \ 'json' : ['jq'],
+            \ 'json' : [],
             \ 'scss' : ['stylelint'],
             \ 'typescript' : ['tslint'],
             \ 'vue' : ['eslint'],
             \ }
       " fixerの設定
       let g:ale_fixers = {
-            \ 'css' : ['stylelint'],
-            \ 'javascript' : ['eslint'],
-            \ 'javascript.jsx' : ['eslint'],
+            \ 'css' : ['prettier'],
+            \ 'javascript' : ['prettier'],
+            \ 'javascript.jsx' : ['prettier'],
             \ 'json' : ['prettier'],
-            \ 'scss' : ['stylelint'],
-            \ 'typescript' : ['tslint'],
+            \ 'scss' : ['prettier'],
+            \ 'typescript' : ['prettier'],
             \ }
       " 保存時fixする
-      autocmd vimrc FileType css let b:ale_fix_on_save = 1
-      autocmd vimrc FileType javascript let b:ale_fix_on_save = 1
-      autocmd vimrc FileType json let b:ale_fix_on_save = 1
-      autocmd vimrc FileType scss let b:ale_fix_on_save = 1
-      autocmd vimrc FileType typescript let b:ale_fix_on_save = 1
+      autocmd vimrc FileType css,scss,json,javascript,typescript let b:ale_fix_on_save = 1
+
+      " eslint-plugin-prettierやstylelint-prettierがインストールされていたらそちらをfixerとして使う
+      autocmd vimrc FileType css,scss call s:fix_with_stylelint_prettier(expand('%:p:h'))
+      autocmd vimrc FileType javascript,typescript call s:fix_with_eslint_plugin_prettier(expand('%:p:h'))
+
       " ファイルのカレントディレクトリから実行する
       " monorepo毎に.eslintignoreがある場合などに有効
       autocmd vimrc BufNewFile,BufRead * let b:ale_command_wrapper = printf("cd '%s' && %s", expand("%:p:h"), '%*')
