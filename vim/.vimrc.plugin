@@ -539,6 +539,15 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \ })
     " }}}
 
+    " leafgarland/typescript-vim {{{
+    call dein#add('leafgarland/typescript-vim', {
+          \ 'lazy' : 1,
+          \ 'on_ft' : [
+          \   'typescript'
+          \ ],
+          \ })
+    " }}}
+
     " }}}
 
     call dein#end()
