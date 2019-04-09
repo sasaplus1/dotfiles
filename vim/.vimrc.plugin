@@ -122,7 +122,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \ 'on_if' : 'v:version >= 800 || has("nvim")',
           \ })
 
-    function! s:hook_sourc_asyncomplete_vim() abort
+    function! s:hook_source_asyncomplete_vim() abort
       " 重複を除く
       let g:asyncomplete_remove_duplicates = 1
       " fuzzy smart completion
@@ -131,7 +131,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     endfunction
 
     call dein#add('prabirshrestha/asyncomplete.vim', {
-          \ 'hook_source' : function('s:hook_sourc_asyncomplete_vim'),
+          \ 'hook_source' : function('s:hook_source_asyncomplete_vim'),
           \ 'on_if' : 'v:version >= 800 || has("nvim")',
           \ })
     call dein#add('prabirshrestha/asyncomplete-lsp.vim', {
