@@ -76,22 +76,22 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     " prabirshrestha/vim-lsp {{{
     function! s:hook_post_source_vim_lsp() abort
       " https://github.com/prabirshrestha/vim-lsp/wiki/Servers-TypeScript
-      if executable('typescript-language-server')
-        autocmd User lsp_setup call lsp#register_server({
-              \ 'name' : 'typescript-language-server',
-              \ 'cmd' : {server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
-              \ 'root_uri' : {server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'tsconfig.json'))},
-              \ 'whitelist' : ['javascript', 'javascript.jsx'],
-              \ })
-        autocmd User lsp_setup call lsp#register_server({
-              \ 'name' : 'typescript-language-server',
-              \ 'cmd' : {server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
-              \ 'root_uri' : {server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'tsconfig.json'))},
-              \ 'whitelist' : ['typescript', 'typescript.tsx'],
-              \ })
-        " 編集時ドットを入力したら補完を表示する
-        autocmd vimrc FileType javascript,typescript inoremap <expr><buffer> . ".\<C-n>"
-      endif
+      " if executable('typescript-language-server')
+      "   autocmd User lsp_setup call lsp#register_server({
+      "         \ 'name' : 'typescript-language-server',
+      "         \ 'cmd' : {server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
+      "         \ 'root_uri' : {server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'tsconfig.json'))},
+      "         \ 'whitelist' : ['javascript', 'javascript.jsx'],
+      "         \ })
+      "   autocmd User lsp_setup call lsp#register_server({
+      "         \ 'name' : 'typescript-language-server',
+      "         \ 'cmd' : {server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
+      "         \ 'root_uri' : {server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'tsconfig.json'))},
+      "         \ 'whitelist' : ['typescript', 'typescript.tsx'],
+      "         \ })
+      "   " 編集時ドットを入力したら補完を表示する
+      "   autocmd vimrc FileType javascript,typescript inoremap <expr><buffer> . ".\<C-n>"
+      " endif
       " https://mattn.kaoriya.net/software/lang/go/20181217000056.htm
       if executable('golsp')
         autocmd User lsp_setup call lsp#register_server({
@@ -302,6 +302,11 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     " }}}
 
     " Quramy/tsuquyomi {{{
+    function! s:hook_post_source_tsuquyomi() abort
+      " 編集時ドットを入力したらオムニ補完を表示する
+      autocmd vimrc FileType javascript,typescript inoremap <expr><buffer> . ".\<C-x>\<C-o>"
+    endfunction
+
     function! s:hook_source_tsuquyomi() abort
       " quickfixを表示しない
       let g:tsuquyomi_disable_quickfix = 1
@@ -312,6 +317,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     endfunction
 
     call dein#add('Quramy/tsuquyomi', {
+          \ 'hook_post_source' : function('s:hook_post_source_tsuquyomi'),
           \ 'hook_source' : function('s:hook_source_tsuquyomi'),
           \ 'lazy' : 1,
           \ 'on_if' : 'v:version >= 800 || (v:version >= 704 && dein#tap("vimproc.vim"))',
