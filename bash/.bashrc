@@ -36,7 +36,8 @@ __main() {
   export MANPATH=$homebrew_manpath:${MANPATH//$homebrew_manpath:/}
   export PATH=$homebrew_path:${PATH//$homebrew_path:/}
 
-  local homebrew_prefix=$(brew --prefix)
+  # NOTE: https://github.com/Homebrew/brew/issues/3097
+  local homebrew_prefix=$(dirname $(dirname $(type -tP brew)))
 
   # for linuxbrew
   if [ "x$__platform" = 'xlinux' ]
