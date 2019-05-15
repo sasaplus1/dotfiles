@@ -111,12 +111,13 @@ __main() {
     alias vim="$macvim/Vim \"\$@\"" &&
     export EDITOR=vim
 
-  # compile from source
+  # my kaoriya-vim
+  # via https://github.com/sasaplus1/vim
   local vim=$HOME/Binary/vim
   [ -d "$vim" ] &&
     local vim_manpath=$vim/share/man &&
     local vim_path=$vim/bin &&
-    alias vim="$vim/bin/vim \"\$@\"" &&
+    alias vim="$vim/bin/pvim \"\$@\"" &&
     export MANPATH=$vim_manpath:${MANPATH//$vim_manpath:/} &&
     export PATH=$vim_path:${PATH//$vim_path:/} &&
     export EDITOR=vim
