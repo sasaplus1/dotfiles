@@ -280,7 +280,7 @@ __print_repo_info() {
 }
 
 __print_has_yarn() {
-  [ -n "$(git ls-files yarn.lock 2>/dev/null)" ] && printf -- " ${__seq_yellow}(yarn)${__seq_reset}"
+  [ -n "$(git --git-dir="$(git rev-parse --absolute-git-dir)" ls-files yarn.lock 2>/dev/null)" ] && printf -- " ${__color_yellow}(yarn)${__color_reset}"
 }
 
 __print_vim_term() {
