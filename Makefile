@@ -55,7 +55,8 @@ setup: pre-setup-$(os) clone provision
 pre-setup-darwin: install-brew
 pre-setup-darwin:
 	brew update
-	brew install ansible git
+	brew info ansible && brew upgrade ansible || brew install ansible
+	brew info git && brew upgrade git || brew install git
 
 #-------------------------------------------------------------------------------
 
