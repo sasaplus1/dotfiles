@@ -262,43 +262,76 @@ unset -f __main
 # }}}
 
 # PS1 {{{
+__print_status() {
+  local -r exit_code=$1
 
-__color_red='\e[01;31m'
-__color_green='\e[01;32m'
-__color_yellow='\e[01;33m'
-__color_cyan='\e[01;36m'
-__color_reset='\e[00m'
+  local -r cyan='\e[01;36m'
+  local -r green='\e[01;32m'
+  local -r red='\e[01;31m'
+  local -r reset='\e[00m'
+  local -r yellow='\e[01;33m'
 
-__print_exit_code() {
-  [ "$1" -ne 0 ] && printf -- " ${__color_red}%s${__color_reset}" "$1"
+  # exit code
+  if [ "$exit_code" -ne 0 ]
+  then
+    prompt="${prompt} ${red}${exit_code}${reset}"
+  fi
+
+  local cwd="$(pwd)"
+  local git=
+  local yarn=
+
+  while [ "$cwd" != '/' ]
+  do
+    # yarn
+    # $ git ls-files ':(top)yarn.lock'
+    # is too slow
+    if [ -f "${cwd}/yarn.lock" ]
+    then
+      yarn="${yellow}(yarn)${reset}"
+    fi
+
+    # vcs info
+    # $ vcprompt -f '%n:%b:%r' 2>/dev/null
+    # is too slow
+    if [ -d "${cwd}/.git" ]
+    then
+      local -r ref=$(head -n 1 "${cwd}/.git/HEAD")
+
+      if [[ "$ref" =~ / ]]
+      then
+        git="${cyan}(git:${ref##*/})${reset}"
+      else
+        git="${cyan}(git:${reset}${red}${ref::7}${reset}${cyan})${reset}"
+      fi
+
+      break
+    fi
+
+    cwd="$(cd "${cwd}/.." && pwd)"
+  done
+
+  [ -n "${git}"  ] && prompt="${prompt} ${git}"
+  [ -n "${yarn}" ] && prompt="${prompt} ${yarn}"
+
+  if [ -n "$VIM" -a -n "$VIMRUNTIME" ]
+  then
+    prompt="${prompt} ${cyan}(vim)${reset}"
+  fi
+
+  printf -- "${prompt}"
 }
 
-__print_repo_info() {
-  local -r vcs="$(vcprompt -f '%n:%b:%r' 2>/dev/null)"
+__print_PS1() {
+  local -r green='\e[01;32m'
+  local -r reset='\e[00m'
 
-  [ -n "$vcs" ] && printf -- " ${__color_cyan}(%s)${__color_reset}" "${vcs%:}"
+  # /current/dir error (vcs:branch or revision) (yarn)
+  # (vim) username@hostname$ _
+  printf -- '%s ' "${green}\w${reset}\$(__print_status \$?)\n\u@\h$"
 }
 
-__print_has_yarn() {
-  [ -n "$(git --git-dir="$(git rev-parse --absolute-git-dir)" ls-files yarn.lock 2>/dev/null)" ] && printf -- " ${__color_yellow}(yarn)${__color_reset}"
-}
-
-__print_vim_term() {
-  [ -n "$VIM" ] && printf -- "${__color_cyan}(vim)${__color_reset} "
-}
-
-# /current/dir err (vcs:branch:rev) (yarn)
-# (vim) username@hostname$ _
-export PS1=$(
-  printf -- \
-    "${__color_green}%s${__color_reset}%s%s%s\n%s\u@\h$ " \
-    '\w' \
-    '$(__print_exit_code $?)' \
-    '$(__print_repo_info)' \
-    '$(__print_has_yarn)' \
-    '$(__print_vim_term)'
-)
-
+export PS1=$(__print_PS1)
 # }}}
 
 # functions {{{
