@@ -300,7 +300,7 @@ __print_status() {
 
       if [[ "$ref" =~ / ]]
       then
-        git="${cyan}(git:${ref##*/})${reset}"
+        git="${cyan}(git:${ref/#ref: refs\/heads\//})${reset}"
       else
         git="${cyan}(git:${reset}${red}${ref::7}${reset}${cyan})${reset}"
       fi
