@@ -208,14 +208,17 @@ if (v:version >= 704 || has('nvim')) && executable('git')
             \ 'CreateNewFile()' : [],
             \ }
 
-      " ,ugでptを使ったgrepをする
-      nnoremap <silent> ,ug :<C-u>execute printf("silent! grep! '%s' \| redraw! \| CtrlPQuickfix", input('pattern: ', ''))<CR>
-      " ,umで最近開いたファイル一覧
-      nnoremap ,um :<C-u>CtrlPMRUFiles<CR>
-      " ,ulで行一覧
-      nnoremap ,ul :<C-u>CtrlPLine<CR>
+      " CtrlPGrepを定義する
+      command! -nargs=+ CtrlPGrep execute "silent! grep! '<args>' | redraw! | CtrlPQuickfix"
+
       " ,ubでバッファ一覧
       nnoremap ,ub :<C-u>CtrlPBuffer<CR>
+      " ,ugでptを使ったgrepをする
+      nnoremap ,ug :<C-u>CtrlPGrep<Space>
+      " ,ulで行一覧
+      nnoremap ,ul :<C-u>CtrlPLine<CR>
+      " ,umで最近開いたファイル一覧
+      nnoremap ,um :<C-u>CtrlPMRUFiles<CR>
     endfunction
 
     call dein#add('ctrlpvim/ctrlp.vim', {
