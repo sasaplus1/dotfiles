@@ -52,7 +52,8 @@
   ui = auto
 
 [core]
-  editor = vim
+; editor = vim
+; editor = $EDITOR
   excludesfile = ~/.gitignore
   fscache = true
   preloadindex = true

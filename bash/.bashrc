@@ -99,7 +99,7 @@ __main() {
     export PATH=$macvim:${PATH//$macvim:/}
   [ -x "$macvim/Vim" ] &&
     alias vim="$macvim/Vim \"\$@\"" &&
-    export EDITOR=vim
+    export EDITOR="$macvim/Vim"
 
   # macvim from homebrew-cask
   local macvim=$HOME/Caskroom/macvim-kaoriya
@@ -109,7 +109,7 @@ __main() {
     export PATH=$macvim:${PATH//$macvim:/}
   [ -x "$macvim/Vim" ] &&
     alias vim="$macvim/Vim \"\$@\"" &&
-    export EDITOR=vim
+    export EDITOR="$macvim/Vim"
 
   # my kaoriya-vim
   # via https://github.com/sasaplus1/vim
@@ -120,7 +120,7 @@ __main() {
     alias vim="$vim/bin/pvim \"\$@\"" &&
     export MANPATH=$vim_manpath:${MANPATH//$vim_manpath:/} &&
     export PATH=$vim_path:${PATH//$vim_path:/} &&
-    export EDITOR=vim
+    export EDITOR="$vim/bin/pvim"
 
   # }}}
 
