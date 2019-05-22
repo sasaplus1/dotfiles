@@ -37,6 +37,10 @@ nnoremap <silent> ) :<C-u>bnext<CR>
 " バッファ番号とフルパスを表示する
 nnoremap <C-g> 2<C-g>
 
+" grepをする
+command! -nargs=1 Grep execute "silent! grep! '<args>' | redraw! | copen"
+nnoremap ,gr :<C-u>Grep<Space>
+
 " C-kでオムニ補完
 inoremap <C-k> <C-x><C-o>
 
