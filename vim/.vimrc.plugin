@@ -209,7 +209,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
             \ }
 
       " CtrlPGrepを定義する
-      command! -nargs=+ CtrlPGrep execute "silent! grep! '<args>' | redraw! | CtrlPQuickfix"
+      command! -nargs=1 CtrlPGrep execute "silent! grep! '<args>' | redraw! | CtrlPQuickfix"
 
       " ,ubでバッファ一覧
       nnoremap ,ub :<C-u>CtrlPBuffer<CR>
