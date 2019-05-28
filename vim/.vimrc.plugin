@@ -53,22 +53,19 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \ 'on_if' : 'has("nvim")',
           \ })
 
+    " bclose.vimを必要とするのはNeovimのみ
     let s:ranger_options = {
+          \ 'depends' : [
+          \   'bclose.vim'
+          \ ],
           \ 'hook_post_source' : function('s:hook_post_source_ranger'),
           \ 'hook_source' : function('s:hook_source_ranger'),
           \ 'lazy' : 1,
-          \ 'on_if' : 'executable("ranger")',
+          \ 'on_if' : 'executable("ranger") && has("nvim")',
           \ 'on_map' : [
           \   ',vf',
-          \ ],
+          \ ]
           \ }
-
-    " NOTE: Neovimの時だけdependsを追加する
-    if has('nvim')
-      let s:ranger_options.depends = [
-            \   'bclose.vim',
-            \ ]
-    endif
 
     call dein#add('francoiscabrol/ranger.vim', s:ranger_options)
     " }}}

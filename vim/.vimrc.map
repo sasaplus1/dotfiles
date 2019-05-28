@@ -53,4 +53,16 @@ inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 " Enterで補完時に決定
 inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
 
+if executable('ranger') && has('terminal') && has('job') && has('channel')
+  " Vimの中でrangerを実行してファイルを開くときはホストのVimでファイルを開く
+  let s:ranger_command = 'chain open_file_via_vim; quitall'
+  let s:ranger_options = [
+        \ printf('--cmd="map \<enter\> %s"', s:ranger_command),
+        \ printf('--cmd="map \<right\> %s"', s:ranger_command),
+        \ printf('--cmd="map l %s"', s:ranger_command),
+        \ ]
+
+  execute 'nnoremap ,vf :<C-u>terminal ++close ranger ' . join(s:ranger_options, ' ') . ' <CR>'
+endif
+
 " vim:ft=vim:fdm=marker:fen:

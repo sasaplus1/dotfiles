@@ -12,6 +12,9 @@ from __future__ import (absolute_import, division, print_function)
 # You can import any python module as needed.
 import os
 
+# open_file_via_vim is needed.
+import sys
+
 # You always need to import ranger.api.commands here to get the Command class:
 from ranger.api.commands import Command
 
@@ -119,3 +122,18 @@ class move_file(Command):
             # NOTE: Why ranger say `paste() got an unexpected keyword argument 'dest'`?
             another_tab.fm.paste(append=True, dest=another_tab.path)
             current_tab.fm.mark_files(all=True, val=False)
+
+class open_file_via_vim(Command):
+    """:open_file_via_vim <filename>
+
+    Open marked file via Vim.
+    """
+
+    def execute(self):
+        if self.arg(1):
+            target_filename = self.rest(1)
+        else:
+            target_filename = self.fm.thisfile.path
+
+        sys.stdout.write('\033]51;["drop","{filename}"]\07'.format(filename=target_filename))
+        sys.stdout.flush()
