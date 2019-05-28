@@ -271,7 +271,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
             \ 'javascript.jsx' : ['eslint'],
             \ 'json' : [],
             \ 'scss' : ['stylelint'],
-            \ 'typescript' : ['tslint'],
+            \ 'typescript' : ['tsserver', 'eslint'],
             \ 'vue' : ['eslint'],
             \ }
       " fixerの設定
