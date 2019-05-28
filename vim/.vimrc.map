@@ -55,11 +55,10 @@ inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
 
 if executable('ranger') && has('terminal') && has('job') && has('channel')
   " Vimの中でrangerを実行してファイルを開くときはホストのVimでファイルを開く
-  let s:ranger_command = 'chain open_file_via_vim; quitall'
   let s:ranger_options = [
-        \ printf('--cmd="map \<enter\> %s"', s:ranger_command),
-        \ printf('--cmd="map \<right\> %s"', s:ranger_command),
-        \ printf('--cmd="map l %s"', s:ranger_command),
+        \ '--cmd="map \<enter\> open_file_via_vim"',
+        \ '--cmd="map \<right\> open_file_via_vim"',
+        \ '--cmd="map l open_file_via_vim"',
         \ ]
 
   execute 'nnoremap ,vf :<C-u>terminal ++close ranger ' . join(s:ranger_options, ' ') . ' <CR>'

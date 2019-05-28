@@ -124,16 +124,18 @@ class move_file(Command):
             current_tab.fm.mark_files(all=True, val=False)
 
 class open_file_via_vim(Command):
-    """:open_file_via_vim <filename>
+    """:open_file_via_vim
 
-    Open marked file via Vim.
+    Open selected file via Vim.
     """
 
     def execute(self):
-        if self.arg(1):
-            target_filename = self.rest(1)
+        if self.fm.thisfile.is_directory:
+            self.fm.move(right=1)
         else:
             target_filename = self.fm.thisfile.path
 
-        sys.stdout.write('\033]51;["drop","{filename}"]\07'.format(filename=target_filename))
-        sys.stdout.flush()
+            sys.stdout.write('\033]51;["drop","{filename}"]\07'.format(filename=target_filename))
+            sys.stdout.flush()
+
+            self.fm.exit()
