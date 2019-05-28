@@ -124,6 +124,15 @@ __main() {
 
   # }}}
 
+  # universal-ctags {{{
+  local ctags=$homebrew_prefix/opt/universal-ctags
+  [ -d "$ctags" ] &&
+    local ctags_manpath=$ctags/share/man &&
+    local ctags_path=$ctags/bin &&
+    export MANPATH=$ctags_manpath:${MANPATH//$ctags_manpath:/} &&
+    export PATH=$ctags_path:${PATH//$ctags_path:/}
+  # }}}
+
   #-----------------------------------------------------------------------------
 
   # ssh-agent {{{
@@ -212,6 +221,7 @@ __main() {
   alias memo='$EDITOR $(date +%FT%H-%M-%S).md'
   alias server='python -m SimpleHTTPServer'
   alias fake-dev='nginx -p . -c "$(ghq list -p fake-dev)/fake-dev.conf"'
+  alias ctags='ctags --exclude=@$HOME/.ctagsignore'
   # }}}
 
   #-----------------------------------------------------------------------------

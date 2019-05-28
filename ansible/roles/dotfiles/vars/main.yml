@@ -7,6 +7,7 @@ symbolic_links:
   - { src: '{{ dotfiles_dir }}/bash/.downrc',               dest: '{{ home_dir }}/.downrc'                    }
   - { src: '{{ dotfiles_dir }}/bash/.findrc',               dest: '{{ home_dir }}/.findrc'                    }
   - { src: '{{ dotfiles_dir }}/ctags/.ctags',               dest: '{{ home_dir }}/.ctags'                     }
+  - { src: '{{ dotfiles_dir }}/ctags/.ctagsignore',         dest: '{{ home_dir }}/.ctagsignore'               }
   - { src: '{{ dotfiles_dir }}/git/.gitconfig',             dest: '{{ home_dir }}/.gitconfig'                 }
   - { src: '{{ dotfiles_dir }}/git/.gitignore',             dest: '{{ home_dir }}/.gitignore'                 }
   - { src: '{{ dotfiles_dir }}/locate/.locate.rc',          dest: '{{ home_dir }}/.locate.rc'                 }
