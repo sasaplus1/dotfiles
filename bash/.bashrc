@@ -380,7 +380,7 @@ d-rm() {
 
 # remove docker images
 d-rmi() {
-  docker images | sed 1d | peco | awk '{ print $3 }' | xargs docker rmi
+  docker images | sed 1d | peco | awk '{ print $3 }' | xargs docker rmi --force
 }
 
 # execute command in container
