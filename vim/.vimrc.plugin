@@ -314,6 +314,8 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     function! s:hook_source_tsuquyomi() abort
       " quickfixを表示しない
       let g:tsuquyomi_disable_quickfix = 1
+      " JavaScriptも対象とする
+      let g:tsuquyomi_javascript_support = 1
       " シングルクォートを使ってimportを生成する
       let g:tsuquyomi_single_quote_import = 1
     endfunction
@@ -324,6 +326,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \ 'lazy' : 1,
           \ 'on_if' : 'v:version >= 800 || (v:version >= 704 && dein#tap("vimproc.vim"))',
           \ 'on_ft' : [
+          \   'javascript',
           \   'typescript',
           \ ],
           \ })
