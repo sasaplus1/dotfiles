@@ -287,6 +287,10 @@ if (v:version >= 704 || has('nvim')) && executable('git')
             \ 'scss' : ['prettier'],
             \ 'typescript' : ['prettier'],
             \ }
+
+      " JSONならprettierのパーサにjson-stringifyを使用する
+      autocmd vimrc FileType json let b:ale_javascript_prettier_options = '--parser json-stringify'
+
       " 保存時fixする
       autocmd vimrc FileType css,scss,json,javascript,typescript let b:ale_fix_on_save = 1
 
