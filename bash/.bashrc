@@ -290,6 +290,7 @@ __print_status() {
   local cwd="$(pwd)"
   local git=
   local yarn=
+  local lerna=
 
   while [ "$cwd" != '/' ]
   do
@@ -299,6 +300,14 @@ __print_status() {
     if [ -f "${cwd}/yarn.lock" ]
     then
       yarn="${yellow}(yarn)${reset}"
+    fi
+
+    # lerna
+    # $ git ls-files ':(top)lerna.json'
+    # is too slow
+    if [ -f "${cwd}/lerna.json" ]
+    then
+      lerna="${yellow}(lerna)${reset}"
     fi
 
     # vcs info
@@ -323,6 +332,7 @@ __print_status() {
 
   [ -n "${git}"  ] && prompt="${prompt} ${git}"
   [ -n "${yarn}" ] && prompt="${prompt} ${yarn}"
+  [ -n "${lerna}" ] && prompt="${prompt} ${lerna}"
 
   if [ -n "$VIM" -a -n "$VIMRUNTIME" ]
   then
@@ -336,7 +346,7 @@ __print_PS1() {
   local -r green='\e[01;32m'
   local -r reset='\e[00m'
 
-  # /current/dir error (vcs:branch or revision) (yarn)
+  # /current/dir error (vcs:branch or revision) (yarn) (lerna)
   # (vim) username@hostname$ _
   printf -- '%s ' "${green}\w${reset}\$(__print_status \$?)\n\u@\h$"
 }
