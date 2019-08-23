@@ -289,6 +289,7 @@ __print_status() {
 
   local cwd="$(pwd)"
   local git=
+  local head=
   local yarn=
   local lerna=
 
@@ -310,18 +311,34 @@ __print_status() {
       lerna="${yellow}(lerna)${reset}"
     fi
 
+    # git-worktree
+    if [ -f "${cwd}/.git"  ]
+    then
+      head=$(awk '{ print $2 }' "${cwd}/.git")
+    fi
+
     # vcs info
     # $ vcprompt -f '%n:%b:%r' 2>/dev/null
     # is too slow
     if [ -d "${cwd}/.git" ]
     then
-      local -r ref=$(head -n 1 "${cwd}/.git/HEAD")
+      local ref=
+      local scm=
+
+      if [ -n "$head" ]
+      then
+        ref=$(head -n 1 "${head}/HEAD")
+        scm="${red}git-worktree${reset}"
+      else
+        ref=$(head -n 1 "${cwd}/.git/HEAD")
+        scm="${cyan}git${reset}"
+      fi
 
       if [[ "$ref" =~ / ]]
       then
-        git="${cyan}(git:${ref/#ref: refs\/heads\//})${reset}"
+        git="${cyan}(${reset}${scm}${cyan}:${ref/#ref: refs\/heads\//})${reset}"
       else
-        git="${cyan}(git:${reset}${red}${ref::7}${reset}${cyan})${reset}"
+        git="${cyan}(${reset}${scm}${cyan}:${reset}${red}${ref::7}${reset}${cyan})${reset}"
       fi
 
       break
