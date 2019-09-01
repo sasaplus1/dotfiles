@@ -186,7 +186,7 @@ __main() {
   source "$HOME/.npm_completion" 2>/dev/null
 
   # up.sh
-  source "$HOME/.ghq/github.com/sasaplus1/up.sh/up.sh" 2>/dev/null
+  source "$HOME/.ghq/github.com/shannonmoeller/up/up.sh" 2>/dev/null || source "$HOME/.ghq/github.com/sasaplus1/up.sh/up.sh" 2>/dev/null
 
   # down.sh
   export _DOWN_CMD=dw
