@@ -318,7 +318,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
       " カーソル位置のシンボルに関するヒントを表示する
       autocmd vimrc FileType javascript,typescript nnoremap <buffer> <C-h> :<C-u>echo tsuquyomi#hint()<CR>
       " カーソル位置のシンボルを参照している一覧を表示する
-      autocmd vimrc FileType javascript,typescript nnoremap <buffer> <C-l> :<C-u>TsuReferences<CR>
+      autocmd vimrc FileType javascript,typescript nnoremap <buffer> <C-j> :<C-u>TsuReferences<CR>
       " 編集時ドットを入力したらオムニ補完を表示する
       autocmd vimrc FileType javascript,typescript inoremap <expr><buffer> . ".\<C-x>\<C-o>"
     endfunction
