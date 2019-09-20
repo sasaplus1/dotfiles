@@ -308,6 +308,10 @@ if (v:version >= 704 || has('nvim')) && executable('git')
       " エラーのある行に移動する
       nnoremap <silent> <C-j> :<C-u>ALENextWrap<CR>
       nnoremap <silent> <C-k> :<C-u>ALEPreviousWrap<CR>
+
+      " 現在のバッファで有効・無効を切り替える
+      nnoremap ,ad :<C-u>ALEDisableBuffer<CR>
+      nnoremap ,ae :<C-u>ALEEnableBuffer<CR>
     endfunction
 
     call dein#add('w0rp/ale', {
