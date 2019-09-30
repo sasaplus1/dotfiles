@@ -334,7 +334,13 @@ __print_status() {
       if [ -n "$head" ]
       then
         ref=$(head -n 1 "${head}/HEAD")
-        scm="${red}git-worktree${reset}"
+
+        if [[ "$head" =~ \.git\/worktrees ]]
+        then
+          scm="${red}git-worktree${reset}"
+        else
+          scm="${red}git-submodule${reset}"
+        fi
       else
         ref=$(head -n 1 "${cwd}/.git/HEAD")
         scm="${cyan}git${reset}"
