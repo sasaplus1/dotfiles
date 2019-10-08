@@ -70,72 +70,6 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     call dein#add('francoiscabrol/ranger.vim', s:ranger_options)
     " }}}
 
-    " prabirshrestha/vim-lsp {{{
-    function! s:hook_post_source_vim_lsp() abort
-      " https://github.com/prabirshrestha/vim-lsp/wiki/Servers-TypeScript
-      " if executable('typescript-language-server')
-      "   autocmd User lsp_setup call lsp#register_server({
-      "         \ 'name' : 'typescript-language-server',
-      "         \ 'cmd' : {server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
-      "         \ 'root_uri' : {server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'tsconfig.json'))},
-      "         \ 'whitelist' : ['javascript', 'javascript.jsx'],
-      "         \ })
-      "   autocmd User lsp_setup call lsp#register_server({
-      "         \ 'name' : 'typescript-language-server',
-      "         \ 'cmd' : {server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
-      "         \ 'root_uri' : {server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'tsconfig.json'))},
-      "         \ 'whitelist' : ['typescript', 'typescript.tsx'],
-      "         \ })
-      "   " 編集時ドットを入力したら補完を表示する
-      "   autocmd vimrc FileType javascript,typescript inoremap <expr><buffer> . ".\<C-n>"
-      " endif
-      " https://mattn.kaoriya.net/software/lang/go/20181217000056.htm
-      if executable('golsp')
-        autocmd User lsp_setup call lsp#register_server({
-              \ 'name' : 'go-lang',
-              \ 'cmd' : {server_info->['golsp', '-mode', 'stdio']},
-              \ 'whitelist' : ['go'],
-              \ })
-        autocmd FileType go setlocal omnifunc=lsp#complete
-      endif
-    endfunction
-
-    function! s:hook_source_vim_lsp() abort
-      " aleを使うのでLSPによる警告を無効にする
-      let g:lsp_diagnostics_enabled = 0
-      " 非同期補完
-      let g:lsp_async_completion = 1
-    endfunction
-
-    call dein#add('prabirshrestha/async.vim', {
-          \ 'on_if' : 'v:version >= 800 || has("nvim")',
-          \ })
-    call dein#add('prabirshrestha/vim-lsp', {
-          \ 'depends' : [
-          \   'async.vim'
-          \ ],
-          \ 'hook_post_source' : function('s:hook_post_source_vim_lsp'),
-          \ 'hook_source' : function('s:hook_source_vim_lsp'),
-          \ 'on_if' : 'v:version >= 800 || has("nvim")',
-          \ })
-
-    function! s:hook_source_asyncomplete_vim() abort
-      " 重複を除く
-      let g:asyncomplete_remove_duplicates = 1
-      " fuzzy smart completion
-      let g:asyncomplete_smart_completion = 1
-      let g:asyncomplete_auto_popup = 1
-    endfunction
-
-    call dein#add('prabirshrestha/asyncomplete.vim', {
-          \ 'hook_source' : function('s:hook_source_asyncomplete_vim'),
-          \ 'on_if' : 'v:version >= 800 || has("nvim")',
-          \ })
-    call dein#add('prabirshrestha/asyncomplete-lsp.vim', {
-          \ 'on_if' : 'v:version >= 800 || has("nvim")',
-          \ })
-    " }}}
-
     " ctrlpvim/ctrlp.vim {{{
     function! s:hook_add_ctrlpvim_ctrlpvim() abort
       " <C-p>のコマンドを変更する
@@ -227,7 +161,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \ })
     " }}}
 
-    " w0rp/ale {{{
+    " dense-analysis/ale {{{
     function! s:fix_with_eslint_plugin_prettier(dir) abort
       let l:node_modules_dir = finddir('node_modules', a:dir . ';')
 
@@ -314,40 +248,63 @@ if (v:version >= 704 || has('nvim')) && executable('git')
       nnoremap ,ae :<C-u>ALEEnableBuffer<CR>
     endfunction
 
-    call dein#add('w0rp/ale', {
+    call dein#add('dense-analysis/ale', {
           \ 'hook_source' : function('s:hook_source_ale'),
-          \ 'on_if' : '(v:version >= 800 && has("timers") && has("job") && has("channel")) || has("nvim")',
+          \ 'on_if' : '(v:version >= 800 && has("timers") && has("job") && has("channel")) || has("nvim-0.2.0")',
           \ })
     " }}}
 
-    " Quramy/tsuquyomi {{{
-    function! s:hook_post_source_tsuquyomi() abort
-      " カーソル位置のシンボルに関するヒントを表示する
-      autocmd vimrc FileType javascript,typescript nnoremap <buffer> <C-h> :<C-u>echo tsuquyomi#hint()<CR>
-      " カーソル位置のシンボルを参照している一覧を表示する
-      autocmd vimrc FileType javascript,typescript nnoremap <buffer> <C-j> :<C-u>TsuReferences<CR>
-      " 編集時ドットを入力したらオムニ補完を表示する
-      autocmd vimrc FileType javascript,typescript inoremap <expr><buffer> . ".\<C-x>\<C-o>"
+    " neoclide/coc.nvim {{{
+    function! s:hook_post_source_coc_nvim() abort
+      inoremap <silent><expr> <TAB>
+            \ pumvisible() ? "\<C-n>" :
+            \ <SID>check_back_space() ? "\<TAB>" :
+            \ coc#refresh()
+      inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+      function! s:check_back_space() abort
+        let col = col('.') - 1
+        return !col || getline('.')[col - 1] =~# '\s'
+      endfunction
+
+      inoremap <silent><expr> <C-k> coc#refresh()
+
+      " Enterを押した時に候補を決定する
+      if exists('*complete_info')
+        inoremap <expr><CR> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+      else
+        inoremap <expr><CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+      endif
+
+      nnoremap <silent> [g <Plug>(coc-diagnostic-prev)
+      nnoremap <silent> ]g <Plug>(coc-diagnostic-next)
+
+      nnoremap <silent> gd <Plug>(coc-definition)
+      nnoremap <silent> gy <Plug>(coc-type-definition)
+      nnoremap <silent> gi <Plug>(coc-implementation)
+      nnoremap <silent> gr <Plug>(coc-references)
+
+      " CocInstall coc-json
+      " CocInstall coc-tsserver
+      " CocInstall coc-html
+      " CocInstall coc-css
     endfunction
 
-    function! s:hook_source_tsuquyomi() abort
-      " quickfixを表示しない
-      let g:tsuquyomi_disable_quickfix = 1
-      " JavaScriptも対象とする
-      let g:tsuquyomi_javascript_support = 1
-      " シングルクォートを使ってimportを生成する
-      let g:tsuquyomi_single_quote_import = 1
+    function! s:hook_source_coc_nvim() abort
     endfunction
 
-    call dein#add('Quramy/tsuquyomi', {
-          \ 'hook_post_source' : function('s:hook_post_source_tsuquyomi'),
-          \ 'hook_source' : function('s:hook_source_tsuquyomi'),
+    call dein#add('neoclide/coc.nvim', {
+          \ 'hook_post_source' : function('s:hook_post_source_coc_nvim'),
+          \ 'hook_source' : function('s:hook_source_coc_nvim'),
           \ 'lazy' : 1,
-          \ 'on_if' : 'v:version >= 800 || (v:version >= 704 && dein#tap("vimproc.vim"))',
+          \ 'merged' : 0,
+          \ 'on_if' : 'executable("node") && (v:version >= 800 || has("nvim-0.3.1"))',
           \ 'on_ft' : [
           \   'javascript',
+          \   'json',
           \   'typescript',
           \ ],
+          \ 'rev' : 'release'
           \ })
     " }}}
 
