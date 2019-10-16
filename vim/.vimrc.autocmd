@@ -27,6 +27,19 @@ autocmd vimrc FileType qf nnoremap <buffer> p <CR>zz<C-w>p
 autocmd vimrc FileType qf nnoremap <buffer> <C-n> j
 autocmd vimrc FileType qf nnoremap <buffer> <C-p> k
 
+" netrwでeやlを押したらCRと同じ動きにする
+autocmd vimrc FileType netrw nmap <buffer> e <CR>
+autocmd vimrc FileType netrw nmap <buffer> l <CR>
+
+" netrwでhを押したら-と同じ動きにする
+autocmd vimrc FileType netrw nmap <buffer> h -
+
+" netrwでqを押したら閉じる
+autocmd vimrc FileType netrw nnoremap <buffer><nowait><silent> q :<C-u>bwipeout!<CR>
+
+" netrwでtを押したらツリーを閉じる
+autocmd vimrc FileType netrw nmap <buffer><silent> t <Plug>NetrwTreeSqueeze
+
 " 挿入モードを開始したときにペーストモードのキーバインドを設定する
 autocmd vimrc InsertEnter * set pastetoggle=<C-t>
 
