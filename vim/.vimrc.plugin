@@ -369,6 +369,48 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \ })
     " }}}
 
+    " kana/vim-gf-user {{{
+    function! GfTypeScript() abort
+      let path = expand('<cfile>')
+      let result = 0
+
+      if path !~# '^\.\.\?'
+        return result
+      endif
+
+      let extensions = ['.tsx', '.ts', '.mjs', '.cjs', '.jsx', '.js', '.json']
+      let dir = simplify(expand('%:p:h') . '/' . path)
+
+      for extension in extensions
+        let test = resolve( . extension)
+
+        if filereadable(test)
+          let result = {
+                \ 'path' : test,
+                \ 'line' : 0,
+                \ 'col' : 0,
+                \ }
+
+          break
+        endif
+      endfor
+
+      return result
+    endfunction
+
+    function! s:hook_post_source_vim_gf_user() abort
+      call gf#user#extend('GfTypeScript', 1000)
+    endfunction
+
+    call dein#add('kana/vim-gf-user', {
+          \ 'lazy' : 1,
+          \ 'hook_post_source' : function('s:hook_post_source_vim_gf_user'),
+          \ 'on_ft' : [
+          \   'typescript'
+          \ ],
+          \ })
+    " }}}
+
     " kana/vim-operator-user {{{
     call dein#add('kana/vim-operator-user', {
           \ 'lazy' : 1,
