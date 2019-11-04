@@ -359,7 +359,7 @@ __print_status() {
     cwd="$(cd "${cwd}/.." && pwd)"
   done
 
-  [ -n "${git}"  ] && prompt="${prompt} ${git}"
+  [ -n "${git}" ] && prompt="${prompt} ${git}"
   [ -n "${yarn}" ] && prompt="${prompt} ${yarn}"
   [ -n "${lerna}" ] && prompt="${prompt} ${lerna}"
 
@@ -375,8 +375,8 @@ __print_PS1() {
   local -r green='\e[01;32m'
   local -r reset='\e[00m'
 
-  # /current/dir error (vcs:branch or revision) (yarn) (lerna)
-  # (vim) username@hostname$ _
+  # /current/dir error (git:branch or revision) (yarn) (lerna) (vim)
+  # username@hostname$ _
   printf -- '%s ' "${green}\w${reset}\$(__print_status \$?)\n\u@\h$"
 }
 
