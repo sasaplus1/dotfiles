@@ -187,6 +187,10 @@ __main() {
   export _DOWN_CMD=dw
   source "$HOME/.ghq/github.com/sasaplus1/down.sh/down.sh" 2>/dev/null
 
+  # github-slug.sh
+  export _GITHUB_SLUG_COMMAND=slug
+  source "$HOME/.ghq/github.com/sasaplus1/github-slug.sh/github-slug.sh" 2>/dev/null
+
   # z {{{
   source "$homebrew_prefix/etc/profile.d/z.sh" 2>/dev/null
   if [ "$?" -eq 0 ]
