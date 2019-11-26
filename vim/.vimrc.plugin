@@ -284,6 +284,8 @@ if (v:version >= 704 || has('nvim')) && executable('git')
       nnoremap <silent> gi <Plug>(coc-implementation)
       nnoremap <silent> gr <Plug>(coc-references)
 
+      autocmd vimrc FileType javascript,typescript nmap <buffer><silent> <C-]> <Plug>(coc-definition)
+
       " CocInstall coc-json
       " CocInstall coc-tsserver
       " CocInstall coc-html
