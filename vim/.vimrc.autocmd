@@ -92,7 +92,7 @@ autocmd vimrc QuickfixCmdPost make,vimgrep,vimgrepadd copen
 " ターミナルを開いたら行番号を表示しない
 if has('nvim')
   autocmd vimrc TermOpen * setlocal nonumber norelativenumber
-else
+elseif has('terminal')
   autocmd vimrc TerminalOpen * setlocal nonumber norelativenumber
 endif
 
