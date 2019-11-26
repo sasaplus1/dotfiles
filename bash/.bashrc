@@ -133,12 +133,6 @@ __main() {
     export PATH=$ctags_path:${PATH//$ctags_path:/}
   # }}}
 
-  # ghs {{{
-  local ghs=$HOME/Binary/ghs
-  [ -d "$ghs" ] &&
-    export PATH=$ghs:${PATH//$ghs:/}
-  # }}}
-
   #-----------------------------------------------------------------------------
 
   # ssh-agent {{{
