@@ -181,20 +181,21 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     endfunction
 
     function! s:fix_with_stylelint_prettier(dir) abort
-      let l:node_modules_dir = finddir('node_modules', a:dir . ';')
+    " let l:node_modules_dir = finddir('node_modules', a:dir . ';')
 
-      if l:node_modules_dir == ''
-        return
-      endif
+    " if l:node_modules_dir == ''
+    "   return
+    " endif
 
-      let l:stylelint_prettier_dir = fnamemodify(l:node_modules_dir . '/stylelint-prettier', ':p:h')
+    " let l:stylelint_prettier_dir = fnamemodify(l:node_modules_dir . '/stylelint-prettier', ':p:h')
 
-      if isdirectory(l:stylelint_prettier_dir)
-        let b:ale_fixers = {
-              \ 'css' : ['stylelint'],
-              \ 'scss' : ['stylelint'],
-              \ }
-      endif
+    " if isdirectory(l:stylelint_prettier_dir)
+    "   let b:ale_fixers = {
+    "         \ 'css' : ['stylelint'],
+    "         \ 'scss' : ['stylelint'],
+    "         \ }
+    "   let b:ale_css_stylelint_options = '--fix'
+    " endif
     endfunction
 
     function! s:hook_source_ale() abort
