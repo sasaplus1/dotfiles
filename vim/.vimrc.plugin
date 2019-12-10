@@ -201,7 +201,8 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     function! s:hook_source_ale() abort
       " 無視するファイルの設定
       let g:ale_pattern_options = {
-            \ '\.d\.ts$' : { 'ale_enabled' : 0 }
+            \ '\.d\.ts$' : { 'ale_enabled' : 0 },
+            \ '\.min\.js$' : { 'ale_enabled' : 0 }
             \ }
       " linterの設定
       let g:ale_linters = {
