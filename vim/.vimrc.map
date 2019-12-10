@@ -19,6 +19,12 @@ vnoremap <silent> k gk
 nnoremap / /\v
 nnoremap ? ?\v
 
+" very magicをonにする
+" https://stackoverflow.com/a/3760486
+cnoremap s/ s/\v
+cnoremap %s/ %s/\v
+cnoremap '<,'>s/ %s/\v
+
 " diff系
 nnoremap ,dg :<C-u>diffget<CR>
 nnoremap ,do :<C-u>diffoff<CR>
@@ -36,6 +42,18 @@ nnoremap <silent> ) :<C-u>bnext<CR>
 
 " バッファ番号とフルパスを表示する
 nnoremap <C-g> 2<C-g>
+
+" コマンドラインモードでEmacs風の移動ができるようにする
+" http://cohama.hateblo.jp/entry/20130529/1369843236
+cnoremap <C-a> <Home>
+cnoremap <C-b> <Left>
+cnoremap <C-d> <Del>
+cnoremap <C-e> <End>
+cnoremap <C-f> <Right>
+cnoremap <C-n> <Down>
+cnoremap <C-p> <Up>
+" cnoremap <M-b> <S-Left>
+" cnoremap <M-f> <S-Right>
 
 " grepをする
 command! -nargs=1 Grep execute "silent! grep! '<args>' | redraw! | copen"
