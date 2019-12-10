@@ -539,8 +539,6 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \ })
     " }}}
 
-    " language plugins {{{
-
     " digitaltoad/vim-pug {{{
     call dein#add('digitaltoad/vim-pug', {
           \ 'lazy' : 1,
@@ -557,6 +555,15 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \   'css',
           \   'html',
           \   'scss',
+          \ ],
+          \ })
+    " }}}
+
+    " cespare/vim-toml {{{
+    call dein#add('cespare/vim-toml', {
+          \ 'lazy' : 1,
+          \ 'on_ft' : [
+          \   'toml',
           \ ],
           \ })
     " }}}
@@ -625,8 +632,6 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \   'typescript'
           \ ],
           \ })
-    " }}}
-
     " }}}
 
     call dein#end()
