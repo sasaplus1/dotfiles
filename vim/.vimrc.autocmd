@@ -19,6 +19,9 @@ autocmd vimrc FileType python setlocal tabstop=4 shiftwidth=4
 " Go編集時はタブにする
 autocmd vimrc FileType go setlocal noexpandtab list tabstop=2 shiftwidth=2
 
+" Markdown編集時のみインデントのスペース数を4にする
+autocmd vimrc FileType markdown setlocal tabstop=4 shiftwidth=4
+
 " QuickFixを開いた時に簡単にプレビューをしたりする
 " https://thinca.hatenablog.com/entry/20130708/1373210009
 autocmd vimrc FileType qf nnoremap <buffer> p <CR>zz<C-w>p
