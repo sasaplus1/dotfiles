@@ -370,6 +370,10 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \   'G!',
           \   'V',
           \ ],
+          \ 'on_func' : [
+          \   'E2v',
+          \ ],
+          \ 'on_event' : 'CmdlineEnter'
           \ })
     " }}}
 
