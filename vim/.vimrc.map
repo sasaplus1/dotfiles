@@ -21,9 +21,14 @@ nnoremap ? ?\v
 
 " very magicをonにする
 " https://stackoverflow.com/a/3760486
-cnoremap s/ s/\v
-cnoremap %s/ %s/\v
-cnoremap '<,'>s/ %s/\v
+" https://github.com/Jxck/dotfiles/blob/39694a965f17f2fdb0c34ee7b72c13f8475c1434/.vimrc#L124-L127
+cnoremap <expr> / (
+      \   getcmdtype() == ':' && (
+      \     (getcmdline() ==      's' && getcmdpos() == 2) \|\|
+      \     (getcmdline() ==     '%s' && getcmdpos() == 3) \|\|
+      \     (getcmdline() == "'<,'>s" && getcmdpos() == 7)
+      \   )
+      \ ) ? '/\v' : '/'
 
 " diff系
 nnoremap ,dg :<C-u>diffget<CR>
