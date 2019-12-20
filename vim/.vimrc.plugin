@@ -378,43 +378,51 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     " }}}
 
     " kana/vim-gf-user {{{
-    function! GfTypeScript() abort
+    function! GfImport() abort
       let path = expand('<cfile>')
-      let result = 0
 
       if path !~# '^\.\.\?'
-        return result
+        return 0
       endif
 
-      let extensions = ['.tsx', '.ts', '.mjs', '.cjs', '.jsx', '.js', '.json']
+      let completions = [
+            \   '.tsx',
+            \   '.ts',
+            \   '.mjs',
+            \   '.cjs',
+            \   '.jsx',
+            \   '.js',
+            \   '.json',
+            \ ]
+
       let dir = simplify(expand('%:p:h') . '/' . path)
 
-      for extension in extensions
-        let test = resolve( . extension)
+      for completion in completions
+        let test = resolve(dir . completion)
 
         if filereadable(test)
-          let result = {
+          return {
                 \ 'path' : test,
                 \ 'line' : 0,
                 \ 'col' : 0,
                 \ }
-
-          break
         endif
       endfor
 
-      return result
+      return 0
     endfunction
 
     function! s:hook_post_source_vim_gf_user() abort
-      call gf#user#extend('GfTypeScript', 1000)
+      call gf#user#extend('GfImport', 1000)
     endfunction
 
     call dein#add('kana/vim-gf-user', {
           \ 'lazy' : 1,
           \ 'hook_post_source' : function('s:hook_post_source_vim_gf_user'),
           \ 'on_ft' : [
-          \   'typescript'
+          \   'javascript',
+          \   'javascript.jsx',
+          \   'typescript',
           \ ],
           \ })
     " }}}
