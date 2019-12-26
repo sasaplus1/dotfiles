@@ -19,16 +19,34 @@ vnoremap <silent> k gk
 nnoremap / /\v
 nnoremap ? ?\v
 
+" / を入力した際の挙動を条件によって変更する
+function! s:get_smart_very_magic() abort
+  if getcmdtype() != ':'
+    return '/'
+  endif
+
+  let cmd = getcmdline()
+  let pos = getcmdpos()
+
+  if
+        \ (cmd ==#      's' && pos == 2) ||
+        \ (cmd ==#     '%s' && pos == 3) ||
+        \ (cmd ==# "'<,'>s" && pos == 7)
+    " :s/ と入力したら :s/\v にする
+    return '/\v'
+  elseif
+        \ (cmd ==#      's/\v' && pos ==  5) ||
+        \ (cmd ==#     '%s/\v' && pos ==  6) ||
+        \ (cmd ==# "'<,'>s/\v" && pos == 10)
+    " :s// と入力したら :s/\v/ から :s// にする
+    return "\<BS>\<BS>/"
+  endif
+
+  return '/'
+endfunction
+
 " very magicをonにする
-" https://stackoverflow.com/a/3760486
-" https://github.com/Jxck/dotfiles/blob/39694a965f17f2fdb0c34ee7b72c13f8475c1434/.vimrc#L124-L127
-cnoremap <expr> / (
-      \   getcmdtype() == ':' && (
-      \     (getcmdline() ==      's' && getcmdpos() == 2) \|\|
-      \     (getcmdline() ==     '%s' && getcmdpos() == 3) \|\|
-      \     (getcmdline() == "'<,'>s" && getcmdpos() == 7)
-      \   )
-      \ ) ? '/\v' : '/'
+cnoremap <expr> / <SID>get_smart_very_magic()
 
 " diff系
 nnoremap ,dg :<C-u>diffget<CR>
