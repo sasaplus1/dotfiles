@@ -1,9 +1,0 @@
----
-- name: clone urxvt-extension repositories
-  when: ansible_os_family == 'Debian'
-  git:
-    repo: '{{ item.repo }}'
-    dest: '{{ item.dest }}'
-  with_items: '{{ repositories }}'
-  tags:
-    - urxvt
