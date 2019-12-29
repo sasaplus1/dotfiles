@@ -1,6 +1,7 @@
 [alias]
   clear-branch = !git branch --merged | grep -Ev -e '^\\*' -e 'master$|develop$' | xargs git branch -v -d
   export = !sh -c 'git checkout-index -a -f --prefix=$1/' -
+  set-mirror = !git remote set-url --add origin "$(git remote get-url --push origin | sed -e 's/github.com/bitbucket.org/')"
   set-user = !git config --local user.name sasaplus1 && git config --local user.email sasaplus1@gmail.com
 
 [alias]
