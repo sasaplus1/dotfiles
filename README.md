@@ -24,7 +24,7 @@ deploy dotfiles to $HOME by default. if you want change deployment destination:
 $ make deploy dest=/path/to/dir
 ```
 
-test deployment:
+check deployed files:
 
 ```console
 $ make test
