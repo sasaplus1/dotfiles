@@ -4,24 +4,30 @@
 
 my dotfiles
 
-## how to setup
+## How to use
 
-execute command below if OS X:
+execute command below if macOS:
 
 ```
 $ xcode-select --install
 ```
 
-and execute command below:
+deploy dotfiles:
 
 ```console
-$ curl -LSfs https://raw.githubusercontent.com/sasaplus1/dotfiles/master/Makefile | make setup -f -
+$ make deploy 
 ```
 
-or
+deploy dotfiles to $HOME by default. if you want change deployment destination:
 
 ```console
-$ wget -qO- https://raw.githubusercontent.com/sasaplus1/dotfiles/master/Makefile | make setup -f -
+$ make deploy dest=/path/to/dir
+```
+
+test deployment:
+
+```console
+$ make test
 ```
 
 if you want more info:
