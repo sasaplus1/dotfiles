@@ -1,8 +1,0 @@
----
-configs:
-
-  # 隠しファイルを表示する
-  - { domain: com.apple.finder, key: AppleShowAllFiles, type: bool, value: true }
-
-  # Finder上部にパスを表示する
-  - { domain: com.apple.finder, key: _FXShowPosixPathInTitle, type: bool, value: true }

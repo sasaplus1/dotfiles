@@ -1,146 +1,98 @@
-# set default target
 .DEFAULT_GOAL := all
 
-# change to use Bash
 SHELL := /bin/bash
 
-#-------------------------------------------------------------------------------
+makefile := $(abspath $(lastword $(MAKEFILE_LIST)))
+makefile_dir := $(dir $(makefile))
 
-# NOTE: need synchronize to .bashrc
+# destination directory
+dest ?= $(HOME)
 
-# Homebrew and Homebrew Cask directories
-homebrew_dir := $(HOME)/Homebrew
+dotfile_dirs := $(abspath $(strip \
+  $(dest)/.cocproxy \
+  $(dest)/.config \
+  $(dest)/.config/nvim \
+  $(dest)/.config/ranger \
+  $(dest)/.ghq \
+  $(dest)/.go \
+  $(dest)/.go/bin \
+  $(dest)/.go/pkg \
+  $(dest)/.go/src \
+  $(dest)/.nodebrew \
+  $(dest)/.peco \
+  $(dest)/.rbenv \
+  $(dest)/.ssh \
+  $(dest)/.urxvt \
+  $(dest)/.vim \
+  $(dest)/.vim/backup \
+  $(dest)/.vim/swap \
+  $(dest)/.vim/undo \
+))
 
-# dotfiles directory
-dotfiles_dir := $(HOME)/.ghq/github.com/sasaplus1/dotfiles
+symlinks := $(abspath $(strip \
+  $(makefile_dir)/X11/.Xdefaults             $(dest)/.Xdefaults \
+  $(makefile_dir)/bash/.bash_logout          $(dest)/.bash_logout \
+  $(makefile_dir)/bash/.bash_profile         $(dest)/.bash_profile \
+  $(makefile_dir)/bash/.bashrc               $(dest)/.bashrc \
+  $(makefile_dir)/bash/.downrc               $(dest)/.downrc \
+  $(makefile_dir)/bash/.findrc               $(dest)/.findrc \
+  $(makefile_dir)/ctags/.ctags               $(dest)/.ctags \
+  $(makefile_dir)/ctags/.ctagsignore         $(dest)/.ctagsignore \
+  $(makefile_dir)/git/.gitconfig             $(dest)/.gitconfig \
+  $(makefile_dir)/git/.gitignore             $(dest)/.gitignore \
+  $(makefile_dir)/locate/.locate.rc          $(dest)/.locate.rc \
+  $(makefile_dir)/mercurial/.hgrc            $(dest)/.hgrc \
+  $(makefile_dir)/nginx/.cocproxy.nginx.conf $(dest)/.cocproxy.nginx.conf \
+  $(makefile_dir)/pt/.ptignore               $(dest)/.ptignore \
+  $(makefile_dir)/peco/config.json           $(dest)/.peco/config.json \
+  $(makefile_dir)/ranger/commands.py         $(dest)/.config/ranger/commands.py \
+  $(makefile_dir)/ranger/rc.conf             $(dest)/.config/ranger/rc.conf \
+  $(makefile_dir)/ruby/.gemrc                $(dest)/.gemrc \
+  $(makefile_dir)/screen/.screenrc           $(dest)/.screenrc \
+  $(makefile_dir)/slate/.slate               $(dest)/.slate \
+  $(makefile_dir)/tern/.tern-project         $(dest)/.tern-project \
+  $(makefile_dir)/tig/.tigrc                 $(dest)/.tigrc \
+  $(makefile_dir)/tmux/.tmux.conf            $(dest)/.tmux.conf \
+  $(makefile_dir)/vim/.gvimrc                $(dest)/.gvimrc \
+  $(makefile_dir)/vim/.vimrc                 $(dest)/.vimrc \
+  $(makefile_dir)/vim/.vimrc                 $(dest)/.config/nvim/init.vim \
+))
 
-# use installed brew
-export PATH := $(homebrew_dir)/bin:$(PATH)
+copy_targets := $(abspath $(strip \
+  $(makefile_dir)/curl/.curlrc      $(dest)/.curlrc \
+  $(makefile_dir)/node.js/.npmrc    $(dest)/.npmrc \
+  $(makefile_dir)/ruby/default-gems $(dest)/.rbenv/default-gems \
+  $(makefile_dir)/vim/.vimrc.local  $(dest)/.vimrc.local \
+  $(makefile_dir)/wget/.wgetrc      $(dest)/.wgetrc \
+))
 
-#-------------------------------------------------------------------------------
+create_targets := $(abspath $(strip \
+  $(dest)/.bash_logout.local \
+  $(dest)/.bashrc.local \
+  $(dest)/.gitconfig.local \
+  $(dest)/.hgrc.local \
+))
 
-# get lowercased os name
-os := $(shell uname -s | tr 'A-Z' 'a-z')
-
-# flag of when execute in CI
-ci := $(CI)
-
-# skip-tags of Ansible
-skip_tags := $(SKIP_TAGS)
-
-#-------------------------------------------------------------------------------
-
-# default target
 .PHONY: all
-all:
-	@echo 'targets:'
-	@echo '  all               show this messages'
-	@echo '  setup             setup my environment'
-	@echo ''
-	@echo 'subtargets:'
-	@echo '  pre-setup-darwin  install bootstrapping for OS X'
-	@echo '  pre-setup-linux   install bootstrapping for Debian family'
-	@echo '  install-brew      install Homebrew/Linuxbrew'
-	@echo '  clone             clone dotfiles repository'
-	@echo '  provision         execute ansible-playbook'
+all: ## output targets
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(makefile) | awk 'BEGIN { FS = ":.*?## " }; { printf "\033[36m%-30s\033[0m %s\n", $$1, $$2 }'
 
-# setup my environment
-.PHONY: setup
-setup: pre-setup-$(os) clone provision
+.PHONY: deploy
+deploy: ## deploy dotfiles
+	-@printf -- '%s\n' $(dotfile_dirs)   | xargs -n 1 bash -c 'mkdir -pv "$$0"'
+	-@printf -- '%s\n' $(symlinks)       | xargs -n 2 bash -c 'ln -sv "$$0" "$$1"'
+	-@printf -- '%s\n' $(copy_targets)   | xargs -n 2 bash -c 'cp -nv "$$0" "$$1"'
+	-@printf -- '%s\n' $(create_targets) | xargs -n 1 bash -c 'cp -nv <(echo -n) "$$0"'
+	@echo 'done.'
 
-#-------------------------------------------------------------------------------
+.PHONY: test
+test: ## check deployed files
+	@printf -- '%s\n' $(dotfile_dirs)   | xargs -n 1 bash -c '[ -d "$$0" ] || echo "$$0 is not found"'
+	@printf -- '%s\n' $(symlinks)       | xargs -n 2 bash -c '[ -L "$$1" ] || echo "$$1 is not found"'
+	@printf -- '%s\n' $(copy_targets)   | xargs -n 2 bash -c '[ -f "$$1" ] || echo "$$1 is not found"'
+	@printf -- '%s\n' $(create_targets) | xargs -n 1 bash -c '[ -f "$$0" ] || echo "$$0 is not found"'
+	@echo 'done.'
 
-# pre-setup for OS X
-.PHONY: pre-setup-darwin
-pre-setup-darwin: install-brew
-pre-setup-darwin:
-	brew update
-	brew info ansible && brew upgrade ansible || brew install ansible
-	brew info git && brew upgrade git || brew install git
-
-#-------------------------------------------------------------------------------
-
-# pre-setup for Debian family
-.PHONY: pre-setup-linux
-pre-setup-linux: install-brew
-pre-setup-linux:
-	sudo add-apt-repository --yes ppa:ansible/ansible
-	sudo apt-get update -qq
-	sudo apt-get install -qq --yes ansible git
-
-#-------------------------------------------------------------------------------
-
-define __install_brew_script
-  case '$(os)' in
-    darwin)
-      tarball=https://github.com/Homebrew/homebrew/tarball/master
-      ;;
-    linux)
-      tarball=https://github.com/Linuxbrew/brew/tarball/master
-      ;;
-    *)
-      echo 'brew is not supported for this platform.' 1>&2
-      exit 1
-      ;;
-  esac
-
-  if [ -e '$(homebrew_dir)/bin/brew' ]
-  then
-    echo "Homebrew/Linuxbrew is already installed."
-  else
-    mkdir -p '$(homebrew_dir)'
-    curl -fsSL $$tarball | tar xz --strip 1 -C '$(homebrew_dir)'
-  fi
-endef
-export __install_brew_script
-
-# install Homebrew/Linuxbrew
-.PHONY: install-brew
-install-brew:
-	$(SHELL) -x -c "$$__install_brew_script"
-
-#-------------------------------------------------------------------------------
-
-define __clone_script
-  if [ -d '$(dotfiles_dir)/.git' ]
-  then
-    echo 'dotfiles repository is already cloned.'
-  else
-    if [ -n "$$TRAVIS_BRANCH" ]
-    then
-      branch=$$TRAVIS_BRANCH
-    else
-      branch=master
-    fi
-
-    git clone --branch="$$branch" $(repository) '$(dotfiles_dir)'
-  fi
-endef
-export __clone_script
-
-# clone dotfiles repository
-.PHONY: clone
-clone: repository := https://github.com/sasaplus1/dotfiles.git
-clone:
-	$(SHELL) -c "$$__clone_script"
-
-#-------------------------------------------------------------------------------
-
-# execute provision
-.PHONY: provision
-provision: options :=
-provision: options += --inventory-file=<(printf -- 127.0.0.1),
-provision: options += --extra-vars='homebrew_dir=$(homebrew_dir)'
-provision: options += --extra-vars='dotfiles_dir=$(dotfiles_dir)'
-provision: options += --extra-vars='home_dir=$(HOME)'
-ifdef skip_tags
-provision: options += --skip-tags='$(skip_tags)'
-endif
-provision: options += --connection=local
-ifndef ci
-provision: options += --ask-become-pass
-provision: options += -vv
-endif
-provision: playbook := '$(dotfiles_dir)/ansible/site.yml'
-provision:
-	ansible-playbook $(options) $(playbook)
+.PHONY: vars
+vars: ## print variables
+	@$(MAKE) -f $(makefile) -prR | grep '^# makefile' -A 1
