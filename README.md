@@ -31,3 +31,7 @@ $ make
 ```
 
 and see `Makefile`.
+
+## License
+
+The MIT license.
