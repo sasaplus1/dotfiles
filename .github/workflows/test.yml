@@ -5,7 +5,7 @@ on:
   - pull_request
 
 jobs:
-  test-on-physical-os:
+  deploy-on-physical-os:
     name: on physical OS
     strategy:
       matrix:
@@ -18,9 +18,38 @@ jobs:
       - run: rm -f ~/.bash{_logout,_profile,rc} ~/.gitconfig
       - run: make deploy test
       - run: '[ "$(make test)" = "done." ]'
-  test-on-docker:
+  deploy-on-docker:
     name: on Docker
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - run: docker-compose run --rm test
+  shellcheck:
+    name: shellcheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: docker://koalaman/shellcheck:stable
+        with:
+          args: >
+            bash/.bash_logout
+            bash/.bash_profile
+            bash/.bashrc
+  vint:
+    name: vint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v1
+        with:
+          python-version: 3.x
+      - run: pip install vim-vint
+      - run: >
+          vint
+          vim/.vimrc
+          vim/.vimrc.autocmd
+          vim/.vimrc.config
+          vim/.vimrc.local
+          vim/.vimrc.map
+          vim/.vimrc.plugin
+          vim/.vimrc.root
