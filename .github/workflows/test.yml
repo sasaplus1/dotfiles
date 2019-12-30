@@ -1,4 +1,4 @@
-name: deployment testing
+name: test
 
 on:
   - push
