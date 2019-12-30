@@ -1,0 +1,21 @@
+version: '3.7'
+
+x-base: &base
+  build:
+    context: .
+    dockerfile: Dockerfile
+  image: sasaplus1/dotfiles
+  init: true
+
+services:
+  sh:
+    <<: *base
+    command:
+      - bash
+    tty: true
+  test:
+    <<: *base
+    command:
+      - bash
+      - -c
+      - 'rm -f ~/.bashrc && make deploy test && [ "$$(make test)" = "done." ]'
