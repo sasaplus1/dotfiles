@@ -1,0 +1,30 @@
+name: deployment testing
+
+on:
+  - push
+  - pull_request
+
+jobs:
+  test-on-physical-os:
+    name: on physical OS
+    strategy:
+      matrix:
+        os:
+          - macOS-latest
+          - ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v2
+      - run: rm -f ~/.bash{_logout,_profile,rc} ~/.gitconfig
+      - run: make deploy test
+      - run: >
+          [ "$(make test)" = 'done.' ]
+  test-on-docker:
+    name: on Docker
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: docker build -t ${{ github.repository }} .
+      - run: >
+          docker run --rm ${{ github.repository }} bash -c
+          'rm -f ~/.bashrc && make deploy test && [ "$(make test)" = "done." ]'
