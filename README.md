@@ -1,6 +1,6 @@
 # dotfiles
 
-[![Build Status](https://travis-ci.org/sasaplus1/dotfiles.svg)](https://travis-ci.org/sasaplus1/dotfiles)
+[![test](https://github.com/sasaplus1/dotfiles/workflows/test/badge.svg)](https://github.com/sasaplus1/dotfiles/actions?query=workflow%3Atest)
 
 my dotfiles
 
