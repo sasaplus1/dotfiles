@@ -1,5 +1,5 @@
-# macOS load only .bash_profile
-if [[ "$OSTYPE" =~ ^darwin ]] && [ "$TERM" != 'dumb' ]
+# execute source if macOS
+if [ "$TERM" != 'dumb' ] && [[ "$OSTYPE" =~ ^darwin ]]
 then
   source "$HOME/.bashrc" 2>/dev/null
 fi
