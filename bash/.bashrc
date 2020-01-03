@@ -1,3 +1,5 @@
+#!/bin/bash
+
 __main() {
   local os=
 
@@ -6,6 +8,16 @@ __main() {
     linux*)  os=linux ;;
     *)       os=      ;;
   esac
+
+  local is_dumb=
+  local is_interactive=
+
+  if [ "$TERM" = 'dumb' ] || [ -z "$PS1" ]
+  then
+    is_dumb=1
+  else
+    is_interactive=1
+  fi
 
   #-----------------------------------------------------------------------------
 
@@ -31,6 +43,26 @@ __main() {
     export LD_LIBRARY_PATH=$homebrew_dir/lib64:$homebrew_dir/lib:$LD_LIBRARY_PATH
   fi
 
+  #-----------------------------------------------------------------------------
+
+  # bash-completion {{{
+  if [ -n "$is_interactive" ] && [ -z "$BASH_COMPLETION" ]
+  then
+    case "$os" in
+      macos)
+        # shellcheck disable=SC1090
+        source "$homebrew_prefix/etc/bash_completion" 2>/dev/null
+        ;;
+      linux)
+        # shellcheck disable=SC1091
+        source /etc/bash_completion 2>/dev/null
+        ;;
+    esac
+  fi
+  # }}}
+
+  #-----------------------------------------------------------------------------
+
   # NOTE: lazy load command https://qiita.com/uasi/items/80865646607b966aedc8
   # NOTE: lazy load completion https://qiita.com/kawaz/items/ba6140bca32bbd3cb928
 
@@ -49,7 +81,11 @@ __main() {
   __rbenv_completion() {
     unset -f __rbenv_completion
     complete -r rbenv
-    local homebrew_prefix="$(dirname "$(dirname "$(type -tP brew)")")"
+
+    local homebrew_prefix=
+    homebrew_prefix="$(dirname "$(dirname "$(type -tP brew)")")"
+
+    # shellcheck disable=SC1090
     source "$homebrew_prefix/opt/rbenv/completions/rbenv.bash" 2>/dev/null && return 124
   }
   complete -F __rbenv_completion rbenv
@@ -70,7 +106,11 @@ __main() {
   __pyenv_completion() {
     unset -f __pyenv_completion
     complete -r pyenv
-    local homebrew_prefix="$(dirname "$(dirname "$(type -tP brew)")")"
+
+    local homebrew_prefix=
+    homebrew_prefix="$(dirname "$(dirname "$(type -tP brew)")")"
+
+    # shellcheck disable=SC1090
     source "$homebrew_prefix/opt/pyenv/completions/pyenv.bash" 2>/dev/null && return 124
   }
   complete -F __pyenv_completion pyenv
@@ -84,6 +124,7 @@ __main() {
   __nodebrew_completion() {
     unset -f __nodebrew_completion
     complete -r nodebrew
+    # shellcheck disable=SC1090
     source "$HOME/.nodebrew/completions/bash/nodebrew-completion" 2>/dev/null && return 124
   }
   complete -F __nodebrew_completion nodebrew
@@ -101,7 +142,11 @@ __main() {
   # lazy loading
   z() {
     unset -f z
-    local homebrew_prefix="$(dirname "$(dirname "$(type -tP brew)")")"
+
+    local homebrew_prefix=
+    homebrew_prefix="$(dirname "$(dirname "$(type -tP brew)")")"
+
+    # shellcheck disable=SC1090
     source "$homebrew_prefix/opt/z/etc/profile.d/z.sh" 2>/dev/null
     # NOTE: call _z function directly, because z is alias
     _z "$@"
@@ -111,7 +156,11 @@ __main() {
   __z_completion() {
     unset -f __z_completion
     complete -r z
-    local homebrew_prefix="$(dirname "$(dirname "$(type -tP brew)")")"
+
+    local homebrew_prefix=
+    homebrew_prefix="$(dirname "$(dirname "$(type -tP brew)")")"
+
+    # shellcheck disable=SC1090
     source "$homebrew_prefix/opt/z/etc/profile.d/z.sh" 2>/dev/null && return 124
   }
   complete -F __z_completion z
@@ -135,14 +184,24 @@ __main() {
   }
   # }}}
 
+  # fzf {{{
+  export FZF_DEFAULT_OPTS='--border --height 60% --layout reverse'
+  # shellcheck disable=SC1090
+  source "$homebrew_prefix/opt/fzf/shell/completion.bash" 2>/dev/null
+  # }}}
+
   # vim {{{
 
   # macvim
   local macvim=/Applications/MacVim.app/Contents/MacOS
   [ -d "$macvim" ] &&
     export PATH=$macvim:${PATH//$macvim/} &&
-    alias vim="$macvim/Vim \"\$@\"" &&
-    export EDITOR="$macvim/Vim"
+    export EDITOR="$macvim/Vim" &&
+    vim() {
+      local macvim=/Applications/MacVim.app/Contents/MacOS
+
+      "$macvim/Vim" "$@"
+    }
 
   # macvim from homebrew-cask
   # local macvim=$HOME/Caskroom/macvim-kaoriya/$(ls $HOME/Caskroom/macvim-kaoriya 2>/dev/null)/MacVim.app/Contents/MacOS
@@ -157,10 +216,14 @@ __main() {
   [ -d "$vim" ] &&
     local vim_manpath=$vim/share/man &&
     local vim_path=$vim/bin &&
-    alias vim="$vim/bin/pvim \"\$@\"" &&
     export MANPATH=$vim_manpath:${MANPATH//$vim_manpath/} &&
     export PATH=$vim_path:${PATH//$vim_path/} &&
-    export EDITOR="$vim/bin/pvim"
+    export EDITOR="$vim/bin/pvim" &&
+    vim() {
+      local vim=$HOME/Binary/vim
+
+      "$vim/bin/pvim" "$@"
+    }
   # }}}
 
   # universal-ctags {{{
@@ -184,6 +247,7 @@ __main() {
   local ssh_agent=/usr/bin/ssh-agent
   local ssh_agent_info=$HOME/.ssh-agent-info
 
+  # shellcheck disable=SC1090
   source "$ssh_agent_info" 2>/dev/null
 
   ssh-add -l >/dev/null 2>&1
@@ -191,19 +255,8 @@ __main() {
   if [ "$?" -eq 2 ] && [ -x "$ssh_agent" ] && [ -z "$SSH_AGENT_PID" ]
   then
     eval "$ssh_agent | grep -v 'echo' > $ssh_agent_info" 2>/dev/null
+    # shellcheck disable=SC1090
     source "$ssh_agent_info" 2>/dev/null
-  fi
-  # }}}
-
-  #-----------------------------------------------------------------------------
-
-  # bash-completion {{{
-  if [ -z "$BASH_COMPLETION" ]
-  then
-    case "$os" in
-      macos) source "$homebrew_prefix/etc/bash_completion" 2>/dev/null ;;
-      linux) source /etc/bash_completion 2>/dev/null ;;
-    esac
   fi
   # }}}
 
@@ -212,8 +265,8 @@ __main() {
   # up.sh {{{
   up() {
     unset -f up
-    source "$HOME/.ghq/github.com/shannonmoeller/up/up.sh" 2>/dev/null ||
-    source "$HOME/.ghq/github.com/sasaplus1/up.sh/up.sh" 2>/dev/null
+    # shellcheck disable=SC1090
+    source "$HOME/.ghq/github.com/shannonmoeller/up/up.sh" 2>/dev/null
     up "$@"
   }
   # }}}
@@ -222,6 +275,7 @@ __main() {
   export _DOWN_CMD=dw
   dw() {
     unset -f dw
+    # shellcheck disable=SC1090
     source "$HOME/.ghq/github.com/sasaplus1/down.sh/down.sh" 2>/dev/null
     dw "$@"
   }
@@ -231,6 +285,7 @@ __main() {
   export _GITHUB_SLUG_COMMAND=slug
   __lazy-github-slug() {
     unset -f __lazy-github-slug
+    # shellcheck disable=SC1090
     source "$HOME/.ghq/github.com/sasaplus1/github-slug.sh/github-slug.sh" 2>/dev/null
     __github-slug "$@"
     eval "$_GITHUB_SLUG_COMMAND"'() { __github-slug "$@"; }'
@@ -253,46 +308,42 @@ __main() {
     nginx -p . -c "$(ghq list -p fake-dev)/fake-dev.conf"
   }
 
-  # find file
-  ff() {
-    [ -n "$1" ] && find "$(pwd)" $(< $HOME/.findrc) -type f -iname $1 -print
-  }
-
-  # find directory
-  fd() {
-    [ -n "$1" ] && find "$(pwd)" $(< $HOME/.findrc) -type d -iname $1 -print
-  }
-
   # incremental search and change directory
   ccd() {
-    cd "$(
-      cat \
-        <(ghq list -p) \
-        <(z -l | awk '{ print $2 }') \
-        <(mdfind -onlyin "$(pwd)" "kMDItemContentType == public.folder" 2>/dev/null) |
-      peco --select-1 --query="$*"
-    )"
-  }
+    # mdfind -onlyin "$(pwd)" "kMDItemContentType == public.folder" 2>/dev/null
 
-  # incremental search and kill process
-  kkill() {
-    local pid=$(ps xo pid,user,uid,command | sed -e 1d | peco --select-1 --query="$*" | awk '{ print $1 }')
-    [ -n "$pid" ] && kill -9 "$pid"
+    # shellcheck disable=SC2016
+    local z_cmd='z -l 2>&1 | while read _ dir; do echo "$dir"; done'
+
+    local git_dir=
+    local git_cmd=
+
+    if git rev-parse --is-inside-work-tree >/dev/null 2>&1
+    then
+      git_dir="$(git rev-parse --show-toplevel)"
+      git_cmd="git ls-tree -dr --name-only --full-name HEAD '$git_dir' | sed -e 's|^|${git_dir}/|'"
+    fi
+
+    # shellcheck disable=SC2164,SC2145
+    cd "$(cat <(ghq list -p) <(eval "$z_cmd") <(eval "$git_cmd") | fzf --query="$@")"
   }
 
   # remove docker containers
   d-rm() {
-    docker ps -a | sed 1d | peco | awk '{ print $1 }' | xargs docker rm
+    # shellcheck disable=SC2145
+    docker ps -a | sed 1d | fzf --query="$@" | awk '{ print $1 }' | xargs docker rm
   }
 
   # remove docker images
   d-rmi() {
-    docker images | sed 1d | peco | awk '{ print $3 }' | xargs docker rmi --force
+    # shellcheck disable=SC2145
+    docker images | sed 1d | fzf --query="$@" | awk '{ print $3 }' | xargs docker rmi --force
   }
 
   # execute command in container
   d-sh() {
-    docker exec -it $(docker ps | sed 1d | peco | awk '{ print $1 }' | sed -n 1p) ${1:-sh}
+    # shellcheck disable=SC2145
+    docker exec -it "$(docker ps | sed 1d | fzf --query="$@" | awk '{ print $1 }' | sed -n 1p)" "${1:-sh}"
   }
 
   case "$os" in
@@ -342,12 +393,16 @@ __main() {
   if type urxvt >/dev/null 2>&1
   then
     set-urxvt-font-size() {
-      local old_name=$(grep -i '^\s*urxvt.font' "$HOME/.Xdefaults" | cut -d: -f2-)
-      local new_name=$(printf "$old_name" | sed -e 's/:\(pixel\)\?size=[0-9]\+/'":\1size=$1/")
+      local old_name=
+      old_name=$(grep -i '^\s*urxvt.font' "$HOME/.Xdefaults" | cut -d: -f2-)
 
-      [ -n "$TMUX" ] && printf '\ePtmux;\e'
-      printf '\e]50;%s\007' "$new_name"
-      [ -n "$TMUX" ] && printf '\e\\'
+      local new_name=
+      new_name=$(printf -- '%b' "$old_name" | sed -e 's/:\(pixel\)\?size=[0-9]\+/'":\1size=$1/")
+
+      [ -n "$TMUX" ] && printf -- '\ePtmux;\e'
+      printf -- '\e]50;%s\007' "$new_name"
+      # shellcheck disable=SC1003
+      [ -n "$TMUX" ] && printf -- '\e\\'
     }
   fi
 
@@ -398,7 +453,7 @@ __main() {
       # https://qiita.com/hasegit/items/5be056d67347e1553f08
       if [ -f "${cwd}/.git" ]
       then
-        read noop head_dir < "${cwd}/.git"
+        read -r _ head_dir < "${cwd}/.git"
         head_file="${head_dir}/HEAD"
 
         [[ "$head_file" =~ \.git\/worktrees ]] &&
@@ -409,6 +464,8 @@ __main() {
       # vcs info
       # $ vcprompt -f '%n:%b:%r' 2>/dev/null
       # is too slow
+      # $ git rev-parse --is-inside-work-tree
+      # too
       if [ -d "${cwd}/.git" ]
       then
         local col1
@@ -419,7 +476,7 @@ __main() {
         [ -z "$repo_type" ] && repo_type=git
         [ -z "$head_file" ] && head_file="${cwd}/.git/HEAD"
 
-        read col1 col2 < "$head_file"
+        read -r col1 col2 < "$head_file"
 
         if [ "$col1" = 'ref:' ]
         then
@@ -467,7 +524,7 @@ __main() {
     # in vim
     [ -n "$VIM" ] && [ -n "$VIMRUNTIME" ] && prompt="${prompt} ${cyan}(vim)${reset}"
 
-    printf -- "${prompt}"
+    printf -- '%b' "${prompt}"
   }
 
   __print_PS1() {
@@ -476,13 +533,15 @@ __main() {
 
     # /current/dir error (git:branch or revision) (yarn:lerna) (vim)
     # username@hostname$ _
-    printf -- "${green}\w${reset}\$(__print_status \$?)\n\u@\h$ "
+    printf -- '%b' "${green}\w${reset}\$(__print_status \$?)\n\u@\h$ "
   }
 
-  export PS1=$(__print_PS1)
+  export PS1=
+  PS1=$(__print_PS1)
   # }}}
 
   # load .bashrc.local
+  # shellcheck disable=SC1090
   source "$HOME/.bashrc.local" 2>/dev/null
 
   # proxy settings {{{
@@ -497,7 +556,7 @@ __main() {
   # }}}
 
   # always use terminal multiplexer
-  [ "$TERM" != 'screen' ] && [ "$TERM" != 'dumb' ] && [ -z "$VIM" ] && tmux
+  [ "$TERM" != 'screen' ] && [ -z "$is_dumb" ] && [ -z "$VIM" ] && tmux
 }
 
 __main "$@"
