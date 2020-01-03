@@ -1,3 +1,5 @@
+scriptencoding utf-8
+
 " .vimrcを再読み込みする {{{
 nnoremap ,w :<C-u>source $MYVIMRC<CR>
 " }}}

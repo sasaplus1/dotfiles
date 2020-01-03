@@ -1,13 +1,14 @@
 if 1
-  " NOTE:
-  "   :help no-eval-feature
-  "   https://stackoverflow.com/q/27451637
+  " NOTE: :help no-eval-feature
+  " https://stackoverflow.com/q/27451637
 
   if &compatible
+    " vint: next-line -ProhibitSetNoCompatible
     set nocompatible
   endif
 
-  if has('multi_byte')
+  if has('multi_byte_encoding')
+    " vint: next-line -ProhibitEncodingOptionAfterScriptEncoding
     set encoding=utf-8
     scriptencoding utf-8
   endif

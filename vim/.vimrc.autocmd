@@ -1,3 +1,5 @@
+scriptencoding utf-8
+
 " *.binと*.exeと*.dllはxxd
 autocmd vimrc BufNewFile,BufRead *.{bin,exe,dll} setfiletype xxd
 

@@ -1,3 +1,5 @@
+scriptencoding utf-8
+
 " dein.vim {{{
 
 if (v:version >= 704 || has('nvim')) && executable('git')
@@ -165,7 +167,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     function! s:fix_with_eslint_plugin_prettier(dir) abort
       let l:node_modules_dir = finddir('node_modules', a:dir . ';')
 
-      if l:node_modules_dir == ''
+      if l:node_modules_dir ==# ''
         return
       endif
 

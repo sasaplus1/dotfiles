@@ -1,3 +1,5 @@
+scriptencoding utf-8
+
 " 論理行でなく表示行で移動する
 nnoremap <silent> j gj
 vnoremap <silent> j gj
@@ -21,7 +23,7 @@ nnoremap ? ?\v
 
 " / を入力した際の挙動を条件によって変更する
 function! s:get_smart_very_magic() abort
-  if getcmdtype() != ':'
+  if getcmdtype() !=# ':'
     return '/'
   endif
 
