@@ -85,6 +85,13 @@ deploy: ## deploy dotfiles
 	-@printf -- '%s\n' $(create_targets) | xargs -n 1 bash -c 'cp -nv <(echo -n) "$$0"'
 	@echo 'done.'
 
+.PHONY: lint
+lint: shells := $(addprefix bash/,.bash_logout .bash_profile .bashrc)
+lint: vimrcs := $(addprefix vim/,.vimrc .vimrc.autocmd .vimrc.config .vimrc.local .vimrc.map .vimrc.plugin .vimrc.root)
+lint: ## lint some scripts
+	-@docker-compose run --rm shellcheck $(shells)
+	-@docker-compose run --rm vint $(vimrcs)
+
 .PHONY: test
 test: ## check deployed files
 	@printf -- '%s\n' $(dotfile_dirs)   | xargs -n 1 bash -c '[ -d "$$0" ] || echo "$$0 is not found"'
