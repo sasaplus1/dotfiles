@@ -126,8 +126,10 @@ if (v:version >= 704 || has('nvim')) && executable('git')
             \ 'types' : {
             \   1 : ['.git', 'cd %s && git ls-files -co --exclude-standard']
             \ },
-            \ 'fallback' : executable('pt') ?
-            \   'pt --nocolor --nogroup --files-with-matches %s' :
+            \ 'fallback' :
+            \    executable('fd') ? 'fd --type f --color never %s' :
+            \    executable('rg') ? 'rg --color never --smart-case %s' :
+            \    executable('pt') ? 'pt --nocolor --nogroup --files-with-matches %s' :
             \   'find %s -type f'
             \ }
 
