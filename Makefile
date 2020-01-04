@@ -34,8 +34,6 @@ symlinks := $(abspath $(strip \
   $(makefile_dir)/bash/.bash_logout          $(dest)/.bash_logout \
   $(makefile_dir)/bash/.bash_profile         $(dest)/.bash_profile \
   $(makefile_dir)/bash/.bashrc               $(dest)/.bashrc \
-  $(makefile_dir)/bash/.downrc               $(dest)/.downrc \
-  $(makefile_dir)/bash/.findrc               $(dest)/.findrc \
   $(makefile_dir)/ctags/.ctags               $(dest)/.ctags \
   $(makefile_dir)/ctags/.ctagsignore         $(dest)/.ctagsignore \
   $(makefile_dir)/git/.gitconfig             $(dest)/.gitconfig \
