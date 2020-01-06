@@ -194,13 +194,6 @@ __main() {
   source "$homebrew_prefix/opt/fzf/shell/completion.bash" 2>/dev/null
   # }}}
 
-  # tig {{{
-  type tig >/dev/null 2>&1 &&
-    tig-reflog() {
-      git reflog --pretty=raw | tig --pretty=raw
-    }
-  # }}}
-
   # vim {{{
 
   # macvim
