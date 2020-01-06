@@ -21,7 +21,17 @@ __main() {
 
   #-----------------------------------------------------------------------------
 
-  local homebrew_dir=$HOME/Homebrew
+  local homebrew_dir=
+
+  [ "$os" = 'macos' ] && homebrew_dir=$HOME/Homebrew
+
+  if [ "$os" = 'linux' ]
+  then
+    [ -d '/home/linuxbrew/.linuxbrew' ] &&
+      homebrew_dir=/home/linuxbrew/.linuxbrew ||
+      homebrew_dir=$HOME/.linuxbrew
+  fi
+
   local homebrew_infopath=$homebrew_dir/share/info
   local homebrew_manpath=$homebrew_dir/share/man
   local homebrew_path=$homebrew_dir/bin
@@ -30,18 +40,12 @@ __main() {
   export MANPATH=$homebrew_manpath:${MANPATH//$homebrew_manpath/}
   export PATH=$homebrew_path:${PATH//$homebrew_path/}
 
+  export HOMEBREW_CACHE=$homebrew_dir/cache
+
   local homebrew_prefix=
 
   # NOTE: brew --prefix is very slow https://github.com/Homebrew/brew/issues/3097
   homebrew_prefix="$(dirname "$(dirname "$(type -tP brew)")")"
-
-  # for linuxbrew
-  if [ "$os" = 'linux' ]
-  then
-    # NOTE: https://www.digitalocean.com/community/tutorials/how-to-install-and-use-linuxbrew-on-a-linux-vps
-    export PKG_CONFIG_PATH=$homebrew_dir/lib64/pkgconfig:$homebrew_dir/lib/pkgconfig:$PKG_CONFIG_PATH
-    export LD_LIBRARY_PATH=$homebrew_dir/lib64:$homebrew_dir/lib:$LD_LIBRARY_PATH
-  fi
 
   #-----------------------------------------------------------------------------
 
