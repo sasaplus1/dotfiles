@@ -189,7 +189,7 @@ __main() {
   # }}}
 
   # fzf {{{
-  export FZF_DEFAULT_OPTS='--border --cycle --height 60% --layout reverse'
+  export FZF_DEFAULT_OPTS='--border --cycle --height 60% --layout reverse --preview-window right'
   # shellcheck disable=SC1090
   source "$homebrew_prefix/opt/fzf/shell/completion.bash" 2>/dev/null
   # }}}
@@ -335,8 +335,10 @@ __main() {
       git_cmd="git ls-tree -dr --name-only --full-name HEAD '$git_dir' | sed -e 's|^|${git_dir}/|'"
     fi
 
+    local fzf_preview='ls -1a {}'
+
     # shellcheck disable=SC2164,SC2145
-    cd "$(cat <(ghq list -p) <(eval "$z_cmd") <(eval "$git_cmd") | fzf --query="$@")"
+    cd "$(cat <(ghq list -p) <(eval "$z_cmd") <(eval "$git_cmd") | fzf --query="$@" --preview="$fzf_preview")"
   }
 
   # remove docker containers
