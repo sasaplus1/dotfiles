@@ -6,7 +6,7 @@ my dotfiles
 
 ## How to use
 
-execute command below if macOS:
+execute command the below if macOS:
 
 ```
 $ xcode-select --install
