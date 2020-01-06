@@ -194,6 +194,23 @@ __main() {
   source "$homebrew_prefix/opt/fzf/shell/completion.bash" 2>/dev/null
   # }}}
 
+  # hub {{{
+  hub() {
+    local hub_bin=
+
+    hub_bin="$(type -tP hub)"
+
+    if git remote -v | grep github.com >/dev/null 2>&1
+    then
+      host='github.com'
+    else
+      host="$(git config --get-all remote.origin.url | awk -F '[:/]' '{ sub(/^[^@]*@/, "", $4); print $4 }')"
+    fi
+
+    GITHUB_HOST="$host" "$hub_bin" "$@"
+  }
+  # }}}
+
   # vim {{{
 
   # macvim
