@@ -351,6 +351,16 @@ __main() {
     cd "$(cat <(ghq list -p) <(eval "$z_cmd") <(eval "$git_cmd") | fzf --query="$@" --preview="$fzf_preview")"
   }
 
+  prr() {
+    if [ "$(git rev-parse --is-inside-work-tree 2>/dev/null)" != 'true' ]
+    then
+      printf -- '%s\n' 'not within git repository.'
+      return 1
+    fi
+
+    hub pr show "$(cat <(hub pr list "$@") <(hub issue "$@") | fzf | awk '{ sub(/^#/, "", $1); print $1 }')"
+  }
+
   # remove docker containers
   d-rm() {
     # shellcheck disable=SC2145
