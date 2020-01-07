@@ -209,6 +209,19 @@ __main() {
 
     GITHUB_HOST="$host" "$hub_bin" "$@"
   }
+
+  # hub-completion
+  __hub_completion() {
+    unset -f __hub_completion
+    complete -r hub
+
+    local homebrew_prefix=
+    homebrew_prefix="$(dirname "$(dirname "$(type -tP brew)")")"
+
+    # shellcheck disable=SC1090
+    source "$homebrew_prefix/opt/hub/etc/bash_completion.d/hub.bash_completion.sh" 2>/dev/null && return 124
+  }
+  complete -F __hub_completion
   # }}}
 
   # vim {{{
