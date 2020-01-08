@@ -374,6 +374,11 @@ __main() {
     hub pr show "$(cat <(hub pr list "$@") <(hub issue "$@") | fzf | awk '{ sub(/^#/, "", $1); print $1 }')"
   }
 
+  # cd to repository root
+  rr() {
+    cd "$(git rev-parse --show-toplevel)"
+  }
+
   # remove docker containers
   d-rm() {
     # shellcheck disable=SC2145
