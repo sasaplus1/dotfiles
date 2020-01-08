@@ -1,0 +1,8 @@
+{
+  "javascript.format.enabled": false,
+  "javascript.suggest.enabled": false,
+  "javascript.validate.enable" :false,
+  "typescript.format.enabled": false,
+  "typescript.suggest.enabled": false,
+  "typescript.validate.enable" :false
+}

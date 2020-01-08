@@ -51,6 +51,7 @@ symlinks := $(abspath $(strip \
   $(makefile_dir)/tern/.tern-project         $(dest)/.tern-project \
   $(makefile_dir)/tig/.tigrc                 $(dest)/.tigrc \
   $(makefile_dir)/tmux/.tmux.conf            $(dest)/.tmux.conf \
+  $(makefile_dir)/vim/coc-settings.json      $(dest)/.vim/coc-settings.json \
   $(makefile_dir)/vim/.gvimrc                $(dest)/.gvimrc \
   $(makefile_dir)/vim/.vimrc                 $(dest)/.vimrc \
   $(makefile_dir)/vim/.vimrc                 $(dest)/.config/nvim/init.vim \
