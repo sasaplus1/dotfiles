@@ -376,7 +376,7 @@ __main() {
 
   # cd to repository root
   rr() {
-    cd "$(git rev-parse --show-toplevel)"
+    cd "$(git rev-parse --show-toplevel)" || exit 1
   }
 
   # remove docker containers
