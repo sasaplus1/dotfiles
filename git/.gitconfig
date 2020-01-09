@@ -22,6 +22,8 @@
   glog = log --all --branches --graph
   ls = ls-files
   ref = reflog
+  recommit = commit --amend --reuse-message=HEAD --date=now
+  rci = commit --amend --reuse-message=HEAD --date=now
   sdi = diff --staged
   sdif = diff --staged
   sdiff = diff --staged
