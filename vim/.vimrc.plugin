@@ -58,7 +58,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     " bclose.vimを必要とするのはNeovimのみ
     let s:ranger_options = {
           \ 'depends' : [
-          \   'bclose.vim'
+          \   'bclose.vim',
           \ ],
           \ 'hook_post_source' : function('s:hook_post_source_ranger'),
           \ 'hook_source' : function('s:hook_source_ranger'),
@@ -124,13 +124,13 @@ if (v:version >= 704 || has('nvim')) && executable('git')
       " 外部コマンドを使って高速にファイルを列挙する
       let g:ctrlp_user_command = {
             \ 'types' : {
-            \   1 : ['.git', 'cd %s && git ls-files -co --exclude-standard']
+            \   1 : ['.git', 'cd %s && git ls-files -co --exclude-standard'],
             \ },
             \ 'fallback' :
             \    executable('fd') ? 'fd --type f --color never %s' :
             \    executable('rg') ? 'rg --color never --smart-case %s' :
             \    executable('pt') ? 'pt --nocolor --nogroup --files-with-matches %s' :
-            \   'find %s -type f'
+            \   'find %s -type f',
             \ }
 
       " キーマッピングを変更する
@@ -320,7 +320,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \   'typescript',
           \   'typescriptreact',
           \ ],
-          \ 'rev' : 'release'
+          \ 'rev' : 'release',
           \ })
     " }}}
 
@@ -385,7 +385,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \ 'on_func' : [
           \   'E2v',
           \ ],
-          \ 'on_event' : 'CmdlineEnter'
+          \ 'on_event' : 'CmdlineEnter',
           \ })
     " }}}
 
@@ -653,8 +653,8 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     call dein#add('leafgarland/typescript-vim', {
           \ 'lazy' : 1,
           \ 'on_ft' : [
-          \   'typescript'
-          \   'typescriptreact'
+          \   'typescript',
+          \   'typescriptreact',
           \ ],
           \ })
     " }}}
