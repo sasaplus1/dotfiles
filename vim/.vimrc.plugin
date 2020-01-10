@@ -178,8 +178,10 @@ if (v:version >= 704 || has('nvim')) && executable('git')
       if isdirectory(l:eslint_plugin_prettier_dir)
         let b:ale_fixers = {
               \ 'javascript' : ['eslint'],
+              \ 'javascriptreact' : ['eslint'],
               \ 'javascript.jsx' : ['eslint'],
               \ 'typescript' : ['eslint'],
+              \ 'typescriptreact' : ['eslint'],
               \ }
       endif
     endfunction
@@ -212,34 +214,38 @@ if (v:version >= 704 || has('nvim')) && executable('git')
       let g:ale_linters = {
             \ 'css' : ['stylelint'],
             \ 'javascript' : ['eslint'],
+            \ 'javascriptreact' : ['eslint'],
             \ 'javascript.jsx' : ['eslint'],
             \ 'json' : [],
             \ 'scss' : ['stylelint'],
             \ 'typescript' : ['tsserver', 'eslint'],
+            \ 'typescriptreact' : ['tsserver', 'eslint'],
             \ 'vue' : ['eslint'],
             \ }
       " fixerの設定
       let g:ale_fixers = {
             \ 'css' : ['prettier'],
             \ 'javascript' : ['prettier'],
+            \ 'javascriptreact' : ['prettier'],
             \ 'javascript.jsx' : ['prettier'],
             \ 'json' : ['prettier'],
             \ 'scss' : ['prettier'],
             \ 'typescript' : ['prettier'],
+            \ 'typescriptreact' : ['prettier'],
             \ }
 
       " eslintでの検査中にエラーが多いときは中断する
-      autocmd vimrc FileType javascript,typescript,vue let b:ale_javascript_eslint_options = '--max-warnings 20'
+      autocmd vimrc FileType javascript,javascriptreact,typescript,typescriptreact,vue let b:ale_javascript_eslint_options = '--max-warnings 20'
 
       " JSONならprettierのパーサにjson-stringifyを使用する
       autocmd vimrc FileType json let b:ale_javascript_prettier_options = '--parser json-stringify'
 
       " 保存時fixする
-      autocmd vimrc FileType css,scss,json,javascript,typescript let b:ale_fix_on_save = 1
+      autocmd vimrc FileType css,scss,json,javascript,javascriptreact,typescript,typescriptreact let b:ale_fix_on_save = 1
 
       " eslint-plugin-prettierやstylelint-prettierがインストールされていたらそちらをfixerとして使う
       "autocmd vimrc FileType css,scss call s:fix_with_stylelint_prettier(expand('%:p:h'))
-      autocmd vimrc FileType javascript,typescript call s:fix_with_eslint_plugin_prettier(expand('%:p:h'))
+      autocmd vimrc FileType javascript,javascriptreact,typescript,typescriptreact call s:fix_with_eslint_plugin_prettier(expand('%:p:h'))
 
       " ファイルのカレントディレクトリから実行する
       " monorepo毎に.eslintignoreがある場合などに有効
@@ -290,7 +296,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
       nmap <silent> gi <Plug>(coc-implementation)
       nmap <silent> gr <Plug>(coc-references)
 
-      autocmd vimrc FileType javascript,typescript nmap <buffer><silent> <C-]> <Plug>(coc-definition)
+      autocmd vimrc FileType javascript,javascriptreact,typescript,typescriptreact nmap <buffer><silent> <C-]> <Plug>(coc-definition)
 
       " CocInstall coc-json
       " CocInstall coc-tsserver
@@ -309,8 +315,10 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \ 'on_if' : 'executable("node") && (v:version >= 800 || has("nvim-0.3.1"))',
           \ 'on_ft' : [
           \   'javascript',
+          \   'javascriptreact',
           \   'json',
           \   'typescript',
+          \   'typescriptreact',
           \ ],
           \ 'rev' : 'release'
           \ })
@@ -425,8 +433,10 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \ 'hook_post_source' : function('s:hook_post_source_vim_gf_user'),
           \ 'on_ft' : [
           \   'javascript',
+          \   'javascriptreact',
           \   'javascript.jsx',
           \   'typescript',
+          \   'typescriptreact',
           \ ],
           \ })
     " }}}
@@ -623,7 +633,9 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \ 'lazy' : 1,
           \ 'on_ft' : [
           \   'javascript',
+          \   'javascriptreact',
           \   'typescript',
+          \   'typescriptreact',
           \ ],
           \ })
     " }}}
@@ -642,6 +654,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \ 'lazy' : 1,
           \ 'on_ft' : [
           \   'typescript'
+          \   'typescriptreact'
           \ ],
           \ })
     " }}}
