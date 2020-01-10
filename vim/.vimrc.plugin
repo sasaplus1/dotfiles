@@ -628,14 +628,8 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \ })
     " }}}
 
-    " mxw/vim-jsx {{{
-    function! s:hook_source_vim_jsx() abort
-      " 拡張子が.jsxでなくても強調表示を有効化する
-      let g:jsx_ext_required = 0
-    endfunction
-
-    call dein#add('mxw/vim-jsx', {
-          \ 'hook_source' : function('s:hook_source_vim_jsx'),
+    " MaxMEllon/vim-jsx-pretty {{{
+    call dein#add('MaxMEllon/vim-jsx-pretty', {
           \ 'lazy' : 1,
           \ 'on_ft' : [
           \   'javascript',
