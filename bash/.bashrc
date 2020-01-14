@@ -358,7 +358,14 @@ __main() {
       git_cmd="git ls-tree -dr --name-only --full-name HEAD '$git_dir' | sed -e 's|^|${git_dir}/|'"
     fi
 
-    local fzf_preview='ls -1a {}'
+    local fzf_preview=
+
+    if type bat 2>/dev/null
+    then
+      fzf_preview='bat --color=always -pp -r :40 {}/README.* 2>/dev/null || ls -1a {}'
+    else
+      fzf_preview='head -n 40 {}/README.* 2>/dev/null || ls -1a {}'
+    fi
 
     # shellcheck disable=SC2164,SC2145
     cd "$(cat <(ghq list -p) <(eval "$z_cmd") <(eval "$git_cmd") | fzf --query="$@" --preview="$fzf_preview")"
