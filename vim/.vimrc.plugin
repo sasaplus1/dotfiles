@@ -186,24 +186,6 @@ if (v:version >= 704 || has('nvim')) && executable('git')
       endif
     endfunction
 
-    function! s:fix_with_stylelint_prettier(dir) abort
-    " let l:node_modules_dir = finddir('node_modules', a:dir . ';')
-
-    " if l:node_modules_dir == ''
-    "   return
-    " endif
-
-    " let l:stylelint_prettier_dir = fnamemodify(l:node_modules_dir . '/stylelint-prettier', ':p:h')
-
-    " if isdirectory(l:stylelint_prettier_dir)
-    "   let b:ale_fixers = {
-    "         \ 'css' : ['stylelint'],
-    "         \ 'scss' : ['stylelint'],
-    "         \ }
-    "   let b:ale_css_stylelint_options = '--fix'
-    " endif
-    endfunction
-
     function! s:hook_source_ale() abort
       " 無視するファイルの設定
       let g:ale_pattern_options = {
@@ -224,12 +206,12 @@ if (v:version >= 704 || has('nvim')) && executable('git')
             \ }
       " fixerの設定
       let g:ale_fixers = {
-            \ 'css' : ['prettier'],
+            \ 'css' : ['stylelint'],
             \ 'javascript' : ['prettier'],
             \ 'javascriptreact' : ['prettier'],
             \ 'javascript.jsx' : ['prettier'],
             \ 'json' : ['prettier'],
-            \ 'scss' : ['prettier'],
+            \ 'scss' : ['stylelint'],
             \ 'typescript' : ['prettier'],
             \ 'typescriptreact' : ['prettier'],
             \ }
@@ -243,8 +225,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
       " 保存時fixする
       autocmd vimrc FileType css,scss,json,javascript,javascriptreact,typescript,typescriptreact let b:ale_fix_on_save = 1
 
-      " eslint-plugin-prettierやstylelint-prettierがインストールされていたらそちらをfixerとして使う
-      "autocmd vimrc FileType css,scss call s:fix_with_stylelint_prettier(expand('%:p:h'))
+      " eslint-plugin-prettierがインストールされていたらそちらをfixerとして使う
       autocmd vimrc FileType javascript,javascriptreact,typescript,typescriptreact call s:fix_with_eslint_plugin_prettier(expand('%:p:h'))
 
       " ファイルのカレントディレクトリから実行する
