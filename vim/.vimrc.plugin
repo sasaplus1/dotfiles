@@ -95,15 +95,15 @@ if (v:version >= 704 || has('nvim')) && executable('git')
 
       function! s:fzf_call_by_mixed_source() abort
         let files = []
-        let pwd = expand('%:p:h')
+        let pwd = shellescape(expand('%:p:h'))
 
-        if system('cd "' . pwd . '" && git rev-parse --is-inside-work-tree 2>/dev/null') =~# '^true'
-          files += split(system(
-                \ 'cd "$(git rev-parse --show-toplevel)" && git ls-files -co --exclude-standard'))
+        if system('cd ' . pwd . ' && git rev-parse --is-inside-work-tree') =~# '^true'
+          let files += split(system(
+                \ 'git ls-files -co --exclude-standard "$(git rev-parse --show-toplevel)"'))
         elseif executable('fd')
-          files += split(system('fd -a -p -d 5 -t f -c never "' . pwd . '"'))
+          let files += split(system('fd -a -p -d 5 -t f -c never ' . pwd))
         elseif executable('rg')
-          files += split(system('rg --color never --files --max-depth 5 "' . pwd . '"'))
+          let files += split(system('rg --color never --files --max-depth 5 ' . pwd))
         endif
 
         " get history

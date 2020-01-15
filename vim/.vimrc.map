@@ -83,15 +83,15 @@ cnoremap <C-p> <Up>
 " grepをする
 function! s:smart_grep(pattern) abort
   let command = printf(
-        \ 'cd "%s" && git rev-parse --is-inside-work-tree 2>/dev/null',
-        \ expand('%:p:h'),
+        \ 'cd %s && git rev-parse --is-inside-work-tree 2>/dev/null',
+        \ shellescape(expand('%:p:h')),
         \ )
 
   if system(command) =~# '^true'
     let old_grepprg = &grepprg
     let old_grepformat = &grepformat
 
-    execute "cd " . system('git rev-parse --show-toplevel')
+    execute "cd " . shellescape(system('git rev-parse --show-toplevel'))
 
     set grepprg=git\ grep\ -I\ -P\ --line-number\ --no-index\ --exclude-standard
     set grepformat&
