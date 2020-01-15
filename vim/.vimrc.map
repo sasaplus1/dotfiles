@@ -91,7 +91,7 @@ function! s:smart_grep(pattern) abort
     let old_grepprg = &grepprg
     let old_grepformat = &grepformat
 
-    execute "cd " . shellescape(system('git rev-parse --show-toplevel'))
+    execute 'cd'  . shellescape(system('git rev-parse --show-toplevel'))
 
     set grepprg=git\ grep\ -I\ -P\ --line-number\ --no-index\ --exclude-standard
     set grepformat&
