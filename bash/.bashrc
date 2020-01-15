@@ -189,7 +189,7 @@ __main() {
   # }}}
 
   # fzf {{{
-  export FZF_DEFAULT_OPTS='--border --cycle --height 60% --layout reverse --preview-window right'
+  export FZF_DEFAULT_OPTS='--border --cycle --height=60% --info=hidden --layout=reverse --preview-window=right'
   # shellcheck disable=SC1090
   source "$homebrew_prefix/opt/fzf/shell/completion.bash" 2>/dev/null
   # }}}
