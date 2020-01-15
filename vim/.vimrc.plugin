@@ -52,7 +52,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
 
     call dein#add('rbgrouleff/bclose.vim', {
           \ 'lazy' : 1,
-          \ 'on_if' : 'has("nvim")',
+          \ 'if' : 'has("nvim")',
           \ })
 
     " bclose.vimを必要とするのはNeovimのみ
@@ -62,8 +62,8 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \ ],
           \ 'hook_post_source' : function('s:hook_post_source_ranger'),
           \ 'hook_source' : function('s:hook_source_ranger'),
+          \ 'if' : 'executable("ranger") && has("nvim")',
           \ 'lazy' : 1,
-          \ 'on_if' : 'executable("ranger") && has("nvim")',
           \ 'on_map' : [
           \   ',vf',
           \ ]
@@ -158,9 +158,9 @@ if (v:version >= 704 || has('nvim')) && executable('git')
 
     call dein#add('ctrlpvim/ctrlp.vim', {
           \ 'hook_add' : function('s:hook_add_ctrlpvim_ctrlpvim'),
+          \ 'if' : 'v:version >= 700 && !dein#tap("fzf.vim")',
           \ 'lazy' : 1,
           \ 'on_cmd' : '<Plug>(CtrlP',
-          \ 'on_if' : 'v:version >= 700',
           \ 'on_map' : '<C-p>',
           \ })
     " }}}
@@ -243,7 +243,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
 
     call dein#add('dense-analysis/ale', {
           \ 'hook_source' : function('s:hook_source_ale'),
-          \ 'on_if' : '(v:version >= 800 && has("timers") && has("job") && has("channel")) || has("nvim-0.2.0")',
+          \ 'if' : '(v:version >= 800 && has("timers") && has("job") && has("channel")) || has("nvim-0.2.0")',
           \ })
     " }}}
 
@@ -291,9 +291,9 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     call dein#add('neoclide/coc.nvim', {
           \ 'hook_post_source' : function('s:hook_post_source_coc_nvim'),
           \ 'hook_source' : function('s:hook_source_coc_nvim'),
+          \ 'if' : 'executable("node") && (v:version >= 800 || has("nvim-0.3.1"))',
           \ 'lazy' : 1,
           \ 'merged' : 0,
-          \ 'on_if' : 'executable("node") && (v:version >= 800 || has("nvim-0.3.1"))',
           \ 'on_ft' : [
           \   'javascript',
           \   'javascriptreact',
@@ -307,7 +307,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
 
     " editorconfig/editorconfig-vim {{{
     call dein#add('editorconfig/editorconfig-vim', {
-          \ 'on_if' : 'has("python") || has("python3")',
+          \ 'if' : 'has("python") || has("python3")',
           \ })
     " }}}
 
