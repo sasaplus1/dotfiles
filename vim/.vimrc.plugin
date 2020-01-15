@@ -72,8 +72,84 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     call dein#add('francoiscabrol/ranger.vim', s:ranger_options)
     " }}}
 
+    " junegunn/fzf {{{
+    function! s:hook_add_junegunn_fzf() abort
+      " コマンド名にプレフィックスをつける
+      let g:fzf_command_prefix = 'Fzf'
+      " バッファを既に開いているのならそれを使う
+      let g:fzf_buffers_jump = 1
+    endfunction
+
+    function! s:hook_source_junegunn_fzf() abort
+      " Vimのプロセスだけデフォルトオプションを変更する
+      let $FZF_DEFAULT_OPTS .= ' --layout=reverse-list --margin=0,0,0,0'
+
+      " ,ubでバッファ一覧
+      nnoremap <silent> ,ub :<C-u>FzfBuffers<CR>
+      " ,ugでrgを使ったgrepをする
+      nnoremap <silent> ,ug :<C-u>FzfRg<Space>
+      " ,ulで行一覧
+      nnoremap <silent> ,ul :<C-u>FzfBLines<CR>
+      " ,umで最近開いたファイル一覧
+      nnoremap <silent> ,um :<C-u>FzfHistory<CR>
+
+      function! s:fzf_call_by_mixed_source() abort
+        let files = []
+        let pwd = expand('%:p:h')
+
+        if system('cd "' . pwd . '" && git rev-parse --is-inside-work-tree 2>/dev/null') =~# '^true'
+          files += split(system(
+                \ 'cd "$(git rev-parse --show-toplevel)" && git ls-files -co --exclude-standard'))
+        elseif executable('fd')
+          files += split(system('fd -a -p -d 5 -t f -c never "' . pwd . '"'))
+        elseif executable('rg')
+          files += split(system('rg --color never --files --max-depth 5 "' . pwd . '"'))
+        endif
+
+        " get history
+        let history = filter(copy(v:oldfiles), 'filereadable(fnamemodify(v:val, ":p"))')
+
+        " some kind files, history
+        call fzf#run({
+              \ 'source' : uniq(sort(map(files + history, 'fnamemodify(v:val, ":~:.")'))),
+              \ 'sink' : 'edit',
+              \ 'down' : '60%',
+              \ 'options' : ['--prompt', 'Mixed> ']
+              \ })
+      endfunction
+
+      nnoremap <silent> <C-p> :<C-u>call <SID>fzf_call_by_mixed_source()<CR>
+    endfunction
+
+    call dein#add('junegunn/fzf', {
+          \ 'build' : './install --bin',
+          \ 'lazy' : 1,
+          \ 'merged' : 0
+          \ })
+    call dein#add('junegunn/fzf.vim', {
+          \ 'depends' : [
+          \   'fzf',
+          \ ],
+          \ 'hook_add' : function('s:hook_add_junegunn_fzf'),
+          \ 'hook_source' : function('s:hook_source_junegunn_fzf'),
+          \ 'if' : 'v:version >= 704 && dein#tap("fzf")',
+          \ 'lazy' : 1,
+          \ 'on_cmd' : [
+          \   'Fzf',
+          \   '<Plug>(fzf-',
+          \ ],
+          \ 'on_map' : [
+          \   '<C-p>',
+          \   ',ub',
+          \   ',ug',
+          \   ',ul',
+          \   ',um',
+          \ ],
+          \ })
+    " }}}
+
     " ctrlpvim/ctrlp.vim {{{
-    function! s:hook_add_ctrlpvim_ctrlpvim() abort
+    function! s:hook_add_ctrlpvim() abort
       " <C-p>のコマンドを変更する
       let g:ctrlp_cmd = 'CtrlPMixed'
 
@@ -157,11 +233,17 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     endfunction
 
     call dein#add('ctrlpvim/ctrlp.vim', {
-          \ 'hook_add' : function('s:hook_add_ctrlpvim_ctrlpvim'),
+          \ 'hook_add' : function('s:hook_add_ctrlpvim'),
           \ 'if' : 'v:version >= 700 && !dein#tap("fzf.vim")',
           \ 'lazy' : 1,
           \ 'on_cmd' : '<Plug>(CtrlP',
-          \ 'on_map' : '<C-p>',
+          \ 'on_map' : [
+          \   '<C-p>',
+          \   ',ub',
+          \   ',ug',
+          \   ',ul',
+          \   ',um',
+          \ ],
           \ })
     " }}}
 
