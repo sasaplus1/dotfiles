@@ -360,7 +360,7 @@ __main() {
 
     local fzf_preview=
 
-    if type bat 2>/dev/null
+    if type bat >/dev/null 2>&1
     then
       fzf_preview='bat --color=always -pp -r :40 {}/README.* 2>/dev/null || ls -1a {}'
     else
