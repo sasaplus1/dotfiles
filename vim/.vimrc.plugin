@@ -82,12 +82,19 @@ if (v:version >= 704 || has('nvim')) && executable('git')
 
     function! s:hook_source_junegunn_fzf() abort
       " Vimのプロセスだけデフォルトオプションを変更する
-      let $FZF_DEFAULT_OPTS .= ' --layout=reverse-list --margin=0,0,0,0'
+      let $FZF_DEFAULT_OPTS .= ' ' . '--layout=reverse-list --margin=0,0,0,0'
+
+      " Rgのオプションを変更する
+      command! -bang -nargs=* FzfRg
+            \ call fzf#vim#grep(
+            \   'rg --color=always --column --hidden --line-number --no-heading --smart-case ' .
+            \   shellescape(<q-args>), 1, fzf#vim#with_preview(), <bang>0)
 
       " ,ubでバッファ一覧
       nnoremap <silent> ,ub :<C-u>FzfBuffers<CR>
-      " ,ugでrgを使ったgrepをする
+      " ,ugと,upでrgを使ったgrepをする
       nnoremap ,ug :<C-u>FzfRg<Space>
+      nnoremap ,up :<C-u>FzfRg<Space>
       " ,ulで行一覧
       nnoremap <silent> ,ul :<C-u>FzfBLines<CR>
       " ,umで最近開いたファイル一覧
@@ -95,9 +102,9 @@ if (v:version >= 704 || has('nvim')) && executable('git')
 
       function! s:fzf_call_by_mixed_source() abort
         let files = []
-        let pwd = shellescape(expand('%:p:h'))
+        let pwd = expand('%:p:h')
 
-        if system('cd ' . pwd . ' && git rev-parse --is-inside-work-tree') =~# '^true'
+        if system('git -C "' . pwd . '" rev-parse --is-inside-work-tree') =~# '^true'
           let files += split(system(
                 \ 'git ls-files -co --exclude-standard "$(git rev-parse --show-toplevel)"'))
         elseif executable('fd')
@@ -142,6 +149,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \   '<C-p>',
           \   ',ub',
           \   ',ug',
+          \   ',up',
           \   ',ul',
           \   ',um',
           \ ],
