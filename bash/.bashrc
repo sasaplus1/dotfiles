@@ -362,9 +362,9 @@ __main() {
 
     if type bat >/dev/null 2>&1
     then
-      fzf_preview='bat --color=always -pp -r :40 {}/README.* 2>/dev/null || ls -1a {}'
+      fzf_preview='bat --color=always -pp -r :60 {}/README.* 2>/dev/null || ls -1a {}'
     else
-      fzf_preview='head -n 40 {}/README.* 2>/dev/null || ls -1a {}'
+      fzf_preview='head -n 60 {}/README.* 2>/dev/null || ls -1a {}'
     fi
 
     # shellcheck disable=SC2164,SC2145
