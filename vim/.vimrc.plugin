@@ -87,7 +87,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
       " ,ubでバッファ一覧
       nnoremap <silent> ,ub :<C-u>FzfBuffers<CR>
       " ,ugでrgを使ったgrepをする
-      nnoremap <silent> ,ug :<C-u>FzfRg<Space>
+      nnoremap ,ug :<C-u>FzfRg<Space>
       " ,ulで行一覧
       nnoremap <silent> ,ul :<C-u>FzfBLines<CR>
       " ,umで最近開いたファイル一覧
