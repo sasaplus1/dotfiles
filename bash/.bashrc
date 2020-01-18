@@ -381,6 +381,19 @@ __main() {
     hub pr show "$(cat <(hub pr list "$@") <(hub issue "$@") | fzf | awk '{ sub(/^#/, "", $1); print $1 }')"
   }
 
+  pv() {
+    local fzf_preview=
+
+    if type bat >/dev/null 2>&1
+    then
+      fzf_preview='bat --color=always -pp -r :60 {} 2>/dev/null || ls -1a {}'
+    else
+      fzf_preview='head -n 60 {} 2>/dev/null || ls -1a {}'
+    fi
+
+    ls -1a | fzf --preview="$fzf_preview"
+  }
+
   # cd to repository root
   rr() {
     cd "$(git rev-parse --show-toplevel)" || exit 1
