@@ -81,35 +81,8 @@ cnoremap <C-p> <Up>
 " cnoremap <M-f> <S-Right>
 
 " grepをする
-function! s:smart_grep(pattern) abort
-  let command = printf(
-        \ 'cd %s && git rev-parse --is-inside-work-tree 2>/dev/null',
-        \ shellescape(expand('%:p:h')),
-        \ )
-
-  if system(command) =~# '^true'
-    let old_grepprg = &grepprg
-    let old_grepformat = &grepformat
-
-    execute 'cd'  . shellescape(system('git rev-parse --show-toplevel'))
-
-    set grepprg=git\ grep\ -I\ -P\ --line-number\ --no-index\ --exclude-standard
-    set grepformat&
-
-    " リポジトリルートからgit grepでgrepを実行する
-    execute "silent! grep! '" . a:pattern . "' | redraw! | copen"
-
-    cd -
-
-    let &grepprg = old_grepprg
-    let &grepformat = old_grepformat
-  else
-    " grepprgで指定されたgrepを実行する
-    execute "silent! grep! '" . a:pattern . "' | redraw! | copen"
-  endif
-endfunction
-command! -nargs=1 SmartGrep silent call s:smart_grep('<args>')
-nnoremap ,gr :<C-u>SmartGrep<Space>
+command! -nargs=1 Grep execute "silent! grep! '<args>' | redraw! | copen"
+nnoremap ,gr :<C-u>Grep<Space>
 
 " C-kでオムニ補完
 inoremap <C-k> <C-x><C-o>
