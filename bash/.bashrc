@@ -391,7 +391,15 @@ __main() {
       fzf_preview='head -n 60 {} 2>/dev/null || ls -1a {}'
     fi
 
-    ls -1a | fzf --preview="$fzf_preview"
+    local selected="$(ls -1a | fzf --preview="$fzf_preview")"
+
+    if [ -d "$selected" ]
+    then
+      cd "$selected"
+    elif [ -r "$selected" ]
+    then
+      "$EDITOR" "$selected"
+    fi
   }
 
   # cd to repository root
