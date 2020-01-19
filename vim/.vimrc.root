@@ -6,35 +6,43 @@ scriptencoding utf-8
 
 " luaコマンドが使用できないがluadllが指定できluajitコマンドが使用できる場合
 if !has('lua') && exists('&luadll') && executable('luajit')
-  let s:lua_dir = $HOME . '/Homebrew/lib'
-  let s:lua_bin = s:lua_dir . '/libluajit.dylib'
+  if !empty($HOMEBREW_DIR)
+    let s:lua = $HOMEBREW_DIR . '/opt/luajit/lib/libluajit.dylib'
+  else
+    let s:lua = $HOME . '/Homebrew/opt/luajit/lib/libluajit.dylib'
+  endif
 
-  execute 'set luadll=' . s:lua_bin
+  if filereadable(s:lua)
+    execute 'set luadll=' . s:lua
+  endif
 
-  unlet s:lua_bin
-  unlet s:lua_dir
+  unlet s:lua
 endif
 
 " }}}
 
 " Python3 {{{
 
-if exists('&pythonthreedll')
-  let s:python_dir = $HOME . '/.pyenv/versions/3.6.1'
-  let s:python_bin = s:python_dir . '/bin/python'
+if has('python3_compiled') && has('python3_dynamic') && exists('&pythonthreedll')
+  if !empty($HOMEBREW_DIR)
+    let s:python3_dir = $HOMEBREW_DIR . '/opt/python@3'
+    let s:python3_bin = s:python3_dir . '/bin/python'
+  else
+    let s:python3_dir = $HOME . '/Homebrew/opt/python@3'
+    let s:python3_bin = s:python3_dir . '/bin/python'
+  endif
 
-  if executable(s:python_bin)
-    let $PYTHONHOME = s:python_dir
-
-    execute 'set pythonthreedll=' . s:python_bin
+  if executable(s:python3_bin)
+    let $PYTHONHOME = s:python3_dir
+    execute 'set pythonthreedll=' . s:python3_bin
 
     if has('python3')
       python3 import sys
     endif
   endif
 
-  unlet s:python_bin
-  unlet s:python_dir
+  unlet s:python3_bin
+  unlet s:python3_dir
 endif
 
 " }}}

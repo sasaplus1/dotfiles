@@ -47,6 +47,8 @@ __main() {
   # NOTE: brew --prefix is very slow https://github.com/Homebrew/brew/issues/3097
   homebrew_prefix="$(dirname "$(dirname "$(type -tP brew)")")"
 
+  [ -d "$homebrew_prefix" ] && export HOMEBREW_DIR=$homebrew_dir
+
   #-----------------------------------------------------------------------------
 
   # bash-completion {{{
