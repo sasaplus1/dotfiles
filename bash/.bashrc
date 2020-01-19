@@ -191,7 +191,13 @@ __main() {
   # }}}
 
   # fzf {{{
-  export FZF_DEFAULT_OPTS='--border --cycle --height=60% --info=hidden --layout=reverse --preview-window=right'
+  local fzf_opts=
+
+  fzf_opts=()
+  fzf_opts+=('--border --cycle --height=60% --info=hidden --layout=reverse --preview-window=right')
+  fzf_opts+=('--bind ctrl-j:preview-down,ctrl-k:preview-up')
+
+  export FZF_DEFAULT_OPTS=${fzf_opts[@]}
   # shellcheck disable=SC1090
   source "$homebrew_prefix/opt/fzf/shell/completion.bash" 2>/dev/null
   # }}}
@@ -388,16 +394,18 @@ __main() {
 
     if type bat >/dev/null 2>&1
     then
-      fzf_preview='bat --color=always -pp -r :60 {} 2>/dev/null || ls -1a {}'
+      fzf_preview='bat --color=always -pp -r :60 {} 2>/dev/null || find {} -maxdepth 1 -print'
     else
-      fzf_preview='head -n 60 {} 2>/dev/null || ls -1a {}'
+      fzf_preview='head -n 60 {} 2>/dev/null || find {} -maxdepth 1 -print'
     fi
 
-    local selected="$(ls -1a | fzf --preview="$fzf_preview")"
+    local selected=
+
+    selected="$(find "$PWD" -maxdepth 1 -print | fzf --preview="$fzf_preview")"
 
     if [ -d "$selected" ]
     then
-      cd "$selected"
+      cd "$selected" || exit 1
     elif [ -r "$selected" ]
     then
       "$EDITOR" "$selected"
