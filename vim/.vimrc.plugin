@@ -92,9 +92,8 @@ if (v:version >= 704 || has('nvim')) && executable('git')
 
       " ,ubでバッファ一覧
       nnoremap <silent> ,ub :<C-u>FzfBuffers<CR>
-      " ,ugと,upでrgを使ったgrepをする
+      " ,ugでrgを使ったgrepをする
       nnoremap ,ug :<C-u>FzfRg<Space>
-      nnoremap ,up :<C-u>FzfRg<Space>
       " ,ulで行一覧
       nnoremap <silent> ,ul :<C-u>FzfBLines<CR>
       " ,umで最近開いたファイル一覧
@@ -149,7 +148,6 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \   '<C-p>',
           \   ',ub',
           \   ',ug',
-          \   ',up',
           \   ',ul',
           \   ',um',
           \ ],
@@ -334,6 +332,15 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     call dein#add('dense-analysis/ale', {
           \ 'hook_source' : function('s:hook_source_ale'),
           \ 'if' : '(v:version >= 800 && has("timers") && has("job") && has("channel")) || has("nvim-0.2.0")',
+          \ 'on_cmd' : [
+          \   'ALE',
+          \ ],
+          \ 'on_map' : [
+          \   '<C-j>',
+          \   '<C-k>',
+          \   ',ad',
+          \   ',ae',
+          \ ],
           \ })
     " }}}
 
@@ -384,6 +391,10 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \ 'if' : 'executable("node") && (v:version >= 800 || has("nvim-0.3.1"))',
           \ 'lazy' : 1,
           \ 'merged' : 0,
+          \ 'on_cmd' : [
+          \   'Coc',
+          \   '<Plug>(coc-',
+          \ ],
           \ 'on_ft' : [
           \   'javascript',
           \   'javascriptreact',
@@ -391,13 +402,25 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \   'typescript',
           \   'typescriptreact',
           \ ],
+          \ 'on_map' : [
+          \   '<TAB>',
+          \   '<S-TAB>',
+          \   '<C-k>',
+          \   '<CR>',
+          \   '[g',
+          \   ']g',
+          \   'gd',
+          \   'gy',
+          \   'gi',
+          \   'gr',
+          \ ],
           \ 'rev' : 'release',
           \ })
     " }}}
 
     " editorconfig/editorconfig-vim {{{
     call dein#add('editorconfig/editorconfig-vim', {
-          \ 'if' : 'has("python") || has("python3")',
+          \ 'if' : 'has("python3") || has("python")',
           \ })
     " }}}
 
