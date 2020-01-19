@@ -51,6 +51,21 @@ autocmd vimrc FileType netrw nmap <buffer><expr> <Space> getline('.') == getline
 " netrwでMを押したらマークを外す
 autocmd vimrc FileType netrw nmap <buffer> M mF
 
+" netrwでドットファイルの表示・非表示を切り替える
+autocmd vimrc FileType netrw nmap <buffer> . gh
+
+" netrwで新しいファイルを作る
+autocmd vimrc FileType netrw nmap <buffer> N %
+
+" netrwで新しいディレクトリを作る
+autocmd vimrc FileType netrw nmap <buffer> K d
+
+" netrwで$HOMEに移動する
+autocmd vimrc FileType netrw nmap <buffer><silent> ~ :<C-u>Explore $HOME<CR>
+
+" netrwで/に移動する
+autocmd vimrc FileType netrw nmap <buffer><silent> \ :<C-u>Explore /<CR>
+
 " 挿入モードを開始したときにペーストモードのキーバインドを設定する
 autocmd vimrc InsertEnter * set pastetoggle=<C-t>
 

@@ -105,7 +105,7 @@ inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
 "         \ '--cmd="map l open_file_via_vim" ' .
 "         \ '"' . expand('%:p:h') . '"<CR>'
 " else
-  nnoremap <expr> ,vf ':<C-u>Sexplore "' . expand('%:p:h') . '" <CR>'
+  nnoremap <silent> ,vf :<C-u>Explore<CR>
 " endif
 
 " vim:ft=vim:fdm=marker:fen:
