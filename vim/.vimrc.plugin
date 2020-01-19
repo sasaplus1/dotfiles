@@ -55,10 +55,9 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \ 'if' : 'has("nvim")',
           \ })
 
-    " bclose.vimを必要とするのはNeovimのみ
-    let s:ranger_options = {
+    call dein#add('francoiscabrol/ranger.vim', {
           \ 'depends' : [
-          \   'bclose.vim',
+          \   has('nvim') ? 'bclose.vim' : '',
           \ ],
           \ 'hook_post_source' : function('s:hook_post_source_ranger'),
           \ 'hook_source' : function('s:hook_source_ranger'),
@@ -67,9 +66,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \ 'on_map' : [
           \   ',vf',
           \ ]
-          \ }
-
-    call dein#add('francoiscabrol/ranger.vim', s:ranger_options)
+          \ })
     " }}}
 
     " junegunn/fzf {{{
