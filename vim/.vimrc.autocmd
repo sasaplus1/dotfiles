@@ -45,6 +45,12 @@ autocmd vimrc FileType netrw nnoremap <buffer><nowait><silent> q :<C-u>bwipeout!
 " netrwでtを押したらツリーを閉じる
 autocmd vimrc FileType netrw nmap <buffer><silent> t <Plug>NetrwTreeSqueeze
 
+" netrwで<Space>を押したらマークする
+autocmd vimrc FileType netrw nmap <buffer><expr> <Space> getline('.') == getline('$') ? 'mf' : 'mfj'
+
+" netrwでMを押したらマークを外す
+autocmd vimrc FileType netrw nmap <buffer> M mF
+
 " 挿入モードを開始したときにペーストモードのキーバインドを設定する
 autocmd vimrc InsertEnter * set pastetoggle=<C-t>
 
