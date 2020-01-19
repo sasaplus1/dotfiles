@@ -85,10 +85,12 @@ if (v:version >= 704 || has('nvim')) && executable('git')
       command! -bang -nargs=* FzfRg
             \ call fzf#vim#grep(
             \   'rg --color=always --column --hidden --line-number --no-heading --smart-case ' .
-            \   shellescape(<q-args>), 1, fzf#vim#with_preview(), <bang>0)
+            \   shellescape(<q-args>) . ' ' . expand('%:p:h'), 1, fzf#vim#with_preview(), <bang>0)
 
       " ,ubでバッファ一覧
       nnoremap <silent> ,ub :<C-u>FzfBuffers<CR>
+      " ,ufでgit ls-filesの一覧
+      nnoremap <silent> ,uf :<C-u>FzfGFiles<CR>
       " ,ugでrgを使ったgrepをする
       nnoremap ,ug :<C-u>FzfRg<Space>
       " ,ulで行一覧
@@ -96,18 +98,19 @@ if (v:version >= 704 || has('nvim')) && executable('git')
       " ,umで最近開いたファイル一覧
       nnoremap <silent> ,um :<C-u>FzfHistory<CR>
 
-      function! s:fzf_call_by_mixed_source() abort
-        let files = []
+      function! s:fzf_some_files() abort
         let pwd = expand('%:p:h')
 
-        if system('git -C "' . pwd . '" rev-parse --is-inside-work-tree') =~# '^true'
-          let files += split(system(
-                \ 'git ls-files -co --exclude-standard "$(git rev-parse --show-toplevel)"'))
-        elseif executable('fd')
-          let files += split(system('fd -a -p -d 5 -t f -c never ' . pwd))
+        if system(printf('git -C "%s" rev-parse --is-inside-work-tree', pwd)) =~# '^true'
+          let pickup = 'git ls-files -co --exclude-standard "$(git rev-parse --show-toplevel)"'
         elseif executable('rg')
-          let files += split(system('rg --color never --files --max-depth 5 ' . pwd))
+          let pickup = printf('rg --color never --max-depth 5 --files "%s"', pwd)
+        elseif executable('fd')
+          let pickup = printf('fd -a -d 5 -p -t f -c never "%s"', pwd)
         endif
+
+        " get files
+        let files = split(system(pickup))
 
         " get history
         let history = filter(copy(v:oldfiles), 'filereadable(fnamemodify(v:val, ":p"))')
@@ -121,7 +124,32 @@ if (v:version >= 704 || has('nvim')) && executable('git')
               \ })
       endfunction
 
-      nnoremap <silent> <C-p> :<C-u>call <SID>fzf_call_by_mixed_source()<CR>
+      function! s:fzf_some_dirs() abort
+        let pwd = expand('%:p:h')
+
+        if system(printf('git -C "%s" rev-parse --is-inside-work-tree', pwd)) =~# '^true'
+          let pickup = 'git ls-tree -dr --name-only HEAD "$(git rev-parse --show-toplevel)"'
+        elseif executable('fd')
+          let pickup = printf('fd -a -d 5 -p -t d -c never "%s"', pwd)
+        endif
+
+        " get dirs
+        let dirs = split(system(pickup))
+
+        " get history
+        let history = filter(copy(v:oldfiles), 'isdirectory(fnamemodify(v:val, ":p:h"))')
+
+        " some kind files, history
+        call fzf#run({
+              \ 'source' : uniq(sort(map(dirs + history, 'fnamemodify(v:val, ":~:.:h")'))),
+              \ 'sink' : 'Explore',
+              \ 'down' : '60%',
+              \ 'options' : ['--prompt', 'Mixed> ']
+              \ })
+      endfunction
+
+      nnoremap <silent> <C-p> :<C-u>call <SID>fzf_some_files()<CR>
+      nnoremap <silent> <C-@> :<C-u>call <SID>fzf_some_dirs()<CR>
     endfunction
 
     call dein#add('junegunn/fzf', {
@@ -143,7 +171,9 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \ ],
           \ 'on_map' : [
           \   '<C-p>',
+          \   '<C-@>',
           \   ',ub',
+          \   ',uf',
           \   ',ug',
           \   ',ul',
           \   ',um',
