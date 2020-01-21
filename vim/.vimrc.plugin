@@ -302,6 +302,9 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     endfunction
 
     function! s:hook_source_ale() abort
+      " aleで入力補完をしない
+      let g:ale_completion_enabled = 0
+
       " 無視するファイルの設定
       let g:ale_pattern_options = {
             \ '\.d\.ts$' : { 'ale_enabled' : 0 },
