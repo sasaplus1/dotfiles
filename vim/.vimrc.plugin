@@ -217,16 +217,16 @@ if (v:version >= 704 || has('nvim')) && executable('git')
             \ }
 
       " 無視するディレクトリの正規表現の一部
-      let l:ignore_dirs = 'bower_components|node_modules|vendor'
+      let ignore_dirs = 'bower_components|node_modules|vendor'
       " 無視するドットで始まるディレクトリの正規表現の一部
-      let l:ignore_dot_dirs = 'git|hg|svn|bundle|sass-cache|node-gyp|cache'
+      let ignore_dot_dirs = 'git|hg|svn|bundle|sass-cache|node-gyp|cache'
       " 無視するファイルの正規表現の一部
-      let l:ignore_files = 'exe|so|dll|bmp|gif|ico|jpe?g|png|webp|ai|psd'
+      let ignore_files = 'exe|so|dll|bmp|gif|ico|jpe?g|png|webp|ai|psd'
 
       " 無視するファイルとディレクトリの設定
       let g:ctrlp_custom_ignore = {
-            \ 'dir' : printf('\v[\/]%%(%%(%s)|\.%%(%s))$', l:ignore_dirs, l:ignore_dot_dirs),
-            \ 'file' : printf('\v\.%%(%s)$', l:ignore_files),
+            \ 'dir' : printf('\v[\/]%%(%%(%s)|\.%%(%s))$', ignore_dirs, ignore_dot_dirs),
+            \ 'file' : printf('\v\.%%(%s)$', ignore_files),
             \ }
 
       " 外部コマンドを使うのでキャッシュしない
@@ -284,15 +284,15 @@ if (v:version >= 704 || has('nvim')) && executable('git')
 
     " dense-analysis/ale {{{
     function! s:fix_with_eslint_plugin_prettier(dir) abort
-      let l:node_modules_dir = finddir('node_modules', a:dir . ';')
+      let node_modules_dir = finddir('node_modules', a:dir . ';')
 
-      if l:node_modules_dir ==# ''
+      if empty(node_modules_dir)
         return
       endif
 
-      let l:eslint_plugin_prettier_dir = fnamemodify(l:node_modules_dir . '/eslint-plugin-prettier', ':p:h')
+      let eslint_plugin_prettier_dir = fnamemodify(node_modules_dir . '/eslint-plugin-prettier', ':p:h')
 
-      if isdirectory(l:eslint_plugin_prettier_dir)
+      if isdirectory(eslint_plugin_prettier_dir)
         let b:ale_fixers = {
               \ 'javascript' : ['eslint'],
               \ 'javascriptreact' : ['eslint'],
