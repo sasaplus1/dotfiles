@@ -359,15 +359,6 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     call dein#add('dense-analysis/ale', {
           \ 'hook_source' : function('s:hook_source_ale'),
           \ 'if' : '(v:version >= 800 && has("timers") && has("job") && has("channel")) || has("nvim-0.2.0")',
-          \ 'on_cmd' : [
-          \   'ALE',
-          \ ],
-          \ 'on_map' : [
-          \   '<C-j>',
-          \   '<C-k>',
-          \   ',ad',
-          \   ',ae',
-          \ ],
           \ })
     " }}}
 
@@ -419,7 +410,6 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \ 'lazy' : 1,
           \ 'merged' : 0,
           \ 'on_cmd' : [
-          \   'Coc',
           \   '<Plug>(coc-',
           \ ],
           \ 'on_ft' : [
