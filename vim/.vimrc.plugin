@@ -100,9 +100,10 @@ if (v:version >= 704 || has('nvim')) && executable('git')
 
       function! s:fzf_some_files() abort
         let pwd = expand('%:p:h')
+        let git_dir = finddir('.git', pwd . ';')
 
-        if system(printf('git -C "%s" rev-parse --is-inside-work-tree', pwd)) =~# '^true'
-          let pickup = 'git ls-files -co --exclude-standard "$(git rev-parse --show-toplevel)"'
+        if isdirectory(git_dir)
+          let pickup = printf('git --git-dir="%s" ls-files -co --exclude-standard', git_dir)
         elseif executable('rg')
           let pickup = printf('rg --color never --max-depth 5 --files "%s"', pwd)
         elseif executable('fd')
@@ -110,7 +111,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
         endif
 
         " get files
-        let files = split(system(pickup))
+        let files = filter(split(system(pickup)), 'fnamemodify(v:val, ":~:.")')
 
         " get history
         let history = filter(copy(v:oldfiles), 'filereadable(fnamemodify(v:val, ":p"))')
@@ -126,15 +127,16 @@ if (v:version >= 704 || has('nvim')) && executable('git')
 
       function! s:fzf_some_dirs() abort
         let pwd = expand('%:p:h')
+        let git_dir = finddir('.git', pwd . ';')
 
-        if system(printf('git -C "%s" rev-parse --is-inside-work-tree', pwd)) =~# '^true'
-          let pickup = 'git ls-tree -dr --name-only HEAD "$(git rev-parse --show-toplevel)"'
+        if isdirectory(git_dir)
+          let pickup = printf('git --git-dir="%s" ls-tree -dr --name-only HEAD', git_dir)
         elseif executable('fd')
           let pickup = printf('fd -a -d 5 -p -t d -c never "%s"', pwd)
         endif
 
         " get dirs
-        let dirs = split(system(pickup))
+        let dirs = filter(split(system(pickup)), 'fnamemodify(v:val, ":~:.")')
 
         " get history
         let history = filter(copy(v:oldfiles), 'isdirectory(fnamemodify(v:val, ":p:h"))')
