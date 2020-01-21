@@ -37,9 +37,9 @@ function! s:get_smart_very_magic() abort
     " :s/ と入力したら :s/\v にする
     return '/\v'
   elseif
-        \ (cmd ==#         's/\v' && pos ==  5) ||
-        \ (cmd ==#        '%s/\v' && pos ==  6) ||
-        \ (cmd ==# "'\<,'\>s/\\v" && pos == 10)
+        \ (cmd ==#        's/\v' && pos ==  5) ||
+        \ (cmd ==#       '%s/\v' && pos ==  6) ||
+        \ (cmd ==# '''<,''>s/\v' && pos == 10)
     " :s// と入力したら :s/\v/ から :s// にする
     return "\<BS>\<BS>/"
   endif
