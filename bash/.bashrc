@@ -197,7 +197,7 @@ __main() {
   fzf_opts+=('--border --cycle --height=60% --info=hidden --layout=reverse --preview-window=right')
   fzf_opts+=('--bind ctrl-j:preview-down,ctrl-k:preview-up')
 
-  export FZF_DEFAULT_OPTS=${fzf_opts[@]}
+  export FZF_DEFAULT_OPTS=${fzf_opts[*]}
   # shellcheck disable=SC1090
   source "$homebrew_prefix/opt/fzf/shell/completion.bash" 2>/dev/null
   # }}}
@@ -279,9 +279,9 @@ __main() {
 
   #-----------------------------------------------------------------------------
 
-  export INFOPATH="$(printf -- '%b' "$INFOPATH" | sed -e 's/:\{2,\}/:/' -e 's/:$//')"
-  export MANPATH="$(printf -- '%b' "$MANPATH" | sed -e 's/:\{2,\}/:/' -e 's/:$//')"
-  export PATH="$(printf -- '%b' "$PATH" | sed -e 's/:\{2,\}/:/' -e 's/:$//')"
+  INFOPATH="$(printf -- '%b' "$INFOPATH" | sed -e 's/:\{2,\}/:/' -e 's/:$//')"
+  MANPATH="$(printf -- '%b' "$MANPATH" | sed -e 's/:\{2,\}/:/' -e 's/:$//')"
+  PATH="$(printf -- '%b' "$PATH" | sed -e 's/:\{2,\}/:/' -e 's/:$//')"
 
   #-----------------------------------------------------------------------------
 
