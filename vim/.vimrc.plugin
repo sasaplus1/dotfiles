@@ -290,17 +290,21 @@ if (v:version >= 704 || has('nvim')) && executable('git')
         return
       endif
 
-      let eslint_plugin_prettier_dir = fnamemodify(node_modules_dir . '/eslint-plugin-prettier', ':p:h')
+      let modules = ['eslint', 'eslint-plugin-prettier', 'prettier']
+      let module_dirs = map(
+            \ modules, printf('fnamemodify("%s/" . v:val, ":p:h")', node_modules_dir))
 
-      if isdirectory(eslint_plugin_prettier_dir)
-        let b:ale_fixers = {
-              \ 'javascript' : ['eslint'],
-              \ 'javascriptreact' : ['eslint'],
-              \ 'javascript.jsx' : ['eslint'],
-              \ 'typescript' : ['eslint'],
-              \ 'typescriptreact' : ['eslint'],
-              \ }
+      if len(filter(module_dirs, 'isdirectory(v:val)')) != len(modules)
+        return
       endif
+
+      let b:ale_fixers = {
+            \ 'javascript' : ['eslint'],
+            \ 'javascriptreact' : ['eslint'],
+            \ 'javascript.jsx' : ['eslint'],
+            \ 'typescript' : ['eslint'],
+            \ 'typescriptreact' : ['eslint'],
+            \ }
     endfunction
 
     function! s:hook_source_ale() abort
