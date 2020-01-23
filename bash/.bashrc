@@ -229,7 +229,7 @@ __main() {
     # shellcheck disable=SC1090
     source "$homebrew_prefix/opt/hub/etc/bash_completion.d/hub.bash_completion.sh" 2>/dev/null && return 124
   }
-  complete -F __hub_completion
+  complete -F __hub_completion hub
   # }}}
 
   # vim {{{
@@ -279,9 +279,9 @@ __main() {
 
   #-----------------------------------------------------------------------------
 
-  export INFOPATH=${INFOPATH/%::*/}
-  export MANPATH=${MANPATH/%::*/}
-  export PATH=${PATH/%::*/}
+  export INFOPATH="$(printf -- '%b' "$INFOPATH" | sed -e 's/:\{2,\}/:/' -e 's/:$//')"
+  export MANPATH="$(printf -- '%b' "$MANPATH" | sed -e 's/:\{2,\}/:/' -e 's/:$//')"
+  export PATH="$(printf -- '%b' "$PATH" | sed -e 's/:\{2,\}/:/' -e 's/:$//')"
 
   #-----------------------------------------------------------------------------
 
