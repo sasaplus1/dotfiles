@@ -5,4 +5,6 @@ bind generic G move-last-line
 bind generic <Ctrl-B> move-page-up
 bind generic <Ctrl-F> move-page-down
 
+bind generic y @sh -c "printf -- '%b' '%(commit)' | pbcopy"
+
 bind main G move-last-line
