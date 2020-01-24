@@ -111,16 +111,17 @@ if (v:version >= 704 || has('nvim')) && executable('git')
         endif
 
         " get files
-        let files = filter(split(system(pickup)), 'fnamemodify(v:val, ":~:.")')
+        let files = split(system(pickup))
 
         " get history
         let history = filter(copy(v:oldfiles), 'filereadable(fnamemodify(v:val, ":p"))')
 
         " some kind files, history
         call fzf#run({
-              \ 'source' : uniq(sort(map(files + history, 'fnamemodify(v:val, ":~:.")'))),
+              \ 'source' : uniq(sort(files + history)),
               \ 'sink' : 'edit',
               \ 'down' : '60%',
+              \ 'dir' : simplify(git_dir . '/..'),
               \ 'options' : ['--prompt', 'Mixed> ']
               \ })
       endfunction
@@ -136,16 +137,21 @@ if (v:version >= 704 || has('nvim')) && executable('git')
         endif
 
         " get dirs
-        let dirs = filter(split(system(pickup)), 'fnamemodify(v:val, ":~:.")')
+        let dirs = split(system(pickup))
 
         " get history
-        let history = filter(copy(v:oldfiles), 'isdirectory(fnamemodify(v:val, ":p:h"))')
+        let history = filter(
+              \ map(copy(v:oldfiles), 'fnamemodify(v:val, ":p:h")'),
+              \ 'isdirectory(v:val)')
+
+        let repos = executable('ghq') ? split(system('ghq list -p')) : []
 
         " some kind files, history
         call fzf#run({
-              \ 'source' : uniq(sort(map(dirs + history, 'fnamemodify(v:val, ":~:.:h")'))),
-              \ 'sink' : 'Explore',
+              \ 'source' : uniq(sort(dirs + history + repos)),
+              \ 'sink' : 'Explore!',
               \ 'down' : '60%',
+              \ 'dir' : simplify(git_dir . '/..'),
               \ 'options' : ['--prompt', 'Mixed> ']
               \ })
       endfunction
