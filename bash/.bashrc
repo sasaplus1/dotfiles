@@ -198,6 +198,33 @@ __main() {
   fzf_opts+=('--bind ctrl-j:preview-down,ctrl-k:preview-up')
 
   export FZF_DEFAULT_OPTS=${fzf_opts[*]}
+
+  fzf() {
+    local fzf=
+
+    fzf="$(type -tP fzf)"
+
+    local position=
+
+    if [ "$TERM" == 'screen' ] && type tmux >/dev/null 2>&1
+    then
+      local window_width=
+      local pane_width=
+
+      window_width="$(tmux display-message -p "#{window_width}")"
+      pane_width="$(tmux display-message -p "#{pane_width}")"
+
+      [ "$window_width" -ne "$pane_width" ] && position='--preview-window=bottom'
+    fi
+
+    if [ -n "$position" ]
+    then
+      "$fzf" "$position" "$@"
+    else
+      "$fzf" "$@"
+    fi
+  }
+
   # shellcheck disable=SC1090
   source "$homebrew_prefix/opt/fzf/shell/completion.bash" 2>/dev/null
   # }}}
@@ -376,7 +403,7 @@ __main() {
     fi
 
     # shellcheck disable=SC2164,SC2145
-    cd "$(cat <(ghq list -p) <(eval "$z_cmd") <(eval "$git_cmd") | fzf --query="$@" --preview="$fzf_preview")"
+    cd "$(cat <(ghq list -p) <(eval "$z_cmd") <(eval "$git_cmd") | sort -u | fzf --query="$@" --preview="$fzf_preview")"
   }
 
   prr() {

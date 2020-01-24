@@ -38,35 +38,35 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     " }}}
 
     " francoiscabrol/ranger.vim {{{
-    function! s:hook_post_source_ranger() abort
-      " ,vfで表示
-      nnoremap ,vf :<C-u>Ranger<CR>
-    endfunction
+    " function! s:hook_post_source_ranger() abort
+    "   " ,vfで表示
+    "   nnoremap ,vf :<C-u>Ranger<CR>
+    " endfunction
 
-    function! s:hook_source_ranger() abort
-      " netrwでなくrangerで処理をする
-      let g:ranger_replace_netrw = 1
-      " デフォルトのキーマップを使用しない
-      let g:ranger_map_keys = 0
-    endfunction
+    " function! s:hook_source_ranger() abort
+    "   " netrwでなくrangerで処理をする
+    "   let g:ranger_replace_netrw = 1
+    "   " デフォルトのキーマップを使用しない
+    "   let g:ranger_map_keys = 0
+    " endfunction
 
-    call dein#add('rbgrouleff/bclose.vim', {
-          \ 'lazy' : 1,
-          \ 'if' : 'has("nvim")',
-          \ })
+    " call dein#add('rbgrouleff/bclose.vim', {
+    "       \ 'lazy' : 1,
+    "       \ 'if' : 'has("nvim")',
+    "       \ })
 
-    call dein#add('francoiscabrol/ranger.vim', {
-          \ 'depends' : [
-          \   has('nvim') ? 'bclose.vim' : '',
-          \ ],
-          \ 'hook_post_source' : function('s:hook_post_source_ranger'),
-          \ 'hook_source' : function('s:hook_source_ranger'),
-          \ 'if' : 'executable("ranger") && has("nvim")',
-          \ 'lazy' : 1,
-          \ 'on_map' : [
-          \   ',vf',
-          \ ]
-          \ })
+    " call dein#add('francoiscabrol/ranger.vim', {
+    "       \ 'depends' : [
+    "       \   has('nvim') ? 'bclose.vim' : '',
+    "       \ ],
+    "       \ 'hook_post_source' : function('s:hook_post_source_ranger'),
+    "       \ 'hook_source' : function('s:hook_source_ranger'),
+    "       \ 'if' : 'executable("ranger") && has("nvim")',
+    "       \ 'lazy' : 1,
+    "       \ 'on_map' : [
+    "       \   ',vf',
+    "       \ ]
+    "       \ })
     " }}}
 
     " junegunn/fzf {{{
@@ -81,11 +81,19 @@ if (v:version >= 704 || has('nvim')) && executable('git')
       " Vimのプロセスだけデフォルトオプションを変更する
       let $FZF_DEFAULT_OPTS .= ' ' . '--layout=reverse-list --margin=0,0,0,0'
 
-      " Rgのオプションを変更する
-      command! -bang -nargs=* FzfRg
-            \ call fzf#vim#grep(
-            \   'rg --color=always --column --hidden --line-number --no-heading --smart-case ' .
-            \   shellescape(<q-args>) . ' ' . expand('%:p:h'), 1, fzf#vim#with_preview(), <bang>0)
+      " できるだけリポジトリ全体から検索する
+      function! s:fzf_rg(pattern) abort
+        let pwd = expand('%:p:h')
+        let git_dir = finddir('.git', pwd . ';')
+        let dir = isdirectory(git_dir) ? simplify(git_dir . '/..') : expand('%:p:h')
+
+        let options = '--color=always --column --hidden --line-number --no-heading --smart-case'
+        let command = printf('rg %s -- ''%s'' "%s"', options, a:pattern, dir)
+
+        call fzf#vim#grep(command, 1, fzf#vim#with_preview())
+      endfunction
+
+      command! -nargs=1 FzfRg call <SID>fzf_rg('<args>')
 
       " ,ubでバッファ一覧
       nnoremap <silent> ,ub :<C-u>FzfBuffers<CR>
@@ -97,6 +105,17 @@ if (v:version >= 704 || has('nvim')) && executable('git')
       nnoremap <silent> ,ul :<C-u>FzfBLines<CR>
       " ,umで最近開いたファイル一覧
       nnoremap <silent> ,um :<C-u>FzfHistory<CR>
+
+      function! s:get_preview_position() abort
+        if $TERM ==# 'screen' && executable('tmux')
+          let window_width = split(system('tmux display-message -p "#{window_width}"'))[0]
+          let pane_width = split(system('tmux display-message -p "#{pane_width}"'))[0]
+
+          return window_width != pane_width ? 'bottom' : 'right'
+        endif
+
+        return 'right'
+      endfunction
 
       function! s:fzf_some_files() abort
         let pwd = expand('%:p:h')
@@ -116,13 +135,29 @@ if (v:version >= 704 || has('nvim')) && executable('git')
         " get history
         let history = filter(copy(v:oldfiles), 'filereadable(fnamemodify(v:val, ":p"))')
 
+        if executable('bat')
+          let preview = join([
+                \   'eval "bat --color=always -pp -r :60 $(eval "printf -- "%b" {}") 2>/dev/null"',
+                \   'eval "cd $(dirname {}) && find . -maxdepth 1 -print"',
+                \ ], ' || ')
+        else
+          let preview='head -n 60 {} 2>/dev/null || find {} -maxdepth 1 -print'
+        endif
+
+        " fzf options
+        let options = [
+              \ '--prompt', 'Mixed> ',
+              \ '--preview-window', s:get_preview_position(),
+              \ '--preview', preview,
+              \ ]
+
         " some kind files, history
         call fzf#run({
               \ 'source' : uniq(sort(files + history)),
               \ 'sink' : 'edit',
               \ 'down' : '60%',
               \ 'dir' : simplify(git_dir . '/..'),
-              \ 'options' : ['--prompt', 'Mixed> ']
+              \ 'options' : options
               \ })
       endfunction
 
@@ -146,13 +181,23 @@ if (v:version >= 704 || has('nvim')) && executable('git')
 
         let repos = executable('ghq') ? split(system('ghq list -p')) : []
 
+        let preview = join([
+              \   'eval "cd {} && find . -maxdepth 1 -print"'
+              \ ], ' || ')
+
+        let options = [
+              \ '--prompt', 'Mixed> ',
+              \ '--preview-window', s:get_preview_position(),
+              \ '--preview', preview,
+              \ ]
+
         " some kind files, history
         call fzf#run({
               \ 'source' : uniq(sort(dirs + history + repos)),
               \ 'sink' : 'Explore!',
               \ 'down' : '60%',
               \ 'dir' : simplify(git_dir . '/..'),
-              \ 'options' : ['--prompt', 'Mixed> ']
+              \ 'options' : options,
               \ })
       endfunction
 
