@@ -141,7 +141,10 @@ if (v:version >= 704 || has('nvim')) && executable('git')
                 \   'eval "cd $(dirname {}) && find . -maxdepth 1 -print"',
                 \ ], ' || ')
         else
-          let preview='head -n 60 {} 2>/dev/null || find {} -maxdepth 1 -print'
+          let preview = join([
+                \ 'eval "head -n 60 $(eval "printf -- "%b" {}") 2>/dev/null"',
+                \ 'eval "cd $(dirname {}) && find . -maxdepth 1 -print"',
+                \ ], ' || ')
         endif
 
         " fzf options
