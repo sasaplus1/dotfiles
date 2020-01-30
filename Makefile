@@ -9,6 +9,7 @@ makefile_dir := $(dir $(makefile))
 dest ?= $(HOME)
 
 dotfile_dirs := $(abspath $(strip \
+  $(dest)/.chrome-local-overrides \
   $(dest)/.cocproxy \
   $(dest)/.config \
   $(dest)/.config/nvim \
