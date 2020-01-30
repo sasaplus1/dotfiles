@@ -12,6 +12,7 @@ dotfile_dirs := $(abspath $(strip \
   $(dest)/.chrome-local-overrides \
   $(dest)/.cocproxy \
   $(dest)/.config \
+  $(dest)/.config/git \
   $(dest)/.config/nvim \
   $(dest)/.config/ranger \
   $(dest)/.ghq \
@@ -38,7 +39,7 @@ symlinks := $(abspath $(strip \
   $(makefile_dir)/ctags/.ctags               $(dest)/.ctags \
   $(makefile_dir)/ctags/.ctagsignore         $(dest)/.ctagsignore \
   $(makefile_dir)/git/.gitconfig             $(dest)/.gitconfig \
-  $(makefile_dir)/git/.gitignore             $(dest)/.gitignore \
+  $(makefile_dir)/git/.gitignore             $(dest)/.config/git/ignore \
   $(makefile_dir)/locate/.locate.rc          $(dest)/.locate.rc \
   $(makefile_dir)/mercurial/.hgrc            $(dest)/.hgrc \
   $(makefile_dir)/nginx/.cocproxy.nginx.conf $(dest)/.cocproxy.nginx.conf \

@@ -57,7 +57,7 @@
 [core]
 ; editor = vim
 ; editor = $EDITOR
-  excludesfile = ~/.gitignore
+; excludesfile = ~/.gitignore
   fscache = true
   preloadindex = true
   quotepath = false
