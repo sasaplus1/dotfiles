@@ -647,9 +647,12 @@ __main() {
     local -r green='\e[01;32m'
     local -r reset='\e[00m'
 
+     # NOTE: need double escape because bash says `missing unicode digit for \u`
+    local -r u='\\u'
+
     # /current/dir error (git:branch or revision) (yarn:lerna) (vim)
     # username@hostname$ _
-    printf -- '%b' "${green}\w${reset}\$(__print_status \$?)\n\u@\h$ "
+    printf -- '%b' "${green}\w${reset}\$(__print_status \$?)\n${u}@\h$ "
   }
 
   export PS1=
