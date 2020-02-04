@@ -17,7 +17,7 @@ jobs:
       - uses: actions/checkout@v2
       - run: rm -f ~/.bash{_logout,_profile,rc} ~/.gitconfig
       - run: make deploy test
-      - run: '[ "$(make test)" = "done." ]'
+      - run: test "$(make test)" = 'done.'
   deploy-on-docker:
     name: on Docker
     runs-on: ubuntu-latest
