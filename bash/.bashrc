@@ -381,7 +381,8 @@ __main() {
   ccd() {
     # mdfind -onlyin "$(pwd)" "kMDItemContentType == public.folder" 2>/dev/null
 
-    local -r repo_cmd='find "$HOME/.ghq" -mindepth 3 -maxdepth 3 -type d -print'
+    # shellcheck disable=SC2016
+    local repo_cmd='find "$HOME/.ghq" -mindepth 3 -maxdepth 3 -type d -print'
 
     # shellcheck disable=SC2016
     local z_cmd='z -l 2>&1 | while read _ dir; do echo "$dir"; done'
