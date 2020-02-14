@@ -450,19 +450,23 @@ __main() {
   # remove docker containers
   d-rm() {
     # shellcheck disable=SC2145
-    docker ps -a | sed 1d | fzf --query="$@" | awk '{ print $1 }' | xargs docker rm
+    docker ps -a | sed 1d | fzf --multi --query="$@" | awk '{ print $1 }' | xargs docker rm
   }
 
   # remove docker images
   d-rmi() {
     # shellcheck disable=SC2145
-    docker images | sed 1d | fzf --query="$@" | awk '{ print $3 }' | xargs docker rmi --force
+    docker images | sed 1d | fzf --multi --query="$@" | awk '{ print $3 }' | xargs docker rmi --force
   }
 
   # execute command in container
   d-sh() {
     # shellcheck disable=SC2145
     docker exec -it "$(docker ps | sed 1d | fzf --query="$@" | awk '{ print $1 }' | sed -n 1p)" "${1:-sh}"
+  }
+
+  d-stop() {
+    docker ps | sed 1d | fzf --multi --query="$@" | awk '{ print $1 }' | xargs -n 1 docker stop
   }
 
   case "$os" in
