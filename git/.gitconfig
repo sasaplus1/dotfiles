@@ -11,8 +11,8 @@
   cdiff = diff --cached
   ci = commit -v
   cia = commit -a -v
-  cl = log --all --graph --date=short --format='%C(yellow)%h%C(reset) %C(magenta)[%ad]%C(reset) %C(cyan)@%an%C(reset)%C(auto)%d%C(reset) %s'
-  clog = log --all --graph --date=short --format='%C(yellow)%h%C(reset) %C(magenta)[%ad]%C(reset) %C(cyan)@%an%C(reset)%C(auto)%d%C(reset) %s'
+  cl = log --all --graph --date=short --format='%C(yellow)%h%C(reset) %C(magenta)[%ad]%C(reset) %C(cyan)@%an%C(reset) %C(cyan)@%cn%C(reset)%C(auto)%d%C(reset) %s'
+  clog = log --all --graph --date=short --format='%C(yellow)%h%C(reset) %C(magenta)[%ad]%C(reset) %C(cyan)@%an%C(reset) %C(cyan)@%cn%C(reset)%C(auto)%d%C(reset) %s'
   co = checkout
   cp = cherry-pick
   di = diff
