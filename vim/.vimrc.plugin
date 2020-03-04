@@ -79,7 +79,11 @@ if (v:version >= 704 || has('nvim')) && executable('git')
 
     function! s:hook_source_junegunn_fzf() abort
       " Vimのプロセスだけデフォルトオプションを変更する
-      let $FZF_DEFAULT_OPTS .= ' ' . '--layout=reverse-list --margin=0,0,0,0'
+      let $FZF_DEFAULT_OPTS = join([
+            \   $FZF_DEFAULT_OPTS,
+            \   '--layout=reverse-list',
+            \   '--margin=0,0,0,0'
+            \ ], ' ')
 
       " できるだけリポジトリ全体から検索する
       function! s:fzf_rg(pattern) abort
@@ -365,6 +369,21 @@ if (v:version >= 704 || has('nvim')) && executable('git')
       " aleで入力補完をしない
       let g:ale_completion_enabled = 0
 
+      " aleでLSPを使わない
+      let g:ale_disable_lsp = 1
+
+      " プレビューでメッセージを表示する
+      let g:ale_hover_to_preview = 1
+
+      " 保存した時にlintする
+      let g:ale_lint_on_save = 1
+
+      " 編集してもlintしない
+      let g:ale_lint_on_text_changed = 'never'
+
+      " 挿入モードから離れたらlintする
+      let g:ale_lint_on_insert_leave = 1
+
       " 無視するファイルの設定
       let g:ale_pattern_options = {
             \ '\.d\.ts$' : { 'ale_enabled' : 0 },
@@ -427,16 +446,37 @@ if (v:version >= 704 || has('nvim')) && executable('git')
 
     " neoclide/coc.nvim {{{
     function! s:hook_post_source_coc_nvim() abort
-      inoremap <silent><expr> <TAB>
-            \ pumvisible() ? "\<C-n>" :
-            \ <SID>check_back_space() ? "\<TAB>" :
-            \ coc#refresh()
-      inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+      " tagfuncでタグスタックを使うようにして<C-t>で戻ってこれるようにする
+      " https://github.com/neoclide/coc.nvim/issues/1054#issuecomment-531839361
+      function! CocTagFunc(pattern, flags, info) abort
+        " ノーマルモードでなかったら無視
+        if a:flags != 'c'
+          return v:null
+        endif
+
+        let name = expand('<cword>')
+
+        execute('call CocAction("jumpDefinition")')
+
+        let filename = expand('%:p')
+        let cursor_pos = getpos('.')
+        let cmd = '/\%' . cursor_pos[1] . 'l\%' . cursor_pos[2] . 'c/'
+
+        execute("normal \<C-o>")
+
+        return [ { 'name': name, 'filename': filename, 'cmd': cmd } ]
+      endfunction
 
       function! s:check_back_space() abort
         let col = col('.') - 1
         return !col || getline('.')[col - 1] =~# '\s'
       endfunction
+
+      inoremap <silent><expr> <TAB>
+            \ pumvisible() ? "\<C-n>" :
+            \ <SID>check_back_space() ? "\<TAB>" :
+            \ coc#refresh()
+      inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
       inoremap <silent><expr> <C-k> coc#refresh()
 
@@ -455,7 +495,11 @@ if (v:version >= 704 || has('nvim')) && executable('git')
       nmap <silent> gi <Plug>(coc-implementation)
       nmap <silent> gr <Plug>(coc-references)
 
-      autocmd vimrc FileType javascript,javascriptreact,typescript,typescriptreact nmap <buffer><silent> <C-]> <Plug>(coc-definition)
+      if has('eval') && exists('+tagfunc')
+        autocmd vimrc FileType javascript,javascriptreact,typescript,typescriptreact setlocal tagfunc=CocTagFunc
+      else
+        autocmd vimrc FileType javascript,javascriptreact,typescript,typescriptreact nmap <buffer><silent> <C-]> <Plug>(coc-definition)
+      endif
 
       " CocInstall coc-json
       " CocInstall coc-tsserver
