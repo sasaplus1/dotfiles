@@ -68,6 +68,10 @@
 [github]
   user = sasaplus1
 
+[grep]
+  lineNumber = true
+  patternType = extended
+
 [user]
 ;  email = sasaplus1@gmail.com
 ;  name = sasaplus1
