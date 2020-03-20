@@ -404,6 +404,10 @@ if (v:version >= 704 || has('nvim')) && executable('git')
       " 現在のバッファで有効・無効を切り替える
       nnoremap ,ad :<C-u>ALEDisableBuffer<CR>
       nnoremap ,ae :<C-u>ALEEnableBuffer<CR>
+
+      " ALEの有効・無効を切り替える
+      nnoremap ,aD :<C-u>ALEDisable<CR>
+      nnoremap ,aE :<C-u>ALEEnable<CR>
     endfunction
 
     call dein#add('dense-analysis/ale', {
