@@ -99,4 +99,10 @@ inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
 " ,vfでnetrwを開く
 nnoremap <silent> ,vf :<C-u>Explore<CR>
 
+if has('terminal') && has('job') && has('channel')
+  " ターミナルを開く
+  nnoremap <silent> <C-w>S :<C-u>terminal<CR>
+  nnoremap <silent> <C-w>V :<C-u>vertical terminal<CR>
+endif
+
 " vim:ft=vim:fdm=marker:fen:
