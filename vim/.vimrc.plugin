@@ -472,6 +472,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
       nmap <silent> gy <Plug>(coc-type-definition)
       nmap <silent> gi <Plug>(coc-implementation)
       nmap <silent> gr <Plug>(coc-references)
+      nmap <silent> ge <Plug>(coc-rename)
 
       if has('eval') && exists('+tagfunc')
         autocmd vimrc FileType javascript,javascriptreact,typescript,typescriptreact setlocal tagfunc=CocTagFunc
