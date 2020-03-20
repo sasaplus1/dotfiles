@@ -480,10 +480,11 @@ if (v:version >= 704 || has('nvim')) && executable('git')
         autocmd vimrc FileType javascript,javascriptreact,typescript,typescriptreact nmap <buffer><silent> <C-]> <Plug>(coc-definition)
       endif
 
-      " CocInstall coc-json
-      " CocInstall coc-tsserver
-      " CocInstall coc-html
-      " CocInstall coc-css
+      CocInstall coc-json
+      CocInstall coc-tsserver
+      CocInstall coc-html
+      CocInstall coc-css
+      CocInstall coc-yaml
     endfunction
 
     function! s:hook_source_coc_nvim() abort
