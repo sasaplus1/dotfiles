@@ -459,6 +459,12 @@ if (v:version >= 704 || has('nvim')) && executable('git')
         inoremap <expr><CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
       endif
 
+      if has('patch8.1.1068')
+        inoremap <expr><CR> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+      else
+        imap <expr><CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+      endif
+
       nmap <silent> [g <Plug>(coc-diagnostic-prev)
       nmap <silent> ]g <Plug>(coc-diagnostic-next)
 
