@@ -422,7 +422,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
       " https://github.com/neoclide/coc.nvim/issues/1054#issuecomment-531839361
       function! CocTagFunc(pattern, flags, info) abort
         " ノーマルモードでなかったら無視
-        if a:flags != 'c'
+        if a:flags !=# 'c'
           return v:null
         endif
 

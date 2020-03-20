@@ -466,6 +466,7 @@ __main() {
   }
 
   d-stop() {
+    # shellcheck disable=SC2145
     docker ps | sed 1d | fzf --multi --query="$@" | awk '{ print $1 }' | xargs -n 1 docker stop
   }
 
