@@ -3,6 +3,7 @@
   export = !sh -c 'git checkout-index -a -f --prefix=$1/' -
   set-mirror = !git remote set-url --add origin "$(git remote get-url --push origin | sed -e 's/github.com/bitbucket.org/')"
   set-user = !git config --local user.name sasaplus1 && git config --local user.email sasaplus1@gmail.com
+  fixup-latest = !sh -c 'git commit --fixup "$(git log -1 --pretty=%H "$1")"' -
 
 [alias]
   amend = commit --amend --reuse-message=HEAD
