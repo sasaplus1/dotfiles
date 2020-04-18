@@ -338,7 +338,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
       let g:ale_completion_enabled = 0
 
       " aleでLSPを使わない
-      let g:ale_disable_lsp = 1
+      " let g:ale_disable_lsp = 1
 
       " プレビューでメッセージを表示する
       let g:ale_hover_to_preview = 1
@@ -482,14 +482,16 @@ if (v:version >= 704 || has('nvim')) && executable('git')
 
       autocmd vimrc FileType javascript,javascriptreact,typescript,typescriptreact nnoremap <silent> K :call CocAction('doHover')<CR>
 
-      CocInstall coc-json
-      CocInstall coc-tsserver
-      CocInstall coc-html
-      CocInstall coc-css
-      CocInstall coc-yaml
+      " CocInstall coc-json
+      " CocInstall coc-tsserver
+      " CocInstall coc-html
+      " CocInstall coc-css
+      " CocInstall coc-yaml
     endfunction
 
     function! s:hook_source_coc_nvim() abort
+       let node_version = trim(system("nodebrew ls | grep '^v' | sort -r --version-sort | head -n 1"))
+       let g:coc_node_path = printf('~/.nodebrew/node/%s/bin/node', node_version)
     endfunction
 
     call dein#add('neoclide/coc.nvim', {
@@ -519,6 +521,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \   'gy',
           \   'gi',
           \   'gr',
+          \   'ge',
           \ ],
           \ 'rev' : 'release',
           \ })
