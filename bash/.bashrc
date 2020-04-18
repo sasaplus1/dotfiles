@@ -370,7 +370,7 @@ __main() {
   }
 
   server() {
-    python -m SimpleHTTPServer
+    python -m SimpleHTTPServer "$@"
   }
 
   fake-dev() {
