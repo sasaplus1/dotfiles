@@ -43,6 +43,15 @@ if (v:version >= 704 || has('nvim')) && executable('git')
       let g:fzf_command_prefix = 'Fzf'
       " バッファを既に開いているのならそれを使う
       let g:fzf_buffers_jump = 1
+      " ポップアップウィンドウを使う
+      if has('vim8.2.191')
+        let g:fzf_layout = {
+              \ 'window' : {
+              \   'width': 0.9,
+              \   'height': 0.6
+              \ },
+              \ }
+      endif
     endfunction
 
     function! s:hook_source_junegunn_fzf() abort
