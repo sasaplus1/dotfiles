@@ -81,6 +81,12 @@
 [include]
   path = ~/.gitconfig.local
 
+[interactive]
+  diffFilter = (delta --color-only --theme OneHalfDark 2>/dev/null || cat) | ${PAGER:-less}
+
+[pager]
+  diff = (delta --color-only --theme OneHalfDark 2>/dev/null || cat) | ${PAGER:-less}
+
 [push]
   default = nothing
 
