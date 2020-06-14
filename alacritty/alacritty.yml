@@ -558,3 +558,24 @@
 
   # Print all received window events.
   #print_events: false
+
+#-------------------------------------------------------------------------------
+
+env:
+  TERM: xterm-256color
+  LANG: ja_JP.UTF-8
+
+scrolling:
+  history: 5000
+
+font:
+  normal:
+    family: Menlo
+  size: 11.0
+  use_thin_strokes: true
+
+background_opacity: 0.9
+
+key_bindings:
+  - { key: N,        mods: Command, action: SpawnNewInstance }
+  - { key: LBracket, mods: Control, chars: "\x1b"            }
