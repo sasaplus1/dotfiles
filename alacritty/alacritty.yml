@@ -561,6 +561,10 @@
 
 #-------------------------------------------------------------------------------
 
+# NOTE: configurations based on alacritty 0.4.3
+# $ /Applications/Alacritty.app/Contents/MacOS/alacritty --version
+# alacritty 0.4.3 (c723247)
+
 env:
   TERM: xterm-256color
   LANG: ja_JP.UTF-8
