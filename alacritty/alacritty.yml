@@ -574,6 +574,30 @@ font:
   size: 11.0
   use_thin_strokes: true
 
+# fron my Terminal.app colors
+colors:
+  primary:
+    background: '#000000'
+    foreground: '#f2f2f2'
+  normal:
+     black:   '#000000'
+     red:     '#990000'
+     green:   '#00a600'
+     yellow:  '#999900'
+     blue:    '#5566ff'
+     magenta: '#b200b2'
+     cyan:    '#00a6b2'
+     white:   '#bfbfbf'
+  bright:
+     black:   '#666666'
+     red:     '#e50000'
+     green:   '#00d900'
+     yellow:  '#e5e500'
+     blue:    '#7799ff'
+     magenta: '#e500e5'
+     cyan:    '#00e5e5'
+     white:   '#e5e5e5'
+
 background_opacity: 0.9
 
 key_bindings:
