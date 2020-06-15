@@ -34,7 +34,7 @@ dotfile_dirs := $(abspath $(strip \
 
 symlinks := $(abspath $(strip \
   $(makefile_dir)/X11/.Xdefaults             $(dest)/.Xdefaults \
-  $(makefile_dir)/alacritty/alacritty.yml    $(dest)/.config/alacritty \
+  $(makefile_dir)/alacritty/alacritty.yml    $(dest)/.config/alacritty/alacritty.yml \
   $(makefile_dir)/bash/.bash_logout          $(dest)/.bash_logout \
   $(makefile_dir)/bash/.bash_profile         $(dest)/.bash_profile \
   $(makefile_dir)/bash/.bashrc               $(dest)/.bashrc \
