@@ -23,7 +23,12 @@ __main() {
 
   local homebrew_dir=
 
-  [ "$os" = 'macos' ] && homebrew_dir=$HOME/Homebrew
+  if [ "$os" = 'macos' ]
+  then
+    [ -d '/usr/local/Homebrew' ] &&
+      homebrew_dir=/usr/local/Homebrew ||
+      homebrew_dir=$HOME/Homebrew
+  fi
 
   if [ "$os" = 'linux' ]
   then
