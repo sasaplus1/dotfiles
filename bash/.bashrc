@@ -45,8 +45,6 @@ __main() {
   export MANPATH=$homebrew_manpath:${MANPATH//$homebrew_manpath/}
   export PATH=$homebrew_path:${PATH//$homebrew_path/}
 
-  export HOMEBREW_CACHE=$homebrew_dir/cache
-
   local homebrew_prefix=
 
   # NOTE: brew --prefix is very slow https://github.com/Homebrew/brew/issues/3097
