@@ -8,7 +8,7 @@ my dotfiles
 
 execute command the below if macOS:
 
-```
+```console
 $ xcode-select --install
 ```
 
@@ -37,6 +37,10 @@ $ make
 ```
 
 and see `Makefile`.
+
+## Related
+
+- [setup](https://github.com/sasaplus1/setup)
 
 ## License
 
