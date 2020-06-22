@@ -12,7 +12,7 @@ __main() {
   local is_dumb=
   local is_interactive=
 
-  if [ "$TERM" = 'dumb' ] || [ -z "$PS1" ]
+  if [ "$TERM" == 'dumb' ] || [ -z "$PS1" ]
   then
     is_dumb=1
   else
@@ -209,7 +209,7 @@ __main() {
 
     local position=
 
-    if [ "$TERM" == 'screen' ] && type tmux >/dev/null 2>&1
+    if [[ "$TERM" =~ ^(screen|tmux) ]] && type tmux >/dev/null 2>&1
     then
       local window_width=
       local pane_width=
@@ -686,7 +686,14 @@ __main() {
   # }}}
 
   # always use terminal multiplexer
-  [ "$TERM" != 'screen' ] && [ -z "$is_dumb" ] && [ -z "$VIM" ] && tmux
+  if [[ "$TERM" =~ ^(screen|tmux) ]]
+  then
+    return 0
+  fi
+  if [ -z "$is_dumb" ] && [ -z "$TMUX" ] && [ -z "$VIM" ]
+  then
+    type tmux >/dev/null 2>&1 && tmux
+  fi
 }
 
 __main "$@"
