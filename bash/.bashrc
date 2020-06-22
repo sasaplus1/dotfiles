@@ -26,13 +26,14 @@ __main() {
   if [ "$os" = 'macos' ]
   then
     [ -d '/usr/local/Homebrew' ] && homebrew_dir=/usr/local
+    # NOTE: my original location
     [ -d "$HOME/Homebrew" ] && homebrew_dir=$HOME/Homebrew
   fi
 
   if [ "$os" = 'linux' ]
   then
-    [ -d '/home/linuxbrew/.linuxbrew' ] && homebrew_dir=/home/linuxbrew/.linuxbrew
-    [ -d "$HOME/.linuxbrew" ] && homebrew_dir=$HOME/.linuxbrew
+    [ -d '/home/linuxbrew/.linuxbrew/Homebrew' ] && homebrew_dir=/home/linuxbrew/.linuxbrew
+    [ -d "$HOME/.linuxbrew/Homebrew" ] && homebrew_dir=$HOME/.linuxbrew
   fi
 
   local homebrew_infopath=$homebrew_dir/share/info
