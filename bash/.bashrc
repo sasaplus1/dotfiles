@@ -182,6 +182,10 @@ __main() {
   export PATH=$go_gopath_bin:${PATH//$go_gopath_bin/}
   # }}}
 
+  # ghq {{{
+  export GHQ_ROOT=$HOME/.ghq
+  # }}}
+
   # adb/android-platform-tools {{{
   local android_platform_tools=$HOME/Library/Android/sdk/platform-tools
   export PATH=$android_platform_tools:${PATH//$android_platform_tools/}
