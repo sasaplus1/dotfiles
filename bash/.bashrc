@@ -293,11 +293,11 @@ __main() {
     local vim_path=$vim/bin &&
     export MANPATH=$vim_manpath:${MANPATH//$vim_manpath/} &&
     export PATH=$vim_path:${PATH//$vim_path/} &&
-    export EDITOR="$vim/bin/pvim" &&
+    export EDITOR="$vim/bin/portable-vim" &&
     vim() {
       local vim=$HOME/Binary/vim
 
-      "$vim/bin/pvim" "$@"
+      "$vim/bin/portable-vim" "$@"
     }
   # }}}
 
