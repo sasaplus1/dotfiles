@@ -268,15 +268,15 @@ __main() {
   # vim {{{
 
   # macvim
-  local macvim=/Applications/MacVim.app/Contents/MacOS
-  [ -d "$macvim" ] &&
-    export PATH=$macvim:${PATH//$macvim/} &&
-    export EDITOR="$macvim/Vim" &&
-    vim() {
-      local macvim=/Applications/MacVim.app/Contents/MacOS
+  # local macvim=/Applications/MacVim.app/Contents/MacOS
+  # [ -d "$macvim" ] &&
+  #   export PATH=$macvim:${PATH//$macvim/} &&
+  #   export EDITOR="$macvim/Vim" &&
+  #   vim() {
+  #     local macvim=/Applications/MacVim.app/Contents/MacOS
 
-      "$macvim/Vim" "$@"
-    }
+  #     "$macvim/Vim" "$@"
+  #   }
 
   # macvim from homebrew-cask
   # local macvim=$HOME/Caskroom/macvim-kaoriya/$(ls $HOME/Caskroom/macvim-kaoriya 2>/dev/null)/MacVim.app/Contents/MacOS
@@ -285,8 +285,8 @@ __main() {
   #   alias vim="$macvim/Vim \"\$@\"" &&
   #   export EDITOR="$macvim/Vim"
 
-  # my kaoriya-vim
-  # via https://github.com/sasaplus1/vim
+  # my KaoriYa Vim for macOS
+  # via https://github.com/sasaplus1/portable-vim
   local vim=$HOME/Binary/vim
   [ -d "$vim" ] &&
     local vim_manpath=$vim/share/man &&
