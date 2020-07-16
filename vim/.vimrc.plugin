@@ -337,8 +337,8 @@ if (v:version >= 704 || has('nvim')) && executable('git')
             \ 'javascript' : ['eslint'],
             \ 'javascriptreact' : ['eslint'],
             \ 'javascript.jsx' : ['eslint'],
-            \ 'typescript' : ['tsserver', 'eslint'],
-            \ 'typescriptreact' : ['tsserver', 'eslint'],
+            \ 'typescript' : ['eslint'],
+            \ 'typescriptreact' : ['eslint'],
             \ }
     endfunction
 
