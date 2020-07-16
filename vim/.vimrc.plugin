@@ -393,8 +393,8 @@ if (v:version >= 704 || has('nvim')) && executable('git')
             \ 'typescriptreact' : ['prettier'],
             \ }
 
-      " eslintでの検査中にエラーが多いときは中断する
-      autocmd vimrc FileType javascript,javascriptreact,typescript,typescriptreact,vue let b:ale_javascript_eslint_options = '--max-warnings 20'
+      " eslintでの検査はキャッシュを使い、エラーが多いときは中断する
+      autocmd vimrc FileType javascript,javascriptreact,typescript,typescriptreact,vue let b:ale_javascript_eslint_options = '--cache --max-warnings 20'
 
       " JSONならprettierのパーサにjson-stringifyを使用する
       autocmd vimrc FileType json let b:ale_javascript_prettier_options = '--parser json-stringify'
