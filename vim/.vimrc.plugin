@@ -562,6 +562,14 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     call dein#add('itchyny/lightline.vim')
     " }}}
 
+    " itchyny/vim-parenmatch {{{
+    call dein#add('itchyny/vim-parenmatch')
+    " }}}
+
+    " itchyny/vim-cursorword {{{
+    call dein#add('itchyny/vim-cursorword')
+    " }}}
+
     " thinca/vim-quickrun {{{
     call dein#add('thinca/vim-quickrun', {
           \ 'lazy' : 1,
