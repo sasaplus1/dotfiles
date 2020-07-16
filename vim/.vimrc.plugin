@@ -563,11 +563,16 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     " }}}
 
     " itchyny/vim-parenmatch {{{
-    call dein#add('itchyny/vim-parenmatch')
-    " }}}
+    function! s:hook_source_vim_parenmatch() abort
+      let g:parenmatch_highlight = 0
 
-    " itchyny/vim-cursorword {{{
-    call dein#add('itchyny/vim-cursorword')
+      " parenmatchの強調表示にmatchparenの色を使う
+      highlight default link ParenMatch MatchParen
+    endfunction
+
+    call dein#add('itchyny/vim-parenmatch', {
+          \ 'hook_source' : function('s:hook_source_vim_parenmatch')
+          \ })
     " }}}
 
     " thinca/vim-quickrun {{{
