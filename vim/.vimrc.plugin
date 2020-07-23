@@ -44,14 +44,16 @@ if (v:version >= 704 || has('nvim')) && executable('git')
       " バッファを既に開いているのならそれを使う
       let g:fzf_buffers_jump = 1
       " ポップアップウィンドウを使う
-      if has('patch-8.2.191') && has('popupwin')
-        let g:fzf_layout = {
-              \ 'window' : {
-              \   'width': 0.9,
-              \   'height': 0.6
-              \ },
-              \ }
-      endif
+      " if has('patch-8.2.191') && has('popupwin')
+      "   let g:fzf_layout = {
+      "         \ 'window' : {
+      "         \   'border': 'top',
+      "         \   'height': 0.6,
+      "         \   'width': 1,
+      "         \   'yoffset': 1,
+      "         \ },
+      "         \ }
+      " endif
     endfunction
 
     function! s:hook_source_junegunn_fzf() abort
