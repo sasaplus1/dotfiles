@@ -120,6 +120,9 @@ if has('nvim')
   autocmd vimrc TermOpen * setlocal nonumber norelativenumber
 elseif has('terminal')
   autocmd vimrc TerminalOpen * setlocal nonumber norelativenumber
+  if has('patch-8.1.2219')
+    autocmd vimrc TerminalWinOpen * setlocal nonumber norelativenumber
+  endif
 endif
 
 " vim:ft=vim:fdm=marker:fen:
