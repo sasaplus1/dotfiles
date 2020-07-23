@@ -43,16 +43,20 @@ if (v:version >= 704 || has('nvim')) && executable('git')
       let g:fzf_command_prefix = 'Fzf'
       " バッファを既に開いているのならそれを使う
       let g:fzf_buffers_jump = 1
+      " レイアウトの指定
+      let g:fzf_layout = {
+            \ 'down' : '60%'
+            \ }
       " ポップアップウィンドウを使う
       " if has('patch-8.2.191') && has('popupwin')
-      "   let g:fzf_layout = {
-      "         \ 'window' : {
-      "         \   'border': 'top',
-      "         \   'height': 0.6,
-      "         \   'width': 1,
-      "         \   'yoffset': 1,
-      "         \ },
-      "         \ }
+      "   call extend(g:fzf_layout, {
+      "         \   'window' : {
+      "         \     'border' : 'top',
+      "         \     'height' : 0.6,
+      "         \     'width' : 1,
+      "         \     'yoffset' : 1,
+      "         \   },
+      "         \ })
       " endif
     endfunction
 
