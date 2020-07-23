@@ -68,6 +68,31 @@ if (v:version >= 704 || has('nvim')) && executable('git')
             \   '--margin=0,0,0,0'
             \ ], ' ')
 
+      function! s:get_file_preview_command() abort
+        if executable('bat')
+          return join([
+                \   'eval "bat --color=always -pp -r :60 $(eval "printf -- "%b" {}") 2>/dev/null"',
+                \   'eval "cd $(dirname {}) && find . -maxdepth 1 -print"',
+                \ ], ' || ')
+        endif
+
+        return join([
+              \ 'eval "head -n 60 $(eval "printf -- "%b" {}") 2>/dev/null"',
+              \ 'eval "cd $(dirname {}) && find . -maxdepth 1 -print"',
+              \ ], ' || ')
+      endfunction
+
+      function! s:get_preview_position() abort
+        if $TERM =~# '^screen' && executable('tmux')
+          let window_width = split(system('tmux display-message -p "#{window_width}"'))[0]
+          let pane_width = split(system('tmux display-message -p "#{pane_width}"'))[0]
+
+          return window_width != pane_width ? 'bottom' : 'right'
+        endif
+
+        return 'right'
+      endfunction
+
       " できるだけリポジトリ全体から検索する
       function! s:fzf_rg(pattern) abort
         let pwd = expand('%:p:h')
@@ -85,24 +110,25 @@ if (v:version >= 704 || has('nvim')) && executable('git')
       " ,ubでバッファ一覧
       nnoremap <silent> ,ub :<C-u>FzfBuffers<CR>
       " ,ufでgit ls-filesの一覧
-      nnoremap <silent> ,uf :<C-u>FzfGFiles<CR>
+      nnoremap <silent> ,uf :<C-u>call fzf#vim#gitfiles('-co --exclude-standard', {
+            \ 'options' : [
+            \   '--prompt', 'Git:ls-files> ',
+            \   '--preview-window', <SID>get_preview_position(),
+            \   '--preview', <SID>get_file_preview_command(),
+            \ ]
+            \ })<CR>
       " ,ugでrgを使ったgrepをする
       nnoremap ,ug :<C-u>FzfRg<Space>
       " ,ulで行一覧
       nnoremap <silent> ,ul :<C-u>FzfBLines<CR>
       " ,umで最近開いたファイル一覧
-      nnoremap <silent> ,um :<C-u>FzfHistory<CR>
-
-      function! s:get_preview_position() abort
-        if $TERM ==# 'screen' && executable('tmux')
-          let window_width = split(system('tmux display-message -p "#{window_width}"'))[0]
-          let pane_width = split(system('tmux display-message -p "#{pane_width}"'))[0]
-
-          return window_width != pane_width ? 'bottom' : 'right'
-        endif
-
-        return 'right'
-      endfunction
+      nnoremap <silent> ,um :<C-u>call fzf#vim#history({
+            \ 'options' : [
+            \   '--prompt', 'History> ',
+            \   '--preview-window', <SID>get_preview_position(),
+            \   '--preview', <SID>get_file_preview_command(),
+            \ ]
+            \ })<CR>
 
       function! s:fzf_some_files() abort
         let pwd = expand('%:p:h')
@@ -122,23 +148,11 @@ if (v:version >= 704 || has('nvim')) && executable('git')
         " get history
         let history = filter(copy(v:oldfiles), 'filereadable(fnamemodify(v:val, ":p"))')
 
-        if executable('bat')
-          let preview = join([
-                \   'eval "bat --color=always -pp -r :60 $(eval "printf -- "%b" {}") 2>/dev/null"',
-                \   'eval "cd $(dirname {}) && find . -maxdepth 1 -print"',
-                \ ], ' || ')
-        else
-          let preview = join([
-                \ 'eval "head -n 60 $(eval "printf -- "%b" {}") 2>/dev/null"',
-                \ 'eval "cd $(dirname {}) && find . -maxdepth 1 -print"',
-                \ ], ' || ')
-        endif
-
         " fzf options
         let options = [
               \ '--prompt', 'Mixed> ',
               \ '--preview-window', s:get_preview_position(),
-              \ '--preview', preview,
+              \ '--preview', s:get_file_preview_command(),
               \ ]
 
         " some kind files, history
