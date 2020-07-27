@@ -118,11 +118,8 @@ autocmd vimrc QuickfixCmdPost make,vimgrep,vimgrepadd copen
 " ターミナルを開いたら行番号を表示しない
 if has('nvim')
   autocmd vimrc TermOpen * setlocal nonumber norelativenumber
-elseif has('terminal')
-  autocmd vimrc TerminalOpen * setlocal nonumber norelativenumber
-  if has('patch-8.1.2219')
-    autocmd vimrc TerminalWinOpen * setlocal nonumber norelativenumber
-  endif
+elseif has('terminal') && has('patch-8.1.2219')
+  autocmd vimrc TerminalWinOpen * setlocal nonumber norelativenumber
 endif
 
 " vim:ft=vim:fdm=marker:fen:

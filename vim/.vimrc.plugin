@@ -48,16 +48,16 @@ if (v:version >= 704 || has('nvim')) && executable('git')
             \ 'down' : '60%'
             \ }
       " ポップアップウィンドウを使う
-      " if has('patch-8.2.191') && has('popupwin')
-      "   call extend(g:fzf_layout, {
-      "         \   'window' : {
-      "         \     'border' : 'top',
-      "         \     'height' : 0.6,
-      "         \     'width' : 1,
-      "         \     'yoffset' : 1,
-      "         \   },
-      "         \ })
-      " endif
+      if has('patch-8.2.191') && has('popupwin')
+        call extend(g:fzf_layout, {
+              \   'window' : {
+              \     'border' : 'top',
+              \     'height' : 0.6,
+              \     'width' : 1,
+              \     'yoffset' : 1,
+              \   },
+              \ })
+      endif
     endfunction
 
     function! s:hook_source_junegunn_fzf() abort
@@ -148,21 +148,21 @@ if (v:version >= 704 || has('nvim')) && executable('git')
         " get history
         let history = filter(copy(v:oldfiles), 'filereadable(fnamemodify(v:val, ":p"))')
 
-        " fzf options
-        let options = [
-              \ '--prompt', 'Mixed> ',
-              \ '--preview-window', s:get_preview_position(),
-              \ '--preview', s:get_file_preview_command(),
-              \ ]
-
-        " some kind files, history
-        call fzf#run({
+        let layout = deepcopy(g:fzf_layout)
+        let options = extend(layout, {
               \ 'source' : uniq(sort(files + history)),
               \ 'sink' : 'edit',
               \ 'down' : '60%',
               \ 'dir' : simplify(git_dir . '/..'),
-              \ 'options' : options
+              \ 'options' : [
+              \   '--prompt', 'Mixed> ',
+              \   '--preview-window', s:get_preview_position(),
+              \   '--preview', s:get_file_preview_command(),
+              \ ],
               \ })
+
+        " some kind files, history
+        call fzf#run(options)
       endfunction
 
       function! s:fzf_some_dirs() abort
@@ -185,24 +185,21 @@ if (v:version >= 704 || has('nvim')) && executable('git')
 
         let repos = executable('ghq') ? split(system('ghq list -p')) : []
 
-        let preview = join([
-              \   'eval "cd {} && find . -maxdepth 1 -print"'
-              \ ], ' || ')
-
-        let options = [
-              \ '--prompt', 'Mixed> ',
-              \ '--preview-window', s:get_preview_position(),
-              \ '--preview', preview,
-              \ ]
-
-        " some kind files, history
-        call fzf#run({
+        let layout = deepcopy(g:fzf_layout)
+        let options = extend(layout, {
               \ 'source' : uniq(sort(dirs + history + repos)),
               \ 'sink' : 'Explore!',
               \ 'down' : '60%',
               \ 'dir' : simplify(git_dir . '/..'),
-              \ 'options' : options,
+              \ 'options' : [
+              \   '--prompt', 'Mixed> ',
+              \   '--preview-window', s:get_preview_position(),
+              \   '--preview', 'eval "cd {} && find . -maxdepth 1 -print"',
+              \ ],
               \ })
+
+        " some kind files, history
+        call fzf#run(options)
       endfunction
 
       nnoremap <silent> <C-p> :<C-u>call <SID>fzf_some_files()<CR>
