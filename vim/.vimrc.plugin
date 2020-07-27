@@ -854,7 +854,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \ 'hook_add' : function('s:hook_add_html5_vim'),
           \ 'lazy' : 1,
           \ 'on_ft' : [
-          \   'html5',
+          \   'html',
           \   'php',
           \ ],
           \ })
@@ -872,7 +872,6 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \ 'on_ft' : [
           \   'javascript',
           \   'javascriptreact',
-          \   'html',
           \ ],
           \ })
     " }}}
