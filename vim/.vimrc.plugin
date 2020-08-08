@@ -511,11 +511,21 @@ if (v:version >= 704 || has('nvim')) && executable('git')
 
       autocmd vimrc FileType javascript,javascriptreact,typescript,typescriptreact nnoremap <silent> K :call CocAction('doHover')<CR>
 
-      " CocInstall coc-json
-      " CocInstall coc-tsserver
-      " CocInstall coc-html
-      " CocInstall coc-css
-      " CocInstall coc-yaml
+      let extension_dir = simplify(coc#util#extension_root() . '/node_modules')
+
+      let modules = [
+            \ 'coc-css',
+            \ 'coc-html',
+            \ 'coc-json',
+            \ 'coc-tsserver',
+            \ 'coc-yaml',
+            \ ]
+
+      for module in modules
+        if !isdirectory(extension_dir . '/' . module)
+          execute(printf('CocInstall %s', module))
+        endif
+      endfor
     endfunction
 
     function! s:hook_source_coc_nvim() abort
@@ -530,6 +540,21 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \ 'lazy' : 1,
           \ 'merged' : 0,
           \ 'on_cmd' : [
+          \   'CocStart',
+          \   'CocRestart',
+          \   'CocDisable',
+          \   'CocEnable',
+          \   'CocConfig',
+          \   'CocInstall',
+          \   'CocUninstall',
+          \   'CocUpdate',
+          \   'CocRebuild',
+          \   'CocCommand',
+          \   'CocAction',
+          \   'CocFix',
+          \   'CocInfo',
+          \   'CocDiagnostics',
+          \   'CocSearch',
           \   '<Plug>(coc-',
           \ ],
           \ 'on_ft' : [
