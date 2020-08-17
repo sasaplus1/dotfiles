@@ -3,8 +3,11 @@ scriptencoding utf-8
 " *.binと*.exeと*.dllはxxd
 autocmd vimrc BufNewFile,BufRead *.{bin,exe,dll} setfiletype xxd
 
-" *.cjsと*.jsxと*.mjsと*.pacはJavaScript
-autocmd vimrc BufNewFile,BufRead *.{cjs,jsx,mjs,pac} setfiletype javascript
+" *.cjsと*.jsと*.jsxと*.mjsと*.pacはJavaScript
+autocmd vimrc BufNewFile,BufRead *.{cjs,js,jsx,mjs,pac} setfiletype javascript
+
+" *.tsと*.tsxはTypeScript
+" autocmd vimrc BufNewFile,BufRead *.{ts,tsx} setfiletype typescript
 
 " *.xulはXML
 autocmd vimrc BufNewFile,BufRead *.xul setfiletype xml
