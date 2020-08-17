@@ -202,6 +202,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
         call fzf#run(options)
       endfunction
 
+      " nnoremap <silent> <C--> :<C-u>FzfGfiles<CR>
       nnoremap <silent> <C-p> :<C-u>call <SID>fzf_some_files()<CR>
       nnoremap <silent> <C-@> :<C-u>call <SID>fzf_some_dirs()<CR>
     endfunction
@@ -359,6 +360,24 @@ if (v:version >= 704 || has('nvim')) && executable('git')
             \ }
     endfunction
 
+    function! s:hook_add_ale() abort
+      " eslintでの検査はキャッシュを使い、エラーが多いときは中断する
+      autocmd vimrc FileType javascript,javascriptreact,typescript,typescriptreact,vue let b:ale_javascript_eslint_options = '--cache --max-warnings 20'
+
+      " JSONならprettierのパーサにjson-stringifyを使用する
+      autocmd vimrc FileType json let b:ale_javascript_prettier_options = '--parser json-stringify'
+
+      " 保存時fixする
+      autocmd vimrc FileType css,scss,json,javascript,javascriptreact,typescript,typescriptreact let b:ale_fix_on_save = 1
+
+      " eslint-plugin-prettierがインストールされていたらそちらをfixerとして使う
+      autocmd vimrc FileType javascript,javascriptreact,typescript,typescriptreact call s:fix_with_eslint_plugin_prettier(expand('%:p:h'))
+
+      " ファイルのカレントディレクトリから実行する
+      " monorepo毎に.eslintignoreがある場合などに有効
+      " autocmd vimrc BufNewFile,BufRead * let b:ale_command_wrapper = printf("cd '%s' && %s", expand("%:p:h"), '%*')
+    endfunction
+
     function! s:hook_source_ale() abort
       " 明示的に指定する
       let g:ale_linters_explicit = 1
@@ -410,22 +429,6 @@ if (v:version >= 704 || has('nvim')) && executable('git')
             \ 'typescriptreact' : ['prettier'],
             \ }
 
-      " eslintでの検査はキャッシュを使い、エラーが多いときは中断する
-      autocmd vimrc FileType javascript,javascriptreact,typescript,typescriptreact,vue let b:ale_javascript_eslint_options = '--cache --max-warnings 20'
-
-      " JSONならprettierのパーサにjson-stringifyを使用する
-      autocmd vimrc FileType json let b:ale_javascript_prettier_options = '--parser json-stringify'
-
-      " 保存時fixする
-      autocmd vimrc FileType css,scss,json,javascript,javascriptreact,typescript,typescriptreact let b:ale_fix_on_save = 1
-
-      " eslint-plugin-prettierがインストールされていたらそちらをfixerとして使う
-      autocmd vimrc FileType javascript,javascriptreact,typescript,typescriptreact call s:fix_with_eslint_plugin_prettier(expand('%:p:h'))
-
-      " ファイルのカレントディレクトリから実行する
-      " monorepo毎に.eslintignoreがある場合などに有効
-      " autocmd vimrc BufNewFile,BufRead * let b:ale_command_wrapper = printf("cd '%s' && %s", expand("%:p:h"), '%*')
-
       " エラーのある行に移動する
       nnoremap <silent> <C-j> :<C-u>ALENextWrap<CR>
       nnoremap <silent> <C-k> :<C-u>ALEPreviousWrap<CR>
@@ -440,12 +443,23 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     endfunction
 
     call dein#add('dense-analysis/ale', {
+          \ 'hook_add' : function('s:hook_add_ale'),
           \ 'hook_source' : function('s:hook_source_ale'),
           \ 'if' : '(v:version >= 800 && has("timers") && has("job") && has("channel")) || has("nvim-0.2.0")',
           \ })
     " }}}
 
     " neoclide/coc.nvim {{{
+    function! s:hook_add_coc_nvim() abort
+      if has('eval') && exists('+tagfunc')
+        autocmd vimrc FileType javascript,javascriptreact,typescript,typescriptreact setlocal tagfunc=CocTagFunc
+      else
+        autocmd vimrc FileType javascript,javascriptreact,typescript,typescriptreact nmap <buffer><silent> <C-]> <Plug>(coc-definition)
+      endif
+
+      autocmd vimrc FileType javascript,javascriptreact,typescript,typescriptreact nnoremap <silent> K :call CocAction('doHover')<CR>
+    endfunction
+
     function! s:hook_post_source_coc_nvim() abort
       " tagfuncでタグスタックを使うようにして<C-t>で戻ってこれるようにする
       " https://github.com/neoclide/coc.nvim/issues/1054#issuecomment-531839361
@@ -503,14 +517,6 @@ if (v:version >= 704 || has('nvim')) && executable('git')
       nmap <silent> gr <Plug>(coc-references)
       nmap <silent> ge <Plug>(coc-rename)
 
-      if has('eval') && exists('+tagfunc')
-        autocmd vimrc FileType javascript,javascriptreact,typescript,typescriptreact setlocal tagfunc=CocTagFunc
-      else
-        autocmd vimrc FileType javascript,javascriptreact,typescript,typescriptreact nmap <buffer><silent> <C-]> <Plug>(coc-definition)
-      endif
-
-      autocmd vimrc FileType javascript,javascriptreact,typescript,typescriptreact nnoremap <silent> K :call CocAction('doHover')<CR>
-
       let extension_dir = simplify(coc#util#extension_root() . '/node_modules')
 
       let modules = [
@@ -534,6 +540,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     endfunction
 
     call dein#add('neoclide/coc.nvim', {
+          \ 'hook_add' : function('s:hook_add_coc_nvim'),
           \ 'hook_post_source' : function('s:hook_post_source_coc_nvim'),
           \ 'hook_source' : function('s:hook_source_coc_nvim'),
           \ 'if' : 'executable("node") && (v:version >= 800 || has("nvim-0.3.1"))',
@@ -568,7 +575,9 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \   '<TAB>',
           \   '<S-TAB>',
           \   '<C-k>',
+          \   '<C-]>',
           \   '<CR>',
+          \   'K',
           \   '[g',
           \   ']g',
           \   'gd',
