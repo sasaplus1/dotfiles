@@ -60,6 +60,7 @@
 ; editor = $EDITOR
 ; excludesfile = ~/.gitignore
   fscache = true
+  ignorecase = false
   preloadindex = true
   quotepath = false
 
@@ -104,3 +105,4 @@
 
 ;[url "https://"]
 ;  insteadOf = git://
+
