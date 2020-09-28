@@ -306,7 +306,9 @@ if (v:version >= 704 || has('nvim')) && executable('git')
             \ 'YankLine()' : ['<C-y>'],
             \ 'CreateNewFile()' : [],
             \ }
+    endfunction
 
+    function! s:hook_source_ctrlpvim() abort
       " CtrlPGrepを定義する
       command! -nargs=1 CtrlPGrep execute "silent! grep! '<args>' | redraw! | CtrlPQuickfix"
 
@@ -322,6 +324,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
 
     call dein#add('ctrlpvim/ctrlp.vim', {
           \ 'hook_add' : function('s:hook_add_ctrlpvim'),
+          \ 'hook_source' : function('s:hook_source_ctrlpvim'),
           \ 'if' : 'v:version >= 700 && !dein#tap("fzf.vim")',
           \ 'lazy' : 1,
           \ 'on_cmd' : '<Plug>(CtrlP',
