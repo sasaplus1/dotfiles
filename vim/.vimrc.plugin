@@ -510,7 +510,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
       inoremap <silent><expr> <C-k> coc#refresh()
 
       " Enterを押した時に候補を決定する
-      if exists('*complete_info')
+      if exists('?complete_info')
         inoremap <expr><CR> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
       else
         inoremap <expr><CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
