@@ -237,6 +237,9 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     " }}}
 
     " ctrlpvim/ctrlp.vim {{{
+    " function! s:ctrlp_match(items, str, limit, mmode, ispath, crfile, regex) abort
+    " endfunction
+
     function! s:hook_add_ctrlpvim() abort
       " <C-p>のコマンドを変更する
       let g:ctrlp_cmd = 'CtrlPMixed'
@@ -250,6 +253,14 @@ if (v:version >= 704 || has('nvim')) && executable('git')
       let g:ctrlp_lazy_update = 1
       " ルートパスと認識させるためのファイル
       let g:ctrlp_root_markers = ['Gemfile', 'package.json']
+
+      " let g:ctrlp_match_func = {
+      "       \ 'match' : function('s:ctrlp_match')
+      "       \ }
+
+      " キー入力があってから16ms後に更新する
+      " 1000 / 60 = 16.666666666666667 : 60FPS
+      let g:ctrlp_lazy_update = 16
 
       " ドットで始まるファイルやディレクトリを表示する
       let g:ctrlp_show_hidden = 1
