@@ -218,7 +218,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \ ],
           \ 'hook_add' : function('s:hook_add_junegunn_fzf'),
           \ 'hook_source' : function('s:hook_source_junegunn_fzf'),
-          \ 'if' : 'v:version >= 704 && dein#tap("fzf")',
+          \ 'if' : 'v:version >= 704 && dein#tap("fzf") && 0',
           \ 'lazy' : 1,
           \ 'on_cmd' : [
           \   'Fzf',
