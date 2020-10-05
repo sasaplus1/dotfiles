@@ -236,6 +236,13 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \ })
     " }}}
 
+    " mattn/ctrlp-matchfuzzy {{{
+    call dein#add('mattn/ctrlp-matchfuzzy', {
+          \ 'if' : 'exists("?matchfuzzy")',
+          \ 'lazy' : 1,
+          \ })
+    " }}}
+
     " ctrlpvim/ctrlp.vim {{{
     " function! s:ctrlp_match(items, str, limit, mmode, ispath, crfile, regex) abort
     " endfunction
@@ -254,6 +261,11 @@ if (v:version >= 704 || has('nvim')) && executable('git')
       " let g:ctrlp_lazy_update = 16
       " ルートパスと認識させるためのファイル
       let g:ctrlp_root_markers = ['Gemfile', 'package.json']
+
+      if dein#tap('ctrlp-matchfuzzy')
+        " マッチャーを変更する
+        let g:ctrlp_match_func = { 'match' : 'ctrlp_matchfuzzy#matcher' }
+      endif
 
       " let g:ctrlp_match_func = {
       "       \ 'match' : function('s:ctrlp_match')
@@ -331,6 +343,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     endfunction
 
     call dein#add('ctrlpvim/ctrlp.vim', {
+          \ 'depends' : exists('?matchfuzzy') ? ['ctrlp-matchfuzzy'] : [],
           \ 'hook_add' : function('s:hook_add_ctrlpvim'),
           \ 'hook_source' : function('s:hook_source_ctrlpvim'),
           \ 'if' : 'v:version >= 700 && !dein#tap("fzf.vim")',
