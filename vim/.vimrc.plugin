@@ -249,8 +249,9 @@ if (v:version >= 704 || has('nvim')) && executable('git')
       let g:ctrlp_cache_dir = $HOME . '/.cache/ctrlp'
       " キャッシュを終了時に削除しない
       let g:ctrlp_clear_cache_on_exit = 0
-      " 遅延再描画
-      let g:ctrlp_lazy_update = 1
+      " キー入力があってから16ms後に更新する
+      " 1000 / 60 = 16.666666666666667 : 60FPS
+      " let g:ctrlp_lazy_update = 16
       " ルートパスと認識させるためのファイル
       let g:ctrlp_root_markers = ['Gemfile', 'package.json']
 
@@ -258,14 +259,10 @@ if (v:version >= 704 || has('nvim')) && executable('git')
       "       \ 'match' : function('s:ctrlp_match')
       "       \ }
 
-      " キー入力があってから16ms後に更新する
-      " 1000 / 60 = 16.666666666666667 : 60FPS
-      let g:ctrlp_lazy_update = 16
-
       " ドットで始まるファイルやディレクトリを表示する
       let g:ctrlp_show_hidden = 1
       " ウィンドウに関する設定
-      let g:ctrlp_match_window = 'bottom,order:ttb,min:20,max:20,results:20'
+      let g:ctrlp_match_window = 'bottom,order:ttb,min:25,max:25,results:25'
 
       " スペースを無視する
       " https://github.com/ctrlpvim/ctrlp.vim/issues/196
@@ -305,7 +302,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
             \    executable('fd') ? 'fd --type f --color never %s' :
             \    executable('rg') ? 'rg --color never --smart-case %s' :
             \    executable('pt') ? 'pt --nocolor --nogroup --files-with-matches %s' :
-            \   'find %s -type f',
+            \   'find %s -type f -print',
             \ }
 
       " キーマッピングを変更する
