@@ -180,7 +180,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
 
         " get history
         let history = filter(
-              \ map(copy(v:oldfiles), 'fnamemodify(v:val, ":p:h")'),
+              \ copy(map(copy(v:oldfiles), 'fnamemodify(v:val, ":p:h")')),
               \ 'isdirectory(v:val)')
 
         let repos = executable('ghq') ? split(system('ghq list -p')) : []
@@ -361,7 +361,9 @@ if (v:version >= 704 || has('nvim')) && executable('git')
 
     " dense-analysis/ale {{{
     function! s:fix_with_eslint_plugin_prettier(dir) abort
-      let node_modules_dir = finddir('node_modules', a:dir . ';')
+      let node_modules_dir = fnamemodify(
+            \ finddir('node_modules', a:dir . ';'),
+            \ ':p')
 
       if empty(node_modules_dir)
         return
@@ -369,9 +371,15 @@ if (v:version >= 704 || has('nvim')) && executable('git')
 
       let modules = ['eslint', 'eslint-plugin-prettier', 'prettier']
       let module_dirs = map(
-            \ modules, printf('fnamemodify("%s/" . v:val, ":p:h")', node_modules_dir))
+            \ copy(modules),
+            \ 'node_modules_dir . v:val'
+            \ )
+      let exist_dirs = filter(
+            \ copy(module_dirs),
+            \ 'isdirectory(v:val)'
+            \ )
 
-      if len(filter(module_dirs, 'isdirectory(v:val)')) != len(modules)
+      if len(exist_dirs) != len(modules)
         return
       endif
 
