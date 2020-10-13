@@ -392,6 +392,28 @@ if (v:version >= 704 || has('nvim')) && executable('git')
             \ }
     endfunction
 
+    function! s:fix_with_fixpack(dir, file) abort
+      if a:file !=# 'package.json'
+        return
+      endif
+
+      let node_modules_dir = fnamemodify(
+            \ finddir('node_modules', a:dir . ';'),
+            \ ':p')
+
+      if empty(node_modules_dir)
+        return
+      endif
+
+      if !isdirectory(node_modules_dir . 'fixpack')
+        return
+      endif
+
+      let b:ale_fixers = {
+            \ 'json' : ['prettier', 'fixpack']
+            \ }
+    endfunction
+
     function! s:hook_add_ale() abort
       " eslintでの検査はキャッシュを使い、エラーが多いときは中断する
       autocmd vimrc FileType javascript,javascriptreact,typescript,typescriptreact,vue let b:ale_javascript_eslint_options = '--cache --max-warnings 20'
@@ -404,6 +426,9 @@ if (v:version >= 704 || has('nvim')) && executable('git')
 
       " eslint-plugin-prettierがインストールされていたらそちらをfixerとして使う
       autocmd vimrc FileType javascript,javascriptreact,typescript,typescriptreact call s:fix_with_eslint_plugin_prettier(expand('%:p:h'))
+
+      " fixpackがインストールされていたらそちらをfixerとして使う
+      autocmd vimrc FileType json call s:fix_with_fixpack(expand('%:p:h'), expand('%:t'))
 
       " ファイルのカレントディレクトリから実行する
       " monorepo毎に.eslintignoreがある場合などに有効
@@ -445,8 +470,8 @@ if (v:version >= 704 || has('nvim')) && executable('git')
             \ 'javascript.jsx' : ['eslint'],
             \ 'json' : [],
             \ 'scss' : ['stylelint'],
-            \ 'typescript' : ['tsserver', 'eslint', 'tslint'],
-            \ 'typescriptreact' : ['tsserver', 'eslint', 'tslint'],
+            \ 'typescript' : ['eslint', 'tslint', 'tsserver'],
+            \ 'typescriptreact' : ['eslint', 'tslint', 'tsserver'],
             \ 'vue' : ['eslint'],
             \ }
       " fixerの設定
