@@ -260,7 +260,15 @@ if (v:version >= 704 || has('nvim')) && executable('git')
       " 1000 / 60 = 16.666666666666667 : 60FPS
       " let g:ctrlp_lazy_update = 16
       " ルートパスと認識させるためのファイル
-      let g:ctrlp_root_markers = ['Gemfile', 'package.json']
+      let g:ctrlp_root_markers = [
+            \ '.git',
+            \ '.hg',
+            \ '.svn',
+            \ '.bzr',
+            \ '_darcs',
+            \ 'Gemfile',
+            \ 'package.json',
+            \ ]
 
       if dein#tap('ctrlp-matchfuzzy')
         " マッチャーを変更する
@@ -311,8 +319,8 @@ if (v:version >= 704 || has('nvim')) && executable('git')
             \   1 : ['.git', 'cd %s && git ls-files -co --exclude-standard'],
             \ },
             \ 'fallback' :
-            \    executable('fd') ? 'fd --type f --color never %s' :
-            \    executable('rg') ? 'rg --color never --smart-case %s' :
+            \    executable('fd') ? 'fd --type f --color never --full-path %s' :
+            \    executable('rg') ? 'rg --color never --smart-case --files %s' :
             \    executable('pt') ? 'pt --nocolor --nogroup --files-with-matches %s' :
             \   'find %s -type f -print',
             \ }
