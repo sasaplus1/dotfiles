@@ -204,7 +204,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
 
       " nnoremap <silent> <C--> :<C-u>FzfGfiles<CR>
       nnoremap <silent> <C-p> :<C-u>call <SID>fzf_some_files()<CR>
-      nnoremap <silent> <C-@> :<C-u>call <SID>fzf_some_dirs()<CR>
+      " nnoremap <silent> <C-i> :<C-u>call <SID>fzf_some_dirs()<CR>
     endfunction
 
     call dein#add('junegunn/fzf', {
@@ -226,7 +226,6 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \ ],
           \ 'on_map' : [
           \   '<C-p>',
-          \   '<C-@>',
           \   ',ub',
           \   ',uf',
           \   ',ug',

@@ -116,8 +116,8 @@ nnoremap <silent> ,vF :<C-u>call <SID>open_netrw_by_side()<CR>
 
 if has('terminal') && has('job') && has('channel')
   " ターミナルを開く
-  nnoremap <silent> <C-w>S :<C-u>terminal<CR>
-  nnoremap <silent> <C-w>V :<C-u>vertical terminal<CR>
+  nnoremap <silent> ,t :<C-u>terminal<CR>
+  nnoremap <silent> ,T :<C-u>vertical terminal<CR>
 endif
 
 " vim:ft=vim:fdm=marker:fen:
