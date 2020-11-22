@@ -336,13 +336,36 @@ if (v:version >= 704 || has('nvim')) && executable('git')
             \ }
     endfunction
 
+    function! s:ctrlp_grep(pattern) abort
+      let git_dir = finddir('.git', '.;')
+
+      if len(git_dir) != 0
+        let ignore = ''
+
+        if &grepprg =~# '\v^rg'
+          let ignore = '--glob !.git'
+        elseif  &grepprg =~# '\v^pt'
+          let ignore = '--ignore .git'
+        endif
+
+        execute printf(
+              \ 'silent! grep! %s %s -- %s | redraw! | CtrlPQuickfix',
+              \ ignore,
+              \ a:pattern,
+              \ simplify(git_dir . '/..'),
+              \ )
+      else 
+        execute printf('silent! grep! %s | redraw! | CtrlPQuickfix', a:pattern)
+      endif
+    endfunction
+
     function! s:hook_source_ctrlpvim() abort
       " CtrlPGrepを定義する
-      command! -nargs=1 CtrlPGrep execute "silent! grep! '<args>' | redraw! | CtrlPQuickfix"
+      command! -nargs=1 CtrlPGrep call <SID>ctrlp_grep(<f-args>)
 
       " ,ubでバッファ一覧
       nnoremap ,ub :<C-u>CtrlPBuffer<CR>
-      " ,ugでptを使ったgrepをする
+      " ,ugでgrepをする
       nnoremap ,ug :<C-u>CtrlPGrep<Space>
       " ,ulで行一覧
       nnoremap ,ul :<C-u>CtrlPLine<CR>
