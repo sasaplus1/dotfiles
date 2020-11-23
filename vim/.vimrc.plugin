@@ -344,7 +344,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
 
         if &grepprg =~# '\v^rg'
           let ignore = '--glob !.git'
-        elseif  &grepprg =~# '\v^pt'
+        elseif &grepprg =~# '\v^pt'
           let ignore = '--ignore .git'
         endif
 
