@@ -339,12 +339,14 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     function! s:ctrlp_grep(pattern) abort
       let git_dir = finddir('.git', '.;')
 
-      if len(git_dir) != 0
+      if &grepprg =~# '\v^(rg|pt)' && len(git_dir) != 0
         let ignore = ''
 
         if &grepprg =~# '\v^rg'
+          " ripgrepで.gitを無視する
           let ignore = '--glob !.git'
         elseif &grepprg =~# '\v^pt'
+          " ptで.gitを無視する
           let ignore = '--ignore .git'
         endif
 
