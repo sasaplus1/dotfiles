@@ -144,6 +144,14 @@ __main() {
     eval "$(npm completion)" && return 124
   }
   complete -F __npm_completion npm
+
+  # gh-completion
+  __gh_completion() {
+    unset -f __gh_completion
+    complete -r gh
+    eval "$(gh completion --shell bash)" && return 124
+  }
+  complete -F __gh_completion gh
   # }}}
 
   # z {{{
