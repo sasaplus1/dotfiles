@@ -681,9 +681,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     " }}}
 
     " editorconfig/editorconfig-vim {{{
-    call dein#add('editorconfig/editorconfig-vim', {
-          \ 'if' : 'has("python3") || has("python")',
-          \ })
+    call dein#add('editorconfig/editorconfig-vim')
     " }}}
 
     " junegunn/vim-easy-align {{{
