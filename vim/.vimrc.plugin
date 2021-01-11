@@ -1027,6 +1027,10 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \ })
     " }}}
 
+    " vim-jp/vimdoc-ja {{{
+    call dein#add('vim-jp/vimdoc-ja')
+    " }}}
+
     call dein#end()
   endif
 
