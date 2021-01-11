@@ -295,17 +295,32 @@ __main() {
 
   # my KaoriYa Vim for macOS
   # via https://github.com/sasaplus1/portable-vim
-  local vim=$HOME/Binary/vim
-  [ -d "$vim" ] &&
-    local vim_manpath=$vim/share/man &&
-    local vim_path=$vim/bin &&
-    export MANPATH=$vim_manpath:${MANPATH//$vim_manpath/} &&
-    export PATH=$vim_path:${PATH//$vim_path/} &&
-    export EDITOR="$vim/bin/portable-vim" &&
+  local pvim=$HOME/Binary/vim
+  [ -d "$pvim" ] &&
+    local pvim_manpath=$pvim/share/man &&
+    local pvim_path=$pvim/bin &&
+    export MANPATH=$pvim_manpath:${MANPATH//$pvim_manpath/} &&
+    export PATH=$pvim_path:${PATH//$pvim_path/} &&
+    export EDITOR="$pvim_path/portable-vim" &&
     vim() {
       local vim=$HOME/Binary/vim
 
       "$vim/bin/portable-vim" "$@"
+    }
+
+  # my KaoriYa Vim for macOS
+  # via https://github.com/sasaplus1/macos-vim
+  local mvim=$HOME/.ghq/github.com/sasaplus1/macos-vim
+  [ -x "$mvim/usr/bin/vim" ] &&
+    local mvim_manpath=$mvim/share/man &&
+    local mvim_path=$mvim/usr/bin &&
+    export MANPATH=$mvim_manpath:${MANPATH//$mvim_manpath/} &&
+    export PATH=$mvim_path:${PATH//$mvim_path/} &&
+    export EDITOR="$mvim_path/vim" &&
+    vim() {
+      local vim=$HOME/.ghq/github.com/sasaplus1/macos-vim
+
+      "$vim/usr/bin/vim" "$@"
     }
   # }}}
 
