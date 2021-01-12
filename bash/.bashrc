@@ -301,12 +301,7 @@ __main() {
     local pvim_path=$pvim/bin &&
     export MANPATH=$pvim_manpath:${MANPATH//$pvim_manpath/} &&
     export PATH=$pvim_path:${PATH//$pvim_path/} &&
-    export EDITOR="$pvim_path/portable-vim" &&
-    vim() {
-      local vim=$HOME/Binary/vim
-
-      "$vim/bin/portable-vim" "$@"
-    }
+    export EDITOR="$pvim_path/portable-vim"
 
   # my KaoriYa Vim for macOS
   # via https://github.com/sasaplus1/macos-vim
@@ -316,12 +311,29 @@ __main() {
     local mvim_path=$mvim/usr/bin &&
     export MANPATH=$mvim_manpath:${MANPATH//$mvim_manpath/} &&
     export PATH=$mvim_path:${PATH//$mvim_path/} &&
-    export EDITOR="$mvim_path/vim" &&
-    vim() {
-      local vim=$HOME/.ghq/github.com/sasaplus1/macos-vim
+    export EDITOR="$mvim_path/vim"
 
-      "$vim/usr/bin/vim" "$@"
-    }
+  vim() {
+    local mvim=
+    local pvim=
+
+    mvim="$HOME/.ghq/github.com/sasaplus1/macos-vim/usr/bin/vim"
+    pvim="$HOME/Binary/vim/bin/portable-vim"
+
+    if [ -x "$mvim" ]
+    then
+      export EDITOR="$mvim"
+      "$mvim" "$@"
+    elif [ -x "$pvim" ]
+    then
+      export EDITOR="$pvim"
+      "$pvim" "$@"
+    else
+      export EDITOR="vim"
+      vim "$@"
+    fi
+  }
+
   # }}}
 
   # universal-ctags {{{
