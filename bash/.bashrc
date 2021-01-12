@@ -716,7 +716,7 @@ __main() {
   then
     return 0
   fi
-  if [ -z "$is_dumb" ] && [ -z "$TMUX" ] && [ -z "$VIM" ]
+  if [ -z "$is_dumb" ] && [ -z "$TMUX" ] && [ -z "$VIM" ] && [ ! -f '/.dockerenv' ]
   then
     type tmux >/dev/null 2>&1 && tmux
   fi
