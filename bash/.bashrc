@@ -164,8 +164,9 @@ __main() {
 
     # shellcheck disable=SC1090
     source "$ghq_prefix/github.com/rupa/z/z.sh" 2>/dev/null
+
     # NOTE: call _z function directly, because z is alias
-    _z "$@"
+    [ -n "$?" ] && _z "$@"
   }
 
   # z-completion
