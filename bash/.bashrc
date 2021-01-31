@@ -159,11 +159,11 @@ __main() {
   z() {
     unset -f z
 
-    local homebrew_prefix=
-    homebrew_prefix="$(dirname "$(dirname "$(type -tP brew)")")"
+    local ghq_prefix=
+    ghq_prefix="$(ghq root)"
 
     # shellcheck disable=SC1090
-    source "$homebrew_prefix/opt/z/etc/profile.d/z.sh" 2>/dev/null
+    source "$ghq_prefix/github.com/rupa/z/z.sh" 2>/dev/null
     # NOTE: call _z function directly, because z is alias
     _z "$@"
   }
@@ -173,11 +173,11 @@ __main() {
     unset -f __z_completion
     complete -r z
 
-    local homebrew_prefix=
-    homebrew_prefix="$(dirname "$(dirname "$(type -tP brew)")")"
+    local ghq_prefix=
+    ghq_prefix="$(ghq root)"
 
     # shellcheck disable=SC1090
-    source "$homebrew_prefix/opt/z/etc/profile.d/z.sh" 2>/dev/null && return 124
+    source "$ghq_prefix/github.com/rupa/z/z.sh" 2>/dev/null && return 124
   }
   complete -F __z_completion z
   # }}}
