@@ -484,6 +484,15 @@ __main() {
     fi
   }
 
+  git-hash() {
+    local fzf_preview=
+
+    # NOTE: don't remove xargs. if remove it, preview will not be update.
+    fzf_preview='eval "echo {} | grep -Eo \[0-9a-f\]\{7\} | xargs git show --color=always"'
+
+    git log --color=always --graph --oneline | fzf --ansi --preview="$fzf_preview" | grep -Eo '[0-9a-f]{7}'
+  }
+
   # cd to repository root
   rr() {
     cd "$(git rev-parse --show-toplevel)" || exit 1
