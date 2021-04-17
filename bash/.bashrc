@@ -244,36 +244,6 @@ __main() {
   source "$homebrew_prefix/opt/fzf/shell/completion.bash" 2>/dev/null
   # }}}
 
-  # hub {{{
-  hub() {
-    local hub_bin=
-
-    hub_bin="$(type -tP hub)"
-
-    if git remote -v | grep github.com >/dev/null 2>&1
-    then
-      host='github.com'
-    else
-      host="$(git config --get-all remote.origin.url | awk -F '[:/]' '{ sub(/^[^@]*@/, "", $4); print $4 }')"
-    fi
-
-    GITHUB_HOST="$host" "$hub_bin" "$@"
-  }
-
-  # hub-completion
-  __hub_completion() {
-    unset -f __hub_completion
-    complete -r hub
-
-    local homebrew_prefix=
-    homebrew_prefix="$(dirname "$(dirname "$(type -tP brew)")")"
-
-    # shellcheck disable=SC1090
-    source "$homebrew_prefix/opt/hub/etc/bash_completion.d/hub.bash_completion.sh" 2>/dev/null && return 124
-  }
-  complete -F __hub_completion hub
-  # }}}
-
   # vim {{{
 
   # macvim
