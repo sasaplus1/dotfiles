@@ -9,6 +9,11 @@ autocmd vimrc BufNewFile,BufRead *.{cjs,js,jsx,mjs,pac} setfiletype javascript
 " *.tsと*.tsxはTypeScript
 " autocmd vimrc BufNewFile,BufRead *.{ts,tsx} setfiletype typescript
 
+if has('file_in_path')
+  " gfで開く際に拡張子を補完する
+  autocmd vimrc BufNewFile,BufRead *.{cjs,js,jsx,mjs,pac,ts,tsx} setlocal suffixesadd+=.tsx,.ts,.mjs,.cjs,.jsx,.js,.json,.pac
+endif
+
 " *.xulはXML
 autocmd vimrc BufNewFile,BufRead *.xul setfiletype xml
 
