@@ -23,7 +23,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - run: docker-compose run --rm test
+      - run: docker build -t ${GITHUB_REPOSITORY} .
+      - run: >
+          docker run -it --rm ${GITHUB_REPOSITORY}
+          bash -c 'rm -f ~/.bashrc && make deploy >/dev/null && [ "$(make test)" = "done." ]'
   shellcheck:
     name: shellcheck
     runs-on: ubuntu-latest
