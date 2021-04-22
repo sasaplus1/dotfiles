@@ -463,6 +463,23 @@ __main() {
     git log --color=always --graph --oneline | fzf --ansi --preview="$fzf_preview" | grep -Eo '[0-9a-f]{7}'
   }
 
+  repo() {
+    local fzf_preview=
+
+    if type bat >/dev/null 2>&1
+    then
+      fzf_preview='gh repo view {} | bat --color=always --language=Markdown'
+    else
+      fzf_preview='gh repo view {}'
+    fi
+
+    local repository=
+
+    repository=$(gh repo list --limit 200 $1 | awk '{ print $1 }' | fzf --ansi --preview="$fzf_preview")
+
+    [ -n "$repository" ] && gh repo view --web "$(printf -- '%s' ${repository} | awk '{ print $1 }')"
+  }
+
   # cd to repository root
   rr() {
     cd "$(git rev-parse --show-toplevel)" || exit 1
