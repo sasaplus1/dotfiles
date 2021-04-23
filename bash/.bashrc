@@ -421,14 +421,16 @@ __main() {
     cd "$(cat <(eval "$repo_cmd") <(eval "$z_cmd") <(eval "$git_cmd") | sort -u | fzf --query="$@" --preview="$fzf_preview")"
   }
 
-  prr() {
-    if [ "$(git rev-parse --is-inside-work-tree 2>/dev/null)" != 'true' ]
-    then
-      printf -- '%s\n' 'not within git repository.'
-      return 1
-    fi
+  pull() {
+    local fzf_preview=
 
-    hub pr show "$(cat <(hub pr list "$@") <(hub issue "$@") | fzf | awk '{ sub(/^#/, "", $1); print $1 }')"
+    fzf_preview='gh repo view {}'
+
+    local pr=
+
+    pr=$(gh pr list --limit 50 | fzf --ansi --preview="$fzf_preview")
+
+    [ -n "$pr" ] && gh pr view --web "$(printf -- '%s' ${pr} | awk '{ print $1 }')"
   }
 
   pv() {
