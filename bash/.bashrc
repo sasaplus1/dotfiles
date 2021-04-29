@@ -209,7 +209,7 @@ __main() {
   local fzf_opts=
 
   fzf_opts=()
-  fzf_opts+=('--border --cycle --height=60% --info=hidden --layout=reverse --preview-window=right')
+  fzf_opts+=('--border --cycle --height=80% --info=hidden --layout=reverse --preview-window=right')
   fzf_opts+=('--bind ctrl-j:preview-down,ctrl-k:preview-up')
 
   export FZF_DEFAULT_OPTS=${fzf_opts[*]}
