@@ -58,7 +58,7 @@ __main() {
   then
     case "$os" in
       macos)
-        # shellcheck disable=SC1090
+        # shellcheck disable=SC1091
         source "$homebrew_prefix/etc/bash_completion" 2>/dev/null
         ;;
       linux)
@@ -93,7 +93,7 @@ __main() {
     local homebrew_prefix=
     homebrew_prefix="$(dirname "$(dirname "$(type -tP brew)")")"
 
-    # shellcheck disable=SC1090
+    # shellcheck disable=SC1091
     source "$homebrew_prefix/opt/rbenv/completions/rbenv.bash" 2>/dev/null && return 124
   }
   complete -F __rbenv_completion rbenv
@@ -118,7 +118,7 @@ __main() {
     local homebrew_prefix=
     homebrew_prefix="$(dirname "$(dirname "$(type -tP brew)")")"
 
-    # shellcheck disable=SC1090
+    # shellcheck disable=SC1091
     source "$homebrew_prefix/opt/pyenv/completions/pyenv.bash" 2>/dev/null && return 124
   }
   complete -F __pyenv_completion pyenv
@@ -132,7 +132,7 @@ __main() {
   __nodebrew_completion() {
     unset -f __nodebrew_completion
     complete -r nodebrew
-    # shellcheck disable=SC1090
+    # shellcheck disable=SC1091
     source "$HOME/.nodebrew/completions/bash/nodebrew-completion" 2>/dev/null && return 124
   }
   complete -F __nodebrew_completion nodebrew
@@ -162,7 +162,7 @@ __main() {
     local ghq_prefix=
     ghq_prefix="$(ghq root)"
 
-    # shellcheck disable=SC1090
+    # shellcheck disable=SC1091
     source "$ghq_prefix/github.com/rupa/z/z.sh" 2>/dev/null
 
     # NOTE: call _z function directly, because z is alias
@@ -177,7 +177,7 @@ __main() {
     local ghq_prefix=
     ghq_prefix="$(ghq root)"
 
-    # shellcheck disable=SC1090
+    # shellcheck disable=SC1091
     source "$ghq_prefix/github.com/rupa/z/z.sh" 2>/dev/null && return 124
   }
   complete -F __z_completion z
@@ -240,7 +240,7 @@ __main() {
     fi
   }
 
-  # shellcheck disable=SC1090
+  # shellcheck disable=SC1091
   source "$homebrew_prefix/opt/fzf/shell/completion.bash" 2>/dev/null
   # }}}
 
@@ -346,7 +346,7 @@ __main() {
   # up.sh {{{
   up() {
     unset -f up
-    # shellcheck disable=SC1090
+    # shellcheck disable=SC1091
     source "$HOME/.ghq/github.com/shannonmoeller/up/up.sh" 2>/dev/null
     up "$@"
   }
@@ -356,7 +356,7 @@ __main() {
   export _DOWN_CMD=dw
   dw() {
     unset -f dw
-    # shellcheck disable=SC1090
+    # shellcheck disable=SC1091
     source "$HOME/.ghq/github.com/sasaplus1/down.sh/down.sh" 2>/dev/null
     dw "$@"
   }
@@ -366,7 +366,7 @@ __main() {
   export _GITHUB_SLUG_COMMAND=slug
   __lazy-github-slug() {
     unset -f __lazy-github-slug
-    # shellcheck disable=SC1090
+    # shellcheck disable=SC1091
     source "$HOME/.ghq/github.com/sasaplus1/github-slug.sh/github-slug.sh" 2>/dev/null
     __github-slug "$@"
     eval "$_GITHUB_SLUG_COMMAND"'() { __github-slug "$@"; }'
@@ -468,7 +468,7 @@ __main() {
       preview='gh repo view {+1}'
     fi
 
-    local -r result=$(gh repo list --limit 200 $1 | awk '{ print $1 }' | fzf --ansi --preview="$preview")
+    local -r result=$(gh repo list --limit 200 "$1" | awk '{ print $1 }' | fzf --ansi --preview="$preview")
 
     [ -n "$result" ] && gh repo view --web "$(printf -- '%s' "$result" | awk '{ print $1 }')"
   }
@@ -476,7 +476,7 @@ __main() {
   # cd to repository root
   rr() {
     # error message print to stderr if failed
-    git rev-parse --is-inside-work-tree >/dev/null && cd "$(git rev-parse --show-toplevel)"
+    git rev-parse --is-inside-work-tree >/dev/null && cd "$(git rev-parse --show-toplevel)" || return
   }
 
   # remove docker containers
@@ -502,27 +502,23 @@ __main() {
     docker ps | sed 1d | fzf --multi --query="$@" | awk '{ print $1 }' | xargs -n 1 docker stop
   }
 
-  case "$os" in
-    macos)
-      alias ls='ls -G'
-      alias grep='grep --color=auto'
-      alias sed_ere='sed -E'
-      alias ios='open -a "Simulator" || open -a "iOS Simulator" || open -a "iPhone Simulator"'
-      alias updatedb='LOCATE_CONFIG=$HOME/.locate.rc /usr/libexec/locate.updatedb'
-      alias locate='locate -d "$HOME/.locate.database"'
-      ;;
-    linux)
-      alias crontab='crontab -i'
-      alias ls='ls --color=auto'
-      alias grep='grep --color=auto'
-      alias sed_ere='sed -e'
-      alias pbcopy='xsel --clipboard --input'
-      alias pbpaste='xsel --clipboard --output'
-      ;;
-    *)
-      alias ctags='ctags --exclude=@$HOME/.ctagsignore'
-      ;;
-  esac
+  # change to urxvt font size
+  # from https://gist.github.com/anekos/5938365
+  if type urxvt >/dev/null 2>&1
+  then
+    set-urxvt-font-size() {
+      local old_name=
+      old_name=$(grep -i '^\s*urxvt.font' "$HOME/.Xdefaults" | cut -d: -f2-)
+
+      local new_name=
+      new_name=$(printf -- '%b' "$old_name" | sed -e 's/:\(pixel\)\?size=[0-9]\+/'":\1size=$1/")
+
+      [ -n "$TMUX" ] && printf -- '\ePtmux;\e'
+      printf -- '\e]50;%s\007' "$new_name"
+      # shellcheck disable=SC1003
+      [ -n "$TMUX" ] && printf -- '\e\\'
+    }
+  fi
   # }}}
 
   #-----------------------------------------------------------------------------
@@ -542,24 +538,6 @@ __main() {
     export HISTFILESIZE=10000
     export HISTTIMEFORMAT='%Y/%m/%d %T '
     export HISTCONTROL=ignoredups:erasedups
-  fi
-
-  # change to urxvt font size
-  # from https://gist.github.com/anekos/5938365
-  if type urxvt >/dev/null 2>&1
-  then
-    set-urxvt-font-size() {
-      local old_name=
-      old_name=$(grep -i '^\s*urxvt.font' "$HOME/.Xdefaults" | cut -d: -f2-)
-
-      local new_name=
-      new_name=$(printf -- '%b' "$old_name" | sed -e 's/:\(pixel\)\?size=[0-9]\+/'":\1size=$1/")
-
-      [ -n "$TMUX" ] && printf -- '\ePtmux;\e'
-      printf -- '\e]50;%s\007' "$new_name"
-      # shellcheck disable=SC1003
-      [ -n "$TMUX" ] && printf -- '\e\\'
-    }
   fi
 
   #-----------------------------------------------------------------------------
@@ -704,8 +682,30 @@ __main() {
   PS1=$(__print_PS1)
   # }}}
 
+  case "$os" in
+    macos)
+      alias ls='ls -G'
+      alias grep='grep --color=auto'
+      alias sed_ere='sed -E'
+      alias ios='open -a "Simulator" || open -a "iOS Simulator" || open -a "iPhone Simulator"'
+      alias updatedb='LOCATE_CONFIG=$HOME/.locate.rc /usr/libexec/locate.updatedb'
+      alias locate='locate -d "$HOME/.locate.database"'
+      ;;
+    linux)
+      alias crontab='crontab -i'
+      alias ls='ls --color=auto'
+      alias grep='grep --color=auto'
+      alias sed_ere='sed -e'
+      alias pbcopy='xsel --clipboard --input'
+      alias pbpaste='xsel --clipboard --output'
+      ;;
+    *)
+      alias ctags='ctags --exclude=@$HOME/.ctagsignore'
+      ;;
+  esac
+
   # load .bashrc.local
-  # shellcheck disable=SC1090
+  # shellcheck disable=SC1091
   source "$HOME/.bashrc.local" 2>/dev/null
 
   # proxy settings {{{
