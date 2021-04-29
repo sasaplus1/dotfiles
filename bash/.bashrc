@@ -637,8 +637,8 @@ __main() {
       # too
       if [ -d "${cwd}/.git" ]
       then
-        local col1
-        local col2
+        local col1=
+        local col2=
 
         is_git=1
 
