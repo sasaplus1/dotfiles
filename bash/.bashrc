@@ -455,7 +455,7 @@ __main() {
     # NOTE: don't remove xargs. if remove it, preview will not be update.
     local -r preview='eval "echo {} | grep -Eo \[0-9a-f\]\{7,40\} | xargs git show --color=always"'
 
-    git log --color=always --graph --oneline | fzf --ansi --preview="$preview" | grep -Eo '[0-9a-f]{7,40}'
+    git log --all --color=always --graph --oneline | fzf --ansi --preview="$preview" | grep -Eo '[0-9a-f]{7,40}'
   }
 
   repo() {
