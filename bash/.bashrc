@@ -421,70 +421,62 @@ __main() {
     cd "$(cat <(eval "$repo_cmd") <(eval "$z_cmd") <(eval "$git_cmd") | sort -u | fzf --query="$@" --preview="$fzf_preview")"
   }
 
-  pull() {
-    local fzf_preview=
-
-    fzf_preview='gh repo view {}'
-
-    local pr=
-
-    pr=$(gh pr list --limit 50 | fzf --ansi --preview="$fzf_preview")
-
-    [ -n "$pr" ] && gh pr view --web "$(printf -- '%s' ${pr} | awk '{ print $1 }')"
-  }
-
-  pv() {
-    local fzf_preview=
+  issue() {
+    local preview=
 
     if type bat >/dev/null 2>&1
     then
-      fzf_preview='bat --color=always -pp -r :60 {} 2>/dev/null || find {} -maxdepth 1 -print'
+      preview='gh issue view {+1} | bat --color=always --language=Markdown -pp -r :60'
     else
-      fzf_preview='head -n 60 {} 2>/dev/null || find {} -maxdepth 1 -print'
+      preview='gh issue view {+1}'
     fi
 
-    local selected=
+    local -r result=$(gh issue list --limit 200 | awk -F '\t' '{ print $1, $2, $3 }' | fzf --ansi --preview="$preview")
 
-    selected="$(find "$PWD" -maxdepth 1 -print | fzf --preview="$fzf_preview")"
+    [ -n "$result" ] && gh issue view --web "$(printf -- '%s' "${result}" | awk '{ print $1 }')"
+  }
 
-    if [ -d "$selected" ]
+  pull() {
+    local preview=
+
+    if type bat >/dev/null 2>&1
     then
-      cd "$selected" || exit 1
-    elif [ -r "$selected" ]
-    then
-      "$EDITOR" "$selected"
+      preview='gh pr view {+1} | bat --color=always --language=Markdown -pp -r :60'
+    else
+      preview='gh pr view {+1}'
     fi
+
+    local -r result=$(gh pr list --limit 200 | awk -F '\t' '{ print $1, $2 }' | fzf --ansi --preview="$preview")
+
+    [ -n "$result" ] && gh pr view --web "$(printf -- '%s' "${result}" | awk '{ print $1 }')"
   }
 
   git-hash() {
-    local fzf_preview=
-
     # NOTE: don't remove xargs. if remove it, preview will not be update.
-    fzf_preview='eval "echo {} | grep -Eo \[0-9a-f\]\{7\} | xargs git show --color=always"'
+    local -r preview='eval "echo {} | grep -Eo \[0-9a-f\]\{7,40\} | xargs git show --color=always"'
 
-    git log --color=always --graph --oneline | fzf --ansi --preview="$fzf_preview" | grep -Eo '[0-9a-f]{7}'
+    git log --color=always --graph --oneline | fzf --ansi --preview="$preview" | grep -Eo '[0-9a-f]{7,40}'
   }
 
   repo() {
-    local fzf_preview=
+    local preview=
 
     if type bat >/dev/null 2>&1
     then
-      fzf_preview='gh repo view {} | bat --color=always --language=Markdown'
+      preview='gh repo view {+1} | bat --color=always --language=Markdown -pp -r :60'
     else
-      fzf_preview='gh repo view {}'
+      preview='gh repo view {+1}'
     fi
 
-    local repository=
+    local -r result=$(gh repo list --limit 200 $1 | awk '{ print $1 }' | fzf --ansi --preview="$preview")
 
-    repository=$(gh repo list --limit 200 $1 | awk '{ print $1 }' | fzf --ansi --preview="$fzf_preview")
-
-    [ -n "$repository" ] && gh repo view --web "$(printf -- '%s' ${repository} | awk '{ print $1 }')"
+    [ -n "$result" ] && gh repo view --web "$(printf -- '%s' "$result" | awk '{ print $1 }')"
   }
 
   # cd to repository root
   rr() {
-    cd "$(git rev-parse --show-toplevel)" || exit 1
+    # error message print to stderr if failed
+    git rev-parse --is-inside-work-tree >/dev/null && cd "$(git rev-parse --show-toplevel)"
   }
 
   # remove docker containers
