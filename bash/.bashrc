@@ -618,7 +618,12 @@ __main() {
       if [ -f "${cwd}/.git" ]
       then
         read -r _ head_dir < "${cwd}/.git"
-        head_file="${head_dir}/HEAD"
+
+        [[ "$head_dir" =~ ^\.\.?\/ ]] &&
+          # maybe head_dir is relative path
+          head_file="${cwd}/${head_dir}/HEAD" ||
+          # maybe head_dir is absolute path
+          head_file="${head_dir}/HEAD"
 
         [[ "$head_file" =~ \.git\/worktrees ]] &&
           repo_type=git-worktree ||
