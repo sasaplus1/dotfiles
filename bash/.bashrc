@@ -3,29 +3,31 @@
 __main() {
   unset -f __main
 
-  local os=
+  #-----------------------------------------------------------------------------
 
   case "$OSTYPE" in
     darwin*)
-      os=macos
+      local -r os=macos
       ;;
     linux*)
-      os=linux
+      local -r os=linux
       ;;
     *)
-      os=
+      local -r os=
       ;;
   esac
 
-  local is_dumb=
-  local is_interactive=
+  #-----------------------------------------------------------------------------
 
-  if [ "$TERM" == 'dumb' ] || [ -z "$PS1" ]
-  then
-    is_dumb=1
-  else
-    is_interactive=1
-  fi
+  # https://www.gnu.org/software/bash/manual/html_node/Is-this-Shell-Interactive_003f.html
+  case "$-" in
+    *i*)
+      local -r is_interactive=1
+      ;;
+    *)
+      local -r is_interactive=
+      ;;
+  esac
 
   #-----------------------------------------------------------------------------
 
@@ -92,16 +94,14 @@ __main() {
   # bash-completion {{{
   if [ -n "$is_interactive" ] && [ -z "$BASH_COMPLETION" ]
   then
-    case "$os" in
-      macos)
-        # shellcheck disable=SC1091
-        source "$homebrew_prefix/etc/bash_completion" 2>/dev/null
-        ;;
-      linux)
-        # shellcheck disable=SC1091
-        source /etc/bash_completion 2>/dev/null
-        ;;
-    esac
+    # shellcheck disable=SC1091 maybe Linux
+    source /etc/bash_completion 2>/dev/null
+    # shellcheck disable=SC1091 maybe macOS by Homebrew
+    source "$homebrew_prefix/etc/bash_completion" 2>/dev/null
+    # shellcheck disable=SC1091 maybe macOS by MacPorts
+    source /opt/local/etc/bash_completion 2>/dev/null
+    # shellcheck disable=SC1091 maybe macOS by MacPorts since ver.2.1.2
+    source /opt/local/etc/profile.d/bash_completion.sh 2>/dev/null
   fi
   # }}}
 
@@ -735,7 +735,7 @@ __main() {
   then
     return 0
   fi
-  if [ -z "$is_dumb" ] && [ -z "$TMUX" ] && [ -z "$VIM" ] && [ ! -f '/.dockerenv' ]
+  if [ -n "$is_interactive" ] && [ -z "$TMUX" ] && [ -z "$VIM" ] && [ ! -f '/.dockerenv' ]
   then
     type tmux >/dev/null 2>&1 && tmux
   fi
