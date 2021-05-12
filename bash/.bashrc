@@ -36,18 +36,16 @@ __main() {
     [ -d "$HOME/.linuxbrew/Homebrew" ] && homebrew_dir=$HOME/.linuxbrew
   fi
 
-  local homebrew_infopath=$homebrew_dir/share/info
-  local homebrew_manpath=$homebrew_dir/share/man
-  local homebrew_path=$homebrew_dir/bin
+  local -r homebrew_infopath=$homebrew_dir/share/info
+  local -r homebrew_manpath=$homebrew_dir/share/man
+  local -r homebrew_path=$homebrew_dir/bin
 
   export INFOPATH=$homebrew_infopath:${INFOPATH//$homebrew_infopath/}
   export MANPATH=$homebrew_manpath:${MANPATH//$homebrew_manpath/}
   export PATH=$homebrew_path:${PATH//$homebrew_path/}
 
-  local homebrew_prefix=
-
   # NOTE: brew --prefix is very slow https://github.com/Homebrew/brew/issues/3097
-  homebrew_prefix="$(dirname "$(dirname "$(type -tP brew)")")"
+  local -r homebrew_prefix="$(dirname "$(dirname "$(type -tP brew)")")"
 
   [ -d "$homebrew_prefix" ] && export HOMEBREW_DIR=$homebrew_dir
 
@@ -75,7 +73,7 @@ __main() {
   # NOTE: lazy load completion https://qiita.com/kawaz/items/ba6140bca32bbd3cb928
 
   # rbenv {{{
-  local rbenv=$HOME/.rbenv/bin
+  local -r rbenv=$HOME/.rbenv/bin
   export PATH=$rbenv:${PATH//$rbenv/}
 
   # lazy loading
@@ -90,8 +88,7 @@ __main() {
     unset -f __rbenv_completion
     complete -r rbenv
 
-    local homebrew_prefix=
-    homebrew_prefix="$(dirname "$(dirname "$(type -tP brew)")")"
+    local -r homebrew_prefix="$(dirname "$(dirname "$(type -tP brew)")")"
 
     # shellcheck disable=SC1091
     source "$homebrew_prefix/opt/rbenv/completions/rbenv.bash" 2>/dev/null && return 124
@@ -100,7 +97,7 @@ __main() {
   # }}}
 
   # pyenv {{{
-  local pyenv=$HOME/.pyenv/shims
+  local -r pyenv=$HOME/.pyenv/shims
   export PATH=$pyenv:${PATH//$pyenv/}
 
   # lazy loading
@@ -115,8 +112,7 @@ __main() {
     unset -f __pyenv_completion
     complete -r pyenv
 
-    local homebrew_prefix=
-    homebrew_prefix="$(dirname "$(dirname "$(type -tP brew)")")"
+    local -r homebrew_prefix="$(dirname "$(dirname "$(type -tP brew)")")"
 
     # shellcheck disable=SC1091
     source "$homebrew_prefix/opt/pyenv/completions/pyenv.bash" 2>/dev/null && return 124
@@ -125,7 +121,7 @@ __main() {
   # }}}
 
   # nodebrew and npm completion {{{
-  local nodebrew=$HOME/.nodebrew/current/bin
+  local -r nodebrew=$HOME/.nodebrew/current/bin
   export PATH=$nodebrew:${PATH//$nodebrew/}
 
   # nodebrew-completion
@@ -159,8 +155,7 @@ __main() {
   z() {
     unset -f z
 
-    local ghq_prefix=
-    ghq_prefix="$(ghq root)"
+    local -r ghq_prefix="$(ghq root)"
 
     # shellcheck disable=SC1091
     source "$ghq_prefix/github.com/rupa/z/z.sh" 2>/dev/null
@@ -174,8 +169,7 @@ __main() {
     unset -f __z_completion
     complete -r z
 
-    local ghq_prefix=
-    ghq_prefix="$(ghq root)"
+    local -r ghq_prefix="$(ghq root)"
 
     # shellcheck disable=SC1091
     source "$ghq_prefix/github.com/rupa/z/z.sh" 2>/dev/null && return 124
@@ -184,8 +178,8 @@ __main() {
   # }}}
 
   # go {{{
-  local go_gopath=$HOME/.go
-  local go_gopath_bin=$go_gopath/bin
+  local -r go_gopath=$HOME/.go
+  local -r go_gopath_bin=$go_gopath/bin
   export GOPATH=$go_gopath
   export PATH=$go_gopath_bin:${PATH//$go_gopath_bin/}
   # }}}
@@ -195,7 +189,7 @@ __main() {
   # }}}
 
   # adb/android-platform-tools {{{
-  local android_platform_tools=$HOME/Library/Android/sdk/platform-tools
+  local -r android_platform_tools=$HOME/Library/Android/sdk/platform-tools
   export PATH=$android_platform_tools:${PATH//$android_platform_tools/}
   # }}}
 
@@ -266,20 +260,20 @@ __main() {
 
   # my KaoriYa Vim for macOS
   # via https://github.com/sasaplus1/portable-vim
-  local pvim=$HOME/Binary/vim
+  local -r pvim=$HOME/Binary/vim
   [ -d "$pvim" ] &&
-    local pvim_manpath=$pvim/share/man &&
-    local pvim_path=$pvim/bin &&
+    local -r pvim_manpath=$pvim/share/man &&
+    local -r pvim_path=$pvim/bin &&
     export MANPATH=$pvim_manpath:${MANPATH//$pvim_manpath/} &&
     export PATH=$pvim_path:${PATH//$pvim_path/} &&
     export EDITOR="$pvim_path/portable-vim"
 
   # my KaoriYa Vim for macOS
   # via https://github.com/sasaplus1/macos-vim
-  local mvim=$HOME/.ghq/github.com/sasaplus1/macos-vim
+  local -r mvim=$HOME/.ghq/github.com/sasaplus1/macos-vim
   [ -x "$mvim/usr/bin/vim" ] &&
-    local mvim_manpath=$mvim/share/man &&
-    local mvim_path=$mvim/usr/bin &&
+    local -r mvim_manpath=$mvim/share/man &&
+    local -r mvim_path=$mvim/usr/bin &&
     export MANPATH=$mvim_manpath:${MANPATH//$mvim_manpath/} &&
     export PATH=$mvim_path:${PATH//$mvim_path/} &&
     export EDITOR="$mvim_path/vim"
@@ -308,10 +302,10 @@ __main() {
   # }}}
 
   # universal-ctags {{{
-  local ctags=$homebrew_prefix/opt/universal-ctags
+  local -r ctags=$homebrew_prefix/opt/universal-ctags
   [ -d "$ctags" ] &&
-    local ctags_manpath=$ctags/share/man &&
-    local ctags_path=$ctags/bin &&
+    local -r ctags_manpath=$ctags/share/man &&
+    local -r ctags_path=$ctags/bin &&
     export MANPATH=$ctags_manpath:${MANPATH//$ctags_manpath/} &&
     export PATH=$ctags_path:${PATH//$ctags_path/}
   # }}}
@@ -325,8 +319,8 @@ __main() {
   #-----------------------------------------------------------------------------
 
   # ssh-agent {{{
-  local ssh_agent=/usr/bin/ssh-agent
-  local ssh_agent_info=$HOME/.ssh-agent-info
+  local -r ssh_agent=/usr/bin/ssh-agent
+  local -r ssh_agent_info=$HOME/.ssh-agent-info
 
   # shellcheck disable=SC1090
   source "$ssh_agent_info" 2>/dev/null
@@ -507,11 +501,8 @@ __main() {
   if type urxvt >/dev/null 2>&1
   then
     set-urxvt-font-size() {
-      local old_name=
-      old_name=$(grep -i '^\s*urxvt.font' "$HOME/.Xdefaults" | cut -d: -f2-)
-
-      local new_name=
-      new_name=$(printf -- '%b' "$old_name" | sed -e 's/:\(pixel\)\?size=[0-9]\+/'":\1size=$1/")
+      local -r old_name=$(grep -i '^\s*urxvt.font' "$HOME/.Xdefaults" | cut -d: -f2-)
+      local -r new_name=$(printf -- '%b' "$old_name" | sed -e 's/:\(pixel\)\?size=[0-9]\+/'":\1size=$1/")
 
       [ -n "$TMUX" ] && printf -- '\ePtmux;\e'
       printf -- '\e]50;%s\007' "$new_name"
