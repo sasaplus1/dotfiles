@@ -94,13 +94,13 @@ __main() {
   # bash-completion {{{
   if [ -n "$is_interactive" ] && [ -z "$BASH_COMPLETION" ]
   then
-    # shellcheck disable=SC1091 maybe Linux
+    # shellcheck disable=SC1091
     source /etc/bash_completion 2>/dev/null
-    # shellcheck disable=SC1091 maybe macOS by Homebrew
+    # shellcheck disable=SC1091
     source "$homebrew_prefix/etc/bash_completion" 2>/dev/null
-    # shellcheck disable=SC1091 maybe macOS by MacPorts
+    # shellcheck disable=SC1091
     source /opt/local/etc/bash_completion 2>/dev/null
-    # shellcheck disable=SC1091 maybe macOS by MacPorts since ver.2.1.2
+    # shellcheck disable=SC1091
     source /opt/local/etc/profile.d/bash_completion.sh 2>/dev/null
   fi
   # }}}
