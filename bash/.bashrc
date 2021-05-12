@@ -25,14 +25,14 @@ __main() {
 
   local homebrew_dir=
 
-  if [ "$os" = 'macos' ]
+  if [ "$os" == 'macos' ]
   then
     [ -d '/usr/local/Homebrew' ] && homebrew_dir=/usr/local
     # NOTE: my original location
     [ -d "$HOME/Homebrew" ] && homebrew_dir=$HOME/Homebrew
   fi
 
-  if [ "$os" = 'linux' ]
+  if [ "$os" == 'linux' ]
   then
     [ -d '/home/linuxbrew/.linuxbrew/Homebrew' ] && homebrew_dir=/home/linuxbrew/.linuxbrew
     [ -d "$HOME/.linuxbrew/Homebrew" ] && homebrew_dir=$HOME/.linuxbrew
@@ -619,7 +619,7 @@ __main() {
 
         read -r col1 col2 < "$head_file"
 
-        if [ "$col1" = 'ref:' ]
+        if [ "$col1" == 'ref:' ]
         then
           refs=${col2/#refs\/heads\//}
         else
@@ -641,7 +641,7 @@ __main() {
     # some git infomations
     if [ -n "$is_git" ]
     then
-      [ "$repo_type" = 'git' ] &&
+      [ "$repo_type" == 'git' ] &&
         prompt="${prompt} ${cyan}(${repo_type}:${reset}" || 
         prompt="${prompt} ${cyan}(${red}${repo_type}${reset}${cyan}:${reset}"
 
