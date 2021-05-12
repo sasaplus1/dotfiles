@@ -56,18 +56,21 @@ __main() {
     [ -d "$HOME/.linuxbrew/Homebrew" ] && homebrew_dir=$HOME/.linuxbrew
   fi
 
-  local -r homebrew_infopath=$homebrew_dir/share/info
-  local -r homebrew_manpath=$homebrew_dir/share/man
-  local -r homebrew_path=$homebrew_dir/bin
+  if [ -d "$homebrew_dir" ]
+  then
+    local -r homebrew_infopath=$homebrew_dir/share/info
+    local -r homebrew_manpath=$homebrew_dir/share/man
+    local -r homebrew_path=$homebrew_dir/bin
 
-  add-path INFOPATH $homebrew_infopath
-  add-path MANPATH $homebrew_manpath
-  add-path PATH $homebrew_path
+    add-path INFOPATH "$homebrew_infopath"
+    add-path MANPATH "$homebrew_manpath"
+    add-path PATH "$homebrew_path"
 
-  # NOTE: brew --prefix is very slow https://github.com/Homebrew/brew/issues/3097
-  local -r homebrew_prefix="$(dirname "$(dirname "$(type -tP brew)")")"
+    # NOTE: brew --prefix is very slow https://github.com/Homebrew/brew/issues/3097
+    local -r homebrew_prefix="$(dirname "$(dirname "$(type -tP brew)")")"
 
-  [ -d "$homebrew_prefix" ] && export HOMEBREW_DIR=$homebrew_dir
+    [ -d "$homebrew_prefix" ] && export HOMEBREW_DIR=$homebrew_dir
+  fi
 
   #-----------------------------------------------------------------------------
 
@@ -103,7 +106,7 @@ __main() {
 
   # rbenv {{{
   local -r rbenv=$HOME/.rbenv/bin
-  add-path PATH $rbenv
+  add-path PATH "$rbenv"
 
   # lazy loading
   rbenv() {
@@ -127,7 +130,7 @@ __main() {
 
   # pyenv {{{
   local -r pyenv=$HOME/.pyenv/shims
-  add-path PATH $pyenv
+  add-path PATH "$pyenv"
 
   # lazy loading
   pyenv() {
@@ -151,7 +154,7 @@ __main() {
 
   # nodebrew and npm completion {{{
   local -r nodebrew=$HOME/.nodebrew/current/bin
-  add-path PATH $nodebrew
+  add-path PATH "$nodebrew"
 
   # nodebrew-completion
   __nodebrew_completion() {
@@ -210,7 +213,7 @@ __main() {
   local -r go_gopath=$HOME/.go
   local -r go_gopath_bin=$go_gopath/bin
   export GOPATH=$go_gopath
-  add-path PATH $go_gopath_bin
+  add-path PATH "$go_gopath_bin"
   # }}}
 
   # ghq {{{
@@ -219,7 +222,7 @@ __main() {
 
   # adb/android-platform-tools {{{
   local -r android_platform_tools=$HOME/Library/Android/sdk/platform-tools
-  add-path PATH $android_platform_tools
+  add-path PATH "$android_platform_tools"
   # }}}
 
   # cocproxy for nginx {{{
@@ -238,19 +241,14 @@ __main() {
   export FZF_DEFAULT_OPTS=${fzf_opts[*]}
 
   fzf() {
-    local fzf=
-
-    fzf="$(type -tP fzf)"
+    local -r fzf="$(type -tP fzf)"
 
     local position=
 
     if [[ "$TERM" =~ ^(screen|tmux) ]] && type tmux >/dev/null 2>&1
     then
-      local window_width=
-      local pane_width=
-
-      window_width="$(tmux display-message -p "#{window_width}")"
-      pane_width="$(tmux display-message -p "#{pane_width}")"
+      local -r window_width="$(tmux display-message -p "#{window_width}")"
+      local -r pane_width="$(tmux display-message -p "#{pane_width}")"
 
       [ "$window_width" -ne "$pane_width" ] && position='--preview-window=bottom'
     fi
@@ -293,8 +291,8 @@ __main() {
   [ -d "$pvim" ] &&
     local -r pvim_manpath=$pvim/share/man &&
     local -r pvim_path=$pvim/bin &&
-    add-path MANPATH $pvim_manpath &&
-    add-path PATH $pvim_path &&
+    add-path MANPATH "$pvim_manpath" &&
+    add-path PATH "$pvim_path" &&
     export EDITOR="$pvim_path/portable-vim"
 
   # my KaoriYa Vim for macOS
@@ -303,16 +301,13 @@ __main() {
   [ -x "$mvim/usr/bin/vim" ] &&
     local -r mvim_manpath=$mvim/share/man &&
     local -r mvim_path=$mvim/usr/bin &&
-    add-path MANPATH $mvim_manpath &&
-    add-path PATH $mvim_path &&
+    add-path MANPATH "$mvim_manpath" &&
+    add-path PATH "$mvim_path" &&
     export EDITOR="$mvim_path/vim"
 
   vim() {
-    local mvim=
-    local pvim=
-
-    mvim="$HOME/.ghq/github.com/sasaplus1/macos-vim/usr/bin/vim"
-    pvim="$HOME/Binary/vim/bin/portable-vim"
+    local -r mvim="$HOME/.ghq/github.com/sasaplus1/macos-vim/usr/bin/vim"
+    local -r pvim="$HOME/Binary/vim/bin/portable-vim"
 
     if [ -x "$mvim" ]
     then
@@ -335,15 +330,15 @@ __main() {
   [ -d "$ctags" ] &&
     local -r ctags_manpath=$ctags/share/man &&
     local -r ctags_path=$ctags/bin &&
-    add-path MANPATH $ctags_manpath &&
-    add-path PATH $ctags_path
+    add-path MANPATH "$ctags_manpath" &&
+    add-path PATH "$ctags_path"
   # }}}
 
   #-----------------------------------------------------------------------------
 
   # ssh-agent {{{
-  local -r ssh_agent=/usr/bin/ssh-agent
-  local -r ssh_agent_info=$HOME/.ssh-agent-info
+  local -r ssh_agent="$(type -tP ssh-agent)"
+  local -r ssh_agent_info="$HOME/.ssh-agent-info"
 
   # shellcheck disable=SC1090
   source "$ssh_agent_info" 2>/dev/null
