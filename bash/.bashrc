@@ -6,9 +6,15 @@ __main() {
   local os=
 
   case "$OSTYPE" in
-    darwin*) os=macos ;;
-    linux*)  os=linux ;;
-    *)       os=      ;;
+    darwin*)
+      os=macos
+      ;;
+    linux*)
+      os=linux
+      ;;
+    *)
+      os=
+      ;;
   esac
 
   local is_dumb=
@@ -120,8 +126,6 @@ __main() {
     unset -f __rbenv_completion
     complete -r rbenv
 
-    local -r homebrew_prefix="$(dirname "$(dirname "$(type -tP brew)")")"
-
     # shellcheck disable=SC1091
     source "$homebrew_prefix/opt/rbenv/completions/rbenv.bash" 2>/dev/null && return 124
   }
@@ -143,8 +147,6 @@ __main() {
   __pyenv_completion() {
     unset -f __pyenv_completion
     complete -r pyenv
-
-    local -r homebrew_prefix="$(dirname "$(dirname "$(type -tP brew)")")"
 
     # shellcheck disable=SC1091
     source "$homebrew_prefix/opt/pyenv/completions/pyenv.bash" 2>/dev/null && return 124
