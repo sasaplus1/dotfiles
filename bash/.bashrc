@@ -51,6 +51,15 @@ __main() {
 
   #-----------------------------------------------------------------------------
 
+  if [ "$os" == 'macos' ] && [ -d '/opt/local' ]
+  then
+    export INFOPATH=/opt/local/share/info:$INFOPATH
+    export MANPATH=/opt/local/share/man:$MANPATH
+    export PATH=/opt/loca/bin:$PATH
+  fi
+
+  #-----------------------------------------------------------------------------
+
   # bash-completion {{{
   if [ -n "$is_interactive" ] && [ -z "$BASH_COMPLETION" ]
   then
