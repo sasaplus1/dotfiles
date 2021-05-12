@@ -1,6 +1,8 @@
 #!/bin/bash
 
 __main() {
+  unset -f __main
+
   local os=
 
   case "$OSTYPE" in
@@ -729,9 +731,6 @@ __main() {
     type tmux >/dev/null 2>&1 && tmux
   fi
 }
-
 __main "$@"
-
-unset -f __main
 
 # vim:ft=sh:fdm=marker:fen:
