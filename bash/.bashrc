@@ -23,6 +23,24 @@ __main() {
 
   #-----------------------------------------------------------------------------
 
+  # add $2 to $1 if not duplicate
+  # @param $1 variable name
+  # @param $2 path string
+  # @example add-path PATH /opt/local/bin
+  add-path() {
+    # NOTE: https://stackoverflow.com/a/14050187
+    case ":${!1}:" in
+      *":$2:"*)
+        :
+        ;;
+      *)
+        export "$1"="$2":"${!1}"
+        ;;
+    esac
+  }
+
+  #-----------------------------------------------------------------------------
+
   local homebrew_dir=
 
   if [ "$os" == 'macos' ]
@@ -42,9 +60,9 @@ __main() {
   local -r homebrew_manpath=$homebrew_dir/share/man
   local -r homebrew_path=$homebrew_dir/bin
 
-  export INFOPATH=$homebrew_infopath:${INFOPATH//$homebrew_infopath/}
-  export MANPATH=$homebrew_manpath:${MANPATH//$homebrew_manpath/}
-  export PATH=$homebrew_path:${PATH//$homebrew_path/}
+  add-path INFOPATH $homebrew_infopath
+  add-path MANPATH $homebrew_manpath
+  add-path PATH $homebrew_path
 
   # NOTE: brew --prefix is very slow https://github.com/Homebrew/brew/issues/3097
   local -r homebrew_prefix="$(dirname "$(dirname "$(type -tP brew)")")"
@@ -55,9 +73,9 @@ __main() {
 
   if [ "$os" == 'macos' ] && [ -d '/opt/local' ]
   then
-    export INFOPATH=/opt/local/share/info:$INFOPATH
-    export MANPATH=/opt/local/share/man:$MANPATH
-    export PATH=/opt/loca/bin:$PATH
+    add-path INFOPATH /opt/local/share/info
+    add-path MANPATH /opt/local/share/man
+    add-path PATH /opt/loca/bin
   fi
 
   #-----------------------------------------------------------------------------
@@ -85,7 +103,7 @@ __main() {
 
   # rbenv {{{
   local -r rbenv=$HOME/.rbenv/bin
-  export PATH=$rbenv:${PATH//$rbenv/}
+  add-path PATH $rbenv
 
   # lazy loading
   rbenv() {
@@ -109,7 +127,7 @@ __main() {
 
   # pyenv {{{
   local -r pyenv=$HOME/.pyenv/shims
-  export PATH=$pyenv:${PATH//$pyenv/}
+  add-path PATH $pyenv
 
   # lazy loading
   pyenv() {
@@ -133,7 +151,7 @@ __main() {
 
   # nodebrew and npm completion {{{
   local -r nodebrew=$HOME/.nodebrew/current/bin
-  export PATH=$nodebrew:${PATH//$nodebrew/}
+  add-path PATH $nodebrew
 
   # nodebrew-completion
   __nodebrew_completion() {
@@ -192,7 +210,7 @@ __main() {
   local -r go_gopath=$HOME/.go
   local -r go_gopath_bin=$go_gopath/bin
   export GOPATH=$go_gopath
-  export PATH=$go_gopath_bin:${PATH//$go_gopath_bin/}
+  add-path PATH $go_gopath_bin
   # }}}
 
   # ghq {{{
@@ -201,7 +219,7 @@ __main() {
 
   # adb/android-platform-tools {{{
   local -r android_platform_tools=$HOME/Library/Android/sdk/platform-tools
-  export PATH=$android_platform_tools:${PATH//$android_platform_tools/}
+  add-path PATH $android_platform_tools
   # }}}
 
   # cocproxy for nginx {{{
@@ -275,8 +293,8 @@ __main() {
   [ -d "$pvim" ] &&
     local -r pvim_manpath=$pvim/share/man &&
     local -r pvim_path=$pvim/bin &&
-    export MANPATH=$pvim_manpath:${MANPATH//$pvim_manpath/} &&
-    export PATH=$pvim_path:${PATH//$pvim_path/} &&
+    add-path MANPATH $pvim_manpath &&
+    add-path PATH $pvim_path &&
     export EDITOR="$pvim_path/portable-vim"
 
   # my KaoriYa Vim for macOS
@@ -285,8 +303,8 @@ __main() {
   [ -x "$mvim/usr/bin/vim" ] &&
     local -r mvim_manpath=$mvim/share/man &&
     local -r mvim_path=$mvim/usr/bin &&
-    export MANPATH=$mvim_manpath:${MANPATH//$mvim_manpath/} &&
-    export PATH=$mvim_path:${PATH//$mvim_path/} &&
+    add-path MANPATH $mvim_manpath &&
+    add-path PATH $mvim_path &&
     export EDITOR="$mvim_path/vim"
 
   vim() {
@@ -317,15 +335,9 @@ __main() {
   [ -d "$ctags" ] &&
     local -r ctags_manpath=$ctags/share/man &&
     local -r ctags_path=$ctags/bin &&
-    export MANPATH=$ctags_manpath:${MANPATH//$ctags_manpath/} &&
-    export PATH=$ctags_path:${PATH//$ctags_path/}
+    add-path MANPATH $ctags_manpath &&
+    add-path PATH $ctags_path
   # }}}
-
-  #-----------------------------------------------------------------------------
-
-  INFOPATH="$(printf -- '%b' "$INFOPATH" | sed -e 's/:\{2,\}/:/' -e 's/:$//')"
-  MANPATH="$(printf -- '%b' "$MANPATH" | sed -e 's/:\{2,\}/:/' -e 's/:$//')"
-  PATH="$(printf -- '%b' "$PATH" | sed -e 's/:\{2,\}/:/' -e 's/:$//')"
 
   #-----------------------------------------------------------------------------
 
