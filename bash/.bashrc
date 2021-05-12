@@ -95,13 +95,13 @@ __main() {
   if [ -n "$is_interactive" ] && [ -z "$BASH_COMPLETION" ]
   then
     # shellcheck disable=SC1091
-    source /etc/bash_completion 2>/dev/null
-    # shellcheck disable=SC1091
-    source "$homebrew_prefix/etc/bash_completion" 2>/dev/null
+    source /opt/local/etc/profile.d/bash_completion.sh 2>/dev/null
     # shellcheck disable=SC1091
     source /opt/local/etc/bash_completion 2>/dev/null
     # shellcheck disable=SC1091
-    source /opt/local/etc/profile.d/bash_completion.sh 2>/dev/null
+    source "$homebrew_prefix/etc/bash_completion" 2>/dev/null
+    # shellcheck disable=SC1091
+    source /etc/bash_completion 2>/dev/null
   fi
   # }}}
 
