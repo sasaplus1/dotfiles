@@ -35,6 +35,7 @@ __main() {
   # @param $1 variable name
   # @param $2 path string
   # @example add-path PATH /opt/local/bin
+  # @see https://unix.stackexchange.com/a/14898
   add-path() {
     # NOTE: https://stackoverflow.com/a/14050187
     case ":${!1}:" in
