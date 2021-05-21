@@ -81,7 +81,11 @@ cnoremap <C-p> <Up>
 " cnoremap <M-f> <S-Right>
 
 " grepをする
-command! -nargs=1 Grep execute "silent! grep! '<args>' | redraw! | copen"
+" based on https://zenn.dev/skanehira/articles/2020-09-18-vim-cexpr-quickfix
+function! s:grep(word) abort
+  cexpr system(printf('%s "%s"', &grepprg, a:word)) | cwin
+endfunction
+command! -nargs=1 Grep call <SID>grep(<q-args>)
 nnoremap ,gr :<C-u>Grep<Space>
 
 " C-kでオムニ補完
