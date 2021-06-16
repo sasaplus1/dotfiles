@@ -111,11 +111,12 @@ __main() {
   # NOTE: lazy load command https://qiita.com/uasi/items/80865646607b966aedc8
   # NOTE: lazy load completion https://qiita.com/kawaz/items/ba6140bca32bbd3cb928
 
-  # nodebrew and npm completion {{{
+  # nodebrew {{{
   local -r nodebrew=$HOME/.nodebrew/current/bin
   add-path PATH "$nodebrew"
+  # }}}
 
-  # nodebrew-completion
+  # nodebrew-completion {{{
   __nodebrew_completion() {
     unset -f __nodebrew_completion
     complete -r nodebrew
@@ -123,16 +124,18 @@ __main() {
     source "$HOME/.nodebrew/completions/bash/nodebrew-completion" 2>/dev/null && return 124
   }
   complete -F __nodebrew_completion nodebrew
+  # }}}
 
-  # npm-completion
+  # npm-completion {{{
   __npm_completion() {
     unset -f __npm_completion
     complete -r npm
     eval "$(npm completion)" && return 124
   }
   complete -F __npm_completion npm
+  # }}}
 
-  # gh-completion
+  # gh-completion {{{
   __gh_completion() {
     unset -f __gh_completion
     complete -r gh
