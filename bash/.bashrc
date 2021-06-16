@@ -111,28 +111,6 @@ __main() {
   # NOTE: lazy load command https://qiita.com/uasi/items/80865646607b966aedc8
   # NOTE: lazy load completion https://qiita.com/kawaz/items/ba6140bca32bbd3cb928
 
-  # pyenv {{{
-  local -r pyenv=$HOME/.pyenv/shims
-  add-path PATH "$pyenv"
-
-  # lazy loading
-  pyenv() {
-    unset -f pyenv
-    eval "$(pyenv init -)"
-    pyenv "$@"
-  }
-
-  # pyenv-completion
-  __pyenv_completion() {
-    unset -f __pyenv_completion
-    complete -r pyenv
-
-    # shellcheck disable=SC1091
-    source "$homebrew_prefix/opt/pyenv/completions/pyenv.bash" 2>/dev/null && return 124
-  }
-  complete -F __pyenv_completion pyenv
-  # }}}
-
   # nodebrew and npm completion {{{
   local -r nodebrew=$HOME/.nodebrew/current/bin
   add-path PATH "$nodebrew"
