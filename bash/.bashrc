@@ -111,28 +111,6 @@ __main() {
   # NOTE: lazy load command https://qiita.com/uasi/items/80865646607b966aedc8
   # NOTE: lazy load completion https://qiita.com/kawaz/items/ba6140bca32bbd3cb928
 
-  # rbenv {{{
-  local -r rbenv=$HOME/.rbenv/bin
-  add-path PATH "$rbenv"
-
-  # lazy loading
-  rbenv() {
-    unset -f rbenv
-    eval "$(rbenv init -)"
-    rbenv "$@"
-  }
-
-  # rbenv-completion
-  __rbenv_completion() {
-    unset -f __rbenv_completion
-    complete -r rbenv
-
-    # shellcheck disable=SC1091
-    source "$homebrew_prefix/opt/rbenv/completions/rbenv.bash" 2>/dev/null && return 124
-  }
-  complete -F __rbenv_completion rbenv
-  # }}}
-
   # pyenv {{{
   local -r pyenv=$HOME/.pyenv/shims
   add-path PATH "$pyenv"
