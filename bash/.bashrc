@@ -296,15 +296,6 @@ __main() {
 
   #-----------------------------------------------------------------------------
 
-  # up.sh {{{
-  up() {
-    unset -f up
-    # shellcheck disable=SC1091
-    source "$HOME/.ghq/github.com/shannonmoeller/up/up.sh" 2>/dev/null
-    up "$@"
-  }
-  # }}}
-
   # down.sh {{{
   export _DOWN_CMD=dw
   dw() {
