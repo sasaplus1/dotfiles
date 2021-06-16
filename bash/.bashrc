@@ -115,6 +115,16 @@ __main() {
   # NOTE: lazy load command https://qiita.com/uasi/items/80865646607b966aedc8
   # NOTE: lazy load completion https://qiita.com/kawaz/items/ba6140bca32bbd3cb928
 
+  # nvm {{{
+  if [ -z "${XDG_CONFIG_HOME-}" ]
+  then
+    export NVM_DIR="$HOME/.nvm"
+  else
+    export NVM_DIR="${XDG_CONFIG_HOME}/nvm"
+  fi
+  [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
+  # }}}
+
   # nodebrew {{{
   local -r nodebrew=$HOME/.nodebrew/current/bin
   add-path PATH "$nodebrew"
