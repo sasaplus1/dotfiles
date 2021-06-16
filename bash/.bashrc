@@ -210,13 +210,12 @@ __main() {
   # }}}
 
   # fzf {{{
-  local fzf_opts=
+  FZF_DEFAULT_OPTS=
+  FZF_DEFAULT_OPTS+=' --border --cycle --height=80%'
+  FZF_DEFAULT_OPTS+=' --info=hidden --layout=reverse --preview-window=right'
+  FZF_DEFAULT_OPTS+=' --bind ctrl-j:preview-down,ctrl-k:preview-up'
 
-  fzf_opts=()
-  fzf_opts+=('--border --cycle --height=80% --info=hidden --layout=reverse --preview-window=right')
-  fzf_opts+=('--bind ctrl-j:preview-down,ctrl-k:preview-up')
-
-  export FZF_DEFAULT_OPTS=${fzf_opts[*]}
+  export FZF_DEFAULT_OPTS
 
   fzf() {
     local -r fzf="$(type -tP fzf)"
