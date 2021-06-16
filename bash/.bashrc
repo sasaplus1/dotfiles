@@ -133,8 +133,11 @@ __main() {
   __nodebrew_completion() {
     unset -f __nodebrew_completion
     complete -r nodebrew
+
+    local -r completion="$HOME/.nodebrew/completions/bash/nodebrew-completion"
+
     # shellcheck disable=SC1091
-    source "$HOME/.nodebrew/completions/bash/nodebrew-completion" 2>/dev/null && return 124
+    [ -f "$completion" ] && source "$completion" && return 124
   }
   complete -F __nodebrew_completion nodebrew
   # }}}
