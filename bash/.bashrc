@@ -85,9 +85,11 @@ __main() {
 
   if [ "$os" == 'macos' ] && [ -d '/opt/local' ]
   then
-    add-path INFOPATH /opt/local/share/info
-    add-path MANPATH /opt/local/share/man
-    add-path PATH /opt/local/bin
+    add-path INFOPATH "$macports_prefix/share/info"
+    add-path MANPATH "$macports_prefix/share/man"
+    add-path PATH "$macports_prefix/bin"
+
+    local -r macports_prefix=/opt/local
   fi
 
   #-----------------------------------------------------------------------------
