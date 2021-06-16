@@ -296,16 +296,6 @@ __main() {
 
   #-----------------------------------------------------------------------------
 
-  # down.sh {{{
-  export _DOWN_CMD=dw
-  dw() {
-    unset -f dw
-    # shellcheck disable=SC1091
-    source "$HOME/.ghq/github.com/sasaplus1/down.sh/down.sh" 2>/dev/null
-    dw "$@"
-  }
-  # }}}
-
   # github-slug.sh {{{
   export _GITHUB_SLUG_COMMAND=slug
   __lazy-github-slug() {
