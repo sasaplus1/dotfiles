@@ -126,8 +126,7 @@ __main() {
   # }}}
 
   # nodebrew {{{
-  local -r nodebrew=$HOME/.nodebrew/current/bin
-  add-path PATH "$nodebrew"
+  add-path PATH "$HOME/.nodebrew/current/bin"
   # }}}
 
   # nodebrew-completion {{{
