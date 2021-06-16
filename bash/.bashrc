@@ -87,7 +87,7 @@ __main() {
   then
     add-path INFOPATH /opt/local/share/info
     add-path MANPATH /opt/local/share/man
-    add-path PATH /opt/loca/bin
+    add-path PATH /opt/local/bin
   fi
 
   #-----------------------------------------------------------------------------
