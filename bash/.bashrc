@@ -104,7 +104,7 @@ __main() {
       /etc/bash_completion
     do
       [ -n "$BASH_COMPLETION" ] && break
-      # shellcheck disable=SC1091
+      # shellcheck disable=SC1090
       [ -f "$bash_completion" ] && source "$bash_completion"
     done
   fi
@@ -122,6 +122,7 @@ __main() {
   else
     export NVM_DIR="${XDG_CONFIG_HOME}/nvm"
   fi
+  # shellcheck disable=SC1091
   [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
   # }}}
 
@@ -136,7 +137,7 @@ __main() {
 
     local -r completion="$HOME/.nodebrew/completions/bash/nodebrew-completion"
 
-    # shellcheck disable=SC1091
+    # shellcheck disable=SC1090
     [ -f "$completion" ] && source "$completion" && return 124
   }
   complete -F __nodebrew_completion nodebrew
