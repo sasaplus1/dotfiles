@@ -1010,6 +1010,10 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     call dein#add('vim-jp/vimdoc-ja')
     " }}}
 
+    " sasaplus1/ameba-color-palette.dict {{{
+    call dein#add('sasaplus1/ameba-color-palette.dict')
+    " }}}
+
     call dein#end()
   endif
 
