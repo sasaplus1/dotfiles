@@ -887,25 +887,6 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \ })
     " }}}
 
-    " vim-jp/vim-go-extra {{{
-    function! s:hook_post_update_vim_go_extra() abort
-      if !executable('golsp')
-        execute '!go get -u golang.org/x/tools/cmd/golsp'
-      endif
-      if !executable('golint')
-        execute '!go get -u golang.org/x/lint/golint'
-      endif
-    endfunction
-
-    call dein#add('vim-jp/vim-go-extra', {
-          \ 'hook_post_update' : function('s:hook_post_update_vim_go_extra'),
-          \ 'lazy' : 1,
-          \ 'on_ft' : [
-          \   'go',
-          \ ],
-          \ })
-    " }}}
-
     " sasaplus1/ameba-color-palette.dict {{{
     call dein#add('sasaplus1/ameba-color-palette.dict')
     " }}}
