@@ -626,11 +626,14 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \   '<Plug>(coc-',
           \ ],
           \ 'on_ft' : [
+          \   'css',
+          \   'html',
           \   'javascript',
           \   'javascriptreact',
           \   'json',
           \   'typescript',
           \   'typescriptreact',
+          \   'yaml',
           \ ],
           \ 'on_map' : [
           \   '<TAB>',
