@@ -243,9 +243,6 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     " }}}
 
     " ctrlpvim/ctrlp.vim {{{
-    " function! s:ctrlp_match(items, str, limit, mmode, ispath, crfile, regex) abort
-    " endfunction
-
     function! s:hook_add_ctrlpvim() abort
       " <C-p>のコマンドを変更する
       let g:ctrlp_cmd = 'CtrlPMixed'
@@ -273,10 +270,6 @@ if (v:version >= 704 || has('nvim')) && executable('git')
         " マッチャーを変更する
         let g:ctrlp_match_func = { 'match' : 'ctrlp_matchfuzzy#matcher' }
       endif
-
-      " let g:ctrlp_match_func = {
-      "       \ 'match' : function('s:ctrlp_match')
-      "       \ }
 
       " ドットで始まるファイルやディレクトリを表示する
       let g:ctrlp_show_hidden = 1
