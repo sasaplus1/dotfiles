@@ -1,5 +1,6 @@
 {
   "css.validate": false,
+  "diagnostic.displayByAle": true,
   "javascript.format.enabled": false,
   "javascript.suggest.enabled": false,
   "javascript.validate.enable" :false,

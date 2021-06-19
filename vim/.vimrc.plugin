@@ -444,7 +444,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
       let g:ale_completion_enabled = 0
 
       " aleでLSPを使わない
-      " let g:ale_disable_lsp = 1
+      let g:ale_disable_lsp = 1
 
       " プレビューでメッセージを表示する
       let g:ale_hover_to_preview = 1
@@ -477,12 +477,12 @@ if (v:version >= 704 || has('nvim')) && executable('git')
             \ }
       " fixerの設定
       let g:ale_fixers = {
-            \ 'css' : ['stylelint'],
+            \ 'css' : ['prettier'],
             \ 'javascript' : ['prettier'],
             \ 'javascriptreact' : ['prettier'],
             \ 'javascript.jsx' : ['prettier'],
             \ 'json' : ['prettier'],
-            \ 'scss' : ['stylelint'],
+            \ 'scss' : ['prettier'],
             \ 'typescript' : ['prettier'],
             \ 'typescriptreact' : ['prettier'],
             \ }
@@ -582,6 +582,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
       let modules = [
             \ 'coc-css',
             \ 'coc-cssmodules',
+            \ 'coc-dictionary',
             \ 'coc-html',
             \ 'coc-json',
             \ 'coc-tsserver',
