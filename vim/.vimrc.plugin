@@ -906,6 +906,10 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \ })
     " }}}
 
+    " sasaplus1/ameba-color-palette.dict {{{
+    call dein#add('sasaplus1/ameba-color-palette.dict')
+    " }}}
+
     " digitaltoad/vim-pug {{{
     call dein#add('digitaltoad/vim-pug', {
           \ 'lazy' : 1,
@@ -1001,10 +1005,6 @@ if (v:version >= 704 || has('nvim')) && executable('git')
 
     " vim-jp/vimdoc-ja {{{
     call dein#add('vim-jp/vimdoc-ja')
-    " }}}
-
-    " sasaplus1/ameba-color-palette.dict {{{
-    call dein#add('sasaplus1/ameba-color-palette.dict')
     " }}}
 
     call dein#end()
