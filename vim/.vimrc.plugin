@@ -518,6 +518,23 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \ })
     " }}}
 
+    " tokorom/asyncomplete-dictionary.vim {{{
+    function! s:hook_add_asyncomplete_dictionary_vim() abort
+      autocmd User asyncomplete_setup call asyncomplete#register_source({
+          \ 'name': 'dictionary',
+          \ 'allowlist': ['*'],
+          \ 'completor': function('asyncomplete#sources#dictionary#completor'),
+          \ })
+    endfunction
+
+    call dein#add('tokorom/asyncomplete-dictionary.vim', {
+          \ 'depends' : [
+          \   'asyncomplete.vim',
+          \ ],
+          \ 'hook_add' : function('s:hook_add_asyncomplete_dictionary_vim'),
+          \ })
+    " }}}
+
     " editorconfig/editorconfig-vim {{{
     call dein#add('editorconfig/editorconfig-vim')
     " }}}
