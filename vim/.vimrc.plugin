@@ -497,6 +497,27 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \ })
     " }}}
 
+    " prabirshrestha/asyncomplete.vim {{{
+    function! s:hook_add_asyncomplete_vim() abort
+      inoremap <silent><expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+      inoremap <silent><expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+      inoremap <silent><expr> <CR> pumvisible() ? asyncomplete#close_popup() : "\<CR>"
+      inoremap <silent><expr> <C-k> <Plug>(asyncomplete_force_refresh)
+    endfunction
+
+    call dein#add('prabirshrestha/asyncomplete.vim', {
+          \ 'hook_add' : function('s:hook_add_asyncomplete_vim'),
+          \ })
+    " }}}
+
+    " prabirshrestha/asyncomplete-lsp.vim {{{
+    call dein#add('prabirshrestha/asyncomplete-lsp.vim', {
+          \ 'depends' : [
+          \   'asyncomplete.vim',
+          \ ],
+          \ })
+    " }}}
+
     " editorconfig/editorconfig-vim {{{
     call dein#add('editorconfig/editorconfig-vim')
     " }}}
