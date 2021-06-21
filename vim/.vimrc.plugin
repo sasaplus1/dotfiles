@@ -385,6 +385,147 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \ })
     " }}}
 
+    " dense-analysis/ale {{{
+    function! s:hook_add_ale() abort
+      " 明示的に指定する
+      let g:ale_linters_explicit = 1
+
+      " aleで入力補完をしない
+      let g:ale_completion_enabled = 0
+
+      " aleでLSPを使わない
+      let g:ale_disable_lsp = 1
+
+      " プレビューでメッセージを表示する
+      let g:ale_hover_to_preview = 1
+
+      " 保存した時にlintする
+      let g:ale_lint_on_save = 1
+
+      " 編集してもlintしない
+      let g:ale_lint_on_text_changed = 'never'
+
+      " 挿入モードから離れたらlintする
+      let g:ale_lint_on_insert_leave = 1
+
+      " 無視するファイルの設定
+      let g:ale_pattern_options = {
+            \ '\.d\.ts$' : { 'ale_enabled' : 0 },
+            \ '\.min\.js$' : { 'ale_enabled' : 0 }
+            \ }
+
+      " linterの設定
+      let g:ale_linters = {
+            \ 'css' : ['stylelint'],
+            \ 'javascript' : ['eslint'],
+            \ 'javascript.jsx' : ['eslint'],
+            \ 'javascriptreact' : ['eslint'],
+            \ 'json' : [],
+            \ 'scss' : ['stylelint'],
+            \ 'typescript' : ['eslint', 'tslint', 'tsserver'],
+            \ 'typescriptreact' : ['eslint', 'tslint', 'tsserver'],
+            \ }
+
+      " fixerの設定
+      let g:ale_fixers = {
+            \ 'css' : ['prettier'],
+            \ 'javascript' : ['prettier'],
+            \ 'javascript.jsx' : ['prettier'],
+            \ 'javascriptreact' : ['prettier'],
+            \ 'json' : ['prettier'],
+            \ 'scss' : ['prettier'],
+            \ 'typescript' : ['prettier'],
+            \ 'typescriptreact' : ['prettier'],
+            \ }
+    endfunction
+
+    function! s:hook_source_ale() abort
+      " eslintでの検査はキャッシュを使い、エラーが多いときは中断する
+      autocmd vimrc FileType javascript,javascriptreact,typescript,typescriptreact,vue
+            \  let b:ale_javascript_eslint_options = '--cache --max-warnings 20'
+
+      " JSONならprettierのパーサにjson-stringifyを使用する
+      autocmd vimrc FileType json let b:ale_javascript_prettier_options = '--parser json-stringify'
+
+      " 保存時fixする
+      autocmd vimrc FileType css,scss,json,javascript,javascriptreact,typescript,typescriptreact
+            \ let b:ale_fix_on_save = 1
+
+      " eslint-plugin-prettierがインストールされていたらそちらをfixerとして使う
+      function! s:fix_with_eslint_plugin_prettier(dir) abort
+        let node_modules_dir = fnamemodify(
+              \ finddir('node_modules', a:dir . ';'),
+              \ ':p')
+
+        if empty(node_modules_dir)
+          return
+        endif
+
+        let modules = ['eslint', 'eslint-plugin-prettier', 'prettier']
+        let module_dirs = map(
+              \ copy(modules),
+              \ 'node_modules_dir . v:val'
+              \ )
+        let exist_dirs = filter(
+              \ copy(module_dirs),
+              \ 'isdirectory(v:val)'
+              \ )
+
+        if len(exist_dirs) != len(modules)
+          return
+        endif
+
+        let b:ale_fixers = {
+              \ 'javascript' : ['eslint'],
+              \ 'javascriptreact' : ['eslint'],
+              \ 'javascript.jsx' : ['eslint'],
+              \ 'typescript' : ['eslint'],
+              \ 'typescriptreact' : ['eslint'],
+              \ }
+      endfunction
+
+      autocmd vimrc FileType javascript,javascriptreact,typescript,typescriptreact
+            \ call s:fix_with_eslint_plugin_prettier(expand('%:p:h'))
+
+      " ファイルのカレントディレクトリから実行する
+      " monorepo毎に.eslintignoreがある場合などに有効
+      " autocmd vimrc BufNewFile,BufRead * let b:ale_command_wrapper = printf("cd '%s' && %s", expand("%:p:h"), '%*')
+
+      function! s:ale_buffer_setup() abort
+        " エラーのある行に移動する
+        nnoremap <buffer><silent> [g :<C-u>ALENextWrap<CR>
+        nnoremap <buffer><silent> ]g :<C-u>ALEPreviousWrap<CR>
+
+        " 現在のバッファで有効・無効を切り替える
+        nnoremap <buffer> ,ad :<C-u>ALEDisableBuffer<CR>
+        nnoremap <buffer> ,ae :<C-u>ALEEnableBuffer<CR>
+
+        " ALEの有効・無効を切り替える
+        nnoremap <buffer> ,aD :<C-u>ALEDisable<CR>
+        nnoremap <buffer> ,aE :<C-u>ALEEnable<CR>
+      endfunction
+
+      autocmd vimrc FileType css,javascript,javascript.jsx,javascriptreact,json,scss,typescript,typescriptreact
+            \ call s:ale_buffer_setup()
+    endfunction
+
+    call dein#add('dense-analysis/ale', {
+          \ 'hook_add' : function('s:hook_add_ale'),
+          \ 'hook_source' : function('s:hook_source_ale'),
+          \ 'lazy' : 1,
+          \ 'on_ft' : [
+          \   'css',
+          \   'javascript',
+          \   'javascript.jsx',
+          \   'javascriptreact',
+          \   'json',
+          \   'scss',
+          \   'typescript',
+          \   'typescriptreact',
+          \ ],
+          \ })
+    " }}}
+
     " prabirshrestha/vim-lsp {{{
     function! s:lsp_buffer_setup() abort
       if exists('+omnifunc')
