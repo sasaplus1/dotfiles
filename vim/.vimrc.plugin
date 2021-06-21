@@ -536,49 +536,56 @@ if (v:version >= 704 || has('nvim')) && executable('git')
         setlocal tagfunc=lsp#tagfunc
       endif
 
-      nmap <buffer> ,ld <plug>(lsp-definition)
-      nmap <buffer> ,ls <plug>(lsp-document-symbol-search)
-      nmap <buffer> ,lS <plug>(lsp-workspace-symbol-search)
-      nmap <buffer> ,lR <plug>(lsp-references)
-      nmap <buffer> ,li <plug>(lsp-implementation)
-      nmap <buffer> ,lt <plug>(lsp-type-definition)
-      nmap <buffer> ,lr <plug>(lsp-rename)
-      nmap <buffer> [g <plug>(lsp-previous-diagnostic)
-      nmap <buffer> ]g <plug>(lsp-next-diagnostic)
-      nmap <buffer> K <plug>(lsp-hover)
+      nmap <buffer> ,ld <Plug>(lsp-definition)
+      nmap <buffer> ,ls <Plug>(lsp-document-symbol-search)
+      nmap <buffer> ,lS <Plug>(lsp-workspace-symbol-search)
+      nmap <buffer> ,lr <Plug>(lsp-references)
+      nmap <buffer> ,li <Plug>(lsp-implementation)
+      nmap <buffer> ,lt <Plug>(lsp-type-definition)
+      nmap <buffer> ,lR <Plug>(lsp-rename)
+      " nmap <buffer> [g <Plug>(lsp-previous-diagnostic)
+      " nmap <buffer> ]g <Plug>(lsp-next-diagnostic)
+      nmap <buffer> K <Plug>(lsp-hover)
     endfunction
 
     function! s:hook_add_vim_lsp() abort
+      " LSPでの診断を無効化する
+      let g:lsp_diagnostics_enabled = 0
+
       " カーソル位置の診断結果を表示する
-      let g:lsp_diagnostics_echo_cursor = 1
+      " let g:lsp_diagnostics_echo_cursor = 1
       " カーソル位置の診断結果を瞬時に表示する
-      let g:lsp_diagnostics_echo_delay = 0
+      " let g:lsp_diagnostics_echo_delay = 0
       " 診断結果をフロートウィンドウで瞬時に表示する
-      let g:lsp_diagnostics_float_delay = 0
+      " let g:lsp_diagnostics_float_delay = 0
+
       " 変数などのハイライト(highlight reference)を無効化する
       let g:lsp_diagnostics_highlights_enabled = 0
+
       " 診断結果のサイン文字列を変更する similar to ALE
-      let g:lsp_diagnostics_signs_error = { 'text' : '>>' }
-      let g:lsp_diagnostics_signs_warning = { 'text' : '--' }
-      let g:lsp_diagnostics_signs_information = { 'text' : '--' }
-      let g:lsp_diagnostics_signs_hint = { 'text' : '--' }
+      " let g:lsp_diagnostics_signs_error = { 'text' : '>>' }
+      " let g:lsp_diagnostics_signs_warning = { 'text' : '--' }
+      " let g:lsp_diagnostics_signs_information = { 'text' : '--' }
+      " let g:lsp_diagnostics_signs_hint = { 'text' : '--' }
       " 診断結果のサインを瞬時に表示する
-      let g:lsp_diagnostics_signs_delay = 0
+      " let g:lsp_diagnostics_signs_delay = 0
       " バーチャルテキストを瞬時に表示する
-      let g:lsp_diagnostics_virtual_text_delay = 0
+      " let g:lsp_diagnostics_virtual_text_delay = 0
+
       " コードアクションのサインを表示しない
       let g:lsp_document_code_action_signs_enabled = 0
       " ドキュメントのハイライトを無効化する
       let g:lsp_document_highlight_enabled = 0
+
       " ドキュメントフォーマットのタイムアウトを1秒にする
-      let g:lsp_format_sync_timeout = 1000
+      " let g:lsp_format_sync_timeout = 1000
 
       " 白いサインを黄色くする
       " highlight link LspInformationText Todo
       " highlight link LspHintText Todo
 
-      autocmd vimrc BufWritePre *.{cjs,js,jsx,mjs,pac,ts,tsx}
-            \ call execute('LspDocumentFormatSync --server=efm-langserver')
+      " autocmd vimrc BufWritePre *.{cjs,js,jsx,mjs,pac,ts,tsx}
+      "       \ call execute('LspDocumentFormatSync --server=efm-langserver')
 
       augroup lsp_install
           autocmd!
@@ -596,12 +603,11 @@ if (v:version >= 704 || has('nvim')) && executable('git')
       " endif
 
       " let servers = [
-      "       \ 'efm-langserver',
       "       \ 'css-languageserver',
       "       \ 'html-languageserver',
       "       \ 'json-languageserver',
       "       \ 'typescript-language-server',
-      "       \ 'eslint-language-server',
+      "       \ 'vim-language-server',
       "       \ 'yaml-language-server',
       "       \ ]
 
@@ -619,22 +625,10 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     " }}}
 
     " mattn/vim-lsp-settings {{{
-    function! s:hook_add_vim_lsp_settings() abort
-      " let g:lsp_settings = {
-      "       \ 'efm-langserver' : {
-      "       \   'disabled' : v:false
-      "       \ },
-      "       \ }
-
-      let g:lsp_settings_filetype_javascript = ['typescript-language-server', 'eslint-language-server']
-      let g:lsp_settings_filetype_typescript = ['typescript-language-server', 'eslint-language-server']
-    endfunction
-
     call dein#add('mattn/vim-lsp-settings', {
           \ 'depends' : [
           \   'vim-lsp',
           \ ],
-          \ 'hook_add' : function('s:hook_add_vim_lsp_settings')
           \ })
     " }}}
 
