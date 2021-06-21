@@ -588,8 +588,8 @@ if (v:version >= 704 || has('nvim')) && executable('git')
       endfunction
 
       augroup lsp_install
-          autocmd!
-          autocmd User lsp_buffer_enabled call s:lsp_buffer_setup()
+        autocmd!
+        autocmd User lsp_buffer_enabled call s:lsp_buffer_setup()
       augroup END
     endfunction
 
@@ -655,7 +655,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
 
     " tokorom/asyncomplete-dictionary.vim {{{
     function! s:hook_add_asyncomplete_dictionary_vim() abort
-      autocmd User asyncomplete_setup call asyncomplete#register_source({
+      autocmd vimrc User asyncomplete_setup call asyncomplete#register_source({
           \ 'name': 'dictionary',
           \ 'allowlist': ['*'],
           \ 'completor': function('asyncomplete#sources#dictionary#completor'),
