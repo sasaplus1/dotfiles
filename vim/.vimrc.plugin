@@ -527,27 +527,6 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     " }}}
 
     " prabirshrestha/vim-lsp {{{
-    function! s:lsp_buffer_setup() abort
-      if exists('+omnifunc')
-        setlocal omnifunc=lsp#complete
-      endif
-
-      if exists('+tagfunc')
-        setlocal tagfunc=lsp#tagfunc
-      endif
-
-      nmap <buffer> ,ld <Plug>(lsp-definition)
-      nmap <buffer> ,ls <Plug>(lsp-document-symbol-search)
-      nmap <buffer> ,lS <Plug>(lsp-workspace-symbol-search)
-      nmap <buffer> ,lr <Plug>(lsp-references)
-      nmap <buffer> ,li <Plug>(lsp-implementation)
-      nmap <buffer> ,lt <Plug>(lsp-type-definition)
-      nmap <buffer> ,lR <Plug>(lsp-rename)
-      " nmap <buffer> [g <Plug>(lsp-previous-diagnostic)
-      " nmap <buffer> ]g <Plug>(lsp-next-diagnostic)
-      nmap <buffer> K <Plug>(lsp-hover)
-    endfunction
-
     function! s:hook_add_vim_lsp() abort
       " LSPでの診断を無効化する
       let g:lsp_diagnostics_enabled = 0
@@ -586,6 +565,27 @@ if (v:version >= 704 || has('nvim')) && executable('git')
 
       " autocmd vimrc BufWritePre *.{cjs,js,jsx,mjs,pac,ts,tsx}
       "       \ call execute('LspDocumentFormatSync --server=efm-langserver')
+
+      function! s:lsp_buffer_setup() abort
+        if exists('+omnifunc')
+          setlocal omnifunc=lsp#complete
+        endif
+
+        if exists('+tagfunc')
+          setlocal tagfunc=lsp#tagfunc
+        endif
+
+        nmap <buffer> ,ld <Plug>(lsp-definition)
+        nmap <buffer> ,ls <Plug>(lsp-document-symbol-search)
+        nmap <buffer> ,lS <Plug>(lsp-workspace-symbol-search)
+        nmap <buffer> ,lr <Plug>(lsp-references)
+        nmap <buffer> ,li <Plug>(lsp-implementation)
+        nmap <buffer> ,lt <Plug>(lsp-type-definition)
+        nmap <buffer> ,lR <Plug>(lsp-rename)
+        " nmap <buffer> [g <Plug>(lsp-previous-diagnostic)
+        " nmap <buffer> ]g <Plug>(lsp-next-diagnostic)
+        nmap <buffer> K <Plug>(lsp-hover)
+      endfunction
 
       augroup lsp_install
           autocmd!
