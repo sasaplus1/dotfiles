@@ -907,7 +907,21 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     " }}}
 
     " sasaplus1/ameba-color-palette.dict {{{
-    call dein#add('sasaplus1/ameba-color-palette.dict')
+    function! s:hook_post_source_ameba_color_palette_dict() abort
+      " ameba-color-palette.dictの設定をバッファに指定する
+      function! s:setup_ameba_color_palette_dict() abort
+        let dict_dir = dein#get('ameba-color-palette.dict').path
+        let dict_file = resolve(dict_dir . '/dict/ameba-color-palette.dict')
+
+        execute 'setlocal' 'iskeyword+=-' 'dictionary+=' . dict_file
+      endfunction
+
+      autocmd vimrc FileType css,scss call s:setup_ameba_color_palette_dict()
+    endfunction
+
+    call dein#add('sasaplus1/ameba-color-palette.dict', {
+          \ 'hook_post_source' : function('s:hook_post_source_ameba_color_palette_dict'),
+          \ })
     " }}}
 
     " digitaltoad/vim-pug {{{
