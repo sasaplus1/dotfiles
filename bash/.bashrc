@@ -89,6 +89,7 @@ __main() {
 
     add-path INFOPATH "$macports_prefix/share/info"
     add-path MANPATH "$macports_prefix/share/man"
+    add-path PATH "$macports_prefix/sbin"
     add-path PATH "$macports_prefix/bin"
   fi
 
