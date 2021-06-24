@@ -528,6 +528,9 @@ if (v:version >= 704 || has('nvim')) && executable('git')
 
     " prabirshrestha/vim-lsp {{{
     function! s:hook_add_vim_lsp() abort
+      " 補完する際のドキュメントの表示を5秒後にする
+      let g:lsp_completion_documentation_delay = 5000
+
       " LSPでの診断を無効化する
       let g:lsp_diagnostics_enabled = 0
 
