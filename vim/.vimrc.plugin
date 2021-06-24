@@ -596,7 +596,13 @@ if (v:version >= 704 || has('nvim')) && executable('git')
       augroup END
     endfunction
 
-    function! s:hook_post_source_vim_lsp() abort
+    call dein#add('prabirshrestha/vim-lsp', {
+          \ 'hook_add' : function('s:hook_add_vim_lsp'),
+          \ })
+    " }}}
+
+    " mattn/vim-lsp-settings {{{
+    function! s:hook_post_source_vim_lsp_settings() abort
       " if has('win32')
       "   let servers_dir = expand('$LOCALAPPDATA/vim-lsp-settings/servers')
       " elseif $XDG_DATA_HOME !=# ''
@@ -621,17 +627,11 @@ if (v:version >= 704 || has('nvim')) && executable('git')
       " endfor
     endfunction
 
-    call dein#add('prabirshrestha/vim-lsp', {
-          \ 'hook_add' : function('s:hook_add_vim_lsp'),
-          \ 'hook_post_source' : function('s:hook_post_source_vim_lsp'),
-          \ })
-    " }}}
-
-    " mattn/vim-lsp-settings {{{
     call dein#add('mattn/vim-lsp-settings', {
           \ 'depends' : [
           \   'vim-lsp',
           \ ],
+          \ 'hook_post_source' : function('s:hook_post_source_vim_lsp_settings'),
           \ })
     " }}}
 
