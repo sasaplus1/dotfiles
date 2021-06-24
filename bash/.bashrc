@@ -162,6 +162,11 @@ __main() {
   complete -F __gh_completion gh
   # }}}
 
+  # gibo {{{
+  local -r gibo="$(ghq root)/github.com/simonwhitaker/gibo"
+  [ -s "$gibo/gibo" ] && add-path PATH "$gibo"
+  # }}}
+
   # z {{{
   # lazy loading
   z() {
