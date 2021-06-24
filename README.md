@@ -6,12 +6,6 @@ my dotfiles
 
 ## How to use
 
-execute command the below if macOS:
-
-```console
-$ xcode-select --install
-```
-
 deploy dotfiles:
 
 ```console
