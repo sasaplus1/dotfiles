@@ -128,7 +128,7 @@ __main() {
   # }}}
 
   # nodebrew {{{
-  add-path PATH "$HOME/.nodebrew/current/bin"
+  [ -d "$HOME/.nodebrew" ] && add-path PATH "$HOME/.nodebrew/current/bin"
   # }}}
 
   # nodebrew-completion {{{
@@ -207,7 +207,7 @@ __main() {
 
   # adb/android-platform-tools {{{
   local -r android_platform_tools=$HOME/Library/Android/sdk/platform-tools
-  add-path PATH "$android_platform_tools"
+  [ -d "$android_platform_tools" ] && add-path PATH "$android_platform_tools"
   # }}}
 
   # cocproxy for nginx {{{
