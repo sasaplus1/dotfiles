@@ -634,8 +634,7 @@ __main() {
     printf -- '%b' "${green}\w${reset}\$(__print_status \$?)\n${u}@\h$ "
   }
 
-  export PS1=
-  PS1=$(__print_PS1)
+  [ -n "$is_interactive" ] && export PS1=$(__print_PS1)
   # }}}
 
   case "$os" in
