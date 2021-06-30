@@ -634,7 +634,13 @@ __main() {
     printf -- '%b' "${green}\w${reset}\$(__print_status \$?)\n${u}@\h$ "
   }
 
-  [ -n "$is_interactive" ] && export PS1=$(__print_PS1)
+  if [ -n "$is_interactive" ]
+  then
+    # NOTE: SC2155
+    # https://github.com/koalaman/shellcheck/wiki/SC2155
+    PS1=$(__print_PS1)
+    export PS1
+  fi
   # }}}
 
   case "$os" in
