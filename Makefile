@@ -5,75 +5,105 @@ SHELL := /bin/bash
 makefile := $(abspath $(lastword $(MAKEFILE_LIST)))
 makefile_dir := $(dir $(makefile))
 
+os := $(subst darwin,macos,$(shell uname -s | tr 'A-Z' 'a-z'))
+
 # destination directory
 dest ?= $(HOME)
 
-dotfile_dirs := $(abspath $(strip \
-  $(dest)/.chrome-local-overrides \
-  $(dest)/.cocproxy \
-  $(dest)/.config \
-  $(dest)/.config/alacritty \
-  $(dest)/.config/git \
-  $(dest)/.config/nvim \
-  $(dest)/.config/ranger \
-  $(dest)/.ghq \
-  $(dest)/.go \
-  $(dest)/.go/bin \
-  $(dest)/.go/pkg \
-  $(dest)/.go/src \
-  $(dest)/.nodebrew \
-  $(dest)/.peco \
-  $(dest)/.rbenv \
-  $(dest)/.ssh \
-  $(dest)/.urxvt \
-  $(dest)/.vim \
-  $(dest)/.vim/backup \
-  $(dest)/.vim/swap \
-  $(dest)/.vim/undo \
-))
+#-------------------------------------------------------------------------------
 
-symlinks := $(abspath $(strip \
-  $(makefile_dir)/X11/.Xdefaults             $(dest)/.Xdefaults \
-  $(makefile_dir)/alacritty/alacritty.yml    $(dest)/.config/alacritty/alacritty.yml \
-  $(makefile_dir)/bash/.bash_logout          $(dest)/.bash_logout \
-  $(makefile_dir)/bash/.bash_profile         $(dest)/.bash_profile \
-  $(makefile_dir)/bash/.bashrc               $(dest)/.bashrc \
-  $(makefile_dir)/ctags/.ctags               $(dest)/.ctags \
-  $(makefile_dir)/ctags/.ctagsignore         $(dest)/.ctagsignore \
-  $(makefile_dir)/git/.gitconfig             $(dest)/.gitconfig \
-  $(makefile_dir)/git/.gitignore             $(dest)/.config/git/ignore \
-  $(makefile_dir)/locate/.locate.rc          $(dest)/.locate.rc \
-  $(makefile_dir)/mercurial/.hgrc            $(dest)/.hgrc \
-  $(makefile_dir)/nginx/.cocproxy.nginx.conf $(dest)/.cocproxy.nginx.conf \
-  $(makefile_dir)/pt/.ptignore               $(dest)/.ptignore \
-  $(makefile_dir)/peco/config.json           $(dest)/.peco/config.json \
-  $(makefile_dir)/ranger/commands.py         $(dest)/.config/ranger/commands.py \
-  $(makefile_dir)/ranger/rc.conf             $(dest)/.config/ranger/rc.conf \
-  $(makefile_dir)/ruby/.gemrc                $(dest)/.gemrc \
-  $(makefile_dir)/screen/.screenrc           $(dest)/.screenrc \
-  $(makefile_dir)/slate/.slate               $(dest)/.slate \
-  $(makefile_dir)/tern/.tern-project         $(dest)/.tern-project \
-  $(makefile_dir)/tig/.tigrc                 $(dest)/.tigrc \
-  $(makefile_dir)/tmux/.tmux.conf            $(dest)/.tmux.conf \
-  $(makefile_dir)/vim/.gvimrc                $(dest)/.gvimrc \
-  $(makefile_dir)/vim/.vimrc                 $(dest)/.vimrc \
-  $(makefile_dir)/vim/.vimrc                 $(dest)/.config/nvim/init.vim \
-))
+# dotfile directories {{{
 
-copy_targets := $(abspath $(strip \
-  $(makefile_dir)/curl/.curlrc      $(dest)/.curlrc \
-  $(makefile_dir)/node.js/.npmrc    $(dest)/.npmrc \
-  $(makefile_dir)/ruby/default-gems $(dest)/.rbenv/default-gems \
-  $(makefile_dir)/vim/.vimrc.local  $(dest)/.vimrc.local \
-  $(makefile_dir)/wget/.wgetrc      $(dest)/.wgetrc \
-))
+dotfile_dirs :=
+dotfile_dirs += $(dest)/.chrome-local-overrides
+dotfile_dirs += $(dest)/.cocproxy
+dotfile_dirs += $(dest)/.config
+# dotfile_dirs += $(dest)/.config/alacritty
+dotfile_dirs += $(dest)/.config/git
+dotfile_dirs += $(dest)/.config/nvim
+# dotfile_dirs += $(dest)/.config/ranger
+dotfile_dirs += $(dest)/.ghq
+dotfile_dirs += $(dest)/.go
+dotfile_dirs += $(dest)/.go/bin
+dotfile_dirs += $(dest)/.go/pkg
+dotfile_dirs += $(dest)/.go/src
+# dotfile_dirs += $(dest)/.nodebrew
+# dotfile_dirs += $(dest)/.peco
+# dotfile_dirs += $(dest)/.rbenv
+dotfile_dirs += $(dest)/.ssh
+ifeq ($(os),linux)
+dotfile_dirs += $(dest)/.urxvt
+endif
+dotfile_dirs += $(dest)/.vim
+dotfile_dirs += $(dest)/.vim/backup
+dotfile_dirs += $(dest)/.vim/swap
+dotfile_dirs += $(dest)/.vim/undo
 
-create_targets := $(abspath $(strip \
-  $(dest)/.bash_logout.local \
-  $(dest)/.bashrc.local \
-  $(dest)/.gitconfig.local \
-  $(dest)/.hgrc.local \
-))
+dotfile_dirs := $(abspath $(strip $(dotfile_dirs)))
+
+# }}}
+
+# symlinks {{{
+
+symlinks :=
+ifeq ($(os),linux)
+symlinks += $(makefile_dir)/X11/.Xdefaults $(dest)/.Xdefaults
+endif
+# symlinks += $(makefile_dir)/alacritty/alacritty.yml $(dest)/.config/alacritty/alacritty.yml
+symlinks += $(makefile_dir)/bash/.bash_logout $(dest)/.bash_logout
+symlinks += $(makefile_dir)/bash/.bash_profile $(dest)/.bash_profile
+symlinks += $(makefile_dir)/bash/.bashrc $(dest)/.bashrc
+# symlinks += $(makefile_dir)/ctags/.ctags $(dest)/.ctags
+# symlinks += $(makefile_dir)/ctags/.ctagsignore $(dest)/.ctagsignore
+symlinks += $(makefile_dir)/git/.gitconfig $(dest)/.gitconfig
+symlinks += $(makefile_dir)/git/.gitignore $(dest)/.config/git/ignore
+# symlinks += $(makefile_dir)/locate/.locate.rc $(dest)/.locate.rc
+# symlinks += $(makefile_dir)/mercurial/.hgrc $(dest)/.hgrc
+symlinks += $(makefile_dir)/nginx/.cocproxy.nginx.conf $(dest)/.cocproxy.nginx.conf
+# symlinks += $(makefile_dir)/pt/.ptignore $(dest)/.ptignore
+# symlinks += $(makefile_dir)/peco/config.json $(dest)/.peco/config.json
+# symlinks += $(makefile_dir)/ranger/commands.py $(dest)/.config/ranger/commands.py
+# symlinks += $(makefile_dir)/ranger/rc.conf $(dest)/.config/ranger/rc.conf
+# symlinks += $(makefile_dir)/ruby/.gemrc $(dest)/.gemrc
+symlinks += $(makefile_dir)/screen/.screenrc $(dest)/.screenrc
+# symlinks += $(makefile_dir)/slate/.slate $(dest)/.slate
+# symlinks += $(makefile_dir)/tern/.tern-project $(dest)/.tern-project
+symlinks += $(makefile_dir)/tig/.tigrc $(dest)/.tigrc
+symlinks += $(makefile_dir)/tmux/.tmux.conf $(dest)/.tmux.conf
+# symlinks += $(makefile_dir)/vim/.gvimrc $(dest)/.gvimrc
+symlinks += $(makefile_dir)/vim/.vimrc $(dest)/.vimrc
+symlinks += $(makefile_dir)/vim/.vimrc $(dest)/.config/nvim/init.vim
+
+symlinks := $(abspath $(strip $(symlinks)))
+
+# }}}
+
+# static files {{{
+
+copy_targets :=
+copy_targets += $(makefile_dir)/curl/.curlrc $(dest)/.curlrc
+copy_targets += $(makefile_dir)/node.js/.npmrc $(dest)/.npmrc
+# copy_targets += $(makefile_dir)/ruby/default-gems $(dest)/.rbenv/default-gems
+copy_targets += $(makefile_dir)/vim/.vimrc.local $(dest)/.vimrc.local
+copy_targets += $(makefile_dir)/wget/.wgetrc $(dest)/.wgetrc
+
+copy_targets := $(abspath $(strip $(copy_targets)))
+
+# }}}
+
+# create files {{{
+
+create_targets :=
+create_targets += $(dest)/.bash_logout.local
+create_targets += $(dest)/.bashrc.local
+create_targets += $(dest)/.gitconfig.local
+# create_targets += $(dest)/.hgrc.local
+
+create_targets := $(abspath $(strip $(create_targets)))
+
+# }}}
+
+#-------------------------------------------------------------------------------
 
 .PHONY: all
 all: ## output targets
