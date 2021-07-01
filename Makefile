@@ -15,10 +15,25 @@ dest ?= $(HOME)
 # dotfile directories {{{
 
 dotfile_dirs :=
+ifeq ($(os),macos)
+# NOTE: + is space, because GNU Make cannot handle spaces
+# see: https://please-sleep.cou929.nu/gnu-make-spaces-in-pathname.html
+# see: https://savannah.gnu.org/bugs/index.php?712
+# see: https://m-hiyama.hatenablog.com/entry/20140920/1411186147
+dotfile_dirs += $(dest)/Library
+dotfile_dirs += $(dest)/Library/Application+Support
+dotfile_dirs += $(dest)/Library/Application+Support/Code
+dotfile_dirs += $(dest)/Library/Application+Support/Code/User
+endif
 dotfile_dirs += $(dest)/.chrome-local-overrides
 dotfile_dirs += $(dest)/.cocproxy
 dotfile_dirs += $(dest)/.config
+ifeq ($(os),linux)
+dotfile_dirs += $(dest)/.config/Code
+dotfile_dirs += $(dest)/.config/Code/User
+endif
 # dotfile_dirs += $(dest)/.config/alacritty
+dotfile_dirs += $(dest)/.config/git
 dotfile_dirs += $(dest)/.config/git
 dotfile_dirs += $(dest)/.config/nvim
 # dotfile_dirs += $(dest)/.config/ranger
@@ -39,14 +54,18 @@ dotfile_dirs += $(dest)/.vim/backup
 dotfile_dirs += $(dest)/.vim/swap
 dotfile_dirs += $(dest)/.vim/undo
 
-dotfile_dirs := $(abspath $(strip $(dotfile_dirs)))
+dotfile_dirs := $(subst +,\\\ ,$(abspath $(strip $(dotfile_dirs))))
 
 # }}}
 
 # symlinks {{{
 
 symlinks :=
+ifeq ($(os),macos)
+symlinks += $(makefile_dir)/vscode/settings.json $(dest)/Library/Application+Support/Code/User/settings.json
+endif
 ifeq ($(os),linux)
+symlinks += $(makefile_dir)/vscode/settings.json $(dest)/.config/Code/User/settings.json
 symlinks += $(makefile_dir)/X11/.Xdefaults $(dest)/.Xdefaults
 endif
 # symlinks += $(makefile_dir)/alacritty/alacritty.yml $(dest)/.config/alacritty/alacritty.yml
@@ -74,7 +93,7 @@ symlinks += $(makefile_dir)/tmux/.tmux.conf $(dest)/.tmux.conf
 symlinks += $(makefile_dir)/vim/.vimrc $(dest)/.vimrc
 symlinks += $(makefile_dir)/vim/.vimrc $(dest)/.config/nvim/init.vim
 
-symlinks := $(abspath $(strip $(symlinks)))
+symlinks := $(subst +,\\\ ,$(abspath $(strip $(symlinks))))
 
 # }}}
 
