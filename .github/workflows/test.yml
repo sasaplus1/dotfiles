@@ -16,7 +16,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: rm -f ~/.bash{_logout,_profile,rc} ~/.gitconfig
-      - run: make deploy test
+      - run: make deploy
+      - run: make test
       - run: test "$(make test)" = 'done.'
   deploy-on-docker:
     name: on Docker
