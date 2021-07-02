@@ -95,6 +95,15 @@ __main() {
 
   #-----------------------------------------------------------------------------
 
+  local -r local_prefix="$HOME/.local"
+
+  if [ -d "$local_prefix" ]
+  then
+    add-path PATH "$local_prefix/bin"
+  fi
+
+  #-----------------------------------------------------------------------------
+
   # bash-completion {{{
   if [ -n "$is_interactive" ] && [ -z "$BASH_COMPLETION" ]
   then
