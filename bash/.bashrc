@@ -285,7 +285,7 @@ __main() {
       "$pvim" "$@"
     else
       export EDITOR="vim"
-      vim "$@"
+      command vim "$@"
     fi
   }
 
