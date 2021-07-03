@@ -15,7 +15,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
-      - run: rm -f ~/.bash{_logout,_profile,rc} ~/.gitconfig
+      - run: rm -f ~/.bash{_logout,_profile,rc} ~/.gitconfig ~/.profile
       - run: make deploy
       - run: make test
       - run: test "$(make test)" = 'done.'
