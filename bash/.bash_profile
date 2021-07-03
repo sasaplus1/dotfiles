@@ -1,8 +1,10 @@
 #!/bin/bash
+# NOTE: shebang for shellcheck
 
-# execute source if macOS
-if [ -n "$PS1" ] && [[ "$OSTYPE" =~ ^darwin ]]
-then
-  # shellcheck disable=SC1091
-  source "$HOME/.bashrc" 2>/dev/null
-fi
+# shellcheck disable=SC1091
+[ -r "$HOME/.profile" ] && source "$HOME/.profile"
+
+# shellcheck disable=SC1091
+[ -r "$HOME/.bashrc" ] && source "$HOME/.bashrc"
+
+# vim:ft=sh:fdm=marker:fen:

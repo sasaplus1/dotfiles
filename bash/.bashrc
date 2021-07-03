@@ -1,4 +1,9 @@
 #!/bin/bash
+# NOTE: shebang for shellcheck
+
+# return if not interactive
+# https://www.gnu.org/software/bash/manual/html_node/Is-this-Shell-Interactive_003f.html
+[ -z "$PS1" ] && return
 
 __main() {
   unset -f __main
@@ -19,93 +24,55 @@ __main() {
 
   #-----------------------------------------------------------------------------
 
-  # https://www.gnu.org/software/bash/manual/html_node/Is-this-Shell-Interactive_003f.html
-  case "$-" in
-    *i*)
-      local -r is_interactive=1
-      ;;
-    *)
-      local -r is_interactive=
-      ;;
-  esac
+  export EDITOR=vim
+  export PAGER=less
 
   #-----------------------------------------------------------------------------
 
-  # add $2 to $1 if not duplicate
-  # @param $1 variable name
-  # @param $2 path string
-  # @example add-path PATH /opt/local/bin
-  # @see https://unix.stackexchange.com/a/14898
-  add-path() {
-    # NOTE: https://stackoverflow.com/a/14050187
-    case ":${!1}:" in
-      *":$2:"*)
-        :
-        ;;
-      *)
-        export "$1"="$2":"${!1}"
-        ;;
-    esac
-  }
+  # fix typo of path for cd command
+  shopt -s cdspell
 
-  #-----------------------------------------------------------------------------
-
-  local homebrew_dir=
-
-  if [ "$os" == 'macos' ]
+  # stop flow mode (disable C-s and C-q)
+  if [ -t 0 ]
   then
-    [ -d '/usr/local/Homebrew' ] && homebrew_dir=/usr/local
-    # NOTE: my original location
-    [ -d "$HOME/Homebrew" ] && homebrew_dir=$HOME/Homebrew
+    # stty stop undef
+    # stty start undef
+    stty -ixon
   fi
 
-  if [ "$os" == 'linux' ]
+  if [ "$SHLVL" -eq 1 ]
   then
-    [ -d '/home/linuxbrew/.linuxbrew/Homebrew' ] && homebrew_dir=/home/linuxbrew/.linuxbrew
-    [ -d "$HOME/.linuxbrew/Homebrew" ] && homebrew_dir=$HOME/.linuxbrew
-  fi
-
-  if [ -d "$homebrew_dir" ]
-  then
-    local -r homebrew_infopath=$homebrew_dir/share/info
-    local -r homebrew_manpath=$homebrew_dir/share/man
-    local -r homebrew_path=$homebrew_dir/bin
-
-    add-path INFOPATH "$homebrew_infopath"
-    add-path MANPATH "$homebrew_manpath"
-    add-path PATH "$homebrew_path"
-
-    # NOTE: brew --prefix is very slow https://github.com/Homebrew/brew/issues/3097
-    local -r homebrew_prefix="$(dirname "$(dirname "$(type -tP brew)")")"
-
-    [ -d "$homebrew_prefix" ] && export HOMEBREW_DIR=$homebrew_dir
+    export HISTSIZE=10000
+    export HISTFILESIZE=10000
+    export HISTTIMEFORMAT='%Y/%m/%d %T '
+    export HISTCONTROL=ignoredups:erasedups
   fi
 
   #-----------------------------------------------------------------------------
 
-  if [ "$os" == 'macos' ] && [ -d '/opt/local' ]
-  then
-    local -r macports_prefix=/opt/local
-
-    add-path INFOPATH "$macports_prefix/share/info"
-    add-path MANPATH "$macports_prefix/share/man"
-    add-path PATH "$macports_prefix/sbin"
-    add-path PATH "$macports_prefix/bin"
-  fi
+  local -r homebrew_prefix="${HOMEBREW_PREFIX}"
+  local -r macports_prefix=/opt/local
+  local -r dotlocal_prefix="$HOME/.local"
 
   #-----------------------------------------------------------------------------
 
-  local -r local_prefix="$HOME/.local"
-
-  if [ -d "$local_prefix" ]
-  then
-    add-path PATH "$local_prefix/bin"
-  fi
+  # tmux shell {{{
+  for shell_path in \
+    "$dotlocal_prefix/bin/bash" \
+    "$macports_prefix/bin/bash" \
+    "$homebrew_prefix/bin/bash" \
+    /bin/bash \
+    /bin/sh
+  do
+    [ -n "$TMUX_SHELL" ] && break
+    [ -x "$shell_path" ] && export TMUX_SHELL="$shell_path"
+  done
+  # }}}
 
   #-----------------------------------------------------------------------------
 
   # bash-completion {{{
-  if [ -n "$is_interactive" ] && [ -z "$BASH_COMPLETION" ]
+  if [ -z "$BASH_COMPLETION" ]
   then
     for bash_completion in \
       "$macports_prefix/etc/profile.d/bash_completion.sh" \
@@ -122,22 +89,19 @@ __main() {
 
   #-----------------------------------------------------------------------------
 
-  # NOTE: lazy load command https://qiita.com/uasi/items/80865646607b966aedc8
   # NOTE: lazy load completion https://qiita.com/kawaz/items/ba6140bca32bbd3cb928
 
-  # nvm {{{
-  if [ -z "${XDG_CONFIG_HOME-}" ]
-  then
-    export NVM_DIR="$HOME/.nvm"
-  else
-    export NVM_DIR="${XDG_CONFIG_HOME}/nvm"
-  fi
-  # shellcheck disable=SC1091
-  [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
-  # }}}
+  # nvm-completion {{{
+  __nvm_completion() {
+    unset -f __nvm_completion
+    complete -r nvm
 
-  # nodebrew {{{
-  [ -d "$HOME/.nodebrew" ] && add-path PATH "$HOME/.nodebrew/current/bin"
+    local -r completion="$NVM_DIR/bash_completion"
+
+    # shellcheck disable=SC1090
+    [ -f "$completion" ] && source "$completion" && return 124
+  }
+  complete -F __nvm_completion nvm
   # }}}
 
   # nodebrew-completion {{{
@@ -171,52 +135,44 @@ __main() {
   complete -F __gh_completion gh
   # }}}
 
-  # gibo {{{
-  local -r gibo="$(ghq root)/github.com/simonwhitaker/gibo"
-  [ -s "$gibo/gibo" ] && add-path PATH "$gibo"
-  # }}}
+  # fzf-completion {{{
+  __fzf_completion() {
+    unset -f __fzf_completion
+    complete -r fzf
 
-  # z {{{
-  # lazy loading
-  z() {
-    unset -f z
+    for fzf_completion in \
+      "$macports_prefix/share/fzf/shell/completion.bash" \
+      "$homebrew_prefix/opt/fzf/shell/completion.bash"
+    do
+      # shellcheck disable=SC1091
+      [ -r "$fzf_completion" ] && source "$fzf_completion" && break
+    done
 
-    local -r ghq_prefix="$(ghq root)"
-
-    # shellcheck disable=SC1091
-    source "$ghq_prefix/github.com/rupa/z/z.sh" 2>/dev/null
-
-    # NOTE: call _z function directly, because z is alias
-    [ -n "$?" ] && _z "$@"
+    return 124
   }
-
-  # z-completion
-  __z_completion() {
-    unset -f __z_completion
-    complete -r z
-
-    local -r ghq_prefix="$(ghq root)"
-
-    # shellcheck disable=SC1091
-    source "$ghq_prefix/github.com/rupa/z/z.sh" 2>/dev/null && return 124
-  }
-  complete -F __z_completion z
+  complete -F __fzf_completion fzf
   # }}}
 
-  # go {{{
-  local -r go_gopath=$HOME/.go
-  local -r go_gopath_bin=$go_gopath/bin
-  export GOPATH=$go_gopath
-  add-path PATH "$go_gopath_bin"
+  #-----------------------------------------------------------------------------
+
+  # NOTE: lazy load command https://qiita.com/uasi/items/80865646607b966aedc8
+
+  # nvm {{{
+  # shellcheck disable=SC1091
+  [ -n "${NVM_DIR-}" ] && [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
   # }}}
 
-  # ghq {{{
-  export GHQ_ROOT=$HOME/.ghq
-  # }}}
+  # zoxide or z {{{
+  local -r z="$GHQ_ROOT/github.com/rupa/z/z.sh"
 
-  # adb/android-platform-tools {{{
-  local -r android_platform_tools=$HOME/Library/Android/sdk/platform-tools
-  [ -d "$android_platform_tools" ] && add-path PATH "$android_platform_tools"
+  if type -tP zoxide >/dev/null 2>&1
+  then
+    eval "$(zoxide init bash)"
+  elif [ -s "$z" ]
+  then
+    # shellcheck disable=SC1090
+    source "$z"
+  fi
   # }}}
 
   # cocproxy for nginx {{{
@@ -226,19 +182,18 @@ __main() {
   # }}}
 
   # fzf {{{
-  FZF_DEFAULT_OPTS=
-  FZF_DEFAULT_OPTS+=' --border --cycle --height=80%'
-  FZF_DEFAULT_OPTS+=' --info=hidden --layout=reverse --preview-window=right'
-  FZF_DEFAULT_OPTS+=' --bind ctrl-j:preview-down,ctrl-k:preview-up'
+  local fzf_options=
 
-  export FZF_DEFAULT_OPTS
+  fzf_options='--border --cycle --height=80%'
+  fzf_options="${fzf_options} --info=hidden --layout=reverse --preview-window=right"
+  fzf_options="${fzf_options} --bind ctrl-j:preview-down,ctrl-k:preview-up"
+
+  export FZF_DEFAULT_OPTS="$fzf_options"
 
   fzf() {
-    local -r fzf="$(type -tP fzf)"
-
     local position=
 
-    if [[ "$TERM" =~ ^(screen|tmux) ]] && type tmux >/dev/null 2>&1
+    if [[ "$TERM" =~ ^(screen|tmux) ]] && type tmux -tP >/dev/null 2>&1
     then
       local -r window_width="$(tmux display-message -p "#{window_width}")"
       local -r pane_width="$(tmux display-message -p "#{pane_width}")"
@@ -248,90 +203,37 @@ __main() {
 
     if [ -n "$position" ]
     then
-      "$fzf" "$position" "$@"
+      command fzf "$position" "$@"
     else
-      "$fzf" "$@"
+      command fzf "$@"
     fi
   }
-
-  # shellcheck disable=SC1091
-  source "$homebrew_prefix/opt/fzf/shell/completion.bash" 2>/dev/null
   # }}}
 
   # vim {{{
+  local -r pvim="$HOME/Binary/vim/bin/portable-vim"
+  local -r mvim="$HOME/.ghq/github.com/sasaplus1/macos-vim/usr/bin/vim"
 
-  # my KaoriYa Vim for macOS
-  # via https://github.com/sasaplus1/portable-vim
-  local -r pvim=$HOME/Binary/vim
-  [ -d "$pvim" ] &&
-    local -r pvim_manpath=$pvim/share/man &&
-    local -r pvim_path=$pvim/bin &&
-    add-path MANPATH "$pvim_manpath" &&
-    add-path PATH "$pvim_path" &&
-    export EDITOR="$pvim_path/portable-vim"
-
-  # my KaoriYa Vim for macOS
-  # via https://github.com/sasaplus1/macos-vim
-  local -r mvim=$HOME/.ghq/github.com/sasaplus1/macos-vim
-  [ -x "$mvim/usr/bin/vim" ] &&
-    local -r mvim_manpath=$mvim/share/man &&
-    local -r mvim_path=$mvim/usr/bin &&
-    add-path MANPATH "$mvim_manpath" &&
-    add-path PATH "$mvim_path" &&
-    export EDITOR="$mvim_path/vim"
+  [ -x "$pvim" ] && export EDITOR="$pvim"
+  [ -x "$mvim" ] && export EDITOR="$mvim"
 
   vim() {
-    local -r mvim="$HOME/.ghq/github.com/sasaplus1/macos-vim/usr/bin/vim"
-    local -r pvim="$HOME/Binary/vim/bin/portable-vim"
-
     if [ -x "$mvim" ]
     then
-      export EDITOR="$mvim"
       "$mvim" "$@"
     elif [ -x "$pvim" ]
     then
-      export EDITOR="$pvim"
       "$pvim" "$@"
     else
-      export EDITOR="vim"
       command vim "$@"
     fi
   }
 
   # }}}
 
-  # universal-ctags {{{
-  local -r ctags=$homebrew_prefix/opt/universal-ctags
-  [ -d "$ctags" ] &&
-    local -r ctags_manpath=$ctags/share/man &&
-    local -r ctags_path=$ctags/bin &&
-    add-path MANPATH "$ctags_manpath" &&
-    add-path PATH "$ctags_path"
-  # }}}
-
-  #-----------------------------------------------------------------------------
-
-  # ssh-agent {{{
-  local -r ssh_agent="$(type -tP ssh-agent)"
-  local -r ssh_agent_info="$HOME/.ssh-agent-info"
-
-  # shellcheck disable=SC1090
-  source "$ssh_agent_info" 2>/dev/null
-
-  ssh-add -l >/dev/null 2>&1
-
-  if [ "$?" -eq 2 ] && [ -x "$ssh_agent" ] && [ -z "$SSH_AGENT_PID" ]
-  then
-    eval "$ssh_agent | grep -v 'echo' > $ssh_agent_info" 2>/dev/null
-    # shellcheck disable=SC1090
-    source "$ssh_agent_info" 2>/dev/null
-  fi
-  # }}}
-
-  #-----------------------------------------------------------------------------
-
   # github-slug.sh {{{
   export _GITHUB_SLUG_COMMAND=slug
+
   __lazy-github-slug() {
     unset -f __lazy-github-slug
     # shellcheck disable=SC1091
@@ -357,15 +259,25 @@ __main() {
     nginx -p . -c "$(ghq list -p fake-dev)/fake-dev.conf"
   }
 
+  add-ssh-key() {
+    command ssh-add $(find "$HOME/.ssh" -name '*.pub' -or -name config -or -name known_hosts -prune -or -type f -print)
+  }
+
   # incremental search and change directory
   ccd() {
     # mdfind -onlyin "$(pwd)" "kMDItemContentType == public.folder" 2>/dev/null
 
     # shellcheck disable=SC2016
-    local -r repo_cmd='find "$HOME/.ghq" -mindepth 3 -maxdepth 3 -type d -print'
+    local -r repo_cmd='find "$GHQ_ROOT" -mindepth 3 -maxdepth 3 -type d -print'
 
-    # shellcheck disable=SC2016
-    local -r z_cmd='z -l 2>&1 | while read _ dir; do echo "$dir"; done'
+    if type -tP zoxide >/dev/null 2>&1
+    then
+      local -r z_cmd='zoxide query --list 2>&1'
+    elif [ "$(type -t z)" == 'function' ]
+    then
+      # shellcheck disable=SC2016
+      local -r z_cmd='z -l 2>&1 | while read _ dir; do echo "$dir"; done'
+    fi
 
     local git_dir=
     local git_cmd=
@@ -485,25 +397,6 @@ __main() {
     }
   fi
   # }}}
-
-  #-----------------------------------------------------------------------------
-
-  # pager
-  export PAGER=less
-
-  # fix typo of path for cd command
-  shopt -s cdspell
-
-  # stop flow mode (disable C-s)
-  stty stop undef
-
-  if [ "$SHLVL" -eq 1 ]
-  then
-    export HISTSIZE=10000
-    export HISTFILESIZE=10000
-    export HISTTIMEFORMAT='%Y/%m/%d %T '
-    export HISTCONTROL=ignoredups:erasedups
-  fi
 
   #-----------------------------------------------------------------------------
 
@@ -643,34 +536,26 @@ __main() {
     printf -- '%b' "${green}\w${reset}\$(__print_status \$?)\n${u}@\h$ "
   }
 
-  if [ -n "$is_interactive" ]
-  then
-    # NOTE: SC2155
-    # https://github.com/koalaman/shellcheck/wiki/SC2155
-    PS1=$(__print_PS1)
-    export PS1
-  fi
+  # NOTE: SC2155
+  # https://github.com/koalaman/shellcheck/wiki/SC2155
+  PS1=$(__print_PS1)
+  export PS1
   # }}}
 
   case "$os" in
     macos)
       alias ls='ls -G'
       alias grep='grep --color=auto'
-      alias sed_ere='sed -E'
       alias ios='open -a "Simulator" || open -a "iOS Simulator" || open -a "iPhone Simulator"'
-      alias updatedb='LOCATE_CONFIG=$HOME/.locate.rc /usr/libexec/locate.updatedb'
-      alias locate='locate -d "$HOME/.locate.database"'
       ;;
     linux)
       alias crontab='crontab -i'
       alias ls='ls --color=auto'
       alias grep='grep --color=auto'
-      alias sed_ere='sed -e'
       alias pbcopy='xsel --clipboard --input'
       alias pbpaste='xsel --clipboard --output'
       ;;
     *)
-      alias ctags='ctags --exclude=@$HOME/.ctagsignore'
       ;;
   esac
 
@@ -694,9 +579,9 @@ __main() {
   then
     return 0
   fi
-  if [ -n "$is_interactive" ] && [ -z "$TMUX" ] && [ -z "$VIM" ] && [ ! -f '/.dockerenv' ]
+  if [ -z "$TMUX" ] && [ -z "$VIM" ] && [ ! -f '/.dockerenv' ]
   then
-    type tmux >/dev/null 2>&1 && tmux
+    type -tP tmux >/dev/null 2>&1 && exec command tmux
   fi
 }
 __main "$@"
