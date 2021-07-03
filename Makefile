@@ -72,6 +72,7 @@ endif
 symlinks += $(makefile_dir)/bash/.bash_logout $(dest)/.bash_logout
 symlinks += $(makefile_dir)/bash/.bash_profile $(dest)/.bash_profile
 symlinks += $(makefile_dir)/bash/.bashrc $(dest)/.bashrc
+symlinks += $(makefile_dir)/bash/.profile $(dest)/.profile
 # symlinks += $(makefile_dir)/ctags/.ctags $(dest)/.ctags
 # symlinks += $(makefile_dir)/ctags/.ctagsignore $(dest)/.ctagsignore
 symlinks += $(makefile_dir)/git/.gitconfig $(dest)/.gitconfig
