@@ -39,6 +39,7 @@ jobs:
             bash/.bash_logout
             bash/.bash_profile
             bash/.bashrc
+            bash/.profile
   vint:
     name: vint
     runs-on: ubuntu-latest
