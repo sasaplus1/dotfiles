@@ -27,7 +27,7 @@ jobs:
       - run: docker build -t ${GITHUB_REPOSITORY} .
       - run: >
           docker run --rm ${GITHUB_REPOSITORY}
-          bash -c 'rm -f ~/.bashrc && make deploy >/dev/null && [ "$(make test)" = "done." ]'
+          bash -c 'rm -f ~/.bashrc ~/.profile && make deploy >/dev/null && [ "$(make test)" = "done." ]'
   shellcheck:
     name: shellcheck
     runs-on: ubuntu-latest
