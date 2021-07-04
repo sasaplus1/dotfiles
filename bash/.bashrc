@@ -259,7 +259,7 @@ __main() {
   }
 
   add-ssh-key() {
-    find "$HOME/.ssh" -name '*.pub' -or -name config -or -name known_hosts -prune -or -type f -print | xargs command ssh-add
+    find "$HOME/.ssh" -name '*.pub' -or -name config -or -name known_hosts -prune -or -type f -print0 | xargs -0 command ssh-add
   }
 
   # incremental search and change directory
