@@ -50,7 +50,6 @@ __main() {
 
   #-----------------------------------------------------------------------------
 
-  local -r homebrew_prefix="${HOMEBREW_PREFIX}"
   local -r macports_prefix=/opt/local
   local -r dotlocal_prefix="$HOME/.local"
 
@@ -60,7 +59,7 @@ __main() {
   for shell_path in \
     "$dotlocal_prefix/bin/bash" \
     "$macports_prefix/bin/bash" \
-    "$homebrew_prefix/bin/bash" \
+    "$HOMEBREW_PREFIX/bin/bash" \
     /bin/bash \
     /bin/sh
   do
@@ -77,7 +76,7 @@ __main() {
     for bash_completion in \
       "$macports_prefix/etc/profile.d/bash_completion.sh" \
       "$macports_prefix/etc/bash_completion" \
-      "$homebrew_prefix/etc/bash_completion" \
+      "$HOMEBREW_PREFIX/etc/bash_completion" \
       /etc/bash_completion
     do
       [ -n "$BASH_COMPLETION" ] && break
@@ -142,9 +141,9 @@ __main() {
 
     for fzf_completion in \
       "$macports_prefix/share/fzf/shell/completion.bash" \
-      "$homebrew_prefix/opt/fzf/shell/completion.bash"
+      "$HOMEBREW_PREFIX/opt/fzf/shell/completion.bash"
     do
-      # shellcheck disable=SC1091
+      # shellcheck disable=SC1090
       [ -r "$fzf_completion" ] && source "$fzf_completion" && break
     done
 
@@ -260,7 +259,7 @@ __main() {
   }
 
   add-ssh-key() {
-    command ssh-add $(find "$HOME/.ssh" -name '*.pub' -or -name config -or -name known_hosts -prune -or -type f -print)
+    find "$HOME/.ssh" -name '*.pub' -or -name config -or -name known_hosts -prune -or -type f -print | xargs command ssh-add
   }
 
   # incremental search and change directory
