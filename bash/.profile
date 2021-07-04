@@ -4,102 +4,79 @@
 __main() {
   unset -f __main
 
-  #-----------------------------------------------------------------------------
-
-  # add $2 to $1 if not duplicate
-  # @param $1 variable name
-  # @param $2 path string
-  # @example add-path PATH /opt/local/bin
-  # @see https://unix.stackexchange.com/a/14898
-  # BUG: why add $2 at the suffix? :(
-  add-path() {
-    # NOTE: https://stackoverflow.com/a/14050187
-    case ":${!1}:" in
-      *":$2:"*)
-        :
-        ;;
-      *)
-        export "$1"="$2":"${!1}"
-        ;;
-    esac
-  }
+  [ -n "$__SOURCED_PROFILE" ] && return
+  export __SOURCED_PROFILE=1
 
   #-----------------------------------------------------------------------------
 
-  case "$OSTYPE" in
+  # NOTE: In POSIX sh, 'local' is undefined: SC3043
+
+  #-----------------------------------------------------------------------------
+
+  # NOTE: In POSIX sh, $OSTYPE is undefined: SC3028
+  case "$(uname | tr '[:upper:]' '[:lower:]')" in
     darwin*)
-      local -r os=macos
+      __main_os=macos
       ;;
     linux*)
-      local -r os=linux
+      __main_os=linux
       ;;
     *)
-      local -r os=
+      __main_os=
       ;;
   esac
 
   #-----------------------------------------------------------------------------
 
   # Homebrew {{{
-  local homebrew_prefix=
+  __main_homebrew_prefix=
 
-  if [ "$os" == 'macos' ]
+  if [ "$__main_os" = 'macos' ]
   then
-    [ -d '/usr/local/Homebrew' ] && homebrew_prefix=/usr/local
+    [ -d '/usr/local/Homebrew' ] && __main_homebrew_prefix=/usr/local
     # NOTE: my original location
-    [ -d "$HOME/Homebrew" ] && homebrew_prefix=$HOME/Homebrew
+    [ -d "$HOME/Homebrew" ] && __main_homebrew_prefix=$HOME/Homebrew
   fi
 
-  if [ "$os" == 'linux' ]
+  if [ "$__main_os" = 'linux' ]
   then
     [ -d '/home/linuxbrew/.linuxbrew/Homebrew' ] &&
-      homebrew_prefix=/home/linuxbrew/.linuxbrew
+      __main_homebrew_prefix=/home/linuxbrew/.linuxbrew
     [ -d "$HOME/.linuxbrew/Homebrew" ] &&
-      homebrew_prefix=$HOME/.linuxbrew
+      __main_homebrew_prefix=$HOME/.linuxbrew
   fi
 
-  if [ -d "$homebrew_prefix" ]
+  if [ -d "$__main_homebrew_prefix" ]
   then
-    local -r homebrew_infopath=$homebrew_prefix/share/info
-    local -r homebrew_manpath=$homebrew_prefix/share/man
-    local -r homebrew_path=$homebrew_prefix/bin
+    export INFOPATH="$__main_homebrew_prefix/share/info:$INFOPATH"
+    export MANPATH="$__main_homebrew_prefix/share/man:$MANPATH"
+    export PATH="$__main_homebrew_prefix/bin:$PATH"
 
-    # add-path INFOPATH "$homebrew_infopath"
-    # add-path MANPATH "$homebrew_manpath"
-    # add-path PATH "$homebrew_path"
-    export INFOPATH="$homebrew_infopath:$INFOPATH"
-    export MANPATH="$homebrew_manpath:$MANPATH"
-    export PATH="$homebrew_path:$PATH"
-
+    # NOTE: In POSIX sh, type -t is undefined: SC3045
     # NOTE: brew --prefix is very slow https://github.com/Homebrew/brew/issues/3097
-    [ -d "$(dirname "$(dirname "$(type -tP brew)")")" ] &&
-      export HOMEBREW_PREFIX=$homebrew_prefix
+    [ -d "$(dirname "$(dirname "$(command -v brew)")")" ] &&
+      export HOMEBREW_PREFIX=$__main_homebrew_prefix
   fi
   # }}}
 
   # MacPorts {{{
-  local -r macports_prefix=/opt/local
+  __main_macports_prefix=/opt/local
 
-  if [ "$os" == 'macos' ] && [ -d "$macports_prefix" ]
+  if [ "$__main_os" = 'macos' ] && [ -d "$__main_macports_prefix" ]
   then
-    # add-path INFOPATH "$macports_prefix/share/info"
-    # add-path MANPATH "$macports_prefix/share/man"
-    # add-path PATH "$macports_prefix/sbin"
-    # add-path PATH "$macports_prefix/bin"
-    export INFOPATH="$macports_prefix/share/info:$INFOPATH"
-    export MANPATH="$macports_prefix/share/man:$MANPATH"
-    export PATH="$macports_prefix/sbin:$PATH"
-    export PATH="$macports_prefix/bin:$PATH"
+    export INFOPATH="$__main_macports_prefix/share/info:$INFOPATH"
+    export MANPATH="$__main_macports_prefix/share/man:$MANPATH"
+    export PATH="$__main_macports_prefix/sbin:$PATH"
+    export PATH="$__main_macports_prefix/bin:$PATH"
   fi
   # }}}
 
   # .local {{{
-  local -r dotlocal_prefix="$HOME/.local"
+  __main_dotlocal_prefix="$HOME/.local"
 
-  if [ -d "$dotlocal_prefix" ]
+  if [ -d "$__main_dotlocal_prefix" ]
   then
-    # add-path PATH "$dotlocal_prefix/bin"
-    export PATH="$dotlocal_prefix/bin:$PATH"
+    export PATH="$__main_dotlocal_prefix/bin:$PATH"
   fi
   # }}}
 
@@ -110,19 +87,20 @@ __main() {
   #-----------------------------------------------------------------------------
 
   # ssh-agent {{{
-  local -r ssh_agent="$(type -tP ssh-agent)"
-  local -r ssh_agent_info="$HOME/.ssh-agent-info"
+  __main_ssh_agent="$(command -v ssh-agent)"
+  __main_ssh_agent_info="$HOME/.ssh-agent-info"
 
+  # In POSIX sh, 'source' in place of '.' is undefined: SC3046
   # shellcheck disable=SC1090
-  source "$ssh_agent_info" 2>/dev/null
+  . "$__main_ssh_agent_info" 2>/dev/null
 
   ssh-add -l >/dev/null 2>&1
 
-  if [ "$?" -eq 2 ] && [ -x "$ssh_agent" ] && [ -z "$SSH_AGENT_PID" ]
+  if [ "$?" -eq 2 ] && [ -x "$__main_ssh_agent" ] && [ -z "$SSH_AGENT_PID" ]
   then
-    eval "$ssh_agent | grep -v 'echo' > $ssh_agent_info" 2>/dev/null
+    eval "$__main_ssh_agent | grep -v 'echo' > $__main_ssh_agent_info" 2>/dev/null
     # shellcheck disable=SC1090
-    source "$ssh_agent_info" 2>/dev/null
+    . "$__main_ssh_agent_info" 2>/dev/null
   fi
   # }}}
 
@@ -138,52 +116,40 @@ __main() {
   # }}}
 
   # nodebrew {{{
-  # [ -d "$HOME/.nodebrew" ] && add-path PATH "$HOME/.nodebrew/current/bin"
   [ -d "$HOME/.nodebrew" ] && export PATH="$HOME/.nodebrew/current/bin:$PATH"
   # }}}
 
   # gibo {{{
-  local -r gibo="$GHQ_ROOT/github.com/simonwhitaker/gibo"
-  # [ -s "$gibo/gibo" ] && add-path PATH "$gibo"
-  [ -s "$gibo/gibo" ] && export PATH="$gibo:$PATH"
+  __main_gibo="$GHQ_ROOT/github.com/simonwhitaker/gibo"
+  [ -s "$__main_gibo/gibo" ] && export PATH="$__main_gibo:$PATH"
   # }}}
 
   # go {{{
-  local -r go_gopath="$HOME/.go"
-  local -r go_gopath_bin="$go_gopath/bin"
-  export GOPATH="$go_gopath"
-  # add-path PATH "$go_gopath_bin"
-  export PATH="$go_gopath_bin:$PATH"
+  __main_go_gopath="$HOME/.go"
+  __main_go_gopath_bin="$__main_go_gopath/bin"
+  export GOPATH="$__main_go_gopath"
+  export PATH="$__main_go_gopath_bin:$PATH"
   # }}}
 
   # adb/android-platform-tools {{{
-  local -r android_platform_tools="$HOME/Library/Android/sdk/platform-tools"
-  # [ -d "$android_platform_tools" ] && add-path PATH "$android_platform_tools"
-  [ -d "$android_platform_tools" ] && export PATH="$android_platform_tools:$PATH"
+  __main_android_platform_tools="$HOME/Library/Android/sdk/platform-tools"
+  [ -d "$__main_android_platform_tools" ] && export PATH="$__main_android_platform_tools:$PATH"
   # }}}
 
   # vim {{{
   # my KaoriYa Vim for macOS
   # via https://github.com/sasaplus1/portable-vim
-  local -r pvim="$HOME/Binary/vim"
-  [ -d "$pvim" ] &&
-    local -r pvim_manpath="$pvim/share/man" &&
-    local -r pvim_path="$pvim/bin" &&
-    # add-path MANPATH "$pvim_manpath" &&
-    # add-path PATH "$pvim_path"
-    export MANPATH="$pvim_manpath:$MANPATH" &&
-    export PATH="$pvim_path:$PATH"
+  __main_pvim="$HOME/Binary/vim"
+  [ -d "$__main_pvim" ] &&
+    export MANPATH="$__main_pvim/share/man:$MANPATH" &&
+    export PATH="$__main_pvim/bin:$PATH"
 
   # my KaoriYa Vim for macOS
   # via https://github.com/sasaplus1/macos-vim
-  local -r mvim="$GHQ_ROOT/github.com/sasaplus1/macos-vim"
-  [ -x "$mvim/usr/bin/vim" ] &&
-    local -r mvim_manpath=$mvim/share/man &&
-    local -r mvim_path=$mvim/usr/bin &&
-    # add-path MANPATH "$mvim_manpath" &&
-    # add-path PATH "$mvim_path"
-    export MANPATH="$mvim_manpath:$MANPATH" &&
-    export PATH="$mvim_path:$PATH"
+  __main_mvim="$GHQ_ROOT/github.com/sasaplus1/macos-vim"
+  [ -x "$__main_mvim/usr/bin/vim" ] &&
+    export MANPATH="$__main_mvim/share/man:$MANPATH" &&
+    export PATH="$__main_mvim/usr/bin:$PATH"
   # }}}
 }
 __main "$@"
