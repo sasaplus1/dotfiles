@@ -551,6 +551,12 @@ __main() {
   export PS1
   # }}}
 
+  if [ -n "$apple_silicon" ]
+  then
+    alias armsh='arch -arm64e /bin/bash'
+    alias x86sh='arch -x86_64 /bin/bash'
+  fi
+
   case "$os" in
     macos)
       alias ls='ls -G'
