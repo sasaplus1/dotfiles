@@ -5,7 +5,7 @@ __main() {
   unset -f __main
 
   [ -n "$__SOURCED_PROFILE" ] && return
-  export __SOURCED_PROFILE=1
+  export readonly __SOURCED_PROFILE=1
 
   #-----------------------------------------------------------------------------
 
