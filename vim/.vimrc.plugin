@@ -652,6 +652,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     call dein#add('prabirshrestha/asyncomplete-lsp.vim', {
           \ 'depends' : [
           \   'asyncomplete.vim',
+          \   'vim-lsp',
           \ ],
           \ })
     " }}}
