@@ -22,6 +22,12 @@ __main() {
       ;;
   esac
 
+  if [ "$os" == 'macos' ] && arch -arm64e echo -n >/dev/null 2>&1
+  then
+    local -r apple_silicon=1
+    export readonly __APPLE_SILICON=1
+  fi
+
   #-----------------------------------------------------------------------------
 
   export EDITOR=vim
@@ -489,6 +495,10 @@ __main() {
     done
 
     local prompt=
+
+    # architecture
+    [ -n "$__APPLE_SILICON" ] && [ "$(uname -m)" != 'arm64' ] &&
+      prompt="${prompt} ${red}[x86_64]${reset}"
 
     # exit code
     [ "$exit_code" -ne 0 ] && prompt="${prompt} ${red}${exit_code}${reset}"
