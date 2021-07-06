@@ -350,6 +350,28 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     endfunction
 
     function! s:hook_post_source_coc_nvim() abort
+      let coc_settings_path = resolve(
+            \ coc#util#get_config_home() . '/coc-settings.json'
+            \ )
+
+      if exists('?json_encode') && !filereadable(coc_settings_path)
+        let coc_settings = {
+              \ 'css.validate': v:false,
+              \ 'diagnostic.displayByAle': v:true,
+              \ 'javascript.format.enabled': v:false,
+              \ 'javascript.suggest.enabled': v:false,
+              \ 'javascript.validate.enable' :v:false,
+              \ 'less.validate': v:false,
+              \ 'scss.validate': v:false,
+              \ 'typescript.format.enabled': v:false,
+              \ 'typescript.suggest.enabled': v:false,
+              \ 'typescript.validate.enable': v:false,
+              \ 'wxss.validate': v:false,
+              \ }
+
+        call writefile([json_encode(coc_settings)], coc_settings_path)
+      endif
+
       if !exists('*CocTagFunc')
         " tagfuncでタグスタックを使うようにして<C-t>で戻ってこれるようにする
         " https://github.com/neoclide/coc.nvim/issues/1054#issuecomment-531839361
