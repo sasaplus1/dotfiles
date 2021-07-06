@@ -330,6 +330,16 @@ if (v:version >= 704 || has('nvim')) && executable('git')
 
     " neoclide/coc.nvim {{{
     function! s:hook_add_coc_nvim() abort
+      let g:coc_global_extensions = [
+            \ 'coc-css',
+            \ 'coc-cssmodules',
+            \ 'coc-dictionary',
+            \ 'coc-html',
+            \ 'coc-json',
+            \ 'coc-tsserver',
+            \ 'coc-yaml',
+            \ ]
+
       if has('eval') && exists('&tagfunc')
         autocmd vimrc FileType javascript,javascriptreact,typescript,typescriptreact setlocal tagfunc=CocTagFunc
       else
@@ -397,35 +407,11 @@ if (v:version >= 704 || has('nvim')) && executable('git')
       nmap <silent> ,li <Plug>(coc-implementation)
       nmap <silent> ,lr <Plug>(coc-references)
       nmap <silent> ,lR <Plug>(coc-rename)
-
-      let extension_dir = simplify(coc#util#extension_root() . '/node_modules')
-
-      let modules = [
-            \ 'coc-css',
-            \ 'coc-cssmodules',
-            \ 'coc-dictionary',
-            \ 'coc-html',
-            \ 'coc-json',
-            \ 'coc-tsserver',
-            \ 'coc-yaml',
-            \ ]
-
-      for module in modules
-        if !isdirectory(extension_dir . '/' . module)
-          execute(printf('CocInstall %s', module))
-        endif
-      endfor
-    endfunction
-
-    function! s:hook_source_coc_nvim() abort
-       let node_version = trim(system("nodebrew ls | grep '^v' | sort -r --version-sort | head -n 1"))
-       let g:coc_node_path = printf('~/.nodebrew/node/%s/bin/node', node_version)
     endfunction
 
     call dein#add('neoclide/coc.nvim', {
           \ 'hook_add' : function('s:hook_add_coc_nvim'),
           \ 'hook_post_source' : function('s:hook_post_source_coc_nvim'),
-          \ 'hook_source' : function('s:hook_source_coc_nvim'),
           \ 'if' : 'executable("node") && (v:version >= 800 || has("nvim-0.3.1"))',
           \ 'merged' : 0,
           \ 'rev' : 'release',
