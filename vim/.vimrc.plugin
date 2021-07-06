@@ -392,11 +392,11 @@ if (v:version >= 704 || has('nvim')) && executable('git')
       " nmap <silent> [g <Plug>(coc-diagnostic-prev)
       " nmap <silent> ]g <Plug>(coc-diagnostic-next)
 
-      nmap <silent> gd <Plug>(coc-definition)
-      nmap <silent> gy <Plug>(coc-type-definition)
-      nmap <silent> gi <Plug>(coc-implementation)
-      nmap <silent> gr <Plug>(coc-references)
-      nmap <silent> ge <Plug>(coc-rename)
+      nmap <silent> ,ld <Plug>(coc-definition)
+      nmap <silent> ,lt <Plug>(coc-type-definition)
+      nmap <silent> ,li <Plug>(coc-implementation)
+      nmap <silent> ,lr <Plug>(coc-references)
+      nmap <silent> ,lR <Plug>(coc-rename)
 
       let extension_dir = simplify(coc#util#extension_root() . '/node_modules')
 
