@@ -265,7 +265,10 @@ __main() {
   }
 
   add-ssh-key() {
-    find "$HOME/.ssh" -name '*.pub' -or -name config -or -name known_hosts -prune -or -type f -print0 | xargs -0 command ssh-add
+    for key in $(find "$HOME/.ssh" -type f -name '*.pub' -print0 | xargs -0)
+    do
+      printf -- '%s\0' "${key%.*}"
+    done | xargs -0 command ssh-add
   }
 
   # incremental search and change directory
