@@ -75,6 +75,10 @@
   lineNumber = true
   patternType = extended
 
+[merge]
+  conflictStyle = diff3
+  tool = vimdiff
+
 [user]
 ;  email = sasaplus1@gmail.com
 ;  name = sasaplus1
