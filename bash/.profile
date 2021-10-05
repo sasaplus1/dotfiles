@@ -119,6 +119,10 @@ __main() {
   [ -d "$HOME/.nodebrew" ] && export PATH="$HOME/.nodebrew/current/bin:$PATH"
   # }}}
 
+  # rbenv {{{
+  [ -d "$HOME/.rbenv" ] && export PATH="$HOME/.rbenv/bin:$PATH"
+  # }}}
+
   # gibo {{{
   __main_gibo="$GHQ_ROOT/github.com/simonwhitaker/gibo"
   [ -s "$__main_gibo/gibo" ] && export PATH="$__main_gibo:$PATH"

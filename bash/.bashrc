@@ -131,6 +131,19 @@ __main() {
   complete -F __npm_completion npm
   # }}}
 
+  # rbenv-completion {{{
+  __rbenv-completion() {
+    unset -f __rbenv-completion
+    complete -r rbenv
+
+    local -r completion="$HOME/.rbenv/completions/rbenv.bash"
+
+    # shellcheck disable=SC1090
+    [ -f "$completion" ] && source "$completion" && return 124
+  }
+  complete -F __rbenv-completion rbenv
+  # }}}
+
   # gh-completion {{{
   __gh_completion() {
     unset -f __gh_completion
@@ -165,6 +178,14 @@ __main() {
   # nvm {{{
   # shellcheck disable=SC1091
   [ -n "${NVM_DIR-}" ] && [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
+  # }}}
+
+  # rbenv {{{
+  rbenv() {
+    unset -f rbenv
+    eval "$(rbenv init -)"
+    rbenv "$@"
+  }
   # }}}
 
   # zoxide or z {{{
