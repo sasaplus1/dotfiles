@@ -238,15 +238,20 @@ __main() {
 
   # vim {{{
   local -r pvim="$HOME/Binary/vim/bin/portable-vim"
+  local -r lvim="$HOME/.local/bin/vim"
   local -r mvim="$HOME/.ghq/github.com/sasaplus1/macos-vim/usr/bin/vim"
 
   [ -x "$pvim" ] && export EDITOR="$pvim"
+  [ -x "$lvim" ] && export EDITOR="$lvim"
   [ -x "$mvim" ] && export EDITOR="$mvim"
 
   vim() {
     if [ -x "$mvim" ]
     then
       "$mvim" "$@"
+    elif [ -x "$lvim" ]
+    then
+      "$lvim" "$@"
     elif [ -x "$pvim" ]
     then
       "$pvim" "$@"
