@@ -4,7 +4,7 @@
   set-mirror = !git remote set-url --add origin "$(git remote get-url --push origin | sed -e 's/github.com/bitbucket.org/')"
   set-user = !git config --local user.name sasaplus1 && git config --local user.email sasaplus1@gmail.com
   fixup-latest = !sh -c 'git commit --fixup "$(git log -1 --pretty=%H "$1")"' -
-  rm-untracked = !git status --short | grep -E '^\\?{2}' | cut -d ' ' -f 2 | xargs rm
+  rm-untracked = !git clean -df
 
 [alias]
   amend = commit --amend --reuse-message=HEAD
