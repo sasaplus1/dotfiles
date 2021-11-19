@@ -299,8 +299,8 @@ if (v:version >= 704 || has('nvim')) && executable('git')
 
       function! s:ale_buffer_setup() abort
         " エラーのある行に移動する
-        nnoremap <buffer><silent> [g :<C-u>ALENextWrap<CR>
-        nnoremap <buffer><silent> ]g :<C-u>ALEPreviousWrap<CR>
+        nnoremap <buffer><silent> [g :<C-u>ALEPreviousWrap<CR>
+        nnoremap <buffer><silent> ]g :<C-u>ALENextWrap<CR>
 
         " 現在のバッファで有効・無効を切り替える
         nnoremap <buffer> ,ad :<C-u>ALEDisableBuffer<CR>
