@@ -199,6 +199,9 @@ if (v:version >= 704 || has('nvim')) && executable('git')
       " tsserverが使えなくなってしまうのでコメントアウトする
       " let g:ale_disable_lsp = 1
 
+      " メッセージ書式を変更する
+      let g:ale_echo_msg_format = '[%linter%] %code: %%s'
+
       " プレビューでメッセージを表示する
       let g:ale_hover_to_preview = 1
 
