@@ -55,7 +55,7 @@ __main() {
     # NOTE: In POSIX sh, type -t is undefined: SC3045
     # NOTE: brew --prefix is very slow https://github.com/Homebrew/brew/issues/3097
     [ -d "$(dirname "$(dirname "$(command -v brew)")")" ] &&
-      export HOMEBREW_PREFIX=$__main_homebrew_prefix
+      export HOMEBREW_PREFIX="$__main_homebrew_prefix"
   fi
   # }}}
 
@@ -82,7 +82,7 @@ __main() {
 
   #-----------------------------------------------------------------------------
 
-  export GHQ_ROOT=$HOME/.ghq
+  export GHQ_ROOT="$HOME/.ghq"
 
   #-----------------------------------------------------------------------------
 
