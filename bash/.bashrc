@@ -335,7 +335,7 @@ __main() {
     cd "$(cat <(eval "$repo_cmd") <(eval "$z_cmd") <(eval "$git_cmd") | sort -u | fzf --query="$@" --preview="$fzf_preview")"
   }
 
-  issue() {
+  issues() {
     local preview=
 
     if type bat >/dev/null 2>&1
@@ -350,7 +350,7 @@ __main() {
     [ -n "$result" ] && gh issue view --web "$(printf -- '%s' "${result}" | awk '{ print $1 }')"
   }
 
-  pull() {
+  pulls() {
     local preview=
 
     if type bat >/dev/null 2>&1
@@ -372,7 +372,7 @@ __main() {
     git log --all --color=always --graph --oneline | fzf --ansi --preview="$preview" | grep -Eo '[0-9a-f]{7,40}' | head -n 1
   }
 
-  repo() {
+  repos() {
     local preview=
 
     if type bat >/dev/null 2>&1
