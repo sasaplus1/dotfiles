@@ -1,0 +1,16 @@
+Host *
+    IdentitiesOnly yes
+
+Host bitbucket.org
+    Compression yes
+    HostName bitbucket.org
+#   IdentityFile ~/.ssh/path/to/file
+    User git
+
+Host github.com
+    Compression yes
+    HostName github.com
+#   IdentityFile ~/.ssh/path/to/file
+    User git
+
+# vim:ft=sshconfig:

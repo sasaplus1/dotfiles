@@ -101,6 +101,7 @@ symlinks := $(subst +,\\\ ,$(abspath $(strip $(symlinks))))
 # static files {{{
 
 copy_targets :=
+copy_targets := $(makefile_dir)/sshconfig/config $(dest)/.ssh/config
 copy_targets += $(makefile_dir)/curl/.curlrc $(dest)/.curlrc
 copy_targets += $(makefile_dir)/node.js/.npmrc $(dest)/.npmrc
 # copy_targets += $(makefile_dir)/ruby/default-gems $(dest)/.rbenv/default-gems
