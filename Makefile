@@ -42,6 +42,7 @@ dotfile_dirs += $(dest)/.go
 dotfile_dirs += $(dest)/.go/bin
 dotfile_dirs += $(dest)/.go/pkg
 dotfile_dirs += $(dest)/.go/src
+dotfile_dirs += $(dest)/.local
 # dotfile_dirs += $(dest)/.nodebrew
 # dotfile_dirs += $(dest)/.peco
 # dotfile_dirs += $(dest)/.rbenv
