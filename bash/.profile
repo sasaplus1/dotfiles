@@ -87,20 +87,25 @@ __main() {
   #-----------------------------------------------------------------------------
 
   # ssh-agent {{{
-  __main_ssh_agent="$(command -v ssh-agent)"
   __main_ssh_agent_info="$HOME/.ssh-agent-info"
 
   # In POSIX sh, 'source' in place of '.' is undefined: SC3046
   # shellcheck disable=SC1090
   . "$__main_ssh_agent_info" 2>/dev/null
 
-  ssh-add -l >/dev/null 2>&1
+  command ssh-add -l >/dev/null 2>&1
 
-  if [ "$?" -eq 2 ] && [ -x "$__main_ssh_agent" ] && [ -z "$SSH_AGENT_PID" ]
+  # ssh-add is unable to contact the authentication agent
+  if [ "$?" -eq 2 ] && [ -x "$(command -v ssh-agent)" ]
   then
-    eval "$__main_ssh_agent | grep -v 'echo' > $__main_ssh_agent_info" 2>/dev/null
-    # shellcheck disable=SC1090
-    . "$__main_ssh_agent_info" 2>/dev/null
+    eval "$(command ssh-agent -k)" 2>/dev/null
+
+    # force remove
+    unset SSH_AUTH_SOCK
+    unset SSH_AGENT_PID
+    rm -f "$__main_ssh_agent_info"
+
+    eval "$(command ssh-agent | grep -v 'echo' >"$__main_ssh_agent_info")" 2>/dev/null
   fi
   # }}}
 
