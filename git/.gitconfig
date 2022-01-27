@@ -80,12 +80,7 @@
   tool = vimdiff
 
 [user]
-;  email = sasaplus1@gmail.com
-;  name = sasaplus1
   useConfigOnly = true
-
-[include]
-  path = ~/.gitconfig.local
 
 [interactive]
   diffFilter = (delta --color-only --theme OneHalfDark 2>/dev/null || cat) | ${PAGER:-less}
@@ -111,3 +106,22 @@
 ;[url "https://"]
 ;  insteadOf = git://
 
+[include]
+  path = ~/.gitconfig.local
+
+;-------------------------------------------------------------------------------
+; ~/.gitconfig.local
+;-------------------------------------------------------------------------------
+; [includeIf "gitdir:~/.ghq/github.com/"]
+;   path = ~/.gitconfig.github.com
+;
+; # vim:ft=gitconfig:
+;-------------------------------------------------------------------------------
+; ~/.gitconfig.github.com
+;-------------------------------------------------------------------------------
+; [user]
+;   email = sasaplus1@users.noreply.github.com
+;   name = sasaplus1
+;
+; # vim:ft=gitconfig:
+;-------------------------------------------------------------------------------
