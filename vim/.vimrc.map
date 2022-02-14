@@ -118,6 +118,17 @@ function! s:open_netrw_by_side() abort
 endfunction
 nnoremap <silent> ,vF :<C-u>call <SID>open_netrw_by_side()<CR>
 
+" QuickFixを更新する
+" via: https://vi.stackexchange.com/a/13663
+function! s:update_quickfix() abort
+  let list = map(
+        \   getqflist(),
+        \   'extend(v:val, { "text" : get(getbufline(v:val.bufnr, v:val.lnum), 0) })'
+        \ )
+  call setqflist(list)
+endfunction
+command! -nargs=0 UpdateQuickFix call <SID>update_quickfix()
+
 if has('terminal') && has('job') && has('channel')
   " ターミナルを開く
   nnoremap <silent> ,t :<C-u>terminal<CR>
