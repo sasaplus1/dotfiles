@@ -1,5 +1,5 @@
 if 1
-  " NOTE: :help no-eval-feature
+  " NOTE: see :help no-eval-feature
   " https://stackoverflow.com/q/27451637
 
   if &compatible
