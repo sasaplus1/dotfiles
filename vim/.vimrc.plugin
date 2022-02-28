@@ -951,6 +951,41 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     call dein#add('vim-jp/vimdoc-ja')
     " }}}
 
+    " colorscheme {{{
+    let s:colorscheme_name = 'gruvbox8'
+    let s:colorscheme_repo = 'lifepillar/vim-gruvbox8'
+
+    function! s:hook_add_colorscheme() abort
+      if dein#tap('lightline.vim')
+        let g:lightline = {
+              \   'colorscheme': s:colorscheme_name,
+              \ }
+      endif
+    endfunction
+
+    function! s:hook_source_colorscheme() abort
+      " see :help xterm-true-color
+      " https://qiita.com/yami_beta/items/ef535d3458addd2e8fbb
+      if $COLORTERM =~# '\vtruecolor|24bit'
+        set termguicolors
+        let &t_8f = "\<Esc>[38:2:%lu:%lu:%lum"
+        let &t_8b = "\<Esc>[48:2:%lu:%lu:%lum"
+      endif
+    endfunction
+
+    function! s:hook_post_source_colorscheme() abort
+      set background=dark
+      execute 'colorscheme' s:colorscheme_name
+    endfunction
+
+    call dein#add(s:colorscheme_repo, {
+          \ 'hook_add' : function('s:hook_add_colorscheme'),
+          \ 'hook_source' : function('s:hook_source_colorscheme'),
+          \ 'hook_post_source' : function('s:hook_post_source_colorscheme'),
+          \ 'if' : $COLORTERM =~# '\vtruecolor|24bit'
+          \ })
+    " }}}
+
     call dein#end()
   endif
 
