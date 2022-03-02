@@ -14,8 +14,38 @@ if has('file_in_path')
   autocmd vimrc BufNewFile,BufRead *.{cjs,js,jsx,mjs,pac,ts,tsx} setlocal suffixesadd+=.tsx,.ts,.mjs,.cjs,.jsx,.js,.json,.pac
 endif
 
+" *.ftlはHTML
+autocmd vimrc BufNewFile,BufRead *.ftl setfiletype html
+
 " *.xulはXML
 autocmd vimrc BufNewFile,BufRead *.xul setfiletype xml
+
+function! s:set_filetype() abort
+  " すでにfiletypeが指定されていたら終了
+  if did_filetype()
+    return
+  endif
+
+  let extension = expand('%:r:e')
+
+  " 拡張子が取得できなかったら終了
+  if empty(extension)
+    return
+  endif
+
+  let filetypes = getcompletion(extension, 'filetype')
+
+  " ファイルタイプが存在しなければ終了
+  if empty(filetypes)
+    return
+  endif
+
+  execute 'setlocal' 'filetype=' . filetypes[0]
+endfunction
+
+if exists('?getcompletion')
+  autocmd vimrc BufNewFile,BufRead *.*.njk call <SID>set_filetype()
+endif
 
 " HTML編集時にシンタックスハイライトを400桁までに制限する
 autocmd vimrc FileType html setlocal synmaxcol=400
