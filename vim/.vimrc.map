@@ -103,7 +103,9 @@ inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
 " ,vfでnetrwを開く
 function! s:open_netrw() abort
   " ls -lのような表示にする
-  let g:netrw_liststyle = 1
+  " 長いディレクトリが開けなくなるので付加情報を表示しない
+  " let g:netrw_liststyle = 1
+  let g:netrw_liststyle = 0
   " netrw
   Explore
 endfunction
