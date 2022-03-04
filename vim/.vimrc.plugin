@@ -47,7 +47,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     " ctrlpvim/ctrlp.vim {{{
     function! s:hook_add_ctrlpvim() abort
       " <C-p>のコマンドを変更する
-      let g:ctrlp_cmd = 'CtrlPMixed'
+      " let g:ctrlp_cmd = 'CtrlPMixed'
 
       " NOTE: https://kamiya555.github.io/2016/07/24/vim-ctrlp/
       " キャッシュディレクトリ
