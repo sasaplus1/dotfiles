@@ -100,25 +100,27 @@ inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 " Enterで補完時に決定
 inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
 
-" ,vfでnetrwを開く
-function! s:open_netrw() abort
-  " ls -lのような表示にする
-  " 長いディレクトリが開けなくなるので付加情報を表示しない
-  " let g:netrw_liststyle = 1
-  let g:netrw_liststyle = 0
-  " netrw
-  Explore
-endfunction
-nnoremap <silent> ,vf :<C-u>call <SID>open_netrw()<CR>
+if !executable('vifm')
+  " ,vfでnetrwを開く
+  function! s:open_netrw() abort
+    " ls -lのような表示にする
+    " 長いディレクトリが開けなくなるので付加情報を表示しない
+    " let g:netrw_liststyle = 1
+    let g:netrw_liststyle = 0
+    " netrw
+    Explore
+  endfunction
+  nnoremap <silent> ,vf :<C-u>call <SID>open_netrw()<CR>
 
-" ,vFでサイドバー風にnetrwを開く
-function! s:open_netrw_by_side() abort
-  " ツリー表示にする
-  let g:netrw_liststyle = 3
-  " netrw
-  Lexplore
-endfunction
-nnoremap <silent> ,vF :<C-u>call <SID>open_netrw_by_side()<CR>
+  " ,vFでサイドバー風にnetrwを開く
+  function! s:open_netrw_by_side() abort
+    " ツリー表示にする
+    let g:netrw_liststyle = 3
+    " netrw
+    Lexplore
+  endfunction
+  nnoremap <silent> ,vF :<C-u>call <SID>open_netrw_by_side()<CR>
+endif
 
 " QuickFixを更新する
 " via: https://vi.stackexchange.com/a/13663
