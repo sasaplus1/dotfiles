@@ -5,10 +5,25 @@ scriptencoding utf-8
 if (v:version >= 704 || has('nvim')) && executable('git')
 
   let s:plugin_dir = $HOME . '/.vim/dein'
-  let s:dein_repos = s:plugin_dir . '/repos/github.com/Shougo/dein.vim'
 
-  if !isdirectory(s:dein_repos)
-    execute '!git clone https://github.com/Shougo/dein.vim' s:dein_repos
+  let s:dein_rev = '2.2'
+  let s:dein_dir =
+        \ empty(s:dein_rev)
+        \   ? s:plugin_dir . '/repos/github.com/Shougo/dein.vim'
+        \   : s:plugin_dir . '/repos/github.com/Shougo/dein.vim_' . s:dein_rev
+
+  if !isdirectory(s:dein_dir)
+    let s:dein_bootstrap = $HOME . '/.vim/dein-bootstrap'
+
+    execute printf(
+          \ '!git -c %s clone --branch %s https://github.com/Shougo/dein.vim %s',
+          \ 'advice.detachedHead=false',
+          \ s:dein_rev,
+          \ s:dein_bootstrap,
+          \ )
+    execute 'set' 'runtimepath+=' . s:dein_bootstrap
+  elseif &runtimepath !~# s:dein_dir
+    execute 'set' 'runtimepath+=' . s:dein_dir
   endif
 
   " NOTE:
@@ -17,11 +32,6 @@ if (v:version >= 704 || has('nvim')) && executable('git')
   "
   " リセットする
   " set runtimepath&
-
-  " runtimepathに追加されていなかったら追加する
-  if &runtimepath !~# s:dein_repos
-    execute 'set' 'runtimepath+=' . s:dein_repos
-  endif
 
   if dein#load_state(s:plugin_dir)
     call dein#begin(s:plugin_dir)
@@ -32,8 +42,16 @@ if (v:version >= 704 || has('nvim')) && executable('git')
       nnoremap ,nu :<C-u>call dein#update()<CR>
     endfunction
 
-    call dein#add(s:dein_repos, {
+    function! s:hook_done_update_dein_vim() abort
+      " rtpを空にしている関係で自分で作る必要がある
+      execute 'helptags' dein#get('dein.vim').path . '/doc'
+    endfunction
+
+    call dein#add('Shougo/dein.vim', {
           \ 'hook_source' : function('s:hook_source_dein_vim'),
+          \ 'rev' : s:dein_rev,
+          \ 'rtp' : '',
+          \ 'hook_done_update' : function('s:hook_done_update_dein_vim'),
           \ })
     " }}}
 
@@ -1020,9 +1038,6 @@ if (v:version >= 704 || has('nvim')) && executable('git')
 
   " post_sourceフックを呼ぶようにする
   autocmd vimrc VimEnter * call dein#call_hook('post_source')
-
-  unlet s:plugin_dir
-  unlet s:dein_repos
 
 endif
 
