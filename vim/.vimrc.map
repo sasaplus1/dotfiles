@@ -100,7 +100,7 @@ inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 " Enterで補完時に決定
 inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
 
-if !executable('vifm')
+" if !executable('vifm')
   " ,vfでnetrwを開く
   function! s:open_netrw() abort
     " ls -lのような表示にする
@@ -120,7 +120,7 @@ if !executable('vifm')
     Lexplore
   endfunction
   nnoremap <silent> ,vF :<C-u>call <SID>open_netrw_by_side()<CR>
-endif
+" endif
 
 " QuickFixを更新する
 " via: https://vi.stackexchange.com/a/13663

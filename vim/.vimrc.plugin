@@ -845,6 +845,28 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \ })
     " }}}
 
+    " " vifm/vifm.vim {{{
+    " function! s:hook_add_vifm_vim() abort
+    "   let g:loaded_netrw = 1
+    "   let g:loaded_netrwFileHandlers = 1
+    "   let g:loaded_netrwPlugin = 1
+    "   let g:loaded_netrwSettings = 1
+
+    "   nnoremap <silent> ,vf :<C-u>Vifm<CR>
+    "   nnoremap <silent> ,vF :<C-u>Vifm<CR>
+    " endfunction
+
+    " call dein#add('vifm/vifm.vim', {
+    "       \ 'lazy' : 1,
+    "       \ 'hook_add' : function('s:hook_add_vifm_vim'),
+    "       \ 'if' : 'executable("vifm")',
+    "       \ 'on_map' : [
+    "       \   ',vf',
+    "       \   ',vF',
+    "       \ ],
+    "       \ })
+    " " }}}
+
     " digitaltoad/vim-pug {{{
     call dein#add('digitaltoad/vim-pug', {
           \ 'lazy' : 1,
