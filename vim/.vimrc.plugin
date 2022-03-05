@@ -26,10 +26,8 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     execute 'set' 'runtimepath+=' . s:dein_dir
   endif
 
-  " NOTE:
-  "   リセットしてしまうとkaoriyaのスクリプトが読み込まれない
-  "   $VIM/vimrc を参照のこと
-  "
+  " NOTE: リセットしてしまうとkaoriyaのスクリプトが読み込まれない
+  " NOTE: $VIM/vimrc を参照のこと
   " リセットする
   " set runtimepath&
 
