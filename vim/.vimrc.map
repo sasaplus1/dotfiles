@@ -119,7 +119,9 @@ if has('terminal') && executable('vifm')
           \   expand('%:p:h'),
           \ ]
 
-    execute terminal->join(' ') command->join(' ')
+    " error from vint: unexpected token: -> (see vim-jp/vim-vimlparser)
+    " execute terminal->join(' ') command->join(' ')
+    execute join(terminal, ' ') join(command, ' ')
   endfunction
 
   nnoremap <silent> ,vf :<C-u>call <SID>open_vifm()<CR>
