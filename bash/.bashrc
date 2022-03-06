@@ -557,7 +557,7 @@ __main() {
     fi
 
     # in vim
-    [ -n "$VIM" ] && [ -n "$VIMRUNTIME" ] && prompt="${prompt} ${cyan}(vim)${reset}"
+    [ -n "$VIM_TERMINAL" ] && prompt="${prompt} ${cyan}(vim)${reset}"
 
     printf -- '%b' "${prompt}"
   }
@@ -623,7 +623,7 @@ __main() {
   then
     return 0
   fi
-  if [ -z "$TMUX" ] && [ -z "$VIM" ] && [ ! -f '/.dockerenv' ]
+  if [ -z "$TMUX" ] && [ -z "$VIM_TERMINAL" ] && [ ! -f '/.dockerenv' ]
   then
     type -tP tmux >/dev/null 2>&1 && exec command tmux
   fi
