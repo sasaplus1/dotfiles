@@ -259,7 +259,6 @@ __main() {
       command vim "$@"
     fi
   }
-
   # }}}
 
   # github-slug.sh {{{

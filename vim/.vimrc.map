@@ -100,7 +100,31 @@ inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 " Enterで補完時に決定
 inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
 
-" if !executable('vifm')
+if has('terminal') && executable('vifm')
+  function! s:open_vifm() abort
+    let terminal = [
+          \   'terminal',
+          \   '++close',
+          \ ]
+
+    " ウィンドウが2つ以上存在する場合はそのウィンドウで開く
+    " ウィンドウが1つのときにVifmを終了するとVimも終了してしまうため
+    if winnr('$') > 1
+      call add(terminal, '++curwin')
+    endif
+
+    let command = [
+          \   'vifm',
+          \   expand('%:p:h'),
+          \   expand('%:p:h'),
+          \ ]
+
+    execute terminal->join(' ') command->join(' ')
+  endfunction
+
+  nnoremap <silent> ,vf :<C-u>call <SID>open_vifm()<CR>
+  nnoremap <silent> ,vF :<C-u>call <SID>open_vifm()<CR>
+else
   " ,vfでnetrwを開く
   function! s:open_netrw() abort
     " ls -lのような表示にする
@@ -120,7 +144,7 @@ inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
     Lexplore
   endfunction
   nnoremap <silent> ,vF :<C-u>call <SID>open_netrw_by_side()<CR>
-" endif
+endif
 
 " QuickFixを更新する
 " via: https://vi.stackexchange.com/a/13663
@@ -133,7 +157,7 @@ function! s:update_quickfix() abort
 endfunction
 command! -nargs=0 UpdateQuickFix call <SID>update_quickfix()
 
-if has('terminal') && has('job') && has('channel')
+if has('terminal')
   " ターミナルを開く
   nnoremap <silent> ,t :<C-u>terminal<CR>
   nnoremap <silent> ,T :<C-u>vertical terminal<CR>
