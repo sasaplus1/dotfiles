@@ -36,6 +36,7 @@ endif
 dotfile_dirs += $(dest)/.config/git
 dotfile_dirs += $(dest)/.config/git
 dotfile_dirs += $(dest)/.config/nvim
+dotfile_dirs += $(dest)/.config/vifm
 # dotfile_dirs += $(dest)/.config/ranger
 dotfile_dirs += $(dest)/.ghq
 dotfile_dirs += $(dest)/.go
@@ -91,6 +92,7 @@ symlinks += $(makefile_dir)/screen/.screenrc $(dest)/.screenrc
 # symlinks += $(makefile_dir)/tern/.tern-project $(dest)/.tern-project
 symlinks += $(makefile_dir)/tig/.tigrc $(dest)/.tigrc
 symlinks += $(makefile_dir)/tmux/.tmux.conf $(dest)/.tmux.conf
+symlinks += $(makefile_dir)/vifm/vifmrc $(dest)/.config/vifm/vifmrc
 # symlinks += $(makefile_dir)/vim/.gvimrc $(dest)/.gvimrc
 symlinks += $(makefile_dir)/vim/.vimrc $(dest)/.vimrc
 symlinks += $(makefile_dir)/vim/.vimrc $(dest)/.config/nvim/init.vim
