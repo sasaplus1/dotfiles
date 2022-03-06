@@ -4,6 +4,13 @@ scriptencoding utf-8
 
 if (v:version >= 704 || has('nvim')) && executable('git')
 
+  " NOTE: リセットしてしまうとkaoriyaのスクリプトが読み込まれない
+  " NOTE: $VIM/vimrc を参照のこと
+  if !has('kaoriya')
+    " リセットする
+    set runtimepath&
+  endif
+
   let s:plugin_dir = $HOME . '/.vim/dein'
 
   let s:dein_rev = '2.2'
@@ -25,11 +32,6 @@ if (v:version >= 704 || has('nvim')) && executable('git')
   elseif &runtimepath !~# s:dein_dir
     execute 'set' 'runtimepath+=' . s:dein_dir
   endif
-
-  " NOTE: リセットしてしまうとkaoriyaのスクリプトが読み込まれない
-  " NOTE: $VIM/vimrc を参照のこと
-  " リセットする
-  " set runtimepath&
 
   if dein#load_state(s:plugin_dir)
     call dein#begin(s:plugin_dir)
