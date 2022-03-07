@@ -431,6 +431,24 @@ nnoremap <c-u> <c-w>x
 
 set timefmt=%Y/%m/%d\ %H:%M
 
+if executable('bat')
+  let $__ccd_fzf_preview = 'bat --color=always -pp -r :60 {}/README.* 2>/dev/null || ls -1a {}'
+else
+  let $__ccd_fzf_preview = 'head -n 60 {}/README.* 2>/dev/null || ls -1a {}'
+endif
+
+if executable('ghq')
+  let $__ccd_command1 = 'ghq list --full-path'
+else
+  let $__ccd_command1 = 'find "$GHQ_ROOT" -mindepth 3 -maxdepth 3 -type d -print'
+endif
+
+command! ccd :execute 'cd' fnameescape(term(
+       \ 'cat <(' . $__ccd_command1 . ') <(zoxide query --list) | ' .
+       \ 'sort -u | ' .
+       \ 'fzf --preview="' . $__ccd_fzf_preview . '" 2>/dev/tty'
+       \ ))
+
 " Qで閉じる
 nnoremap Q :<C-u>quit<CR>
 
