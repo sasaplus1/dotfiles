@@ -300,8 +300,15 @@ __main() {
   ccd() {
     # mdfind -onlyin "$(pwd)" "kMDItemContentType == public.folder" 2>/dev/null
 
-    # shellcheck disable=SC2016
-    local -r repo_cmd='find "$GHQ_ROOT" -mindepth 3 -maxdepth 3 -type d -print'
+    local repo_cmd=
+
+    if type -tP ghq >/dev/null 2>&1
+    then
+      repo_cmd='ghq list --full-path'
+    else
+      # shellcheck disable=SC2016
+      repo_cmd='find "$GHQ_ROOT" -mindepth 3 -maxdepth 3 -type d -print'
+    fi
 
     if type -tP zoxide >/dev/null 2>&1
     then
