@@ -455,6 +455,9 @@ nnoremap N :<C-u>edit<Space>
 " Kで新規ディレクトリを作成
 nnoremap K :<C-u>mkdir<Space>
 
+" Cでファイルをコピー
+nnoremap C :<C-u>copy<CR>
+
 " Jで特定のディレクトリにジャンプ
 nnoremap J :<C-u>cd<Space>
 
