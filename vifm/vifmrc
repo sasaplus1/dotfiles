@@ -476,8 +476,11 @@ nnoremap K :<C-u>mkdir<Space>
 " Cでファイルをコピー
 nnoremap C :<C-u>copy<CR>
 
-" Jで特定のディレクトリにジャンプ
-nnoremap J :<C-u>cd<Space>
+" Jでfzfを使って特定のディレクトリへ移動
+nnoremap J :<C-u>ccd<CR>
+
+" Pで他のペインのディレクトリを同期する
+nnoremap P :<C-u>sync<CR>
 
 if $VIM_TERMINAL
   " ホストのVimでファイルを開く
