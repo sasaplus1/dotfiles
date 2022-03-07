@@ -431,8 +431,8 @@ nnoremap <c-u> <c-w>x
 
 set timefmt=%Y/%m/%d\ %H:%M
 
-" qで閉じる
-nnoremap q :<C-u>quit<CR>
+" Qで閉じる
+nnoremap Q :<C-u>quit<CR>
 
 " .でドットファイルの表示・非表示を切り替え
 nnoremap . :<C-u>if &dotfiles | set nodotfiles | else | set dotfiles | endif<CR>
