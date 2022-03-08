@@ -352,6 +352,12 @@ if (v:version >= 704 || has('nvim')) && executable('git')
 
     " neoclide/coc.nvim {{{
     function! s:hook_add_coc_nvim() abort
+      let node = resolve($HOME . '/.vim/node-coc/bin/node')
+
+      if executable(node)
+        let g:coc_node_path = exepath(node)
+      endif
+
       let g:coc_global_extensions = [
             \ 'coc-css',
             \ 'coc-cssmodules',
@@ -453,10 +459,51 @@ if (v:version >= 704 || has('nvim')) && executable('git')
       nmap <silent> ,lR <Plug>(coc-rename)
     endfunction
 
+    function! s:hook_post_update_coc_nvim() abort
+      let node = resolve($HOME . '/.vim/node-coc/bin/node')
+
+      if !executable(node) && executable('uname') && executable('curl')
+        let node_version = '16.14.0'
+        let architecture = trim(system('uname -m'))
+
+        if has('osxdarwin')
+          let platform = 'darwin'
+        elseif has('linux')
+          let platform = 'linux'
+        endif
+
+        if architecture =~# '\v^arm'
+          let arch = architecture
+        elseif architecture =~# '\v^x86_64'
+          let arch = 'x64'
+        endif
+
+        let url = printf(
+              \ 'https://nodejs.org/download/release/v%s/node-v%s-%s-%s.tar.gz',
+              \ node_version,
+              \ node_version,
+              \ platform,
+              \ arch,
+              \ )
+
+        let node_coc_dir = resolve($HOME . '/.vim/node-coc')
+        let node_archive = resolve($HOME . '/.vim/node.tar.gz')
+
+        call mkdir(node_coc_dir, 'p')
+
+        let curl = printf('curl -fsSL -o "%s" "%s"', node_archive, url)
+        let tar = printf('tar fx "%s" -C "%s" --strip-components 1', node_archive, node_coc_dir)
+
+        call system(curl)
+        call system(tar)
+      endif
+    endfunction
+
     call dein#add('neoclide/coc.nvim', {
           \ 'hook_add' : function('s:hook_add_coc_nvim'),
           \ 'hook_post_source' : function('s:hook_post_source_coc_nvim'),
-          \ 'if' : 'executable("node") && (v:version >= 800 || has("nvim-0.3.1"))',
+          \ 'hook_post_update' : function('s:hook_post_update_coc_nvim'),
+          \ 'if' : 'v:version >= 800 || has("nvim-0.3.1")',
           \ 'merged' : 0,
           \ 'rev' : 'release',
           \ })
