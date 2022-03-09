@@ -482,6 +482,12 @@ nnoremap J :<C-u>ccd<CR>
 " Pで他のペインのディレクトリを同期する
 nnoremap P :<C-u>sync<CR>
 
+" lでvicmdを使ってファイルを開く（filetypeを無視する）
+nnoremap l :<C-u>if filetype('.', 1) == 'dir' | execute 'normal! l' | else | execute 'edit' '%s' | endif<CR>
+
+" Enterでvicmdを使ってファイルを開く（filetypeを無視する）
+nnoremap <CR> :<C-u>if filetype('.', 1) == 'dir' | execute 'normal! l' | else | execute 'edit' '%s' | endif<CR>
+
 if $VIM_TERMINAL
   " ホストのVimでファイルを開く
   set vicmd=drop-from-vifm
