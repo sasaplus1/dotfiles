@@ -1,9 +1,10 @@
 {
     "extensions.ignoreRecommendations": true,
-    "terminal.integrated.rendererType": "experimentalWebgl",
-    "terminal.integrated.commandsToSkipShell": [
+    "terminal.integrated.commandsToSkipShell": [,
       "-workbench.action.quickOpenView"
     ],
+    "terminal.integrated.enableMultiLinePasteWarning": false,
+    "terminal.integrated.rendererType": "experimentalWebgl",
     "window.zoomLevel": 0,
     "workbench.activityBar.visible": false,
     "workbench.startupEditor": "newUntitledFile",
