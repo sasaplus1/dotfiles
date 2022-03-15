@@ -486,7 +486,6 @@ nnoremap P :<C-u>sync<CR>
 nnoremap l :<C-u>
        \ if filetype('.', 1) == 'dir' |
        \   execute 'normal! l'        |
-       \   qall!                      |
        \ else                         |
        \   execute 'edit' '%s'        |
        \   qall!                      |
@@ -497,7 +496,6 @@ nnoremap l :<C-u>
 nnoremap <CR> :<C-u>
        \ if filetype('.', 1) == 'dir' |
        \   execute 'normal! l'        |
-       \   qall!                      |
        \ else                         |
        \   execute 'edit' '%s'        |
        \   qall!                      |
