@@ -100,52 +100,54 @@ inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 " Enterで補完時に決定
 inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
 
-if has('terminal') && executable('vifm')
-  function! s:open_vifm() abort
-    let terminal = [
-          \   'terminal',
-          \   '++close',
-          \ ]
+if (exists('*dein#tap') && !dein#tap('vfiler.vim')) && 1
+  if has('terminal') && executable('vifm')
+    function! s:open_vifm() abort
+      let terminal = [
+            \   'terminal',
+            \   '++close',
+            \ ]
 
-    " ウィンドウが2つ以上存在する場合はそのウィンドウで開く
-    " ウィンドウが1つのときにVifmを終了するとVimも終了してしまうため
-    if winnr('$') > 1
-      call add(terminal, '++curwin')
-    endif
+      " ウィンドウが2つ以上存在する場合はそのウィンドウで開く
+      " ウィンドウが1つのときにVifmを終了するとVimも終了してしまうため
+      if winnr('$') > 1
+        call add(terminal, '++curwin')
+      endif
 
-    let command = [
-          \   'vifm',
-          \   expand('%:p:h'),
-          \   expand('%:p:h'),
-          \ ]
+      let command = [
+            \   'vifm',
+            \   expand('%:p:h'),
+            \   expand('%:p:h'),
+            \ ]
 
-    " error from vint: unexpected token: -> (see vim-jp/vim-vimlparser)
-    " execute terminal->join(' ') command->join(' ')
-    execute join(terminal, ' ') join(command, ' ')
-  endfunction
+      " error from vint: unexpected token: -> (see vim-jp/vim-vimlparser)
+      " execute terminal->join(' ') command->join(' ')
+      execute join(terminal, ' ') join(command, ' ')
+    endfunction
 
-  nnoremap <silent> ,vf :<C-u>call <SID>open_vifm()<CR>
-  nnoremap <silent> ,vF :<C-u>call <SID>open_vifm()<CR>
-else
-  " ,vfでnetrwを開く
-  function! s:open_netrw() abort
-    " ls -lのような表示にする
-    " 長いディレクトリが開けなくなるので付加情報を表示しない
-    " let g:netrw_liststyle = 1
-    let g:netrw_liststyle = 0
-    " netrw
-    Explore
-  endfunction
-  nnoremap <silent> ,vf :<C-u>call <SID>open_netrw()<CR>
+    nnoremap <silent> ,vf :<C-u>call <SID>open_vifm()<CR>
+    nnoremap <silent> ,vF :<C-u>call <SID>open_vifm()<CR>
+  else
+    " ,vfでnetrwを開く
+    function! s:open_netrw() abort
+      " ls -lのような表示にする
+      " 長いディレクトリが開けなくなるので付加情報を表示しない
+      " let g:netrw_liststyle = 1
+      let g:netrw_liststyle = 0
+      " netrw
+      Explore
+    endfunction
+    nnoremap <silent> ,vf :<C-u>call <SID>open_netrw()<CR>
 
-  " ,vFでサイドバー風にnetrwを開く
-  function! s:open_netrw_by_side() abort
-    " ツリー表示にする
-    let g:netrw_liststyle = 3
-    " netrw
-    Lexplore
-  endfunction
-  nnoremap <silent> ,vF :<C-u>call <SID>open_netrw_by_side()<CR>
+    " ,vFでサイドバー風にnetrwを開く
+    function! s:open_netrw_by_side() abort
+      " ツリー表示にする
+      let g:netrw_liststyle = 3
+      " netrw
+      Lexplore
+    endfunction
+    nnoremap <silent> ,vF :<C-u>call <SID>open_netrw_by_side()<CR>
+  endif
 endif
 
 " QuickFixを更新する

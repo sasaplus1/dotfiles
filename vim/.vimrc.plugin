@@ -911,7 +911,28 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \ })
     " }}}
 
-    " " vifm/vifm.vim {{{
+    " obaland/vfiler.vim {{{
+    function! s:hook_add_vfiler_vim() abort
+      " netrwを読み込まない
+      let g:loaded_netrw = 1
+      let g:loaded_netrwFileHandlers = 1
+      let g:loaded_netrwPlugin = 1
+      let g:loaded_netrwSettings = 1
+
+      " ,vfでvfilerを開く
+      nnoremap <silent> ,vf :<C-u>VFiler -show-hidden-files<CR>
+      " ,vFでサイドバー風にvfilerを開く
+      nnoremap <silent> ,vF :<C-u>VFiler -keep -layout=left -width=30 -columns=indent,icon,name -show-hidden-files<CR>
+    endfunction
+
+    call dein#add('obaland/vfiler.vim', {
+          \ 'lazy' : 1,
+          \ 'hook_add' : function('s:hook_add_vfiler_vim'),
+          \ 'if' : 'has("lua")',
+          \ })
+    " }}}
+
+    " vifm/vifm.vim {{{
     function! s:hook_add_vifm_vim() abort
       " netrwを読み込まない
       let g:loaded_netrw = 1
@@ -923,7 +944,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     call dein#add('vifm/vifm.vim', {
           \ 'lazy' : 1,
           \ 'hook_add' : function('s:hook_add_vifm_vim'),
-          \ 'if' : 'executable("vifm")',
+          \ 'if' : 'executable("vifm") && !dein#tap("vfiler.vim")',
           \ 'on_ft' : [
           \   'mail_vifm',
           \   'vifm',
