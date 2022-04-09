@@ -908,6 +908,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
 
     call dein#add('sasaplus1/ameba-color-palette.dict', {
           \ 'hook_post_source' : function('s:hook_post_source_ameba_color_palette_dict'),
+          \ 'rev' : 'release',
           \ })
     " }}}
 
