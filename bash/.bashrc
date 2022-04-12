@@ -191,7 +191,7 @@ __main() {
   # zoxide or z {{{
   local -r z="$GHQ_ROOT/github.com/rupa/z/z.sh"
 
-  if type -tP zoxide >/dev/null 2>&1
+  if type zoxide >/dev/null 2>&1
   then
     eval "$(zoxide init bash)"
   elif [ -s "$z" ]
@@ -219,7 +219,7 @@ __main() {
   fzf() {
     local position=
 
-    if [[ "$TERM" =~ ^(screen|tmux) ]] && type tmux -tP >/dev/null 2>&1
+    if [[ "$TERM" =~ ^(screen|tmux) ]] && type tmux >/dev/null 2>&1
     then
       local -r window_width="$(tmux display-message -p "#{window_width}")"
       local -r pane_width="$(tmux display-message -p "#{pane_width}")"
@@ -302,7 +302,7 @@ __main() {
 
     local repo_cmd=
 
-    if type -tP ghq >/dev/null 2>&1
+    if type ghq >/dev/null 2>&1
     then
       repo_cmd='ghq list --full-path'
     else
@@ -310,7 +310,7 @@ __main() {
       repo_cmd='find "$GHQ_ROOT" -mindepth 3 -maxdepth 3 -type d -print'
     fi
 
-    if type -tP zoxide >/dev/null 2>&1
+    if type zoxide >/dev/null 2>&1
     then
       local -r z_cmd='zoxide query --list 2>&1'
     elif [ "$(type -t z)" == 'function' ]
@@ -639,7 +639,7 @@ __main() {
   fi
   if [ -z "$TMUX" ] && [ -z "$VIM_TERMINAL" ] && [ ! -f '/.dockerenv' ]
   then
-    type -tP tmux >/dev/null 2>&1 && exec command tmux
+    type tmux >/dev/null 2>&1 && command tmux
   fi
 }
 __main "$@"
