@@ -422,6 +422,14 @@ __main() {
     docker ps | sed 1d | fzf --multi --query="$@" | awk '{ print $1 }' | xargs -n 1 docker stop
   }
 
+  # switch tmux session
+  if type tmux >/dev/null 2>&1
+  then
+    switch-session() {
+      tmux switch-client -t "$(tmux list-sessions | fzf --no-multi | awk '{ print $1 }')"
+    }
+  fi
+
   # change to urxvt font size
   # from https://gist.github.com/anekos/5938365
   if type urxvt >/dev/null 2>&1
