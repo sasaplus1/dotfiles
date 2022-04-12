@@ -1078,7 +1078,9 @@ if (v:version >= 704 || has('nvim')) && executable('git')
       " see :help xterm-true-color
       " https://qiita.com/yami_beta/items/ef535d3458addd2e8fbb
       if $COLORTERM =~# '\vtruecolor|24bit'
-        set termguicolors
+        if has('termguicolors') && !empty($TMUX)
+          set termguicolors
+        endif
         let &t_8f = "\<Esc>[38:2:%lu:%lu:%lum"
         let &t_8b = "\<Esc>[48:2:%lu:%lu:%lum"
       endif

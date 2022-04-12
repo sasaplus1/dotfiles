@@ -67,6 +67,10 @@ if 1
 
   " }}}
 
+  if !exists('g:colors_name')
+    colorscheme default
+  endif
+
   set secure
 endif
 
