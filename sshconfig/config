@@ -1,15 +1,14 @@
-Host *
-    IdentitiesOnly yes
-
 Host bitbucket.org
     Compression yes
     HostName bitbucket.org
+    IdentitiesOnly yes
 #   IdentityFile ~/.ssh/path/to/file
     User git
 
 Host github.com
     Compression yes
     HostName github.com
+    IdentitiesOnly yes
 #   IdentityFile ~/.ssh/path/to/file
     User git
 
