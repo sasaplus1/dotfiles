@@ -4,6 +4,7 @@
       "-workbench.action.quickOpenView"
     ],
     "terminal.integrated.enableMultiLinePasteWarning": false,
+    "terminal.integrated.inheritEnv": false,
     "terminal.integrated.rendererType": "experimentalWebgl",
     "window.zoomLevel": 0,
     "workbench.activityBar.visible": false,
