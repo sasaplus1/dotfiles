@@ -1,6 +1,6 @@
 {
     "extensions.ignoreRecommendations": true,
-    "terminal.integrated.commandsToSkipShell": [,
+    "terminal.integrated.commandsToSkipShell": [
       "-workbench.action.quickOpenView"
     ],
     "terminal.integrated.enableMultiLinePasteWarning": false,
