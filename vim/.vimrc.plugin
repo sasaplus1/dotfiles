@@ -930,6 +930,9 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \ 'lazy' : 1,
           \ 'hook_add' : function('s:hook_add_vfiler_vim'),
           \ 'if' : 'has("lua")',
+          \ 'on_cmd' : [
+          \   'VFiler',
+          \ ],
           \ })
     " }}}
 
