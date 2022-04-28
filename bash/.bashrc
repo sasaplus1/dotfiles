@@ -175,6 +175,13 @@ __main() {
 
   # NOTE: lazy load command https://qiita.com/uasi/items/80865646607b966aedc8
 
+  # direnv {{{
+  if type direnv >/dev/null 2>&1
+  then
+    eval "$(direnv hook bash)"
+  fi
+  # }}}
+
   # nvm {{{
   # shellcheck disable=SC1091
   [ -n "${NVM_DIR-}" ] && [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
