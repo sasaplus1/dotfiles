@@ -36,19 +36,18 @@ if (v:version >= 704 || has('nvim')) && executable('git')
   if dein#load_state(s:plugin_dir)
     call dein#begin(s:plugin_dir)
 
-    " Shougo/dein.vim {{{
-    function! s:hook_source_dein_vim() abort
+    if exists('*dein#update')
       " ,nuでプラグインをアップデートする
       nnoremap ,nu :<C-u>call dein#update()<CR>
-    endfunction
+    endif
 
+    " Shougo/dein.vim {{{
     function! s:hook_done_update_dein_vim() abort
       " rtpを空にしている関係で自分で作る必要がある
       execute 'helptags' dein#get('dein.vim').path . '/doc'
     endfunction
 
     call dein#add('Shougo/dein.vim', {
-          \ 'hook_source' : function('s:hook_source_dein_vim'),
           \ 'rev' : s:dein_rev,
           \ 'rtp' : '',
           \ 'hook_done_update' : function('s:hook_done_update_dein_vim'),
