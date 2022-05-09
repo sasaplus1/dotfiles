@@ -892,6 +892,14 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \ })
     " }}}
 
+    " previm/previm {{{
+    call dein#add('previm/previm', {
+          \ 'depends' : 'open-browser.vim',
+          \ 'lazy' : 1,
+          \ 'on_cmd' : 'PrevimOpen'
+          \ })
+    " }}}
+
     " sasaplus1/ameba-color-palette.dict {{{
     function! s:hook_post_source_ameba_color_palette_dict() abort
       " ameba-color-palette.dictの設定をバッファに指定する
