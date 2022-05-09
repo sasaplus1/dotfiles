@@ -147,7 +147,7 @@ autocmd vimrc FileType go call matchadd('goSemicolon', ';\ze\s*$')
 autocmd vimrc BufNewFile,BufRead *.{md,markdown,mkd,mdown,mkdn,mark} setfiletype markdown
 
 " JavaScriptの著名なモジュールの設定ファイルをJSONとして開く
-autocmd vimrc BufNewFile,BufRead .{babel,eslint,stylelint,textlint}rc setfiletype json
+autocmd vimrc BufNewFile,BufRead .{babel,eslint,stylelint,swc,textlint}rc setfiletype json
 
 " make,vimgrep,vimgrepaddを実行したらcopenをする
 " grep,grepaddはCtrlPQuickfixを使用する
