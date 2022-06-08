@@ -57,7 +57,6 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     " mattn/ctrlp-matchfuzzy {{{
     call dein#add('mattn/ctrlp-matchfuzzy', {
           \ 'if' : 'exists("?matchfuzzy")',
-          \ 'lazy' : 1,
           \ })
     " }}}
 
@@ -786,9 +785,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     " }}}
 
     " kana/vim-operator-user {{{
-    call dein#add('kana/vim-operator-user', {
-          \ 'lazy' : 1,
-          \ })
+    call dein#add('kana/vim-operator-user')
     " }}}
 
     " rhysd/vim-operator-surround {{{
@@ -860,9 +857,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
       let g:gist_get_multiplefile = 1
     endfunction
 
-    call dein#add('mattn/webapi-vim', {
-          \ 'lazy' : 1,
-          \ })
+    call dein#add('mattn/webapi-vim')
     call dein#add('mattn/gist-vim', {
           \ 'depends' : 'webapi-vim',
           \ 'hook_add' : function('s:hook_add_gist_vim'),
@@ -968,7 +963,6 @@ if (v:version >= 704 || has('nvim')) && executable('git')
 
     " digitaltoad/vim-pug {{{
     call dein#add('digitaltoad/vim-pug', {
-          \ 'lazy' : 1,
           \ 'on_ft' : [
           \   'pug',
           \ ],
@@ -977,7 +971,6 @@ if (v:version >= 704 || has('nvim')) && executable('git')
 
     " hail2u/vim-css3-syntax {{{
     call dein#add('hail2u/vim-css3-syntax', {
-          \ 'lazy' : 1,
           \ 'on_ft' : [
           \   'css',
           \   'html',
@@ -988,7 +981,6 @@ if (v:version >= 704 || has('nvim')) && executable('git')
 
     " cespare/vim-toml {{{
     call dein#add('cespare/vim-toml', {
-          \ 'lazy' : 1,
           \ 'on_ft' : [
           \   'toml',
           \ ],
@@ -1041,7 +1033,6 @@ if (v:version >= 704 || has('nvim')) && executable('git')
 
     " MaxMEllon/vim-jsx-pretty {{{
     call dein#add('MaxMEllon/vim-jsx-pretty', {
-          \ 'lazy' : 1,
           \ 'on_ft' : [
           \   'javascript',
           \   'javascriptreact',
@@ -1050,8 +1041,9 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     " }}}
 
     " leafgarland/typescript-vim {{{
+    " NOTE: coloring is disable when lazy is 1
     call dein#add('leafgarland/typescript-vim', {
-          \ 'lazy' : 1,
+          \ 'lazy' : 0,
           \ 'on_ft' : [
           \   'typescript',
           \   'typescriptreact',
@@ -1061,7 +1053,6 @@ if (v:version >= 704 || has('nvim')) && executable('git')
 
     " udalov/kotlin-vim {{{
     call dein#add('udalov/kotlin-vim', {
-          \ 'lazy' : 1,
           \ 'on_ft' : [
           \   'kotlin',
           \ ],
