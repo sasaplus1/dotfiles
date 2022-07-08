@@ -9,6 +9,14 @@ __main() {
 
   #-----------------------------------------------------------------------------
 
+  # NOTE: tmux overwrite TERM_PROGRAM and TERM_PROGRAM_VERSION
+  # ex: Terminal.app = Apple_Terminal, 440
+  # ex: VSCode       = vscode, 1.68.1
+  export readonly ORIGINAL_TERM_PROGRAM=$TERM_PROGRAM
+  export readonly ORIGINAL_TERM_PROGRAM_VERSION=$TERM_PROGRAM_VERSION
+
+  #-----------------------------------------------------------------------------
+
   # NOTE: In POSIX sh, 'local' is undefined: SC3043
 
   #-----------------------------------------------------------------------------
