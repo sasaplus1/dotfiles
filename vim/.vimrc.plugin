@@ -1050,9 +1050,8 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     " }}}
 
     " leafgarland/typescript-vim {{{
-    " NOTE: coloring is disable when lazy is 1
     call dein#add('leafgarland/typescript-vim', {
-          \ 'lazy' : 0,
+          \ 'lazy' : 1,
           \ 'on_ft' : [
           \   'typescript',
           \   'typescriptreact',
