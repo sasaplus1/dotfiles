@@ -13,25 +13,6 @@ if 1
     scriptencoding utf-8
   endif
 
-  " Lua {{{
-
-  " luaコマンドが使用できないがluadllが指定できluajitコマンドが使用できる場合
-  if !has('lua') && exists('&luadll') && executable('luajit')
-    if !empty($HOMEBREW_DIR)
-      let s:lua = $HOMEBREW_DIR . '/opt/luajit/lib/libluajit.dylib'
-    else
-      let s:lua = $HOME . '/Homebrew/opt/luajit/lib/libluajit.dylib'
-    endif
-
-    if filereadable(s:lua)
-      execute 'set luadll=' . s:lua
-    endif
-
-    unlet s:lua
-  endif
-
-  " }}}
-
   " グループの初期化 {{{
   augroup vimrc
     autocmd!
