@@ -1088,20 +1088,17 @@ if (v:version >= 704 || has('nvim')) && executable('git')
       " see :help xterm-true-color
       " https://qiita.com/yami_beta/items/ef535d3458addd2e8fbb
 
-      let isAppleTerminal = match([
-            \   $TERM_PROGRAM,
-            \   $ORIGINAL_TERM_PROGRAM,
-            \ ],
-            \ 'Apple_Terminal') >= 0
+      " vscode を起動すると COLORTERM が定義される
+      " Terminal.app では COLORTERM は定義されない
+      let isSupportTrueColor = $COLORTERM =~# '\vtruecolor|24bit'
 
-      " vscodeを起動するとCOLORTERMが定義される
-      " Terminal.appではCOLORTERMは定義されない
-      " Apple_Terminal(Terminal.app) は truecolor をサポートしていない
-      " tmuxでそれぞれの端末を起動して切り替えた場合は判定に失敗する
-      if $COLORTERM =~# '\vtruecolor|24bit' && !isAppleTerminal
-        if has('termguicolors')
-          set termguicolors
-        endif
+      " Apple_Terminal（Terminal.appのこと） は truecolor をサポートしていない
+      let isAppleTerminal =
+            \ match([$TERM_PROGRAM, $ORIGINAL_TERM_PROGRAM], 'Apple_Terminal') != -1
+
+      " tmux でそれぞれの端末を起動して切り替えた場合は判定に失敗する
+      if has('termguicolors') && isSupportTrueColor && !isAppleTerminal
+        set termguicolors
       endif
 
       let &t_8f = "\<Esc>[38:2:%lu:%lu:%lum"
