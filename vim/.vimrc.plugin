@@ -74,6 +74,10 @@ if (v:version >= 704 || has('nvim')) && executable('git')
       " キー入力があってから16ms後に更新する
       " 1000 / 60 = 16.666666666666667 : 60FPS
       " let g:ctrlp_lazy_update = 16
+
+      " 検索を開始するワーキングディレクトリを変更する
+      let g:ctrlp_working_path_mode = 'r'
+
       " ルートパスと認識させるためのファイル
       let g:ctrlp_root_markers = [
             \ '.git',
@@ -81,8 +85,6 @@ if (v:version >= 704 || has('nvim')) && executable('git')
             \ '.svn',
             \ '.bzr',
             \ '_darcs',
-            \ 'Gemfile',
-            \ 'package.json',
             \ ]
 
       if dein#tap('ctrlp-matchfuzzy')
