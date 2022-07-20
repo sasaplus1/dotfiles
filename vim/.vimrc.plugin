@@ -170,7 +170,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
               \ a:pattern,
               \ simplify(git_dir . '/..'),
               \ )
-      else 
+      else
         execute printf('silent! grep! %s | redraw! | CtrlPQuickfix', a:pattern)
       endif
     endfunction
