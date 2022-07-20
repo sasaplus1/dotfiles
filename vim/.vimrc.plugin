@@ -193,7 +193,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \ 'depends' : exists('?matchfuzzy') ? ['ctrlp-matchfuzzy'] : [],
           \ 'hook_add' : function('s:hook_add_ctrlpvim'),
           \ 'hook_source' : function('s:hook_source_ctrlpvim'),
-          \ 'if' : 'v:version >= 700 && !dein#tap("fzf.vim")',
+          \ 'if' : 'v:version >= 700',
           \ 'lazy' : 1,
           \ 'on_cmd' : '<Plug>(CtrlP',
           \ 'on_map' : [
