@@ -228,8 +228,10 @@ __main() {
 
     if [[ "$TERM" =~ ^(screen|tmux) ]] && type tmux >/dev/null 2>&1
     then
-      local -r window_width="$(tmux display-message -p "#{window_width}")"
-      local -r pane_width="$(tmux display-message -p "#{pane_width}")"
+      local -r width="$(tmux display-message -p '#{window_width},#{pane_width}')"
+
+      local -r window_width="${width%%,*}"
+      local -r pane_width="${width##*,}"
 
       [ "$window_width" -ne "$pane_width" ] && position='--preview-window=bottom'
     fi
