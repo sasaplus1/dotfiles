@@ -108,7 +108,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
       function! s:fzf_my_cheat_sheet(query) abort
         let command = 'git grep --ignore-case -- %s'
         let options = {
-              \ 'dir' : '$HOME/.ghq/github.com/sasaplus1/vim-cheat-sheet',
+              \ 'dir' : '$HOME/.ghq/github.com/sasaplus1/vim-cheat-sheet/cheatsheet',
               \ 'options' : [
               \   '--bind', 'change:reload:' . printf(command, '{q}'),
               \   '--preview-window', 'top,80%',
@@ -131,7 +131,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
         " fzf#vim#with_preview は内部で bat が使用できるのなら使用するように記述されている
         " options に --preview 'cat {}' を指定したとしても cat は使用されない
         call fzf#vim#grep(
-              \ printf(command, shellescape(a:query)),
+              \ printf(command, shellescape('title:')),
               \ 0,
               \ fzf#vim#with_preview(options)
               \ )
