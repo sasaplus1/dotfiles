@@ -106,11 +106,15 @@ if (v:version >= 704 || has('nvim')) && executable('git')
       " endfunction
 
       function! s:fzf_my_cheat_sheet(query) abort
-        let command = 'git grep --ignore-case -- %s'
+        let command = executable('rg') ?
+              \ 'rg --color=always --column --line-number --no-heading --smart-case -- %s || true' :
+              \ 'git grep --ignore-case -- %s || true'
+
         let options = {
               \ 'dir' : '$HOME/.ghq/github.com/sasaplus1/vim-cheat-sheet/cheatsheet',
               \ 'options' : [
               \   '--bind', 'change:reload:' . printf(command, '{q}'),
+              \   '--disabled',
               \   '--preview-window', 'top,80%',
               \   '--prompt', 'CheatSheet> ',
               \   '--query', a:query,
