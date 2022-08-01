@@ -144,6 +144,8 @@ if (v:version >= 704 || has('nvim')) && executable('git')
       command! -nargs=* MyCheatSheet call s:fzf_my_cheat_sheet(<q-args>)
 
       nnoremap <silent> ,ch :<C-u>MyCheatSheet<CR>
+
+      nnoremap <silent> ,rg :<C-u>FzfRg<CR>
     endfunction
 
     call dein#add('junegunn/fzf', {
@@ -164,6 +166,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \ ],
           \ 'on_map' : [
           \   ',ch',
+          \   ',rg',
           \ ],
           \ })
     " }}}
