@@ -516,7 +516,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
       autocmd vimrc FileType css,html,javascript,javascriptreact,json,scss,typescript,typescriptreact,yaml
             \ nnoremap <buffer><silent> K :call <SID>show_documentation()<CR>
 
-      autocmd CursorHold <buffer> silent call CocActionAsync('highlight')
+      autocmd CursorHold * silent call CocActionAsync('highlight')
     endfunction
 
     function! s:hook_post_source_coc_nvim() abort
@@ -574,17 +574,6 @@ if (v:version >= 704 || has('nvim')) && executable('git')
               \ setlocal tagfunc=CocTagFunc
       endif
 
-      " Enterを押した時に候補を決定する
-      if exists('?complete_info')
-        inoremap <silent><expr> <CR> complete_info()["selected"] != "-1" ?
-              \ coc#pum#confirm() :
-              \ "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
-      else
-        inoremap <silent><expr> <CR> coc#pum#visible() ?
-              \ coc#pum#confirm() :
-              \ "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
-      endif
-
       function! s:check_back_space() abort
         let col = col('.') - 1
         return !col || getline('.')[col - 1] =~# '\s'
@@ -601,6 +590,11 @@ if (v:version >= 704 || has('nvim')) && executable('git')
             \ coc#pum#prev(1) :
             \ "\<C-h>"
 
+      " Enterを押した時に候補を決定する
+      inoremap <silent><expr> <CR> coc#pum#visible() && coc#pum#info()['index'] != -1 ?
+            \ coc#pum#confirm() : "\<C-g>u\<CR>"
+
+      " 候補を表示する
       inoremap <silent><expr> <C-k> coc#refresh()
 
       " nmap <silent> [g <Plug>(coc-diagnostic-prev)
