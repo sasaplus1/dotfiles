@@ -473,7 +473,8 @@ if (v:version >= 704 || has('nvim')) && executable('git')
       let node = resolve($HOME . '/.vim/node-coc/bin/node')
 
       if executable(node)
-        let g:coc_node_path = exepath(node)
+        " g:coc_node_path と npm.binPath を指定しても正常に動作しない
+        let $PATH = fnamemodify(node, ':h') . ':' . $PATH
       endif
 
       let g:coc_global_extensions = [
@@ -533,7 +534,6 @@ if (v:version >= 704 || has('nvim')) && executable('git')
               \ 'javascript.suggest.enabled': v:false,
               \ 'javascript.validate.enable' :v:false,
               \ 'less.validate': v:false,
-              \ 'npm.binPath' : resolve($HOME . '/.vim/node-coc/bin/npm'),
               \ 'scss.validate': v:false,
               \ 'typescript.format.enabled': v:false,
               \ 'typescript.suggest.enabled': v:false,
