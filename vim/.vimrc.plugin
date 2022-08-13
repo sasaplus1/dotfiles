@@ -533,6 +533,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
               \ 'javascript.suggest.enabled': v:false,
               \ 'javascript.validate.enable' :v:false,
               \ 'less.validate': v:false,
+              \ 'npm.binPath' : resolve($HOME . '/.vim/node-coc/bin/npm'),
               \ 'scss.validate': v:false,
               \ 'typescript.format.enabled': v:false,
               \ 'typescript.suggest.enabled': v:false,
