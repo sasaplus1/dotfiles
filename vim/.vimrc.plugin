@@ -620,8 +620,8 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           let platform = 'linux'
         endif
 
-        if architecture =~# '\v^arm'
-          let arch = architecture
+        if architecture =~# '\v^(arm64|aarch64)'
+          let arch = 'arm64'
         elseif architecture =~# '\v^x86_64'
           let arch = 'x64'
         endif
