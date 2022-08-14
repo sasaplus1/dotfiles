@@ -474,6 +474,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
 
       if executable(node)
         " g:coc_node_path と npm.binPath を指定しても正常に動作しない
+        " https://github.com/neoclide/coc.nvim/issues/1826#issuecomment-1149259027
         let $PATH = fnamemodify(node, ':h') . ':' . $PATH
       endif
 
