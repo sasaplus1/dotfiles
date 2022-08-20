@@ -96,6 +96,7 @@ symlinks += $(makefile_dir)/vifm/vifmrc $(dest)/.config/vifm/vifmrc
 # symlinks += $(makefile_dir)/vim/.gvimrc $(dest)/.gvimrc
 symlinks += $(makefile_dir)/vim/.vimrc $(dest)/.vimrc
 symlinks += $(makefile_dir)/vim/.vimrc $(dest)/.config/nvim/init.vim
+symlinks += $(makefile_dir)/wezterm/.wezterm.lua $(dest)/.wezterm.lua
 
 symlinks := $(subst +,\\\ ,$(abspath $(strip $(symlinks))))
 
