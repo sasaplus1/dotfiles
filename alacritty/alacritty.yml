@@ -604,6 +604,16 @@ colors:
 
 background_opacity: 0.9
 
+# NOTE: How to print key codes:
+# $ /Applications/Alacritty.app/Contents/MacOS/alacritty --print-events
+# [7.351912583s] [INFO ] [alacritty] glutin event: WindowEvent {
+#   window_id: WindowId(WindowId(5158357840)), event: KeyboardInput {
+#     device_id: DeviceId(DeviceId), input: KeyboardInput {
+#       scancode: 93, state: Released, virtual_keycode: Some(Yen), modifiers: (empty)
+#     },
+#     is_synthetic: false
+#   }
+# }
 key_bindings:
   # open new window
   - { key: N,        mods: Command, action: SpawnNewInstance }
@@ -615,3 +625,8 @@ key_bindings:
   - { key: C,        mods: Command, action: Copy             }
   # press command + v to paste from clipboard
   - { key: V,        mods: Command, action: Paste            }
+  # press Yen to send Backslash (WIP)
+# - { key: Yen,                     chars: "\x5c"            }
+# - { key: 93,                      chars: "\u005c"          }
+# - { key: Some(Yen),               chars: "\u005c"          }
+# - { key: 93,                      chars: "\u005c"          }
