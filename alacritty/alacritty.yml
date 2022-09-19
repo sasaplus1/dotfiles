@@ -630,3 +630,9 @@ key_bindings:
 # - { key: 93,                      chars: "\u005c"          }
 # - { key: Some(Yen),               chars: "\u005c"          }
 # - { key: 93,                      chars: "\u005c"          }
+# - { key: Yen,                     chars: "\u005C"          }
+# - { key: 93,                      chars: "\u005C"          }
+# - { key: "\x5D",                  chars: "\u005C"          }
+# - { key: \\,                      chars: "A"               }
+# - { key: A,                       chars: "B"               }
+# - { key: Yen,    mods: Shift,     chars: "\u005C"          }
