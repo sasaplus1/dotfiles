@@ -4,6 +4,7 @@ return {
   -- フォントを変更する
   font = wezterm.font_with_fallback {
     'Menlo',
+    'ヒラギノ角ゴシック',
   },
   font_size = 11.0,
 
