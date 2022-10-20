@@ -254,20 +254,32 @@ __main() {
   [ -x "$lvim" ] && export EDITOR="$lvim"
   [ -x "$mvim" ] && export EDITOR="$mvim"
 
-  vim() {
-    if [ -x "$mvim" ]
-    then
-      "$mvim" "$@"
-    elif [ -x "$lvim" ]
-    then
-      "$lvim" "$@"
-    elif [ -x "$pvim" ]
-    then
-      "$pvim" "$@"
-    else
-      command vim "$@"
-    fi
-  }
+  if [ -n "$VIM_TERMINAL" ]
+  then
+    # https://vim-jp.org/vimdoc-en/terminal.html#terminal-api
+    vim() {
+      for _ in $(seq $#)
+      do
+        printf -- '%b["drop","%s"]%b' '\x1b]51;' "$PWD/$1" '\x07' &
+        shift
+      done
+    }
+  else
+    vim() {
+      if [ -x "$mvim" ]
+      then
+        "$mvim" "$@"
+      elif [ -x "$lvim" ]
+      then
+        "$lvim" "$@"
+      elif [ -x "$pvim" ]
+      then
+        "$pvim" "$@"
+      else
+        command vim "$@"
+      fi
+    }
+  fi
   # }}}
 
   # github-slug.sh {{{
