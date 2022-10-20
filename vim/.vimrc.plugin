@@ -518,6 +518,10 @@ if (v:version >= 704 || has('nvim')) && executable('git')
       autocmd vimrc FileType css,html,javascript,javascriptreact,json,scss,typescript,typescriptreact,yaml
             \ nnoremap <buffer><silent> K :call <SID>show_documentation()<CR>
 
+      " F で折りたたみをする
+      autocmd vimrc FileType css,html,javascript,javascriptreact,json,scss,typescript,typescriptreact,yaml
+            \ nnoremap <buffer><silent> F :call CocAction('fold')<CR>
+
       autocmd vimrc CursorHold * silent call CocActionAsync('highlight')
     endfunction
 
