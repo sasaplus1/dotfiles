@@ -613,7 +613,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
       let node = resolve($HOME . '/.vim/node-coc/bin/node')
 
       if !executable(node) && executable('uname') && executable('curl')
-        let node_version = '16.16.0'
+        let node_version = '16.17.1'
         let architecture = trim(system('uname -m'))
 
         if has('osxdarwin')
