@@ -363,6 +363,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
             \ 'javascript.jsx' : ['eslint'],
             \ 'javascriptreact' : ['eslint'],
             \ 'json' : [],
+            \ 'rust' : ['rustc', 'rust-analyzer', 'rls'],
             \ 'scss' : ['stylelint'],
             \ 'typescript' : ['tsserver', 'eslint', 'tslint'],
             \ 'typescriptreact' : ['tsserver', 'eslint', 'tslint'],
@@ -375,6 +376,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
             \ 'javascript.jsx' : ['prettier'],
             \ 'javascriptreact' : ['prettier'],
             \ 'json' : ['prettier'],
+            \ 'rust' : ['rustfmt'],
             \ 'scss' : ['prettier'],
             \ 'typescript' : ['prettier'],
             \ 'typescriptreact' : ['prettier'],
@@ -484,6 +486,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
             \ 'coc-dictionary',
             \ 'coc-html',
             \ 'coc-json',
+            \ 'coc-rust-analyzer',
             \ 'coc-tsserver',
             \ 'coc-yaml',
             \ ]
