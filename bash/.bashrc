@@ -195,6 +195,10 @@ __main() {
   }
   # }}}
 
+  # rustup {{{
+  [ -r "$HOME/.cargo/env" ] && source "$HOME/.cargo/env"
+  # }}}
+
   # zoxide or z {{{
   local -r z="$GHQ_ROOT/github.com/rupa/z/z.sh"
 
