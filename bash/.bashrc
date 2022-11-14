@@ -196,6 +196,7 @@ __main() {
   # }}}
 
   # rustup {{{
+  # shellcheck disable=SC1091
   [ -r "$HOME/.cargo/env" ] && source "$HOME/.cargo/env"
   # }}}
 
