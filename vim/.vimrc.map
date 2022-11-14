@@ -161,7 +161,7 @@ function! s:update_quickfix() abort
 endfunction
 command! -nargs=0 UpdateQuickFix call <SID>update_quickfix()
 
-if has('terminal')
+if has('terminal') || has('nvim')
   " ターミナルを開く
   nnoremap <silent> ,t :<C-u>terminal<CR>
   nnoremap <silent> ,T :<C-u>vertical terminal<CR>
