@@ -153,6 +153,11 @@ __main() {
   [ -d "$__main_android_platform_tools" ] && export PATH="$__main_android_platform_tools:$PATH"
   # }}}
 
+  # wezterm {{{
+  [ "$__main_os" = 'macos' ] && __main_wezterm="/Applications/WezTerm.app/Contents/MacOS"
+  [ -d "$__main_wezterm" ] && export PATH="$__main_wezterm:$PATH"
+  # }}}
+
   # vim {{{
   # my KaoriYa Vim for macOS
   # via https://github.com/sasaplus1/portable-vim
