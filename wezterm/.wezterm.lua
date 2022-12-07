@@ -1,6 +1,17 @@
 local wezterm = require 'wezterm'
 
 return {
+  -- ベルを無効化する
+  audible_bell = 'Disabled',
+
+  -- 色を変更する
+  colors = {
+    -- カーソルの背景色
+    cursor_bg = 'silver',
+    -- カーソルの枠の色（フォーカスが外れた時に描画される）
+    cursor_border = 'silver',
+  },
+
   -- フォントを変更する
   font = wezterm.font_with_fallback {
     'Menlo',
