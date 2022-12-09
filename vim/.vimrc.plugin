@@ -13,25 +13,21 @@ if (v:version >= 704 || has('nvim')) && executable('git')
 
   let s:plugin_dir = $HOME . '/.vim/dein'
 
-  let s:dein_rev = '2.2'
-  let s:dein_dir =
-        \ empty(s:dein_rev)
-        \   ? s:plugin_dir . '/repos/github.com/Shougo/dein.vim'
-        \   : s:plugin_dir . '/repos/github.com/Shougo/dein.vim_' . s:dein_rev
+  let s:dein_rev = (!has('nvim') && v:version < 802) || (has('nvim') && v:version < 500)
+        \ ? '2.2'
+        \ : '3.0'
+  let s:dein_dir = simplify(s:plugin_dir . '/repos/github.com/Shougo/dein.vim_' . s:dein_rev)
 
   if !isdirectory(s:dein_dir)
-    let s:dein_bootstrap = $HOME . '/.vim/dein-bootstrap'
-
     execute printf(
           \ '!git -c %s clone --branch %s https://github.com/Shougo/dein.vim %s',
           \ 'advice.detachedHead=false',
           \ s:dein_rev,
-          \ s:dein_bootstrap,
+          \ s:dein_dir,
           \ )
-    execute 'set' 'runtimepath+=' . s:dein_bootstrap
-  elseif &runtimepath !~# s:dein_dir
-    execute 'set' 'runtimepath+=' . s:dein_dir
   endif
+
+  execute 'set' 'runtimepath+=' . s:dein_dir
 
   if dein#load_state(s:plugin_dir)
     call dein#begin(s:plugin_dir)
@@ -43,13 +39,10 @@ if (v:version >= 704 || has('nvim')) && executable('git')
 
     " Shougo/dein.vim {{{
     function! s:hook_done_update_dein_vim() abort
-      " rtpを空にしている関係で自分で作る必要がある
-      execute 'helptags' dein#get('dein.vim').path . '/doc'
+      silent execute 'helptags' dein#get('dein.vim').path . '/doc'
     endfunction
 
-    call dein#add('Shougo/dein.vim', {
-          \ 'rev' : s:dein_rev,
-          \ 'rtp' : '',
+    call dein#add(s:dein_dir, {
           \ 'hook_done_update' : function('s:hook_done_update_dein_vim'),
           \ })
     " }}}
@@ -1130,6 +1123,13 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \ })
     " }}}
 
+    " nvim-treesitter/nvim-treesitter {{{
+    call dein#add('nvim-treesitter/nvim-treesitter', {
+          \ 'merged' : 0,
+          \ 'if' : 'has("nvim")',
+          \ })
+    " }}}
+
     " digitaltoad/vim-pug {{{
     call dein#add('digitaltoad/vim-pug', {
           \ 'lazy' : 1,
@@ -1213,6 +1213,16 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \ })
     " }}}
 
+    " HerringtonDarkholme/yats.vim {{{
+    " call dein#add('HerringtonDarkholme/yats.vim', {
+    "       \ 'lazy' : 1,
+    "       \ 'on_ft' : [
+    "       \   'typescript',
+    "       \   'typescriptreact',
+    "       \ ],
+    "       \ })
+    " }}}
+
     " leafgarland/typescript-vim {{{
     call dein#add('leafgarland/typescript-vim', {
           \ 'lazy' : 1,
@@ -1281,23 +1291,41 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     call dein#end()
   endif
 
-  if dein#check_install()
-    call dein#install()
-  endif
-
   " sourceフックを呼ぶ
   call dein#call_hook('source')
 
   " post_sourceフックを呼ぶようにする
   autocmd vimrc VimEnter * call dein#call_hook('post_source')
 
+  filetype plugin indent on
+
+  if has('syntax')
+    " シンタックスハイライト
+    syntax enable
+  endif
+
+  if dein#check_install()
+    call dein#install()
+  endif
+
 endif
 
-filetype plugin indent on
+if exists('*dein#tap') && dein#tap('nvim-treesitter')
 
-if has('syntax')
-  " シンタックスハイライト
-  syntax enable
+lua << EOB
+  require('nvim-treesitter.configs').setup {
+    auto_install = false,
+    ensure_installed = {
+      'typescript',
+    },
+    highlight = {
+      enable = true,
+      additional_vim_regex_highlighting = false,
+    },
+    sync_install = false,
+  }
+EOB
+
 endif
 
 " }}}
