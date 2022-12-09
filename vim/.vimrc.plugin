@@ -1100,7 +1100,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     call dein#add('obaland/vfiler.vim', {
           \ 'lazy' : 1,
           \ 'hook_add' : function('s:hook_add_vfiler_vim'),
-          \ 'if' : 'has("lua")',
+          \ 'if' : 'has("lua") || has("nvim")',
           \ 'on_cmd' : [
           \   'VFiler',
           \ ],
