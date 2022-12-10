@@ -994,35 +994,6 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \ })
     " }}}
 
-    " mattn/gist-vim {{{
-    function! s:hook_add_gist_vim() abort
-      nnoremap ,gd :<C-u>Gist -d<CR>
-      nnoremap ,ge :<C-u>Gist -s<Space>
-      nnoremap ,gf :<C-u>Gist -f<CR>
-      nnoremap ,gl :<C-u>Gist -l<CR>
-      nnoremap ,gmp :<C-u>Gist -m -p -s<Space>
-      nnoremap ,gmP :<C-u>Gist -m -P -s<Space>
-      nnoremap ,gp :<C-u>Gist -p -s<Space>
-      nnoremap ,gP :<C-u>Gist -P -s<Space>
-    endfunction
-
-    function! s:hook_source_gist_vim() abort
-      " 複数ファイルを取得する
-      let g:gist_get_multiplefile = 1
-    endfunction
-
-    call dein#add('mattn/webapi-vim', {
-          \ 'lazy' : 1,
-          \ })
-    call dein#add('mattn/gist-vim', {
-          \ 'depends' : 'webapi-vim',
-          \ 'hook_add' : function('s:hook_add_gist_vim'),
-          \ 'hook_source' : function('s:hook_source_gist_vim'),
-          \ 'lazy' : 1,
-          \ 'on_cmd' : 'Gist',
-          \ })
-    " }}}
-
     " tyru/open-browser.vim {{{
     function! s:hook_source_open_browser_vim() abort
       let g:netrw_nogx = 1
