@@ -164,4 +164,9 @@ elseif has('terminal') && has('patch-8.1.2219')
   autocmd vimrc TerminalWinOpen * setlocal nonumber norelativenumber
 endif
 
+" ターミナルを開いたら挿入モードにする
+if has('nvim')
+  autocmd vimrc TermOpen * startinsert
+endif
+
 " vim:ft=vim:fdm=marker:fen:
