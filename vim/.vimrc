@@ -28,8 +28,6 @@ if 1
 
   execute 'source' s:vimrc_dir . '/.vimrc.plugin'
   execute 'source' s:vimrc_dir . '/.vimrc.config'
-  execute 'source' s:vimrc_dir . '/.vimrc.autocmd'
-  execute 'source' s:vimrc_dir . '/.vimrc.map'
 
   unlet s:vimrc_file
   unlet s:vimrc_dir
