@@ -1057,6 +1057,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     " digitaltoad/vim-pug {{{
     call dein#add('digitaltoad/vim-pug', {
           \ 'lazy' : 1,
+          \ 'if' : '!has("nvim")',
           \ 'on_ft' : [
           \   'pug',
           \ ],
@@ -1066,6 +1067,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     " hail2u/vim-css3-syntax {{{
     call dein#add('hail2u/vim-css3-syntax', {
           \ 'lazy' : 1,
+          \ 'if' : '!has("nvim")',
           \ 'on_ft' : [
           \   'css',
           \   'html',
@@ -1077,6 +1079,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     " cespare/vim-toml {{{
     call dein#add('cespare/vim-toml', {
           \ 'lazy' : 1,
+          \ 'if' : '!has("nvim")',
           \ 'on_ft' : [
           \   'toml',
           \ ],
@@ -1092,6 +1095,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     call dein#add('othree/html5.vim', {
           \ 'hook_add' : function('s:hook_add_html5_vim'),
           \ 'lazy' : 1,
+          \ 'if' : '!has("nvim")',
           \ 'on_ft' : [
           \   'html',
           \   'php',
@@ -1108,6 +1112,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     call dein#add('pangloss/vim-javascript', {
           \ 'hook_source' : function('s:hook_source_vim_javascript'),
           \ 'lazy' : 1,
+          \ 'if' : '!has("nvim")',
           \ 'on_ft' : [
           \   'javascript',
           \   'javascriptreact',
@@ -1118,6 +1123,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     " styled-components/vim-styled-components {{{
     call dein#add('styled-components/vim-styled-components', {
           \ 'lazy' : 1,
+          \ 'if' : '!has("nvim")',
           \ 'on_ft' : [
           \   'javascript',
           \   'javascriptreact',
@@ -1130,6 +1136,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     " MaxMEllon/vim-jsx-pretty {{{
     call dein#add('MaxMEllon/vim-jsx-pretty', {
           \ 'lazy' : 1,
+          \ 'if' : '!has("nvim")',
           \ 'on_ft' : [
           \   'javascript',
           \   'javascriptreact',
@@ -1140,6 +1147,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     " HerringtonDarkholme/yats.vim {{{
     " call dein#add('HerringtonDarkholme/yats.vim', {
     "       \ 'lazy' : 1,
+    "       \ 'if' : '!has("nvim")',
     "       \ 'on_ft' : [
     "       \   'typescript',
     "       \   'typescriptreact',
@@ -1150,6 +1158,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     " leafgarland/typescript-vim {{{
     call dein#add('leafgarland/typescript-vim', {
           \ 'lazy' : 1,
+          \ 'if' : '!has("nvim")',
           \ 'on_ft' : [
           \   'typescript',
           \   'typescriptreact',
@@ -1160,6 +1169,7 @@ if (v:version >= 704 || has('nvim')) && executable('git')
     " udalov/kotlin-vim {{{
     call dein#add('udalov/kotlin-vim', {
           \ 'lazy' : 1,
+          \ 'if' : '!has("nvim")',
           \ 'on_ft' : [
           \   'kotlin',
           \ ],
