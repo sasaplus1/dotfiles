@@ -1100,29 +1100,6 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \ })
     " }}}
 
-    " vifm/vifm.vim {{{
-    function! s:hook_add_vifm_vim() abort
-      " netrwを読み込まない
-      let g:loaded_netrw = 1
-      let g:loaded_netrwFileHandlers = 1
-      let g:loaded_netrwPlugin = 1
-      let g:loaded_netrwSettings = 1
-    endfunction
-
-    call dein#add('vifm/vifm.vim', {
-          \ 'lazy' : 1,
-          \ 'hook_add' : function('s:hook_add_vifm_vim'),
-          \ 'if' : 'executable("vifm") && !dein#tap("vfiler.vim")',
-          \ 'on_ft' : [
-          \   'mail_vifm',
-          \   'vifm',
-          \   'vifm-cmdedit',
-          \   'vifm-edit',
-          \   'vifm-rename',
-          \ ],
-          \ })
-    " }}}
-
     " nvim-treesitter/nvim-treesitter {{{
     call dein#add('nvim-treesitter/nvim-treesitter', {
           \ 'merged' : 0,
