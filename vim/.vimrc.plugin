@@ -859,30 +859,6 @@ if (v:version >= 704 || has('nvim')) && executable('git')
           \ })
     " }}}
 
-    " othree/eregex.vim {{{
-    function! s:hook_source_eregex_vim() abort
-      " キーマップの変更を行なわない
-      let g:eregex_default_enable = 0
-    endfunction
-
-    call dein#add('othree/eregex.vim', {
-          \ 'hook_source' : function('s:hook_source_eregex_vim'),
-          \ 'lazy' : 1,
-          \ 'on_cmd' : [
-          \   'E2v',
-          \   'M',
-          \   'S',
-          \   'G',
-          \   'G!',
-          \   'V',
-          \ ],
-          \ 'on_func' : [
-          \   'E2v',
-          \ ],
-          \ 'on_event' : 'CmdlineEnter',
-          \ })
-    " }}}
-
     " kana/vim-gf-user {{{
     function! GfImport() abort
       let path = expand('<cfile>')
