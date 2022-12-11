@@ -52,6 +52,7 @@ jobs:
       - run: >
           vint
           vim/.vimrc
+          vim/.vimrc.base
           vim/.vimrc.config
           vim/.vimrc.local
           vim/.vimrc.plugin
