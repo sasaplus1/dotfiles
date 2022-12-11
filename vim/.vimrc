@@ -2,11 +2,6 @@ if 1
   " NOTE: see :help no-eval-feature
   " https://stackoverflow.com/q/27451637
 
-  if &compatible
-    " vint: next-line -ProhibitSetNoCompatible
-    set nocompatible
-  endif
-
   if has('multi_byte_encoding')
     " vint: next-line -ProhibitEncodingOptionAfterScriptEncoding
     set encoding=utf-8
