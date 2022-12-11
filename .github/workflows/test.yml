@@ -52,8 +52,6 @@ jobs:
       - run: >
           vint
           vim/.vimrc
-          vim/.vimrc.autocmd
           vim/.vimrc.config
           vim/.vimrc.local
-          vim/.vimrc.map
           vim/.vimrc.plugin
