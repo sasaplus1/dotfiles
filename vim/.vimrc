@@ -29,21 +29,14 @@ if 1
   execute 'source' s:vimrc_dir . '/.vimrc.plugin'
   execute 'source' s:vimrc_dir . '/.vimrc.config'
 
-  unlet s:vimrc_file
-  unlet s:vimrc_dir
-
   " }}}
 
   " 環境固有の設定を読み込む {{{
-
   let s:vimrc_local = $HOME . '/.vimrc.local'
 
   if filereadable(s:vimrc_local)
     execute 'source' s:vimrc_local
   endif
-
-  unlet s:vimrc_local
-
   " }}}
 
   if !exists('g:colors_name')
