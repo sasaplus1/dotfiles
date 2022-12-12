@@ -127,7 +127,7 @@ if dein#load_state(s:plugin_dir)
         \ ],
         \ 'hook_add' : function('s:hook_add_junegunn_fzf'),
         \ 'hook_source' : function('s:hook_source_junegunn_fzf'),
-        \ 'if' : 'v:version >= 704 && dein#tap("fzf")',
+        \ 'if' : v:version >= 704 && dein#tap('fzf'),
         \ 'lazy' : 1,
         \ 'on_cmd' : [
         \   '<Plug>(fzf-',
@@ -141,7 +141,7 @@ if dein#load_state(s:plugin_dir)
 
   " mattn/ctrlp-matchfuzzy {{{
   call dein#add('mattn/ctrlp-matchfuzzy', {
-        \ 'if' : 'exists("?matchfuzzy") && !has("nvim")',
+        \ 'if' : exists('?matchfuzzy') && !has('nvim'),
         \ 'lazy' : 1,
         \ })
   " }}}
@@ -278,7 +278,7 @@ if dein#load_state(s:plugin_dir)
         \ 'depends' : exists('?matchfuzzy') ? ['ctrlp-matchfuzzy'] : [],
         \ 'hook_add' : function('s:hook_add_ctrlpvim'),
         \ 'hook_source' : function('s:hook_source_ctrlpvim'),
-        \ 'if' : 'v:version >= 700',
+        \ 'if' : v:version >= 700,
         \ 'lazy' : 1,
         \ 'on_cmd' : '<Plug>(CtrlP',
         \ 'on_map' : [
@@ -628,7 +628,7 @@ if dein#load_state(s:plugin_dir)
         \ 'hook_add' : function('s:hook_add_coc_nvim'),
         \ 'hook_post_source' : function('s:hook_post_source_coc_nvim'),
         \ 'hook_post_update' : function('s:hook_post_update_coc_nvim'),
-        \ 'if' : 'v:version >= 800 || has("nvim-0.3.1")',
+        \ 'if' : v:version >= 800 || has('nvim-0.3.1'),
         \ 'merged' : 0,
         \ 'rev' : 'release',
         \ })
@@ -1021,7 +1021,7 @@ if dein#load_state(s:plugin_dir)
   call dein#add('obaland/vfiler.vim', {
         \ 'lazy' : 1,
         \ 'hook_add' : function('s:hook_add_vfiler_vim'),
-        \ 'if' : 'has("lua") || has("nvim")',
+        \ 'if' : has('lua') || has('nvim'),
         \ 'on_cmd' : [
         \   'VFiler',
         \ ],
@@ -1049,7 +1049,7 @@ EOB
 
   call dein#add('nvim-treesitter/nvim-treesitter', {
         \ 'hook_add' : function('s:hook_add_nvim_treesitter'),
-        \ 'if' : 'has("nvim")',
+        \ 'if' : has('nvim'),
         \ 'merged' : 0,
         \ })
   " }}}
@@ -1057,7 +1057,7 @@ EOB
   " digitaltoad/vim-pug {{{
   call dein#add('digitaltoad/vim-pug', {
         \ 'lazy' : 1,
-        \ 'if' : '!has("nvim")',
+        \ 'if' : !has('nvim'),
         \ 'on_ft' : [
         \   'pug',
         \ ],
@@ -1067,7 +1067,7 @@ EOB
   " hail2u/vim-css3-syntax {{{
   call dein#add('hail2u/vim-css3-syntax', {
         \ 'lazy' : 1,
-        \ 'if' : '!has("nvim")',
+        \ 'if' : !has('nvim'),
         \ 'on_ft' : [
         \   'css',
         \   'html',
@@ -1079,7 +1079,7 @@ EOB
   " cespare/vim-toml {{{
   call dein#add('cespare/vim-toml', {
         \ 'lazy' : 1,
-        \ 'if' : '!has("nvim")',
+        \ 'if' : !has('nvim'),
         \ 'on_ft' : [
         \   'toml',
         \ ],
@@ -1095,7 +1095,7 @@ EOB
   call dein#add('othree/html5.vim', {
         \ 'hook_add' : function('s:hook_add_html5_vim'),
         \ 'lazy' : 1,
-        \ 'if' : '!has("nvim")',
+        \ 'if' : !has('nvim'),
         \ 'on_ft' : [
         \   'html',
         \   'php',
@@ -1112,7 +1112,7 @@ EOB
   call dein#add('pangloss/vim-javascript', {
         \ 'hook_source' : function('s:hook_source_vim_javascript'),
         \ 'lazy' : 1,
-        \ 'if' : '!has("nvim")',
+        \ 'if' : !has('nvim'),
         \ 'on_ft' : [
         \   'javascript',
         \   'javascriptreact',
@@ -1123,7 +1123,7 @@ EOB
   " styled-components/vim-styled-components {{{
   call dein#add('styled-components/vim-styled-components', {
         \ 'lazy' : 1,
-        \ 'if' : '!has("nvim")',
+        \ 'if' : !has('nvim'),
         \ 'on_ft' : [
         \   'javascript',
         \   'javascriptreact',
@@ -1136,7 +1136,7 @@ EOB
   " MaxMEllon/vim-jsx-pretty {{{
   call dein#add('MaxMEllon/vim-jsx-pretty', {
         \ 'lazy' : 1,
-        \ 'if' : '!has("nvim")',
+        \ 'if' : !has('nvim'),
         \ 'on_ft' : [
         \   'javascript',
         \   'javascriptreact',
@@ -1147,7 +1147,7 @@ EOB
   " HerringtonDarkholme/yats.vim {{{
   " call dein#add('HerringtonDarkholme/yats.vim', {
   "       \ 'lazy' : 1,
-  "       \ 'if' : '!has("nvim")',
+  "       \ 'if' : !has('nvim'),
   "       \ 'on_ft' : [
   "       \   'typescript',
   "       \   'typescriptreact',
@@ -1158,7 +1158,7 @@ EOB
   " leafgarland/typescript-vim {{{
   call dein#add('leafgarland/typescript-vim', {
         \ 'lazy' : 1,
-        \ 'if' : '!has("nvim")',
+        \ 'if' : !has('nvim'),
         \ 'on_ft' : [
         \   'typescript',
         \   'typescriptreact',
@@ -1169,7 +1169,7 @@ EOB
   " udalov/kotlin-vim {{{
   call dein#add('udalov/kotlin-vim', {
         \ 'lazy' : 1,
-        \ 'if' : '!has("nvim")',
+        \ 'if' : !has('nvim'),
         \ 'on_ft' : [
         \   'kotlin',
         \ ],
@@ -1178,7 +1178,7 @@ EOB
 
   " vim-jp/vimdoc-ja {{{
   call dein#add('vim-jp/vimdoc-ja', {
-        \ 'if' : '!has("nvim")'
+        \ 'if' : !has('nvim')
         \ })
   " }}}
 
