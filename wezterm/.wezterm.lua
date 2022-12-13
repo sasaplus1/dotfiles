@@ -28,9 +28,14 @@ return {
   -- キーボードショートカットの設定
   keys = {
     {
+      key = ';',
+      mods = 'ALT',
+      action = wezterm.action.SendString '…',
+    },
+    {
       key = 'f',
       mods = 'CMD|CTRL',
       action = wezterm.action.ToggleFullScreen,
-    }
-  }
+    },
+  },
 }
