@@ -588,7 +588,7 @@ if dein#load_state(s:plugin_dir)
     let node = resolve($HOME . '/.vim/node-coc/bin/node')
 
     if !executable(node) && executable('uname') && executable('curl')
-      let node_version = '16.18.1'
+      let node_version = '18.12.1'
       let architecture = trim(system('uname -m'))
 
       if has('osxdarwin')
