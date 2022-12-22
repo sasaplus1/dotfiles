@@ -25,7 +25,8 @@ __main() {
   if [ "$os" == 'macos' ] && arch -arm64e echo -n >/dev/null 2>&1
   then
     local -r apple_silicon=1
-    export readonly __APPLE_SILICON=1
+    export __APPLE_SILICON=1
+    readonly __APPLE_SILICON
   fi
 
   #-----------------------------------------------------------------------------
