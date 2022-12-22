@@ -599,6 +599,9 @@ __main() {
     # in vim
     [ -n "$VIM_TERMINAL" ] && prompt="${prompt} ${cyan}(vim)${reset}"
 
+    # in neovim
+    [ -n "$NVIM" ] && prompt="${prompt} ${cyan}(neovim)${reset}"
+
     printf -- '%b' "${prompt}"
   }
 
