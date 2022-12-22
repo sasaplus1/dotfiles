@@ -5,15 +5,18 @@ __main() {
   unset -f __main
 
   [ -n "$__SOURCED_PROFILE" ] && return
-  export readonly __SOURCED_PROFILE=1
+  export __SOURCED_PROFILE=1
+  readonly __SOURCED_PROFILE
 
   #-----------------------------------------------------------------------------
 
   # NOTE: tmux overwrite TERM_PROGRAM and TERM_PROGRAM_VERSION
   # ex: Terminal.app = Apple_Terminal, 440
   # ex: VSCode       = vscode, 1.68.1
-  export readonly ORIGINAL_TERM_PROGRAM="$TERM_PROGRAM"
-  export readonly ORIGINAL_TERM_PROGRAM_VERSION="$TERM_PROGRAM_VERSION"
+  export ORIGINAL_TERM_PROGRAM="$TERM_PROGRAM"
+  readonly ORIGINAL_TERM_PROGRAM
+  export ORIGINAL_TERM_PROGRAM_VERSION="$TERM_PROGRAM_VERSION"
+  readonly ORIGINAL_TERM_PROGRAM_VERSION
 
   #-----------------------------------------------------------------------------
 
