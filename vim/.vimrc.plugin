@@ -324,6 +324,15 @@ if dein#load_state(s:plugin_dir)
           \ '\.min\.js$' : { 'ale_enabled' : 0 }
           \ }
 
+    " 特定のファイルタイプに対して他のファイルタイプで使用するlinterを使えるようにする
+    let g:ale_linter_aliases = {
+          \ 'javascript' : ['javascript', 'markdown'],
+          \ 'javascript.jsx' : ['javascript', 'markdown'],
+          \ 'javascriptreact' : ['javascript', 'markdown'],
+          \ 'typescript' : ['typescript', 'markdown'],
+          \ 'typescriptreact' : ['typescript', 'markdown'],
+          \ }
+
     " linterの設定
     let g:ale_linters = {
           \ 'css' : ['stylelint'],
@@ -331,6 +340,7 @@ if dein#load_state(s:plugin_dir)
           \ 'javascript.jsx' : ['eslint'],
           \ 'javascriptreact' : ['eslint'],
           \ 'json' : [],
+          \ 'markdown' : ['textlint'],
           \ 'rust' : ['rustc', 'rust-analyzer', 'rls'],
           \ 'scss' : ['stylelint'],
           \ 'typescript' : ['tsserver', 'eslint', 'tslint'],
@@ -344,26 +354,43 @@ if dein#load_state(s:plugin_dir)
           \ 'javascript.jsx' : ['prettier'],
           \ 'javascriptreact' : ['prettier'],
           \ 'json' : ['prettier'],
+          \ 'markdown' : ['textlint'],
           \ 'rust' : ['rustfmt'],
           \ 'scss' : ['prettier'],
           \ 'typescript' : ['prettier'],
           \ 'typescriptreact' : ['prettier'],
           \ }
-  endfunction
 
-  function! s:hook_source_ale() abort
-    " eslintでの検査はキャッシュを使い、エラーが多いときは中断する
-    autocmd vimrc FileType javascript,javascriptreact,typescript,typescriptreact,vue
-          \  let b:ale_javascript_eslint_options = '--cache --max-warnings 20'
+    " 保存時fixする
+    autocmd vimrc BufNewFile,BufRead * let b:ale_fix_on_save = 1
+
+    function! s:ale_buffer_setup() abort
+      " エラーのある行に移動する
+      nnoremap <buffer><silent> [g :<C-u>ALEPreviousWrap<CR>
+      nnoremap <buffer><silent> ]g :<C-u>ALENextWrap<CR>
+
+      " 現在のバッファで有効・無効を切り替える
+      nnoremap <buffer> ,ad :<C-u>ALEDisableBuffer<CR>
+      nnoremap <buffer> ,ae :<C-u>ALEEnableBuffer<CR>
+
+      " ALEの有効・無効を切り替える
+      nnoremap <buffer> ,aD :<C-u>ALEDisable<CR>
+      nnoremap <buffer> ,aE :<C-u>ALEEnable<CR>
+    endfunction
+    " バッファ固有のマップを設定する
+    autocmd vimrc BufNewFile,BufRead * call s:ale_buffer_setup()
+
+    " ファイルのカレントディレクトリから実行する
+    " monorepo毎に.eslintignoreがある場合などに有効
+    " autocmd vimrc BufNewFile,BufRead * let b:ale_command_wrapper = printf("cd '%s' && %s", expand("%:p:h"), '%*')
 
     " JSONならprettierのパーサにjson-stringifyを使用する
     autocmd vimrc FileType json let b:ale_javascript_prettier_options = '--parser json-stringify'
 
-    " 保存時fixする
-    autocmd vimrc FileType css,scss,json,javascript,javascriptreact,typescript,typescriptreact
-          \ let b:ale_fix_on_save = 1
+    " eslintでの検査はキャッシュを使い、エラーが多いときは中断する
+    autocmd vimrc FileType javascript,javascriptreact,typescript,typescriptreact,vue
+          \ let b:ale_javascript_eslint_options = '--cache --max-warnings 20'
 
-    " eslint-plugin-prettierがインストールされていたらそちらをfixerとして使う
     function! s:fix_with_eslint_plugin_prettier(dir) abort
       let node_modules_dir = fnamemodify(
             \ finddir('node_modules', a:dir . ';'),
@@ -395,35 +422,27 @@ if dein#load_state(s:plugin_dir)
             \ 'typescriptreact' : ['eslint'],
             \ }
     endfunction
-
+    " eslint-plugin-prettierがインストールされていたらそちらをfixerとして使う
     autocmd vimrc FileType javascript,javascriptreact,typescript,typescriptreact
           \ call s:fix_with_eslint_plugin_prettier(expand('%:p:h'))
 
-    " ファイルのカレントディレクトリから実行する
-    " monorepo毎に.eslintignoreがある場合などに有効
-    " autocmd vimrc BufNewFile,BufRead * let b:ale_command_wrapper = printf("cd '%s' && %s", expand("%:p:h"), '%*')
+    function! s:add_textlint(file) abort
+      let node_modules_dir = fnamemodify(
+            \ finddir('node_modules', fnamemodify(a:file, ':h') . ';'),
+            \ ':p')
 
-    function! s:ale_buffer_setup() abort
-      " エラーのある行に移動する
-      nnoremap <buffer><silent> [g :<C-u>ALEPreviousWrap<CR>
-      nnoremap <buffer><silent> ]g :<C-u>ALENextWrap<CR>
+      if empty(node_modules_dir) || !isdirectory(node_modules_dir . '/textlint')
+        return
+      endif
 
-      " 現在のバッファで有効・無効を切り替える
-      nnoremap <buffer> ,ad :<C-u>ALEDisableBuffer<CR>
-      nnoremap <buffer> ,ae :<C-u>ALEEnableBuffer<CR>
-
-      " ALEの有効・無効を切り替える
-      nnoremap <buffer> ,aD :<C-u>ALEDisable<CR>
-      nnoremap <buffer> ,aE :<C-u>ALEEnable<CR>
+      let b:ale_linters = ['textlint']
     endfunction
-
-    autocmd vimrc FileType css,javascript,javascript.jsx,javascriptreact,json,scss,typescript,typescriptreact
-          \ call s:ale_buffer_setup()
+    " textlintがインストールされていたらlinterに追加する
+    autocmd vimrc BufNewFile,BufRead * call s:add_textlint(expand('%:p'))
   endfunction
 
   call dein#add('dense-analysis/ale', {
         \ 'hook_add' : function('s:hook_add_ale'),
-        \ 'hook_source' : function('s:hook_source_ale'),
         \ 'lazy' : 1,
         \ 'on_ft' : [
         \   'css',
@@ -431,6 +450,7 @@ if dein#load_state(s:plugin_dir)
         \   'javascript.jsx',
         \   'javascriptreact',
         \   'json',
+        \   'markdown',
         \   'scss',
         \   'typescript',
         \   'typescriptreact',
