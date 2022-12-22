@@ -27,16 +27,15 @@ return {
 
   -- キーボードショートカットの設定
   keys = {
-    -- IMEでの入力中にはおかしくなってしまう……
-    {
-      key = ';',
-      mods = 'ALT',
-      action = wezterm.action.SendString '…',
-    },
     {
       key = 'f',
       mods = 'CMD|CTRL',
       action = wezterm.action.ToggleFullScreen,
     },
   },
+
+  -- Altキー（Optionキー）をコンポジションキーとする
+  -- JIS配列では1つしかキーがないためtrueにしないと特定の文字が入力できない（例えば option + ; など）
+  -- https://wezfurlong.org/wezterm/config/keyboard-concepts.html#macos-left-and-right-option-key
+  send_composed_key_when_left_alt_is_pressed = true,
 }
