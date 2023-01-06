@@ -500,6 +500,9 @@ __main() {
     local head_dir=
     local head_file=
 
+    # origin's default branch name
+    local default_branch=
+
     # git or git-submodule or git-worktree
     local repo_type=
 
@@ -558,6 +561,16 @@ __main() {
           refs=${col1::7}
         fi
 
+        local origin_head_file="${cwd}/.git/refs/remotes/origin/HEAD"
+
+        if [ -f "$origin_head_file" ]
+        then
+          local default_branch=
+
+          read -r _ default_branch < "$origin_head_file"
+          default_branch="${default_branch/refs\/remotes\/origin\//}"
+        fi
+
         break
       fi
 
@@ -579,6 +592,9 @@ __main() {
       [ "$repo_type" == 'git' ] &&
         prompt="${prompt} ${cyan}(${repo_type}:${reset}" || 
         prompt="${prompt} ${cyan}(${red}${repo_type}${reset}${cyan}:${reset}"
+
+      [ -n "$default_branch" ] &&
+        prompt="${prompt}${yellow}${default_branch}${reset}${cyan}:${reset}"
 
       [ -z "$is_hash" ] &&
         prompt="${prompt}${cyan}${refs})${reset}" ||
