@@ -1,5 +1,30 @@
 local wezterm = require 'wezterm'
 
+-- https://coralpink.github.io/commentary/wezterm/dpi-detection.html
+-- window:get_dimensions().dpi
+-- MacBook Pro (13-inch, M1, 2020) 内蔵Retinaディスプレイ 13.3インチ(2560x1600) : 144dpi
+-- RDT231WLM 23インチ(1920x1080) : 72dpi
+
+local DPI_CHANGE_NUM = 140
+local DPI_CHANGE_FONT_SIZE = 11.0
+
+local prev_dpi = 0
+
+wezterm.on('window-focus-changed', function(window, pane)
+  local dpi = window:get_dimensions().dpi
+
+  if dpi == prev_dpi then
+    return
+  end
+
+  local overrides = window:get_config_overrides() or {}
+  overrides.font_size = dpi >= DPI_CHANGE_NUM and DPI_CHANGE_FONT_SIZE or nil
+
+  window:set_config_overrides(overrides)
+
+  prev_dpi = dpi
+end)
+
 return {
   -- ベルを無効化する
   audible_bell = 'Disabled',
@@ -17,7 +42,9 @@ return {
     'Menlo',
     'ヒラギノ角ゴシック',
   },
-  font_size = 11.0,
+  font_size = 11,
+  -- cell_width = 0.996,
+  -- line_height = 1.0,
 
   -- タブを非表示にする
   enable_tab_bar = false,
