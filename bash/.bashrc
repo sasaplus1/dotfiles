@@ -665,7 +665,7 @@ __main() {
 
   # load .bashrc.local
   # shellcheck disable=SC1091
-  source "$HOME/.bashrc.local" 2>/dev/null
+  [ -f "$HOME/.bashrc.local" ] && source "$HOME/.bashrc.local"
 
   # proxy settings {{{
   # export ftp_proxy=ftp://proxy:port
