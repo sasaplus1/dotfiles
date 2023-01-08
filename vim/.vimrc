@@ -1,4 +1,6 @@
 if 1
+  scriptencoding utf-8
+
   " 分割した設定ファイルを読み込む {{{
   " symlink先のファイルパスからファイル名を取り除く
   let s:vimrc_dir = fnamemodify(resolve($MYVIMRC), ':h')
