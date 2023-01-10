@@ -33,7 +33,7 @@ dotfile_dirs += $(dest)/.config/Code
 dotfile_dirs += $(dest)/.config/Code/User
 endif
 # dotfile_dirs += $(dest)/.config/alacritty
-dotfile_dirs += $(dest)/.config/git
+dotfile_dirs += $(dest)/.config/gh-dash
 dotfile_dirs += $(dest)/.config/git
 dotfile_dirs += $(dest)/.config/nvim
 dotfile_dirs += $(dest)/.config/vifm
@@ -77,6 +77,7 @@ symlinks += $(makefile_dir)/bash/.bashrc $(dest)/.bashrc
 symlinks += $(makefile_dir)/bash/.profile $(dest)/.profile
 # symlinks += $(makefile_dir)/ctags/.ctags $(dest)/.ctags
 # symlinks += $(makefile_dir)/ctags/.ctagsignore $(dest)/.ctagsignore
+symlinks += $(makefile_dir)/gh-dash/config.yml $(dest)/.config/gh-dash/config.yml
 symlinks += $(makefile_dir)/git/.gitconfig $(dest)/.gitconfig
 symlinks += $(makefile_dir)/git/.gitignore $(dest)/.config/git/ignore
 # symlinks += $(makefile_dir)/locate/.locate.rc $(dest)/.locate.rc

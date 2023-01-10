@@ -1,0 +1,8 @@
+defaults:
+  prsLimit: 50
+  issuesLimit: 50
+  preview:
+    open: true
+    width: 100
+pager:
+  diff: delta --dark --line-numbers --side-by-side
