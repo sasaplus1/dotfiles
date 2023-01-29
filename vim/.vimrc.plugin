@@ -523,16 +523,20 @@ if dein#load_state(s:plugin_dir)
           \ )
 
     if exists('?json_encode') && !filereadable(coc_settings_path)
+      " javascript.suggestionActions.enabled は tsserver 80001 抑止のため
+      " https://github.com/microsoft/vscode/issues/47299
       let coc_settings = {
             \ 'css.validate': v:false,
             \ 'diagnostic.displayByAle': v:true,
             \ 'javascript.format.enabled': v:false,
             \ 'javascript.suggest.enabled': v:false,
+            \ 'javascript.suggestionActions.enabled': v:false,
             \ 'javascript.validate.enable' :v:false,
             \ 'less.validate': v:false,
             \ 'scss.validate': v:false,
             \ 'typescript.format.enabled': v:false,
             \ 'typescript.suggest.enabled': v:false,
+            \ 'typescript.suggestionActions.enabled': v:true,
             \ 'typescript.validate.enable': v:false,
             \ 'wxss.validate': v:false,
             \ }
