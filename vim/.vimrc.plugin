@@ -11,6 +11,7 @@ endif
 
 let s:plugin_dir = simplify($HOME . '/.vim/dein')
 
+" TODO: migrate to https://github.com/Shougo/dein-installer.vim
 let s:dein_rev = v:version >= 802 || has('nvim-0.5')
       \ ? '3.0'
       \ : '2.2'
