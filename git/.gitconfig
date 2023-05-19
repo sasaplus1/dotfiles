@@ -76,7 +76,9 @@
   patternType = extended
 
 [merge]
-  conflictStyle = diff3
+  conflictStyle = merge
+; conflictStyle = diff3
+; conflictStyle = zdiff3
   tool = vimdiff
 
 [user]
