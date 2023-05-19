@@ -65,4 +65,11 @@ return {
   -- JIS配列では1つしかキーがないためtrueにしないと特定の文字が入力できない（例えば option + ; など）
   -- https://wezfurlong.org/wezterm/config/keyboard-concepts.html#macos-left-and-right-option-key
   send_composed_key_when_left_alt_is_pressed = true,
+
+  -- IMEへ送信する修飾キー
+  -- Ctrl-hでIME入力中の文字列に対してBackspaceの挙動をしてほしい
+  -- https://github.com/wez/wezterm/pull/2435
+  -- https://github.com/wez/wezterm/pull/2435#issuecomment-1491290065
+  -- https://wezfurlong.org/wezterm/config/lua/config/macos_forward_to_ime_modifier_mask.html
+  macos_forward_to_ime_modifier_mask = "SHIFT|CTRL",
 }
