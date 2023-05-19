@@ -1,4 +1,5 @@
 {
+    "editor.inlineSuggest.enabled": true,
     "extensions.ignoreRecommendations": true,
     "terminal.integrated.commandsToSkipShell": [
       "-workbench.action.quickOpenView"
@@ -9,7 +10,5 @@
     "terminal.integrated.inheritEnv": false,
     "terminal.integrated.rendererType": "experimentalWebgl",
     "window.zoomLevel": 0,
-    "workbench.activityBar.visible": false,
-    "workbench.startupEditor": "newUntitledFile",
-    "workbench.statusBar.visible": false
+    "workbench.startupEditor": "newUntitledFile"
 }
