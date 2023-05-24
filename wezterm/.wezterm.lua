@@ -68,8 +68,9 @@ return {
 
   -- IMEへ送信する修飾キー
   -- Ctrl-hでIME入力中の文字列に対してBackspaceの挙動をしてほしい
+  -- Alt-;で「…」をきちんとIMEに送信して欲しい
   -- https://github.com/wez/wezterm/pull/2435
   -- https://github.com/wez/wezterm/pull/2435#issuecomment-1491290065
   -- https://wezfurlong.org/wezterm/config/lua/config/macos_forward_to_ime_modifier_mask.html
-  macos_forward_to_ime_modifier_mask = "SHIFT|CTRL",
+  macos_forward_to_ime_modifier_mask = "ALT|CTRL|SHIFT",
 }
