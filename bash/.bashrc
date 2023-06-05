@@ -208,6 +208,14 @@ __main() {
   # }}}
 
   # fzf {{{
+  for fzf_completion in \
+    "$macports_prefix/share/fzf/shell/completion.bash" \
+    "$HOMEBREW_PREFIX/opt/fzf/shell/completion.bash"
+  do
+    # shellcheck disable=SC1090
+    [ -r "$fzf_completion" ] && source "$fzf_completion" && break
+  done
+
   local fzf_options=
 
   fzf_options='--border --cycle --height=80%'
