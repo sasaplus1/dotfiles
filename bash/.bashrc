@@ -159,24 +159,6 @@ __main() {
   complete -F __gh_completion gh
   # }}}
 
-  # fzf-completion {{{
-  __fzf_completion() {
-    unset -f __fzf_completion
-    complete -r fzf
-
-    for fzf_completion in \
-      "$macports_prefix/share/fzf/shell/completion.bash" \
-      "$HOMEBREW_PREFIX/opt/fzf/shell/completion.bash"
-    do
-      # shellcheck disable=SC1090
-      [ -r "$fzf_completion" ] && source "$fzf_completion" && break
-    done
-
-    return 124
-  }
-  complete -F __fzf_completion fzf
-  # }}}
-
   #-----------------------------------------------------------------------------
 
   # NOTE: lazy load command https://qiita.com/uasi/items/80865646607b966aedc8
