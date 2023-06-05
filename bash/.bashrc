@@ -58,7 +58,12 @@ __main() {
   #-----------------------------------------------------------------------------
 
   local -r macports_prefix=/opt/local
+  export __MACPORTS_PREFIX=$macports_prefix
+  readonly __MACPORTS_PREFIX
+
   local -r dotlocal_prefix="$HOME/.local"
+  export __DOTLOCAL_PREFIX=$dotlocal_prefix
+  readonly __DOTLOCAL_PREFIX
 
   #-----------------------------------------------------------------------------
 
