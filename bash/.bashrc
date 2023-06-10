@@ -244,6 +244,33 @@ __main() {
       command fzf "$@"
     fi
   }
+
+  _fzf_complete_gh_pr() {
+    local gh_index=0
+
+    # find gh index
+    for ((i = 0; i < COMP_CWORD; i++))
+    do
+      if [ "${COMP_WORDS[i]}" == 'gh' ]
+      then
+        gh_index=$i
+        break
+      fi
+    done
+
+    local -r subcommand="${COMP_WORDS[gh_index+1]}"
+
+    # complete if subcommand is pr
+    if [ "$subcommand" == 'pr' ]
+    then
+      _fzf_complete --preview="GH_FORCE_TTY=1 gh pr view {1}" -- "$@" < \
+        <(gh pr list --json number,title -q '.[] | "#\(.number)\t\(.title)"')
+    fi
+  }
+  _fzf_complete_gh_pr_post() {
+    awk '{ sub(/^#/, "", $1); print $1 }'
+  }
+  [ -n "$BASH" ] && complete -F _fzf_complete_gh_pr gh
   # }}}
 
   # vim {{{
