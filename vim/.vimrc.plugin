@@ -337,9 +337,9 @@ if dein#load_state(s:plugin_dir)
     " linterの設定
     let g:ale_linters = {
           \ 'css' : ['stylelint'],
-          \ 'javascript' : ['eslint'],
-          \ 'javascript.jsx' : ['eslint'],
-          \ 'javascriptreact' : ['eslint'],
+          \ 'javascript' : ['tsserver', 'eslint'],
+          \ 'javascript.jsx' : ['tsserver', 'eslint'],
+          \ 'javascriptreact' : ['tsserver', 'eslint'],
           \ 'json' : [],
           \ 'markdown' : ['textlint'],
           \ 'rust' : ['rustc', 'rust-analyzer', 'rls'],
