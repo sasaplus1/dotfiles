@@ -401,12 +401,12 @@ __main() {
 
     if type bat >/dev/null 2>&1
     then
-      preview='gh repo view {+1} | bat --color=always --language=Markdown -pp -r :60'
+      preview='GH_FORCE_TTY=1 gh repo view {+1} | bat --color=always --language=Markdown -pp -r :60'
     else
-      preview='gh repo view {+1}'
+      preview='GH_FORCE_TTY=1 gh repo view {+1}'
     fi
 
-    local -r result=$(gh repo list --limit 200 "$1" | awk '{ print $1 }' | fzf --ansi --preview="$preview")
+    local -r result=$(gh repo list "$1" --source --limit 200 --json owner,name -q '.[] | "\(.owner.login)/\(.name)"' | fzf --ansi --preview="$preview")
 
     [ -n "$result" ] && gh repo view --web "$(printf -- '%s' "$result" | awk '{ print $1 }')"
   }
