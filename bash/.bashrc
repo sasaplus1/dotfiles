@@ -190,7 +190,7 @@ __main() {
         <(gh release list)
     else
       # call gh's completion
-      eval "$__gh_completion_func" "$@"
+      "$__gh_completion_func" "$@"
     fi
   }
   __gh_completion_for_fzf_post() {
@@ -418,6 +418,7 @@ __main() {
   }
 
   git-hash() {
+    # shellcheck disable=SC2016
     local -r preview='git show --color=always "$(echo {} | grep -Eo \[0-9a-f\]\{7,40\} | head -n 1)" 2>/dev/null'
 
     git log --all --color=always --graph --oneline | fzf --ansi --preview="$preview" | grep -Eo '[0-9a-f]{7,40}' | head -n 1
