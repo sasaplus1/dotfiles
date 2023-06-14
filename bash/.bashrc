@@ -112,7 +112,7 @@ __main() {
     # shellcheck disable=SC1090
     [ -f "$completion" ] && source "$completion" && return 124
   }
-  complete -F __nvm_completion nvm
+  [ -n "$BASH" ] && complete -F __nvm_completion nvm
   # }}}
 
   # nodebrew-completion {{{
@@ -125,7 +125,7 @@ __main() {
     # shellcheck disable=SC1090
     [ -f "$completion" ] && source "$completion" && return 124
   }
-  complete -F __nodebrew_completion nodebrew
+  [ -n "$BASH" ] && complete -F __nodebrew_completion nodebrew
   # }}}
 
   # npm-completion {{{
@@ -134,7 +134,7 @@ __main() {
     complete -r npm
     eval "$(npm completion)" && return 124
   }
-  complete -F __npm_completion npm
+  [ -n "$BASH" ] && complete -F __npm_completion npm
   # }}}
 
   # rbenv-completion {{{
@@ -156,7 +156,7 @@ __main() {
     complete -r gh
     eval "$(gh completion --shell bash)" && return 124
   }
-  complete -F __gh_completion gh
+  [ -n "$BASH" ] && complete -F __gh_completion gh
   # }}}
 
   #-----------------------------------------------------------------------------
