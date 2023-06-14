@@ -150,11 +150,65 @@ __main() {
   complete -F __rbenv-completion rbenv
   # }}}
 
-  # gh-completion {{{
+  # gh-completion and gh-completion for fzf {{{
+  export __gh_completion_func
+
+  __gh_completion_for_fzf() {
+    local gh_index=0
+
+    # find gh index
+    for ((i = 0; i < COMP_CWORD; i++))
+    do
+      if [ "${COMP_WORDS[i]}" == 'gh' ]
+      then
+        gh_index=$i
+        break
+      fi
+    done
+
+    local -r subcommand="${COMP_WORDS[gh_index+1]}"
+
+    # complete if subcommand is gist
+    if [ "$subcommand" == 'gist' ]
+    then
+      _fzf_complete --preview="GH_FORCE_TTY=1 gh gist view {1}" -- "$@" < \
+        <(gh gist list)
+    # complete if subcommand is issue
+    elif [ "$subcommand" == 'issue' ]
+    then
+      _fzf_complete --preview="GH_FORCE_TTY=1 gh issue view {1}" -- "$@" < \
+        <(gh issue list --json number,title,state -q '.[] | "#\(.number)\t\(.state)\t\(.title)"')
+    # complete if subcommand is pr
+    elif [ "$subcommand" == 'pr' ]
+    then
+      _fzf_complete --preview="GH_FORCE_TTY=1 gh pr view {1}" -- "$@" < \
+        <(gh pr list --json number,title -q '.[] | "#\(.number)\t\(.title)"')
+    # complete if subcommand is release
+    elif [ "$subcommand" == 'release' ]
+    then
+      _fzf_complete --preview="GH_FORCE_TTY=1 gh release view {1}" -- "$@" < \
+        <(gh release list)
+    else
+      # call gh's completion
+      eval "$__gh_completion_func" "$@"
+    fi
+  }
+  __gh_completion_for_fzf_post() {
+    awk '{ sub(/^#/, "", $1); print $1 }'
+  }
+
   __gh_completion() {
     unset -f __gh_completion
     complete -r gh
-    eval "$(gh completion --shell bash)" && return 124
+
+    # register gh's completion
+    eval "$(gh completion --shell bash)"
+
+    # get completion function name
+    __gh_completion_func="$(complete -p gh 2>/dev/null | awk '/-F/ { print $(NF-1) }')"
+
+    # register original gh completion and complete
+    complete -F __gh_completion_for_fzf gh && return 124
   }
   complete -F __gh_completion gh
   # }}}
@@ -244,33 +298,6 @@ __main() {
       command fzf "$@"
     fi
   }
-
-  _fzf_complete_gh_pr() {
-    local gh_index=0
-
-    # find gh index
-    for ((i = 0; i < COMP_CWORD; i++))
-    do
-      if [ "${COMP_WORDS[i]}" == 'gh' ]
-      then
-        gh_index=$i
-        break
-      fi
-    done
-
-    local -r subcommand="${COMP_WORDS[gh_index+1]}"
-
-    # complete if subcommand is pr
-    if [ "$subcommand" == 'pr' ]
-    then
-      _fzf_complete --preview="GH_FORCE_TTY=1 gh pr view {1}" -- "$@" < \
-        <(gh pr list --json number,title -q '.[] | "#\(.number)\t\(.title)"')
-    fi
-  }
-  _fzf_complete_gh_pr_post() {
-    awk '{ sub(/^#/, "", $1); print $1 }'
-  }
-  [ -n "$BASH" ] && complete -F _fzf_complete_gh_pr gh
   # }}}
 
   # vim {{{
