@@ -390,36 +390,6 @@ __main() {
     cd "$(cat <(eval "$repo_cmd") <(eval "$z_cmd") <(eval "$git_cmd") | sort -u | fzf --query="$@" --preview="$fzf_preview")"
   }
 
-  issues() {
-    local preview=
-
-    if type bat >/dev/null 2>&1
-    then
-      preview='gh issue view {+1} | bat --color=always --language=Markdown -pp -r :60'
-    else
-      preview='gh issue view {+1}'
-    fi
-
-    local -r result=$(gh issue list --limit 200 | awk -F '\t' '{ print $1, $2, $3 }' | fzf --ansi --preview="$preview")
-
-    [ -n "$result" ] && gh issue view --web "$(printf -- '%s' "${result}" | awk '{ print $1 }')"
-  }
-
-  pulls() {
-    local preview=
-
-    if type bat >/dev/null 2>&1
-    then
-      preview='gh pr view {+1} | bat --color=always --language=Markdown -pp -r :60'
-    else
-      preview='gh pr view {+1}'
-    fi
-
-    local -r result=$(gh pr list --limit 200 | awk -F '\t' '{ print $1, $2 }' | fzf --ansi --preview="$preview")
-
-    [ -n "$result" ] && gh pr view --web "$(printf -- '%s' "${result}" | awk '{ print $1 }')"
-  }
-
   git-hash() {
     # NOTE: don't remove xargs. if remove it, preview will not be update.
     local -r preview='eval "echo {} | grep -Eo \[0-9a-f\]\{7,40\} | xargs git show --color=always"'
