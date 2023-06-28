@@ -82,143 +82,6 @@ __main() {
 
   #-----------------------------------------------------------------------------
 
-  # NOTE: lazy load command https://qiita.com/uasi/items/80865646607b966aedc8
-
-  # direnv {{{
-  if type direnv >/dev/null 2>&1
-  then
-    eval "$(direnv hook bash)"
-  fi
-  # }}}
-
-  # nvm {{{
-  # shellcheck disable=SC1091
-  [ -n "${NVM_DIR-}" ] && [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
-  # }}}
-
-  # rbenv {{{
-  rbenv() {
-    unset -f rbenv
-    eval "$(rbenv init -)"
-    rbenv "$@"
-  }
-  # }}}
-
-  # rustup {{{
-  # shellcheck disable=SC1091
-  [ -r "$HOME/.cargo/env" ] && source "$HOME/.cargo/env"
-  # }}}
-
-  # zoxide or z {{{
-  local -r z="$GHQ_ROOT/github.com/rupa/z/z.sh"
-
-  if type zoxide >/dev/null 2>&1
-  then
-    eval "$(zoxide init bash)"
-  elif [ -s "$z" ]
-  then
-    # shellcheck disable=SC1090
-    source "$z"
-  fi
-  # }}}
-
-  # cocproxy for nginx {{{
-  cocproxy() {
-    (cd "$HOME/.cocproxy" && nginx -p . -c "$HOME/.cocproxy.nginx.conf")
-  }
-  # }}}
-
-  # fzf {{{
-  for fzf_completion in \
-    "$macports_prefix/share/fzf/shell/completion.bash" \
-    "$HOMEBREW_PREFIX/opt/fzf/shell/completion.bash"
-  do
-    # shellcheck disable=SC1090
-    [ -r "$fzf_completion" ] && source "$fzf_completion" && break
-  done
-
-  local fzf_options=
-
-  fzf_options='--border --cycle --height=80%'
-  fzf_options="${fzf_options} --info=hidden --layout=reverse --preview-window=right"
-  fzf_options="${fzf_options} --bind ctrl-j:preview-down,ctrl-k:preview-up"
-
-  export FZF_DEFAULT_OPTS="$fzf_options"
-
-  fzf() {
-    local position=
-
-    if [[ "$TERM" =~ ^(screen|tmux) ]] && type tmux >/dev/null 2>&1
-    then
-      local -r width="$(tmux display-message -p '#{window_width},#{pane_width}')"
-
-      local -r window_width="${width%%,*}"
-      local -r pane_width="${width##*,}"
-
-      [ "$window_width" -ne "$pane_width" ] && position='--preview-window=bottom'
-    fi
-
-    if [ -n "$position" ]
-    then
-      command fzf "$position" "$@"
-    else
-      command fzf "$@"
-    fi
-  }
-  # }}}
-
-  # vim {{{
-  local -r pvim="$HOME/Binary/vim/bin/portable-vim"
-  local -r lvim="$HOME/.local/bin/vim"
-  local -r mvim="$HOME/.ghq/github.com/sasaplus1/macos-vim/usr/bin/vim"
-
-  [ -x "$pvim" ] && export EDITOR="$pvim"
-  [ -x "$lvim" ] && export EDITOR="$lvim"
-  [ -x "$mvim" ] && export EDITOR="$mvim"
-
-  if [ -n "$VIM_TERMINAL" ]
-  then
-    # https://vim-jp.org/vimdoc-en/terminal.html#terminal-api
-    vim() {
-      for _ in $(seq $#)
-      do
-        printf -- '%b["drop","%s"]%b' '\x1b]51;' "$PWD/$1" '\x07' &
-        shift
-      done
-    }
-  else
-    vim() {
-      if [ -x "$mvim" ]
-      then
-        "$mvim" "$@"
-      elif [ -x "$lvim" ]
-      then
-        "$lvim" "$@"
-      elif [ -x "$pvim" ]
-      then
-        "$pvim" "$@"
-      else
-        command vim "$@"
-      fi
-    }
-  fi
-  # }}}
-
-  # github-slug.sh {{{
-  export _GITHUB_SLUG_COMMAND=slug
-
-  __lazy-github-slug() {
-    unset -f __lazy-github-slug
-    # shellcheck disable=SC1091
-    source "$HOME/.ghq/github.com/sasaplus1/github-slug.sh/github-slug.sh" 2>/dev/null
-    __github-slug "$@"
-    eval "$_GITHUB_SLUG_COMMAND"'() { __github-slug "$@"; }'
-  }
-  eval "$_GITHUB_SLUG_COMMAND"'() { __lazy-github-slug "$@"; }'
-  # }}}
-
-  #-----------------------------------------------------------------------------
-
   # bash-completion {{{
   if [ -z "$BASH_COMPLETION" ]
   then
@@ -401,6 +264,143 @@ __main() {
   #   fi
   # }
   # complete -F _fzf_complete_git -o default -o bashdefault git
+  # }}}
+
+  #-----------------------------------------------------------------------------
+
+  # NOTE: lazy load command https://qiita.com/uasi/items/80865646607b966aedc8
+
+  # direnv {{{
+  if type direnv >/dev/null 2>&1
+  then
+    eval "$(direnv hook bash)"
+  fi
+  # }}}
+
+  # nvm {{{
+  # shellcheck disable=SC1091
+  [ -n "${NVM_DIR-}" ] && [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
+  # }}}
+
+  # rbenv {{{
+  rbenv() {
+    unset -f rbenv
+    eval "$(rbenv init -)"
+    rbenv "$@"
+  }
+  # }}}
+
+  # rustup {{{
+  # shellcheck disable=SC1091
+  [ -r "$HOME/.cargo/env" ] && source "$HOME/.cargo/env"
+  # }}}
+
+  # zoxide or z {{{
+  local -r z="$GHQ_ROOT/github.com/rupa/z/z.sh"
+
+  if type zoxide >/dev/null 2>&1
+  then
+    eval "$(zoxide init bash)"
+  elif [ -s "$z" ]
+  then
+    # shellcheck disable=SC1090
+    source "$z"
+  fi
+  # }}}
+
+  # cocproxy for nginx {{{
+  cocproxy() {
+    (cd "$HOME/.cocproxy" && nginx -p . -c "$HOME/.cocproxy.nginx.conf")
+  }
+  # }}}
+
+  # fzf {{{
+  for fzf_completion in \
+    "$macports_prefix/share/fzf/shell/completion.bash" \
+    "$HOMEBREW_PREFIX/opt/fzf/shell/completion.bash"
+  do
+    # shellcheck disable=SC1090
+    [ -r "$fzf_completion" ] && source "$fzf_completion" && break
+  done
+
+  local fzf_options=
+
+  fzf_options='--border --cycle --height=80%'
+  fzf_options="${fzf_options} --info=hidden --layout=reverse --preview-window=right"
+  fzf_options="${fzf_options} --bind ctrl-j:preview-down,ctrl-k:preview-up"
+
+  export FZF_DEFAULT_OPTS="$fzf_options"
+
+  fzf() {
+    local position=
+
+    if [[ "$TERM" =~ ^(screen|tmux) ]] && type tmux >/dev/null 2>&1
+    then
+      local -r width="$(tmux display-message -p '#{window_width},#{pane_width}')"
+
+      local -r window_width="${width%%,*}"
+      local -r pane_width="${width##*,}"
+
+      [ "$window_width" -ne "$pane_width" ] && position='--preview-window=bottom'
+    fi
+
+    if [ -n "$position" ]
+    then
+      command fzf "$position" "$@"
+    else
+      command fzf "$@"
+    fi
+  }
+  # }}}
+
+  # vim {{{
+  local -r pvim="$HOME/Binary/vim/bin/portable-vim"
+  local -r lvim="$HOME/.local/bin/vim"
+  local -r mvim="$HOME/.ghq/github.com/sasaplus1/macos-vim/usr/bin/vim"
+
+  [ -x "$pvim" ] && export EDITOR="$pvim"
+  [ -x "$lvim" ] && export EDITOR="$lvim"
+  [ -x "$mvim" ] && export EDITOR="$mvim"
+
+  if [ -n "$VIM_TERMINAL" ]
+  then
+    # https://vim-jp.org/vimdoc-en/terminal.html#terminal-api
+    vim() {
+      for _ in $(seq $#)
+      do
+        printf -- '%b["drop","%s"]%b' '\x1b]51;' "$PWD/$1" '\x07' &
+        shift
+      done
+    }
+  else
+    vim() {
+      if [ -x "$mvim" ]
+      then
+        "$mvim" "$@"
+      elif [ -x "$lvim" ]
+      then
+        "$lvim" "$@"
+      elif [ -x "$pvim" ]
+      then
+        "$pvim" "$@"
+      else
+        command vim "$@"
+      fi
+    }
+  fi
+  # }}}
+
+  # github-slug.sh {{{
+  export _GITHUB_SLUG_COMMAND=slug
+
+  __lazy-github-slug() {
+    unset -f __lazy-github-slug
+    # shellcheck disable=SC1091
+    source "$HOME/.ghq/github.com/sasaplus1/github-slug.sh/github-slug.sh" 2>/dev/null
+    __github-slug "$@"
+    eval "$_GITHUB_SLUG_COMMAND"'() { __github-slug "$@"; }'
+  }
+  eval "$_GITHUB_SLUG_COMMAND"'() { __lazy-github-slug "$@"; }'
   # }}}
 
   #-----------------------------------------------------------------------------
