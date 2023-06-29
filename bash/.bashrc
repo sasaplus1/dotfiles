@@ -40,12 +40,9 @@ __main() {
   shopt -s cdspell
 
   # stop flow mode (disable C-s and C-q)
-  if [ -t 0 ]
-  then
-    # stty stop undef
-    # stty start undef
-    stty -ixon
-  fi
+  # stty stop undef
+  # stty start undef
+  stty -ixon
 
   if [ "$SHLVL" -eq 1 ]
   then
