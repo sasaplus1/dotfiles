@@ -406,10 +406,6 @@ __main() {
   #-----------------------------------------------------------------------------
 
   # functions and aliases {{{
-  memo() {
-    "$EDITOR" "$(date +%FT%H-%M-%S).md"
-  }
-
   server() {
     python -m SimpleHTTPServer "$@"
   }
