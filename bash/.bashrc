@@ -99,6 +99,10 @@ __main() {
 
   # NOTE: lazy load completion https://qiita.com/kawaz/items/ba6140bca32bbd3cb928
 
+  # gh-completion {{{
+  # NOTE: see fzf section
+  # }}}
+
   # nvm-completion {{{
   __nvm_completion() {
     unset -f __nvm_completion
@@ -145,122 +149,6 @@ __main() {
     [ -f "$completion" ] && source "$completion" && return 124
   }
   complete -F __rbenv-completion rbenv
-  # }}}
-
-  # gh-completion and gh-completion for fzf {{{
-  export __gh_completion_func
-
-  __gh_completion_for_fzf() {
-    local gh_index=0
-
-    # find gh index
-    for ((i = 0; i < COMP_CWORD; i++))
-    do
-      if [ "${COMP_WORDS[i]}" == 'gh' ]
-      then
-        gh_index=$i
-        break
-      fi
-    done
-
-    local -r subcommand="${COMP_WORDS[gh_index+1]}"
-
-    # complete if subcommand is gist
-    if [ "$subcommand" == 'gist' ]
-    then
-      _fzf_complete --preview="GH_FORCE_TTY=1 gh gist view {1}" -- "$@" < \
-        <(gh gist list)
-    # complete if subcommand is issue
-    elif [ "$subcommand" == 'issue' ]
-    then
-      _fzf_complete --preview="GH_FORCE_TTY=1 gh issue view {1}" -- "$@" < \
-        <(gh issue list --json number,title,state -q '.[] | "#\(.number)\t\(.state)\t\(.title)"')
-    # complete if subcommand is pr
-    elif [ "$subcommand" == 'pr' ]
-    then
-      _fzf_complete --preview="GH_FORCE_TTY=1 gh pr view {1}" -- "$@" < \
-        <(gh pr list --json number,title -q '.[] | "#\(.number)\t\(.title)"')
-    # complete if subcommand is release
-    elif [ "$subcommand" == 'release' ]
-    then
-      _fzf_complete --preview="GH_FORCE_TTY=1 gh release view {1}" -- "$@" < \
-        <(gh release list)
-    # complete if subcommand is repo
-    elif [ "$subcommand" == 'repo' ]
-    then
-      _fzf_complete --preview="GH_FORCE_TTY=1 gh repo view {+1}" -- "$@" < \
-        <(gh repo list --source --limit 200 --json owner,name -q '.[] | "\(.owner.login)/\(.name)"')
-    else
-      # call gh's completion
-      "$__gh_completion_func" "$@"
-    fi
-  }
-  __gh_completion_for_fzf_post() {
-    awk '{ sub(/^#/, "", $1); print $1 }'
-  }
-
-  __gh_completion() {
-    unset -f __gh_completion
-    complete -r gh
-
-    # register gh's completion
-    eval "$(gh completion --shell bash)"
-
-    # get completion function name
-    __gh_completion_func="$(complete -p gh 2>/dev/null | awk '/-F/ { print $(NF-1) }')"
-
-    # register original gh completion and complete
-    complete -F __gh_completion_for_fzf gh && return 124
-  }
-  complete -F __gh_completion gh
-  # }}}
-
-  # NOTE: does not fit in the hand
-  # git-completion for fzf {{{
-  # _fzf_complete_git() {
-  #   local git_index=0
-
-  #   # find git index
-  #   for ((i = 0; i < COMP_CWORD; i++))
-  #   do
-  #     if [ "${COMP_WORDS[i]}" == 'git' ]
-  #     then
-  #       git_index=$i
-  #       break
-  #     fi
-  #   done
-
-  #   local -r subcommand="${COMP_WORDS[git_index+1]}"
-  #   export _FZF_COMPLETE_GIT_SUBCOMMAND="$subcommand"
-
-  #   # complete if subcommand is checkout
-  #   if [[ "$subcommand" =~ co|checkout ]]
-  #   then
-  #     _fzf_complete --ansi --preview='git show --color=always {}' -- "$@" < \
-  #       <(git branch --all --format='%(refname:short)')
-  #   # complete if subcommand is cherry-pick or rebase
-  #   elif [[ "$subcommand" =~ cherry-pick|cp|rebase ]]
-  #   then
-  #     local -r preview='git show --color=always "$(echo {} | grep -Eo \[0-9a-f\]\{7,40\} | head -n 1)" 2>/dev/null'
-
-  #     _fzf_complete --ansi --preview="$preview" -- "$@" < \
-  #       <(git log --all --color=always --graph --date=short --format='%C(yellow)%h%C(reset) %C(magenta)[%ad]%C(reset) %C(cyan)@%an%C(reset) %C(cyan)@%cn%C(reset)%C(auto)%d%C(reset) %s')
-  #   else
-  #     _fzf_path_completion "$@"
-  #   fi
-  # }
-  # _fzf_complete_git_post() {
-  #   local -r subcommand="$_FZF_COMPLETE_GIT_SUBCOMMAND"
-
-  #   if [[ "$subcommand" =~ co|checkout ]]
-  #   then
-  #     head -n 1
-  #   elif [[ "$subcommand" =~ cherry-pick|cp|rebase ]]
-  #   then
-  #     grep -Eo '[0-9a-f]{7,40}' | head -n 1
-  #   fi
-  # }
-  # complete -F _fzf_complete_git -o default -o bashdefault git
   # }}}
 
   #-----------------------------------------------------------------------------
@@ -348,6 +236,104 @@ __main() {
       command fzf "$@"
     fi
   }
+
+  # get subcommand name, for fzf completions
+  # param $1: command name
+  # return: subcommand name
+  __detect_subcommand() {
+    local -r command="$1"
+
+    for ((i = 0; i < COMP_CWORD; i++))
+    do
+      [ "${COMP_WORDS[i]}" == "$command" ] && local -r index=$i && break
+    done
+
+    printf -- '%s' "${COMP_WORDS[index+1]}"
+  }
+
+  # git complete by fzf with preview
+  _fzf_complete_git() {
+    local -r command="${FUNCNAME[0]##*_}"
+    local -r subcommand="$(__detect_subcommand "$command")"
+
+    case "$subcommand" in
+      checkout|co)
+        _fzf_complete --ansi --preview='git show --color=always {}' -- "$@" < \
+          <(git branch --all --format='%(refname:short)')
+        ;;
+      cherry-pick|cp|rebase)
+        local -r format='%C(yellow)%h%C(reset) %C(magenta)[%ad]%C(reset) %C(cyan)@%an%C(reset) %C(cyan)@%cn%C(reset)%C(auto)%d%C(reset) %s'
+        local -r preview='git show --color=always "$(echo {} | grep -Eo \[0-9a-f\]\{7,40\} | head -n 1)" 2>/dev/null'
+
+        _fzf_complete --ansi --preview="$preview" -- "$@" < \
+          <(git log --all --color=always --graph --date=short --format="$format")
+        ;;
+      *)
+        # call original completion
+        _fzf_handle_dynamic_completion "$command" "$@"
+        ;;
+    esac
+  }
+  _fzf_complete_git_post() {
+    local -r subcommand="$(__detect_subcommand git)"
+
+    case "$subcommand" in
+      checkout|co)
+        head -n 1
+        ;;
+      cherry-pick|cp|rebase)
+        grep -Eo '[0-9a-f]{7,40}' | head -n 1
+        ;;
+    esac
+  }
+  complete -F _fzf_complete_git -o default -o bashdefault git
+
+  # gh complete by fzf with preview
+  _fzf_complete_gh() {
+    local -r command="${FUNCNAME[0]##*_}"
+    local -r subcommand="$(__detect_subcommand "$command")"
+
+    case "$subcommand" in
+      gist)
+        _fzf_complete --preview="GH_FORCE_TTY=1 gh gist view {1}" -- "$@" < \
+          <(gh gist list)
+        ;;
+      issue)
+        _fzf_complete --preview="GH_FORCE_TTY=1 gh issue view {1}" -- "$@" < \
+          <(gh issue list --json number,title,state -q '.[] | "#\(.number)\t\(.state)\t\(.title)"')
+        ;;
+      pr)
+        _fzf_complete --preview="GH_FORCE_TTY=1 gh pr view {1}" -- "$@" < \
+          <(gh pr list --json number,title -q '.[] | "#\(.number)\t\(.title)"')
+        ;;
+      release)
+        _fzf_complete --preview="GH_FORCE_TTY=1 gh release view {1}" -- "$@" < \
+          <(gh release list)
+        ;;
+      repo)
+        _fzf_complete --preview="GH_FORCE_TTY=1 gh repo view {+1}" -- "$@" < \
+          <(gh repo list --source --limit 200 --json owner,name -q '.[] | "\(.owner.login)/\(.name)"')
+        ;;
+      *)
+        # call original completion
+        _fzf_handle_dynamic_completion "$command" "$@"
+        ;;
+    esac
+  }
+  _fzf_complete_gh_post() {
+    awk '{ sub(/^#/, "", $1); print $1 }'
+  }
+
+  # lazy loading gh-completion
+  __gh_completion() {
+    unset -f __gh_completion
+    complete -r gh
+
+    eval "$(gh completion --shell bash)" && \
+      complete -F _fzf_complete_gh -o default -o bashdefault gh && \
+      return 124
+  }
+  complete -F __gh_completion gh
   # }}}
 
   # vim {{{
