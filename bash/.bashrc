@@ -289,6 +289,7 @@ __main() {
         ;;
       cherry-pick|cp|rebase)
         local -r format='%C(yellow)%h%C(reset) %C(magenta)[%ad]%C(reset) %C(cyan)@%an%C(reset) %C(cyan)@%cn%C(reset)%C(auto)%d%C(reset) %s'
+        # shellcheck disable=SC2016
         local -r preview='git show --color=always "$(echo {} | grep -Eo \[0-9a-f\]\{7,40\} | head -n 1)" 2>/dev/null'
 
         _fzf_complete --ansi --preview="$preview" -- "$@" < \
