@@ -251,6 +251,32 @@ __main() {
     printf -- '%s' "${COMP_WORDS[index+1]}"
   }
 
+  # docker complete by fzf with preview
+  _fzf_complete_docker() {
+    local -r command="${FUNCNAME[0]##*_}"
+    local -r subcommand="$(__detect_subcommand "$command")"
+
+    case "$subcommand" in
+      exec|stop)
+        _fzf_complete --multi -- "$@" < <(docker ps | sed 1d)
+        ;;
+      rm)
+        _fzf_complete --multi -- "$@" < <(docker ps -a | sed 1d)
+        ;;
+      rmi)
+        _fzf_complete --multi -- "$@" < <(docker images | sed 1d)
+        ;;
+      *)
+        # call original completion
+        _fzf_handle_dynamic_completion "$command" "$@"
+        ;;
+    esac
+  }
+  _fzf_complete_docker_post() {
+    awk '{ print $1 }'
+  }
+  complete -F _fzf_complete_docker -o default -o bashdefault docker
+
   # git complete by fzf with preview
   _fzf_complete_git() {
     local -r command="${FUNCNAME[0]##*_}"
@@ -462,28 +488,7 @@ __main() {
     git rev-parse --is-inside-work-tree >/dev/null && cd "$(git rev-parse --show-toplevel)" || return
   }
 
-  # remove docker containers
-  d-rm() {
-    # shellcheck disable=SC2145
-    docker ps -a | sed 1d | fzf --multi --query="$@" | awk '{ print $1 }' | xargs docker rm
-  }
-
-  # remove docker images
-  d-rmi() {
-    # shellcheck disable=SC2145
-    docker images | sed 1d | fzf --multi --query="$@" | awk '{ print $3 }' | xargs docker rmi --force
-  }
-
-  # execute command in container
-  d-sh() {
-    # shellcheck disable=SC2145
-    docker exec -it "$(docker ps | sed 1d | fzf --query="$@" | awk '{ print $1 }' | sed -n 1p)" "${1:-sh}"
-  }
-
-  d-stop() {
-    # shellcheck disable=SC2145
-    docker ps | sed 1d | fzf --multi --query="$@" | awk '{ print $1 }' | xargs -n 1 docker stop
-  }
+  #-----------------------------------------------------------------------------
 
   # switch tmux session
   if type tmux >/dev/null 2>&1
