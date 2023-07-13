@@ -7,15 +7,32 @@
 --exclude=node_modules
 --langdef=js
 --langmap=js:.js
---regex-javascript=/^[ \t]*(['"]?)([A-Za-z0-9_.]+)\1[ \t]*[:=][ \t]*function[ \t]*\(/\2/I,inner/i
---regex-javascript=/([A-Za-z0-9._$\(\)]+)[ \t]*[:=][ \t]*function[ \t]*\(/\1/m,method/
---regex-javascript=/([A-Za-z0-9._$\#\(\)]+)[ \t]*[:][ \t]*([A-Za-z0-9._\-\#\'\"]+)[ \t]*/\1/p,property/
---regex-javascript=/([A-Za-z0-9._$\#\(\)]+)[ \t]*[:][ \t]*([A-Za-z0-9\'\"._\-\#\(]+)[ \t]*\{/\1/p,property/
---regex-javascript=/var[ \t]+([A-Za-z0-9._$\#]+)[ \t]*[=][ \t]*([A-Za-z0-9._'"\$\#\[\{]+)[,|;]/\1/v,variable/
---regex-javascript=/([A-Za-z0-9._$\#]+)[ \t]*[=][ \t]*([A-Za-z0-9._'"\$\#]+)extend\(/\1/c,class/
+  --regex-javascript=/^[ \t]*(['"]?)([A-Za-z0-9_.]+)\1[ \t]*[:=][ \t]*function[ \t]*\(/\2/I,inner/i
+  --regex-javascript=/([A-Za-z0-9._$\(\)]+)[ \t]*[:=][ \t]*function[ \t]*\(/\1/m,method/
+  --regex-javascript=/([A-Za-z0-9._$\#\(\)]+)[ \t]*[:][ \t]*([A-Za-z0-9._\-\#\'\"]+)[ \t]*/\1/p,property/
+  --regex-javascript=/([A-Za-z0-9._$\#\(\)]+)[ \t]*[:][ \t]*([A-Za-z0-9\'\"._\-\#\(]+)[ \t]*\{/\1/p,property/
+  --regex-javascript=/var[ \t]+([A-Za-z0-9._$\#]+)[ \t]*[=][ \t]*([A-Za-z0-9._'"\$\#\[\{]+)[,|;]/\1/v,variable/
+  --regex-javascript=/([A-Za-z0-9._$\#]+)[ \t]*[=][ \t]*([A-Za-z0-9._'"\$\#]+)extend\(/\1/c,class/
   --regex-js=/([A-Za-z0-9._$]+)[ \t]*[:=][ \t]*\{/\1/,object/
   --regex-js=/([A-Za-z0-9._$()]+)[ \t]*[:=][ \t]*function[ \t]*\(/\1/,function/
   --regex-js=/function[ \t]+([A-Za-z0-9._$]+)[ \t]*\(([^)])\)/\1/,function/
   --regex-js=/([A-Za-z0-9._$]+)[ \t]*[:=][ \t]*\[/\1/,array/
---regex-js=/([^= ]+)[ \t]*=[ \t]*[^"]'[^']*/\1/,string/
---regex-js=/([^= ]+)[ \t]*=[ \t]*[^']"[^"]*/\1/,string/
+  --regex-js=/([^= ]+)[ \t]*=[ \t]*[^"]'[^']*/\1/,string/
+  --regex-js=/([^= ]+)[ \t]*=[ \t]*[^']"[^"]*/\1/,string/
+--langdef=kotlin
+--langmap=kotlin:.kt
+  --regex-kotlin=/^[ \t]*([(private|public|internal|protected|abstract|final|open|override)]*[ \t]*((class|object|interface|enum)[ \t]*[A-Za-z0-9_:]+))/\2/c,classes/
+  --regex-kotlin=/^[ \t]*([(private|public|internal|protected|abstract|final|open|override)]*[ \t]*((class|object|interface|enum)[ \t]*[A-Za-z0-9_:]+))/\2/o,objects/
+  --regex-kotlin=/^[ \t]*([(private|public|internal|protected|abstract|final|open|override)]*[ \t]*((class|object|interface|enum)[ \t]*[A-Za-z0-9_:]+))/\2/i,interfaces/
+  --regex-kotlin=/^[ \t]*([(private|public|internal|protected|abstract|final|open|override)]*[ \t]*((class|object|interface|enum)[ \t]*[A-Za-z0-9_:]+))/\2/e,enums/
+  --regex-kotlin=/^[ \t]*[(private|public|internal|protected|abstract|final|open|override)]*[ \t]*fun[ \t]*([A-Za-z0-9_:]+)/\1/m,methods/
+  --regex-kotlin=/^[ \t]*val[ \t]*([A-Za-z0-9_:]+)/\1/p,properties/
+  --regex-kotlin=/^[ \t]*var[ \t]*([A-Za-z0-9_:]+)/\1/v,variables/
+--langdef=Swift
+--langmap=Swift:.swift
+  --regex-swift=/enum[ \t]+([A-Za-z0-9_]+)/\1/t,enum/
+  --regex-swift=/typealias[ \t]+([A-Za-z0-9_]+)/\1/t,typealias/
+  --regex-swift=/protocol[ \t]+([A-Za-z0-9_]+)/\1/p,protocol/
+  --regex-swift=/struct[ \t]+([A-Za-z0-9_]+)/\1/s,struct/
+  --regex-swift=/class[ \t]+([A-Za-z0-9_]+)/\1/c,class/
+  --regex-swift=/func[ \t]+([A-Za-z0-9_]+)/\1/f,function/
