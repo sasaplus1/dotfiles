@@ -28,8 +28,8 @@
   --regex-kotlin=/^[ \t]*[(private|public|internal|protected|abstract|final|open|override)]*[ \t]*fun[ \t]*([A-Za-z0-9_:]+)/\1/m,methods/
   --regex-kotlin=/^[ \t]*val[ \t]*([A-Za-z0-9_:]+)/\1/p,properties/
   --regex-kotlin=/^[ \t]*var[ \t]*([A-Za-z0-9_:]+)/\1/v,variables/
---langdef=Swift
---langmap=Swift:.swift
+--langdef=swift
+--langmap=swift:.swift
   --regex-swift=/enum[ \t]+([A-Za-z0-9_]+)/\1/t,enum/
   --regex-swift=/typealias[ \t]+([A-Za-z0-9_]+)/\1/t,typealias/
   --regex-swift=/protocol[ \t]+([A-Za-z0-9_]+)/\1/p,protocol/
