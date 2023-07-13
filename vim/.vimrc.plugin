@@ -569,11 +569,9 @@ if dein#load_state(s:plugin_dir)
     endif
 
     if maparg('<Plug>(coc-definition)', 'n')
-      autocmd vimrc FileType css,html,javascript,javascriptreact,json,scss,typescript,typescriptreact,yaml
-            \ nmap <buffer><silent> <C-]> <Plug>(coc-definition)
+      autocmd vimrc FileType * nmap <buffer><silent> <C-]> <Plug>(coc-definition)
     elseif has('eval') && exists('&tagfunc')
-      autocmd vimrc FileType css,html,javascript,javascriptreact,json,scss,typescript,typescriptreact,yaml
-            \ setlocal tagfunc=CocTagFunc
+      autocmd vimrc FileType * setlocal tagfunc=CocTagFunc
     endif
 
     function! s:check_back_space() abort
