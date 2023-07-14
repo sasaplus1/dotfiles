@@ -682,6 +682,9 @@ __main() {
   export PS1
   # }}}
 
+  alias gt='git'
+  alias gti='git'
+
   if [ -n "$apple_silicon" ]
   then
     alias armsh='arch -arm64e /bin/bash'
@@ -702,8 +705,6 @@ __main() {
       alias pbpaste='xsel --clipboard --output'
       ;;
     *)
-      alias gt='git'
-      alias gti='git'
       ;;
   esac
 
