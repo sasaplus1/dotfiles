@@ -272,7 +272,7 @@ if executable('locale') && system('locale -a') =~# 'ja_JP.UTF-8'
 endif
 
 " mkdir関数が存在する場合
-if exists('?mkdir')
+if exists('?mkdir') || (has('nvim') && exists('*mkdir'))
   " バックアップファイルの保存先を変更 {{{
   if !isdirectory($HOME . '/.vim/backup')
     call mkdir($HOME . '/.vim/backup', 'p')

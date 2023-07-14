@@ -142,7 +142,7 @@ if dein#load_state(s:plugin_dir)
 
   " mattn/ctrlp-matchfuzzy {{{
   call dein#add('mattn/ctrlp-matchfuzzy', {
-        \ 'if' : exists('?matchfuzzy') && !has('nvim'),
+        \ 'if' : exists('?matchfuzzy') || (has('nvim') && exists('*matchfuzzy')),
         \ 'lazy' : 1,
         \ })
   " }}}
@@ -276,7 +276,7 @@ if dein#load_state(s:plugin_dir)
   endfunction
 
   call dein#add('ctrlpvim/ctrlp.vim', {
-        \ 'depends' : exists('?matchfuzzy') ? ['ctrlp-matchfuzzy'] : [],
+        \ 'depends' : (exists('?matchfuzzy') || (has('nvim') && exists('*matchfuzzy'))) ? ['ctrlp-matchfuzzy'] : [],
         \ 'hook_add' : function('s:hook_add_ctrlpvim'),
         \ 'hook_source' : function('s:hook_source_ctrlpvim'),
         \ 'if' : v:version >= 700,
@@ -523,7 +523,7 @@ if dein#load_state(s:plugin_dir)
           \ coc#util#get_config_home() . '/coc-settings.json'
           \ )
 
-    if exists('?json_encode') && !filereadable(coc_settings_path)
+    if (exists('?json_encode') || (has('nvim') && exists('*json_encode'))) && !filereadable(coc_settings_path)
       " javascript.suggestionActions.enabled は tsserver 80001 抑止のため
       " https://github.com/microsoft/vscode/issues/47299
       let coc_settings = {
