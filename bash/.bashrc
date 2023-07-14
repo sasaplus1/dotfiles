@@ -361,6 +361,12 @@ __main() {
       return 124
   }
   complete -F __gh_completion gh
+
+  # tig complete by fzf with preview
+  _fzf_complete_tig() {
+    _fzf_complete --preview='git show --color=always {}' -- "$@" < <(git branch --all --format='%(refname:short)')
+  }
+  complete -F _fzf_complete_tig -o default -o bashdefault tig
   # }}}
 
   # vim {{{
