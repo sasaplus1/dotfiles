@@ -702,6 +702,8 @@ __main() {
       alias pbpaste='xsel --clipboard --output'
       ;;
     *)
+      alias gt='git'
+      alias gti='git'
       ;;
   esac
 
