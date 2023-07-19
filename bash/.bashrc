@@ -734,9 +734,15 @@ __main() {
   then
     return 0
   fi
-  if [ -z "$TMUX" ] && [ -z "$VIM_TERMINAL" ] && [ ! -f '/.dockerenv' ]
+  if [ -z "$TMUX" ] && [ -z "$VIM_TERMINAL" ] && [ ! -f '/.dockerenv' ] && type tmux >/dev/null 2>&1
   then
-    type tmux >/dev/null 2>&1 && command tmux
+    if [ -n "$COLORTERM" ]
+    then
+      command tmux new-session -e "COLORTERM=${COLORTERM}"
+    else
+      # TODO: I want to unset COLORTERM
+      command tmux new-session -e "COLORTERM="
+    fi
   fi
 }
 __main "$@"

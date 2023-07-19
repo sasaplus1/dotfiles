@@ -1234,19 +1234,17 @@ EOB
             \ }
     endif
 
+    " see https://github.com/termstandard/colors
+
     " see :help xterm-true-color
     " https://qiita.com/yami_beta/items/ef535d3458addd2e8fbb
 
     " vscode を起動すると COLORTERM が定義される
     " Terminal.app では COLORTERM は定義されない
+    " ただし Terminal.app で tmux を起動した際に空文字で定義している
     let isSupportTrueColor = $COLORTERM =~# '\vtruecolor|24bit'
 
-    " Apple_Terminal（Terminal.appのこと） は truecolor をサポートしていない
-    let isAppleTerminal =
-          \ match([$TERM_PROGRAM, $ORIGINAL_TERM_PROGRAM], 'Apple_Terminal') != -1
-
-    " tmux でそれぞれの端末を起動して切り替えた場合は判定に失敗する
-    if has('termguicolors') && isSupportTrueColor && !isAppleTerminal
+    if has('termguicolors') && isSupportTrueColor
       set termguicolors
     endif
 
