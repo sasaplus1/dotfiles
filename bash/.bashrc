@@ -273,7 +273,16 @@ __main() {
     esac
   }
   _fzf_complete_docker_post() {
-    awk '{ print $1 }'
+    local -r subcommand="$(__detect_subcommand docker)"
+
+    case "$subcommand" in
+      rmi)
+        awk '{ print $3 }'
+        ;;
+      **)
+        awk '{ print $1 }'
+        ;;
+    esac
   }
   complete -F _fzf_complete_docker -o default -o bashdefault docker
 
