@@ -115,6 +115,7 @@ if dein#load_state(s:plugin_dir)
 
     nnoremap <silent> ,ch :<C-u>MyCheatSheet<CR>
     nnoremap <silent> ,rg :<C-u>FzfRg<CR>
+    nnoremap <silent> ,rG :<C-u>FzfRG<CR>
   endfunction
 
   call dein#add('junegunn/fzf', {
