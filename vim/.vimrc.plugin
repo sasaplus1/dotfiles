@@ -47,8 +47,10 @@ if dein#load_state(s:plugin_dir)
     " Vimのプロセスだけデフォルトオプションを変更する
     let $FZF_DEFAULT_OPTS = join([
           \   $FZF_DEFAULT_OPTS,
+          \   '--border=none',
           \   '--layout=reverse-list',
-          \   '--margin=0,0,0,0'
+          \   '--margin=0,0,0,0',
+          \   '--preview-window=border-left',
           \ ], ' ')
     " 共通レイアウトの指定
     let g:fzf_layout = {
