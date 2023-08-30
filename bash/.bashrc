@@ -231,6 +231,7 @@ __main() {
 
     if [ -n "$position" ]
     then
+      # LC_ALL for prevent fzf borders from collapsing
       LC_ALL=C.UTF-8 command fzf "$position" "$@"
     else
       LC_ALL=C.UTF-8 command fzf "$@"
