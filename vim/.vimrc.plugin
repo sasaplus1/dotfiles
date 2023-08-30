@@ -9,7 +9,9 @@ if !has('kaoriya')
   set runtimepath&
 endif
 
-let s:plugin_dir = simplify($HOME . '/.vim/dein')
+let s:plugin_dir = has('nvim')
+      \ ? simplify($HOME . '/.nvim/dein')
+      \ : simplify($HOME . '/.vim/dein')
 
 " TODO: migrate to https://github.com/Shougo/dein-installer.vim
 let s:dein_rev = v:version >= 802 || has('nvim-0.5')
@@ -472,7 +474,9 @@ if dein#load_state(s:plugin_dir)
 
   " neoclide/coc.nvim {{{
   function! s:hook_add_coc_nvim() abort
-    let node = resolve($HOME . '/.vim/node-coc/bin/node')
+    let node = has('nvim')
+          \ ? resolve($HOME . '/.nvim/node-coc/bin/node')
+          \ : resolve($HOME . '/.vim/node-coc/bin/node')
 
     if executable(node)
       " g:coc_node_path と npm.binPath を指定しても正常に動作しない
@@ -619,7 +623,9 @@ if dein#load_state(s:plugin_dir)
   endfunction
 
   function! s:hook_post_update_coc_nvim() abort
-    let node = resolve($HOME . '/.vim/node-coc/bin/node')
+    let node = has('nvim')
+          \ ? resolve($HOME . '/.nvim/node-coc/bin/node')
+          \ : resolve($HOME . '/.vim/node-coc/bin/node')
 
     if !executable(node) && executable('uname') && executable('curl')
       let node_version = '18.12.1'
@@ -645,8 +651,12 @@ if dein#load_state(s:plugin_dir)
             \ arch,
             \ )
 
-      let node_coc_dir = resolve($HOME . '/.vim/node-coc')
-      let node_archive = resolve($HOME . '/.vim/node.tar.gz')
+      let node_coc_dir = has('nvim')
+            \ ? resolve($HOME . '/.nvim/node-coc')
+            \ : resolve($HOME . '/.vim/node-coc')
+      let node_archive = has('nvim')
+            \ ? resolve($HOME . '/.nvim/node.tar.gz')
+            \ : resolve($HOME . '/.vim/node.tar.gz')
 
       call mkdir(node_coc_dir, 'p')
 
