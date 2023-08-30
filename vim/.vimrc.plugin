@@ -37,6 +37,13 @@ if dein#load_state(s:plugin_dir)
 
   " junegunn/fzf {{{
   function! s:hook_add_junegunn_fzf() abort
+    " 枠線が崩れるのを抑止する
+    " https://github.com/junegunn/fzf/releases/tag/0.36.0
+    " https://twitter.com/hayajo/status/1625846313060548609
+    if !exists('$RUNEWIDTH_EASTASIAN')
+      let $RUNEWIDTH_EASTASIAN=0
+    endif
+
     " ポップアップウィンドウをサポートしているかどうか
     let s:support_popup = has('nvim-0.4') || (has('popupwin') && has('patch-8.2.191'))
 

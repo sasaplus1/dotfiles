@@ -231,11 +231,12 @@ __main() {
 
     if [ -n "$position" ]
     then
-      # LC_ALL for prevent fzf borders from collapsing
-      # LC_ALL=C.UTF-8 is not work on macOS
-      LC_ALL=en_US.UTF-8 command fzf "$position" "$@"
+      # prevent fzf borders from collapsing
+      # https://github.com/junegunn/fzf/releases/tag/0.36.0
+      # https://twitter.com/hayajo/status/1625846313060548609
+      RUNEWIDTH_EASTASIAN=0 command fzf "$position" "$@"
     else
-      LC_ALL=en_US.UTF-8 command fzf "$@"
+      RUNEWIDTH_EASTASIAN=0 command fzf "$@"
     fi
   }
 
