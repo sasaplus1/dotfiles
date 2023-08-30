@@ -231,9 +231,9 @@ __main() {
 
     if [ -n "$position" ]
     then
-      command fzf "$position" "$@"
+      LC_ALL=C.UTF-8 command fzf "$position" "$@"
     else
-      command fzf "$@"
+      LC_ALL=C.UTF-8 command fzf "$@"
     fi
   }
 
