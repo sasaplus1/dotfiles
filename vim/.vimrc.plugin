@@ -93,6 +93,7 @@ if dein#load_state(s:plugin_dir)
             \ 'dir' : '$HOME/.ghq/github.com/sasaplus1/vim-cheat-sheet/cheatsheet',
             \ 'options' : [
             \   '--bind', 'change:reload:' . printf(command, '{q}'),
+            \   '--border',
             \   '--disabled',
             \   '--preview-window', 'top,80%',
             \   '--prompt', 'CheatSheet> ',
