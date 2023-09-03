@@ -1049,6 +1049,36 @@ if dein#load_state(s:plugin_dir)
   " }}}
 
   " obaland/vfiler.vim {{{
+  function! s:setup_vfiler() abort
+lua << EOB
+  -- local action = require('vfiler/action')
+  -- require('vfiler/config').setup {
+  --   mappings = {
+  --     -- ['<C-h>'] = action.change_to_parent
+  --     ['C'] = action.copy_to_filer,
+  --     -- xyzzy
+  --     -- P = 非アクティブな方のカレントディレクトリを今アクティブな方に合わせる
+  --     -- S = Pの逆
+  --     ['P'] = action.sync_with_current_filer,
+  --     ['S'] = function(vfiler, context, view)
+  --       local linked = context.linked
+  --       if not (linked and linked:visible()) then
+  --         return
+  --       end
+  --       for k, v in pairs(linked) do
+  --           print(k, v)
+  --       end
+  --       -- print(linked.root)
+  --       -- context:update(linked.context)
+  --       -- context:do_action(utils.cd, linked.context.root.path)
+  --       -- linked:update(context)
+  --       -- linked:do_action(utils.cd, context.root.path)
+  --     end,
+  --   },
+  -- }
+EOB
+  endfunction
+
   function! s:hook_add_vfiler_vim() abort
     " netrwを読み込まない
     let g:loaded_netrw = 1
@@ -1065,6 +1095,7 @@ if dein#load_state(s:plugin_dir)
   call dein#add('obaland/vfiler.vim', {
         \ 'lazy' : 1,
         \ 'hook_add' : function('s:hook_add_vfiler_vim'),
+        \ 'hook_source' : function('s:setup_vfiler'),
         \ 'if' : has('lua') || has('nvim'),
         \ 'on_cmd' : [
         \   'VFiler',
