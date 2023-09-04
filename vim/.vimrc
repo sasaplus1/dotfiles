@@ -6,12 +6,14 @@ if 1
   let s:vimrc_dir = fnamemodify(resolve($MYVIMRC), ':h')
 
   " https://mattn.kaoriya.net/software/vim/20191231001537.htm
+  " https://zenn.dev/mattn/articles/565c4ec71f461cbbf5c9
   function! s:source_vimrc(path)
     execute 'source' a:path
   endfunction
   call map(
         \ sort(split(globpath(s:vimrc_dir, '*.vim'))),
-        \ 's:source_vimrc(v:val)')
+        \ 's:source_vimrc(v:val)'
+        \ )
   " }}}
 
   " 環境固有の設定を読み込む {{{
