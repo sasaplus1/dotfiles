@@ -50,10 +50,4 @@ jobs:
         with:
           python-version: 3.x
       - run: pip install vim-vint
-      - run: >
-          vint
-          vim/.vimrc
-          vim/.vimrc.base
-          vim/.vimrc.config
-          vim/.vimrc.local
-          vim/.vimrc.plugin
+      - run: vint vim/.vim* vim/*.vim
