@@ -9,9 +9,7 @@ if !has('kaoriya')
   set runtimepath&
 endif
 
-let s:plugin_dir = has('nvim')
-      \ ? simplify($HOME . '/.nvim/dein')
-      \ : simplify($HOME . '/.vim/dein')
+let s:plugin_dir = simplify(g:vimrc_vim_dir . '/dein')
 
 let s:dein_rev = v:version >= 802 || has('nvim-0.5')
       \ ? '3.0'
@@ -27,7 +25,9 @@ if !isdirectory(s:dein_dir)
         \ )
 endif
 
-execute 'set' 'runtimepath^=' . s:dein_dir
+if &runtimepath !~# '/dein.vim'
+  execute 'set' 'runtimepath^=' . s:dein_dir
+endif
 
 if dein#load_state(s:plugin_dir)
   call dein#begin(s:plugin_dir)
