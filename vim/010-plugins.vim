@@ -13,7 +13,6 @@ let s:plugin_dir = has('nvim')
       \ ? simplify($HOME . '/.nvim/dein')
       \ : simplify($HOME . '/.vim/dein')
 
-" TODO: migrate to https://github.com/Shougo/dein-installer.vim
 let s:dein_rev = v:version >= 802 || has('nvim-0.5')
       \ ? '3.0'
       \ : '2.2'
@@ -678,154 +677,6 @@ if dein#load_state(s:plugin_dir)
         \ })
   " }}}
 
-  " prabirshrestha/vim-lsp {{{
-  " function! s:hook_add_vim_lsp() abort
-  "   " 補完する際のドキュメントの表示を5秒後にする
-  "   let g:lsp_completion_documentation_delay = 5000
-
-  "   " LSPでの診断を無効化する
-  "   let g:lsp_diagnostics_enabled = 0
-
-  "   " カーソル位置の診断結果を表示する
-  "   " let g:lsp_diagnostics_echo_cursor = 1
-  "   " カーソル位置の診断結果を瞬時に表示する
-  "   " let g:lsp_diagnostics_echo_delay = 0
-  "   " 診断結果をフロートウィンドウで瞬時に表示する
-  "   " let g:lsp_diagnostics_float_delay = 0
-
-  "   " 変数などのハイライト(highlight reference)を無効化する
-  "   let g:lsp_diagnostics_highlights_enabled = 0
-
-  "   " 診断結果のサイン文字列を変更する similar to ALE
-  "   " let g:lsp_diagnostics_signs_error = { 'text' : '>>' }
-  "   " let g:lsp_diagnostics_signs_warning = { 'text' : '--' }
-  "   " let g:lsp_diagnostics_signs_information = { 'text' : '--' }
-  "   " let g:lsp_diagnostics_signs_hint = { 'text' : '--' }
-  "   " 診断結果のサインを瞬時に表示する
-  "   " let g:lsp_diagnostics_signs_delay = 0
-  "   " バーチャルテキストを瞬時に表示する
-  "   " let g:lsp_diagnostics_virtual_text_delay = 0
-
-  "   " コードアクションのサインを表示しない
-  "   let g:lsp_document_code_action_signs_enabled = 0
-  "   " ドキュメントのハイライトを無効化する
-  "   let g:lsp_document_highlight_enabled = 0
-
-  "   " ドキュメントフォーマットのタイムアウトを1秒にする
-  "   " let g:lsp_format_sync_timeout = 1000
-
-  "   " 白いサインを黄色くする
-  "   " highlight link LspInformationText Todo
-  "   " highlight link LspHintText Todo
-
-  "   " autocmd vimrc BufWritePre *.{cjs,js,jsx,mjs,pac,ts,tsx}
-  "   "       \ call execute('LspDocumentFormatSync --server=efm-langserver')
-
-  "   function! s:lsp_buffer_setup() abort
-  "     if exists('+omnifunc')
-  "       setlocal omnifunc=lsp#complete
-  "     endif
-
-  "     if exists('+tagfunc')
-  "       setlocal tagfunc=lsp#tagfunc
-  "     endif
-
-  "     nmap <buffer> ,ld <Plug>(lsp-definition)
-  "     nmap <buffer> ,ls <Plug>(lsp-document-symbol-search)
-  "     nmap <buffer> ,lS <Plug>(lsp-workspace-symbol-search)
-  "     nmap <buffer> ,lr <Plug>(lsp-references)
-  "     nmap <buffer> ,li <Plug>(lsp-implementation)
-  "     nmap <buffer> ,lt <Plug>(lsp-type-definition)
-  "     nmap <buffer> ,lR <Plug>(lsp-rename)
-  "     " nmap <buffer> [g <Plug>(lsp-previous-diagnostic)
-  "     " nmap <buffer> ]g <Plug>(lsp-next-diagnostic)
-  "     nmap <buffer> K <Plug>(lsp-hover)
-  "   endfunction
-
-  "   augroup lsp_install
-  "     autocmd!
-  "     autocmd User lsp_buffer_enabled call s:lsp_buffer_setup()
-  "   augroup END
-  " endfunction
-
-  " call dein#add('prabirshrestha/vim-lsp', {
-  "       \ 'hook_add' : function('s:hook_add_vim_lsp'),
-  "       \ })
-  " }}}
-
-  " mattn/vim-lsp-settings {{{
-  " function! s:hook_post_source_vim_lsp_settings() abort
-  "   " if has('win32')
-  "   "   let servers_dir = expand('$LOCALAPPDATA/vim-lsp-settings/servers')
-  "   " elseif $XDG_DATA_HOME !=# ''
-  "   "   let servers_dir = expand('$XDG_DATA_HOME/vim-lsp-settings/servers')
-  "   " else
-  "   "   let servers_dir = expand('~/.local/share/vim-lsp-settings/servers')
-  "   " endif
-
-  "   " let servers = [
-  "   "       \ 'css-languageserver',
-  "   "       \ 'html-languageserver',
-  "   "       \ 'json-languageserver',
-  "   "       \ 'typescript-language-server',
-  "   "       \ 'vim-language-server',
-  "   "       \ 'yaml-language-server',
-  "   "       \ ]
-
-  "   " for server in servers
-  "   "   if !isdirectory(servers_dir . '/' . server)
-  "   "     execute('LspInstallServer ' . server)
-  "   "   endif
-  "   " endfor
-  " endfunction
-
-  " call dein#add('mattn/vim-lsp-settings', {
-  "       \ 'depends' : [
-  "       \   'vim-lsp',
-  "       \ ],
-  "       \ 'hook_post_source' : function('s:hook_post_source_vim_lsp_settings'),
-  "       \ })
-  " }}}
-
-  " prabirshrestha/asyncomplete.vim {{{
-  " function! s:hook_add_asyncomplete_vim() abort
-  "   inoremap <silent><expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-  "   inoremap <silent><expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-  "   inoremap <silent><expr> <CR> pumvisible() ? asyncomplete#close_popup() : "\<CR>"
-  "   inoremap <silent><expr> <C-k> <Plug>(asyncomplete_force_refresh)
-  " endfunction
-
-  " call dein#add('prabirshrestha/asyncomplete.vim', {
-  "       \ 'hook_add' : function('s:hook_add_asyncomplete_vim'),
-  "       \ })
-  " }}}
-
-  " prabirshrestha/asyncomplete-lsp.vim {{{
-  " call dein#add('prabirshrestha/asyncomplete-lsp.vim', {
-  "       \ 'depends' : [
-  "       \   'asyncomplete.vim',
-  "       \   'vim-lsp',
-  "       \ ],
-  "       \ })
-  " }}}
-
-  " tokorom/asyncomplete-dictionary.vim {{{
-  " function! s:hook_add_asyncomplete_dictionary_vim() abort
-  "   autocmd vimrc User asyncomplete_setup call asyncomplete#register_source({
-  "       \ 'name': 'dictionary',
-  "       \ 'allowlist': ['*'],
-  "       \ 'completor': function('asyncomplete#sources#dictionary#completor'),
-  "       \ })
-  " endfunction
-
-  " call dein#add('tokorom/asyncomplete-dictionary.vim', {
-  "       \ 'depends' : [
-  "       \   'asyncomplete.vim',
-  "       \ ],
-  "       \ 'hook_add' : function('s:hook_add_asyncomplete_dictionary_vim'),
-  "       \ })
-  " }}}
-
   " editorconfig/editorconfig-vim {{{
   call dein#add('editorconfig/editorconfig-vim')
   " }}}
@@ -1204,17 +1055,6 @@ EOB
         \   'javascriptreact',
         \ ],
         \ })
-  " }}}
-
-  " HerringtonDarkholme/yats.vim {{{
-  " call dein#add('HerringtonDarkholme/yats.vim', {
-  "       \ 'lazy' : 1,
-  "       \ 'if' : !has('nvim'),
-  "       \ 'on_ft' : [
-  "       \   'typescript',
-  "       \   'typescriptreact',
-  "       \ ],
-  "       \ })
   " }}}
 
   " leafgarland/typescript-vim {{{
