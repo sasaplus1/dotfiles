@@ -60,6 +60,7 @@ let g:markdown_fenced_languages = [
       \ 'css',
       \ 'diff',
       \ 'erb=eruby',
+      \ 'help',
       \ 'html',
       \ 'javascript',
       \ 'js=javascript',
@@ -68,8 +69,8 @@ let g:markdown_fenced_languages = [
       \ 'sass',
       \ 'scss',
       \ 'sh',
-      \ 'typescript',
       \ 'ts=typescript',
+      \ 'typescript',
       \ 'vim',
       \ 'xml',
       \ ]
