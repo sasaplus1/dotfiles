@@ -5,9 +5,11 @@ let s:plugin_dir = simplify(g:vimrc_vim_dir . '/dein')
 let s:dein_tag = v:version >= 802 || has('nvim-0.5')
       \ ? '3.1'
       \ : '2.2'
-let s:dein_dir = simplify(s:plugin_dir . '/repos/github.com/Shougo/dein.vim_' . s:dein_tag)
+let s:dein_dir = simplify(
+      \ s:plugin_dir . '/repos/github.com/Shougo/dein.vim_' . s:dein_tag,
+      \ )
 
-if !isdirectory(s:dein_dir)
+if empty(glob(s:dein_dir))
   execute printf(
         \ "!git -c '%s' clone --branch '%s' 'https://github.com/Shougo/dein.vim' '%s'",
         \ 'advice.detachedHead=false',

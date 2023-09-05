@@ -190,13 +190,11 @@ endif
 
 " mkdir関数が存在する場合
 if exists('?mkdir') || (has('nvim') && exists('*mkdir'))
-  let dir = has('nvim') ? '~/.nvim' : '~/.vim'
-
   " バックアップファイルの保存先を変更 {{{
-  let backupdir = dir . '/backup'
+  let backupdir = simplify(g:vimrc_vim_dir . '/backup')
 
-  if !isdirectory(expand(backupdir))
-    call mkdir(expand(backupdir), 'p')
+  if empty(glob(backupdir))
+    call mkdir(backupdir, 'p')
   endif
 
   execute 'set' 'backupdir=' . backupdir
@@ -206,10 +204,10 @@ if exists('?mkdir') || (has('nvim') && exists('*mkdir'))
   " }}}
 
   " スワップファイルの保存先を変更 {{{
-  let swapdir = dir . '/swap'
+  let swapdir = simplify(g:vimrc_vim_dir . '/swap')
 
-  if !isdirectory(expand(swapdir))
-    call mkdir(expand(swapdir), 'p')
+  if empty(glob(swapdir))
+    call mkdir(swapdir, 'p')
   endif
 
   execute 'set' 'directory=' . swapdir
@@ -220,10 +218,10 @@ if exists('?mkdir') || (has('nvim') && exists('*mkdir'))
   " }}}
 
   " アンドゥファイルの保存先を指定する {{{
-  let undodir = dir . '/undo'
+  let undodir = simplify(g:vimrc_vim_dir . '/undo')
 
-  if !isdirectory(expand(undodir))
-    call mkdir(expand(undodir), 'p')
+  if empty(glob(undodir))
+    call mkdir(undodir, 'p')
   endif
 
   if has('persistent_undo')
