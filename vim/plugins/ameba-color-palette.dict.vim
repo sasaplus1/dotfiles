@@ -21,3 +21,5 @@ call dein#add('sasaplus1/ameba-color-palette.dict', {
       \ ],
       \ 'rev' : 'release',
       \ })
+
+" vim:ft=vim:fdm=marker:fen:

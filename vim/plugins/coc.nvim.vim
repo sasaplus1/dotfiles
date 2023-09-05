@@ -1,13 +1,6 @@
-" neoclide/coc.nvim {{{
+scriptencoding utf-8
+
 function! s:hook_add_coc_nvim() abort
-  let node = simplify(g:vimrc_vim_dir . '/node-coc/bin/node')
-
-  if executable(node)
-    " g:coc_node_path と npm.binPath を指定しても正常に動作しない
-    " https://github.com/neoclide/coc.nvim/issues/1826#issuecomment-1149259027
-    let $PATH = fnamemodify(node, ':h') . ':' . $PATH
-  endif
-
   let g:coc_global_extensions = [
         \ 'coc-css',
         \ 'coc-cssmodules',
@@ -147,58 +140,15 @@ function! s:hook_post_source_coc_nvim() abort
   nmap <silent> ,lR <Plug>(coc-rename)
 endfunction
 
-function! s:hook_post_update_coc_nvim() abort
-  let node = simplify(g:vimrc_vim_dir . '/node-coc/bin/node')
-
-  if !executable(node) && executable('uname') && executable('curl')
-    let node_version = '18.17.1'
-    let architecture = trim(system('uname -m'))
-
-    if has('osxdarwin')
-      let platform = 'darwin'
-    elseif has('linux')
-      let platform = 'linux'
-    endif
-
-    if architecture =~# '\v^(arm64|aarch64)'
-      let arch = 'arm64'
-    elseif architecture =~# '\v^x86_64'
-      let arch = 'x64'
-    endif
-
-    let url = printf(
-          \ 'https://nodejs.org/download/release/v%s/node-v%s-%s-%s.tar.gz',
-          \ node_version,
-          \ node_version,
-          \ platform,
-          \ arch,
-          \ )
-
-    let node_coc_dir = has('nvim')
-          \ ? resolve($HOME . '/.nvim/node-coc')
-          \ : resolve($HOME . '/.vim/node-coc')
-    let node_archive = has('nvim')
-          \ ? resolve($HOME . '/.nvim/node.tar.gz')
-          \ : resolve($HOME . '/.vim/node.tar.gz')
-
-    call mkdir(node_coc_dir, 'p')
-
-    let curl = printf('curl -fsSL -o "%s" "%s"', node_archive, url)
-    let tar = printf('tar fx "%s" -C "%s" --strip-components 1', node_archive, node_coc_dir)
-
-    call system(curl)
-    call system(tar)
-  endif
-endfunction
+" g:coc_node_path と npm.binPath を指定しても正常に動作しない
+" https://github.com/neoclide/coc.nvim/issues/1826#issuecomment-1149259027
 
 call dein#add('neoclide/coc.nvim', {
       \ 'hook_add' : function('s:hook_add_coc_nvim'),
       \ 'hook_post_source' : function('s:hook_post_source_coc_nvim'),
-      \ 'hook_post_update' : function('s:hook_post_update_coc_nvim'),
-      \ 'if' : v:version >= 800 || has('nvim-0.3.1'),
+      \ 'if' : (v:version >= 800 || has('nvim-0.3.1')) && executable('node'),
       \ 'merged' : 0,
       \ 'rev' : 'release',
       \ })
-" }}}
 
-
+" vim:ft=vim:fdm=marker:fen:

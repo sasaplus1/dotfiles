@@ -164,3 +164,5 @@ call dein#add('dense-analysis/ale', {
       \   'typescriptreact',
       \ ],
       \ })
+
+" vim:ft=vim:fdm=marker:fen:
