@@ -10,12 +10,12 @@ let s:dein_dir = simplify(
       \ )
 
 if empty(glob(s:dein_dir))
-  execute printf(
-        \ "!git -c '%s' clone --branch '%s' 'https://github.com/Shougo/dein.vim' '%s'",
+  call system(printf(
+        \ "git -c '%s' clone --branch '%s' 'https://github.com/Shougo/dein.vim' '%s'",
         \ 'advice.detachedHead=false',
         \ s:dein_tag,
         \ s:dein_dir,
-        \ )
+        \ ))
 endif
 
 if &runtimepath !~# '/dein.vim'
