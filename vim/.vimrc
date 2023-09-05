@@ -20,7 +20,7 @@ if 1
   " }}}
 
   " 環境固有の設定を読み込む {{{
-  let vimrc_local = simplify($HOME . '/.vimrc.local')
+  let vimrc_local = expand('~/.vimrc.local')
 
   if filereadable(vimrc_local)
     execute 'source' vimrc_local

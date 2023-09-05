@@ -127,7 +127,7 @@ function! s:hook_source_ctrlpvim() abort
 endfunction
 
 call dein#add('ctrlpvim/ctrlp.vim', {
-      \ 'depends' : (exists('?matchfuzzy') || (has('nvim') && exists('*matchfuzzy'))) ? ['ctrlp-matchfuzzy'] : [],
+      \ 'depends' : exists('*matchfuzzy') ? ['ctrlp-matchfuzzy'] : [],
       \ 'hook_add' : function('s:hook_add_ctrlpvim'),
       \ 'hook_source' : function('s:hook_source_ctrlpvim'),
       \ 'if' : v:version >= 700,

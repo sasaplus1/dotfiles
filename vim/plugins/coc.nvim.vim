@@ -63,7 +63,7 @@ function! s:hook_post_source_coc_nvim() abort
         \ coc#util#get_config_home() . '/coc-settings.json'
         \ )
 
-  if (exists('?json_encode') || (has('nvim') && exists('*json_encode'))) && !filereadable(coc_settings_path)
+  if exists('*json_encode') && empty(glob(coc_settings_path))
     " javascript.suggestionActions.enabled は tsserver 80001 抑止のため
     " https://github.com/microsoft/vscode/issues/47299
     let coc_settings = {

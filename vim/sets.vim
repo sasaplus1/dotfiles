@@ -60,6 +60,7 @@ set ttyfast      " 高速ターミナル接続を行なう
 set matchtime=1
 
 " <と>も強調表示対象に入れる
+set matchpairs&
 set matchpairs+=<:>
 
 " 対応する開き括弧にわずかな時間ジャンプする
@@ -68,6 +69,9 @@ set showmatch
 set diffopt&
 set diffopt+=vertical  " diffsplitは常に垂直分割する
 " set diffopt+=iwhite  " diffの空白を無視する
+
+" マウス操作を受け付けない
+set mouse=
 
 " ステータスラインを常に表示する
 set laststatus=2
@@ -134,13 +138,6 @@ if has('vertsplit')
   set splitright
 endif
 
-if !has('gui_running')
-  " マウス操作を受け付けない
-  set mouse=
-  " 256色にする
-  set t_Co=256
-endif
-
 if has('guess_encode')
   " 文字コードの自動判別
   set fileencodings=guess,ucs-bom,iso-2022-jp-3,utf-8,euc-jp,cp932
@@ -189,7 +186,7 @@ if executable('locale') && system('locale -a') =~# 'ja_JP.UTF-8'
 endif
 
 " mkdir関数が存在する場合
-if exists('?mkdir') || (has('nvim') && exists('*mkdir'))
+if exists('*mkdir')
   " バックアップファイルの保存先を変更 {{{
   let backupdir = simplify(g:vimrc_vim_dir . '/backup')
 
