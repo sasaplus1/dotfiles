@@ -491,6 +491,7 @@ function! s:hook_add_coc_nvim() abort
         \ 'coc-rust-analyzer',
         \ 'coc-tsserver',
         \ 'coc-yaml',
+        \ 'coc-vimlsp',
         \ ]
 
   " NOTE: autocmd_add() を使う方が良さそうだがコピペで済むので避けた
