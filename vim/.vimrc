@@ -3,9 +3,9 @@ if 1
 
   " 分割した設定ファイルを読み込む {{{
   " symlink先のファイルパスからファイル名を取り除く
-  let s:vimrc_dir = fnamemodify(resolve($MYVIMRC), ':h')
+  let vimrc_dir = fnamemodify(resolve($MYVIMRC), ':h')
 
-  let s:vimrc_files = [
+  let vimrc_files = [
         \ '/init.vim',
         \ '/vars.vim',
         \ '/sets.vim',
@@ -14,16 +14,16 @@ if 1
         \ '/mappings.vim',
         \ ]
 
-  for vimrc_file in s:vimrc_files
-    execute 'source' simplify(s:vimrc_dir . vimrc_file)
+  for vimrc_file in vimrc_files
+    execute 'source' simplify(vimrc_dir . vimrc_file)
   endfor
   " }}}
 
   " 環境固有の設定を読み込む {{{
-  let s:vimrc_local = simplify($HOME . '/.vimrc.local')
+  let vimrc_local = simplify($HOME . '/.vimrc.local')
 
-  if filereadable(s:vimrc_local)
-    execute 'source' s:vimrc_local
+  if filereadable(vimrc_local)
+    execute 'source' vimrc_local
   endif
   " }}}
 
