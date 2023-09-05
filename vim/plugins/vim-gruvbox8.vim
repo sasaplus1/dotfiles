@@ -1,12 +1,15 @@
-" colorscheme {{{
+scriptencoding utf-8
+
+if !exists('*dein#add')
+  finish
+endif
+
 let s:colorscheme_name = 'gruvbox8'
 let s:colorscheme_repo = 'lifepillar/vim-gruvbox8'
 
 function! s:hook_add_colorscheme() abort
   if dein#tap('lightline.vim')
-    let g:lightline = {
-          \   'colorscheme': s:colorscheme_name,
-          \ }
+    let g:lightline = { 'colorscheme' : s:colorscheme_name }
   endif
 
   " see https://github.com/termstandard/colors
@@ -36,6 +39,5 @@ call dein#add(s:colorscheme_repo, {
       \ 'hook_add' : function('s:hook_add_colorscheme'),
       \ 'merged' : 0,
       \ })
-" }}}
 
-
+" vim:ft=vim:fdm=marker:fen:

@@ -1,4 +1,9 @@
-" tyru/operator-camelize.vim {{{
+scriptencoding utf-8
+
+if !exists('*dein#add')
+  finish
+endif
+
 function! s:hook_source_operator_camelize() abort
   vmap <silent>c <Plug>(operator-camelize)
   vmap <silent>_ <Plug>(operator-decamelize)
@@ -19,6 +24,5 @@ call dein#add('tyru/operator-camelize.vim', {
       \   '_',
       \ ],
       \ })
-" }}}
 
-
+" vim:ft=vim:fdm=marker:fen:

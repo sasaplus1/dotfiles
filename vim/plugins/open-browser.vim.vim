@@ -1,4 +1,9 @@
-" tyru/open-browser.vim {{{
+scriptencoding utf-8
+
+if !exists('*dein#add')
+  finish
+endif
+
 function! s:hook_source_open_browser_vim() abort
   let g:netrw_nogx = 1
   nmap gx <Plug>(openbrowser-smart-search)
@@ -18,4 +23,4 @@ call dein#add('tyru/open-browser.vim', {
       \ })
 " }}}
 
-
+" vim:ft=vim:fdm=marker:fen:

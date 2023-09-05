@@ -1,4 +1,9 @@
-" ctrlpvim/ctrlp.vim {{{
+scriptencoding utf-8
+
+if !exists('*dein#add')
+  finish
+endif
+
 function! s:hook_add_ctrlpvim() abort
   " <C-p>のコマンドを変更する
   " let g:ctrlp_cmd = 'CtrlPMixed'
@@ -141,6 +146,5 @@ call dein#add('ctrlpvim/ctrlp.vim', {
       \   ',um',
       \ ],
       \ })
-" }}}
 
-
+" vim:ft=vim:fdm=marker:fen:

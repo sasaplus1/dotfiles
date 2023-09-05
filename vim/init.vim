@@ -15,6 +15,7 @@ let g:vimrc_vim_dir = has('nvim') ? expand('~/.nvim') : expand('~/.vim')
 let s:node = simplify(g:vimrc_vim_dir . '/node/bin/node')
 
 " プラグインが使用するnode.jsをインストールする
+" TODO: シェルスクリプトに移した方が良さそう
 function! s:install_node() abort
   if !executable('uname') || !executable('curl')
     return

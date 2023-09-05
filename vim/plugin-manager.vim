@@ -53,20 +53,7 @@ if dein#check_install()
   call dein#install()
 endif
 
-" function! s:create_dein_helptags()
-"   " hook_done_updateでdein#get('dein.vim').pathをもともと使用していたが
-"   " ここでは使用できないため愚直にs:dein_dirを使用する
-"   " あるいは :helptags ALL で良いのかもしれない
-" 
-"   let dir = simplify(s:dein_dir . '/doc')
-"   let tag = simplify(dir . '/tags')
-" 
-"   if !filereadable(tag)
-"     silent execute 'helptags' dir
-"   endif
-" endfunction
-" autocmd vimrc VimEnter * call <SID>create_dein_helptags()
-
-" call dein#recache_runtimepath()
+" dein.vimのヘルプタグを作る
+autocmd vimrc VimEnter * silent! execute 'helptags' simplify(s:dein_dir . '/doc')
 
 " vim:ft=vim:fdm=marker:fen:

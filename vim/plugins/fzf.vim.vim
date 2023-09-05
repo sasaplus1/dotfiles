@@ -1,5 +1,9 @@
 scriptencoding utf-8
 
+if !exists('*dein#add')
+  finish
+endif
+
 function! s:hook_add_junegunn_fzf() abort
   " 枠線が崩れるのを抑止する
   " https://github.com/junegunn/fzf/releases/tag/0.36.0
@@ -109,3 +113,5 @@ call dein#add('junegunn/fzf.vim', {
       \   ',rG',
       \ ],
       \ })
+
+" vim:ft=vim:fdm=marker:fen:

@@ -1,4 +1,9 @@
-" othree/html5.vim {{{
+scriptencoding utf-8
+
+if !exists('*dein#add') || has('nvim')
+  finish
+endif
+
 function! s:hook_add_html5_vim() abort
   " *.ejsと*.vueのファイルタイプをHTMLとする
   autocmd vimrc BufNewFile,BufRead *.{ejs,vue} setlocal filetype=html
@@ -13,6 +18,5 @@ call dein#add('othree/html5.vim', {
       \   'php',
       \ ],
       \ })
-" }}}
 
-
+" vim:ft=vim:fdm=marker:fen:

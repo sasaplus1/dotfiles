@@ -1,5 +1,9 @@
 scriptencoding utf-8
 
+if !exists('*dein#add')
+  finish
+endif
+
 function! s:hook_add_coc_nvim() abort
   let g:coc_global_extensions = [
         \ 'coc-css',
@@ -144,10 +148,14 @@ endfunction
 " https://github.com/neoclide/coc.nvim/issues/1826#issuecomment-1149259027
 
 call dein#add('neoclide/coc.nvim', {
+      \ 'lazy' : 1,
       \ 'hook_add' : function('s:hook_add_coc_nvim'),
       \ 'hook_post_source' : function('s:hook_post_source_coc_nvim'),
       \ 'if' : (v:version >= 800 || has('nvim-0.3.1')) && executable('node'),
       \ 'merged' : 0,
+      \ 'on_cmd' : ['<Plug>(coc-'],
+      \ 'on_event' : ['CursorHold', 'CursorHoldI', 'InsertEnter'],
+      \ 'on_func' : ['CocAction', 'CocActionAsync'],
       \ 'rev' : 'release',
       \ })
 

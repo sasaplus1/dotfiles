@@ -1,5 +1,9 @@
 scriptencoding utf-8
 
+if !exists('*dein#add')
+  finish
+endif
+
 function! s:hook_post_source() abort
   " ameba-color-palette.dictの設定をバッファに指定する
   function! s:setup_ameba_color_palette_dict() abort

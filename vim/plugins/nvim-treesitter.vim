@@ -1,4 +1,9 @@
-" nvim-treesitter/nvim-treesitter {{{
+scriptencoding utf-8
+
+if !exists('*dein#add') || !has('nvim')
+  finish
+endif
+
 function! s:setup_nvim_treesitter() abort
 lua << EOB
 require('nvim-treesitter.configs').setup {
@@ -17,22 +22,28 @@ EOB
 endfunction
 
 function! s:hook_add_nvim_treesitter() abort
-  autocmd vimrc VimEnter * call <SID>setup_nvim_treesitter()
 endfunction
 
 function! s:hook_source_nvim_treesitter() abort
+  call <SID>setup_nvim_treesitter()
+
   " nvim-treesitterでの折りたたみを使用する
   setglobal foldmethod=expr
   setglobal foldexpr=nvim_treesitter#foldexpr()
   " 折りたたみを無効にする
   setglobal nofoldenable
+
+  " autocmd vimrc VimEnter * call <SID>setup_nvim_treesitter()
 endfunction
 
 call dein#add('nvim-treesitter/nvim-treesitter', {
       \ 'hook_add' : function('s:hook_add_nvim_treesitter'),
       \ 'hook_source' : function('s:hook_source_nvim_treesitter'),
+      \ 'hook_done_update' : 'TSUpdate',
       \ 'if' : has('nvim'),
+      \ 'lazy' : 1,
       \ 'merged' : 0,
+      \ 'on_event' : ['BufRead', 'BufNewFile', 'InsertEnter'],
       \ })
-" }}}
 
+" vim:ft=vim:fdm=marker:fen:

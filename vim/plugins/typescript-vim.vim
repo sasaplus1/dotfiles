@@ -1,4 +1,9 @@
-" leafgarland/typescript-vim {{{
+scriptencoding utf-8
+
+if !exists('*dein#add') || has('nvim')
+  finish
+endif
+
 call dein#add('leafgarland/typescript-vim', {
       \ 'lazy' : 1,
       \ 'if' : !has('nvim'),
@@ -7,6 +12,5 @@ call dein#add('leafgarland/typescript-vim', {
       \   'typescriptreact',
       \ ],
       \ })
-" }}}
 
-
+" vim:ft=vim:fdm=marker:fen:
