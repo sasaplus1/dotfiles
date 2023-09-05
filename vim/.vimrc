@@ -5,15 +5,18 @@ if 1
   " symlink先のファイルパスからファイル名を取り除く
   let s:vimrc_dir = fnamemodify(resolve($MYVIMRC), ':h')
 
-  " https://mattn.kaoriya.net/software/vim/20191231001537.htm
-  " https://zenn.dev/mattn/articles/565c4ec71f461cbbf5c9
-  function! s:source_vimrc(path)
-    execute 'source' a:path
-  endfunction
-  call map(
-        \ sort(split(globpath(s:vimrc_dir, '*.vim'))),
-        \ 's:source_vimrc(v:val)'
-        \ )
+  let s:vimrc_files = [
+        \ '/init.vim',
+        \ '/vars.vim',
+        \ '/sets.vim',
+        \ '/plugin-manager.vim',
+        \ '/commands.vim',
+        \ '/mappings.vim',
+        \ ]
+
+  for vimrc_file in s:vimrc_files
+    execute 'source' fnamemodify(s:vimrc_dir . vimrc_file, ':p')
+  endfor
   " }}}
 
   " 環境固有の設定を読み込む {{{
