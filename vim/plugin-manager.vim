@@ -2,16 +2,16 @@ scriptencoding utf-8
 
 let s:plugin_dir = simplify(g:vimrc_vim_dir . '/dein')
 
-let s:dein_rev = v:version >= 802 || has('nvim-0.5')
-      \ ? '3.0'
+let s:dein_tag = v:version >= 802 || has('nvim-0.5')
+      \ ? '3.1'
       \ : '2.2'
-let s:dein_dir = simplify(s:plugin_dir . '/repos/github.com/Shougo/dein.vim_' . s:dein_rev)
+let s:dein_dir = simplify(s:plugin_dir . '/repos/github.com/Shougo/dein.vim_' . s:dein_tag)
 
 if !isdirectory(s:dein_dir)
   execute printf(
-        \ '!git -c %s clone --branch %s https://github.com/Shougo/dein.vim %s',
+        \ "!git -c '%s' clone --branch '%s' 'https://github.com/Shougo/dein.vim' '%s'",
         \ 'advice.detachedHead=false',
-        \ s:dein_rev,
+        \ s:dein_tag,
         \ s:dein_dir,
         \ )
 endif
@@ -26,7 +26,8 @@ call dein#add(s:dein_dir)
 
 let plugin_files = split(
       \ glob(simplify(expand('<sfile>:p:h') . '/plugins/*.vim')),
-      \ '\n')
+      \ '\n',
+      \ )
 
 for plugin_file in plugin_files
   execute 'source' plugin_file

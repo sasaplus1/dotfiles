@@ -1,8 +1,6 @@
 " neoclide/coc.nvim {{{
 function! s:hook_add_coc_nvim() abort
-  let node = has('nvim')
-        \ ? resolve($HOME . '/.nvim/node-coc/bin/node')
-        \ : resolve($HOME . '/.vim/node-coc/bin/node')
+  let node = simplify(g:vimrc_vim_dir . '/node-coc/bin/node')
 
   if executable(node)
     " g:coc_node_path と npm.binPath を指定しても正常に動作しない
@@ -150,12 +148,10 @@ function! s:hook_post_source_coc_nvim() abort
 endfunction
 
 function! s:hook_post_update_coc_nvim() abort
-  let node = has('nvim')
-        \ ? resolve($HOME . '/.nvim/node-coc/bin/node')
-        \ : resolve($HOME . '/.vim/node-coc/bin/node')
+  let node = simplify(g:vimrc_vim_dir . '/node-coc/bin/node')
 
   if !executable(node) && executable('uname') && executable('curl')
-    let node_version = '18.12.1'
+    let node_version = '18.17.1'
     let architecture = trim(system('uname -m'))
 
     if has('osxdarwin')

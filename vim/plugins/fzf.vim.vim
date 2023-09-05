@@ -106,5 +106,6 @@ call dein#add('junegunn/fzf.vim', {
       \ 'on_map' : [
       \   ',ch',
       \   ',rg',
+      \   ',rG',
       \ ],
       \ })
