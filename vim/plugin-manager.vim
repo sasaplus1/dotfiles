@@ -1,11 +1,5 @@
 scriptencoding utf-8
 
-" NOTE: リセットしてしまうとkaoriyaのスクリプトが読み込まれない
-" NOTE: 詳細は $VIM/vimrc を参照のこと
-if !has('kaoriya')
-  set runtimepath&
-endif
-
 let s:plugin_dir = simplify(g:vimrc_vim_dir . '/dein')
 
 let s:dein_rev = v:version >= 802 || has('nvim-0.5')

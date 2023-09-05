@@ -1,9 +1,5 @@
 scriptencoding utf-8
 
-" 設定例を読み込まない
-let g:no_gvimrc_example = 1
-let g:no_vimrc_example = 1
-
 " 標準添付プラグインを読み込まない
 let g:loaded_2html_plugin = 1
 let g:loaded_dvorak_plugin = 1
@@ -11,6 +7,7 @@ let g:loaded_getscript = 1
 let g:loaded_getscriptPlugin = 1
 let g:loaded_logiPat = 1
 let g:loaded_matchparen = 1
+" NOTE: plugins/vfiler.vim.vim にて無効化している
 " let g:loaded_netrw = 1
 " let g:loaded_netrwFileHandlers = 1
 " let g:loaded_netrwPlugin = 1
@@ -30,13 +27,21 @@ let g:did_install_syntax_menu = 1
 let g:no_gvimrc_example = 1
 let g:no_vimrc_example = 1
 
+" 設定例を読み込まない
+let g:no_gvimrc_example = 1
+let g:no_vimrc_example = 1
+
+" KaoriYaの設定を読み込まない
+let g:gvimrc_local_finish = 1
+let g:vimrc_local_finish = 1
+
 " KaoriYaのプラグインを読み込まない
 let g:plugin_autodate_disable = 1
-" let g:plugin_cmdex_disable = 1
+let g:plugin_cmdex_disable = 1
 let g:plugin_dicwin_disable = 1
 let g:plugin_hz_ja_disable = 1
 let g:plugin_scrnmode_disable = 1
-" let g:plugin_verifyenc_disable = 1
+let g:plugin_verifyenc_disable = 1
 
 " netrwの設定
 " ls -lのように表示する
