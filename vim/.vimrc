@@ -15,7 +15,7 @@ if 1
         \ ]
 
   for vimrc_file in s:vimrc_files
-    execute 'source' fnamemodify(s:vimrc_dir . vimrc_file, ':p')
+    execute 'source' simplify(s:vimrc_dir . vimrc_file)
   endfor
   " }}}
 
