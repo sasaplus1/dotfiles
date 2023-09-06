@@ -1,4 +1,9 @@
-" kana/vim-gf-user {{{
+scriptencoding utf-8
+
+if !exists('*dein#add')
+  finish
+endif
+
 function! GfImport() abort
   let path = expand('<cfile>')
 
@@ -49,6 +54,5 @@ call dein#add('kana/vim-gf-user', {
       \   'typescriptreact',
       \ ],
       \ })
-" }}}
 
-
+" vim:ft=vim:fdm=marker:fen:

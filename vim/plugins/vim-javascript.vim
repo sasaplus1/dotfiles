@@ -1,18 +1,20 @@
-" pangloss/vim-javascript {{{
-function! s:hook_source_vim_javascript() abort
-  " JSDocのハイライトを有効化する
-  let g:javascript_plugin_jsdoc = 1
-endfunction
+scriptencoding utf-8
+
+if !exists('*dein#add') || has('nvim')
+  finish
+endif
+
+" JSDocのハイライトを有効化する
+let g:javascript_plugin_jsdoc = 1
 
 call dein#add('pangloss/vim-javascript', {
-      \ 'hook_source' : function('s:hook_source_vim_javascript'),
       \ 'lazy' : 1,
       \ 'if' : !has('nvim'),
+      \ 'merge_ftdetect' : 1,
       \ 'on_ft' : [
       \   'javascript',
       \   'javascriptreact',
       \ ],
       \ })
-" }}}
 
-
+" vim:ft=vim:fdm=marker:fen:

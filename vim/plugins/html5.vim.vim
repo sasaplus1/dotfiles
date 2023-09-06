@@ -13,6 +13,7 @@ call dein#add('othree/html5.vim', {
       \ 'hook_add' : function('s:hook_add_html5_vim'),
       \ 'lazy' : 1,
       \ 'if' : !has('nvim'),
+      \ 'merge_ftdetect' : 1,
       \ 'on_ft' : [
       \   'html',
       \   'php',

@@ -7,6 +7,7 @@ endif
 call dein#add('cespare/vim-toml', {
       \ 'lazy' : 1,
       \ 'if' : !has('nvim'),
+      \ 'merge_ftdetect' : 1,
       \ 'on_ft' : 'toml',
       \ })
 

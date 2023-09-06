@@ -1,17 +1,17 @@
-" junegunn/vim-easy-align {{{
-function! s:hook_post_source_vim_easy_align() abort
-  " Start interactive EasyAlign in visual mode (e.g. vipga)
-  xmap ga <Plug>(EasyAlign)
-  " Start interactive EasyAlign for a motion/text object (e.g. gaip)
-  nmap ga <Plug>(EasyAlign)
-endfunction
+scriptencoding utf-8
+
+if !exists('*dein#add')
+  finish
+endif
+
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap ga <Plug>(EasyAlign)
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)
 
 call dein#add('junegunn/vim-easy-align', {
-      \ 'hook_post_source' : function('s:hook_post_source_vim_easy_align'),
-      \ 'on_map' : [
-      \   'ga',
-      \ ],
+      \ 'lazy' : 1,
+      \ 'on_map' : '<Plug>(EasyAlign)',
       \ })
-" }}}
 
-
+" vim:ft=vim:fdm=marker:fen:

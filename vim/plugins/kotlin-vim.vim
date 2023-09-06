@@ -7,6 +7,7 @@ endif
 call dein#add('udalov/kotlin-vim', {
       \ 'lazy' : 1,
       \ 'if' : !has('nvim'),
+      \ 'merge_ftdetect' : 1,
       \ 'on_ft' : 'kotlin',
       \ })
 
