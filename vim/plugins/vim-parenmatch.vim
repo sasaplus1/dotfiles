@@ -4,9 +4,12 @@ if !exists('*dein#add')
   finish
 endif
 
-function! s:hook_source_vim_parenmatch() abort
-  let g:parenmatch_highlight = 0
+" matchparenを読み込まない
+let g:loaded_matchparen = 1
 
+let g:parenmatch_highlight = 0
+
+function! s:hook_source_vim_parenmatch() abort
   " parenmatchの強調表示にmatchparenの色を使う
   highlight default link ParenMatch MatchParen
 endfunction
