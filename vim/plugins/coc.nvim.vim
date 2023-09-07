@@ -117,8 +117,11 @@ function! s:hook_post_source_coc_nvim() abort
   endfunction
 
   " Tabを押したときに次の候補を選択する
+  " copilot.vimの候補が存在すればそれを適用する
+  " https://github.com/neoclide/coc.nvim/issues/4155#issuecomment-1243923080
   inoremap <silent><expr> <TAB>
         \ coc#pum#visible() ? coc#pum#next(1) :
+        \ (exists('b:_copilot.suggestions') && exists('*copilot#Accept')) ? copilot#Accept("\<CR>") :
         \ <SID>check_back_space() ? "\<TAB>" :
         \ coc#refresh()
   " S-Tabを押したときに前の候補を選択する
@@ -156,6 +159,7 @@ call dein#add('neoclide/coc.nvim', {
       \ 'on_cmd' : ['<Plug>(coc-'],
       \ 'on_event' : ['CursorHold', 'CursorHoldI', 'InsertEnter'],
       \ 'on_func' : ['CocAction', 'CocActionAsync'],
+      \ 'on_map' : [',ld', ',lt', ',li', ',lr', ',lR'],
       \ 'rev' : 'release',
       \ })
 
