@@ -120,8 +120,8 @@ function! s:hook_post_source() abort
   " copilot.vimの候補が存在すればそれを適用する
   " https://github.com/neoclide/coc.nvim/issues/4155#issuecomment-1243923080
   inoremap <silent><expr> <TAB>
-        \ coc#pum#visible() ? coc#pum#next(1) :
         \ (exists('b:_copilot.suggestions') && exists('*copilot#Accept')) ? copilot#Accept("\<CR>") :
+        \ coc#pum#visible() ? coc#pum#next(1) :
         \ <SID>check_back_space() ? "\<TAB>" :
         \ coc#refresh()
   " S-Tabを押したときに前の候補を選択する
