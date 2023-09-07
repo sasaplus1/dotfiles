@@ -19,11 +19,12 @@ nnoremap <expr> ,vF ':<C-u>VFiler -keep -layout=left -width=30 -columns=indent,i
 " Neovim起動直後にVFilerを開くと表示が崩れる、nvim-treesitterかcoc.nvimで何かある
 " 前者のような気がする、Vimでは発生しない
 " Vimでも発生した、coc.nvimのon_eventにVimEnterが入っていない場合発生する
+" highlightが破壊されている？読み込みのタイミング？
 " NOTE: 調整中
 call dein#add('obaland/vfiler.vim', {
-      \ 'depends' : has('nvim') ? ['coc.nvim', 'nvim-treesitter'] : ['coc.nvim'],
       \ 'lazy' : 1,
       \ 'if' : has('lua') || has('nvim'),
+      \ 'on_map' : [',vf', ',vF'],
       \ 'on_cmd' : ['VFiler'],
       \ })
 

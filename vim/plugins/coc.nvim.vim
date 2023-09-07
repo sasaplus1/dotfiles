@@ -4,7 +4,7 @@ if !exists('*dein#add')
   finish
 endif
 
-function! s:hook_add_coc_nvim() abort
+function! s:hook_add() abort
   let g:coc_global_extensions = [
         \ 'coc-css',
         \ 'coc-cssmodules',
@@ -54,7 +54,7 @@ function! s:hook_add_coc_nvim() abort
   autocmd vimrc CursorHold * silent call CocActionAsync('highlight')
 endfunction
 
-function! s:hook_post_source_coc_nvim() abort
+function! s:hook_post_source() abort
   " おそらく coc#util#get_config_home() が post_source でないと使用できない（未検証）
   let coc_settings_path = resolve(
         \ coc#util#get_config_home() . '/coc-settings.json'
@@ -152,8 +152,8 @@ endfunction
 
 call dein#add('neoclide/coc.nvim', {
       \ 'lazy' : 1,
-      \ 'hook_add' : function('s:hook_add_coc_nvim'),
-      \ 'hook_post_source' : function('s:hook_post_source_coc_nvim'),
+      \ 'hook_add' : function('s:hook_add'),
+      \ 'hook_post_source' : function('s:hook_post_source'),
       \ 'if' : (v:version >= 800 || has('nvim-0.3.1')) && executable('node'),
       \ 'merged' : 0,
       \ 'on_cmd' : ['<Plug>(coc-'],
