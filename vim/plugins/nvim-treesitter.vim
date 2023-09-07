@@ -4,7 +4,7 @@ if !exists('*dein#add') || !has('nvim')
   finish
 endif
 
-function! s:hook_source_nvim_treesitter() abort
+function! s:hook_source() abort
 lua << EOB
   require('nvim-treesitter.configs').setup {
     auto_install = false,
@@ -29,7 +29,7 @@ EOB
 endfunction
 
 call dein#add('nvim-treesitter/nvim-treesitter', {
-      \ 'hook_source' : function('s:hook_source_nvim_treesitter'),
+      \ 'hook_source' : function('s:hook_source'),
       \ 'hook_done_update' : 'TSUpdate',
       \ 'if' : has('nvim'),
       \ 'lazy' : 1,
