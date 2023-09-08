@@ -34,7 +34,7 @@ call dein#add('nvim-treesitter/nvim-treesitter', {
       \ 'if' : has('nvim'),
       \ 'lazy' : 1,
       \ 'merged' : 0,
-      \ 'on_event' : ['BufRead', 'BufNewFile', 'InsertEnter'],
+      \ 'on_event' : ['BufRead', 'BufNewFile', 'CursorMoved', 'CursorMovedI', 'InsertEnter'],
       \ })
 
 " vim:ft=vim:fdm=marker:fen:
