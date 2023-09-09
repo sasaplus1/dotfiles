@@ -54,7 +54,7 @@ function! s:hook_add() abort
   autocmd vimrc CursorHold * silent call CocActionAsync('highlight')
 endfunction
 
-function! s:hook_post_source() abort
+function! s:hook_source() abort
   " おそらく coc#util#get_config_home() が post_source でないと使用できない（未検証）
   let coc_settings_path = resolve(
         \ coc#util#get_config_home() . '/coc-settings.json'
@@ -151,15 +151,10 @@ endfunction
 " https://github.com/neoclide/coc.nvim/issues/1826#issuecomment-1149259027
 
 call dein#add('neoclide/coc.nvim', {
-      \ 'lazy' : 1,
       \ 'hook_add' : function('s:hook_add'),
-      \ 'hook_post_source' : function('s:hook_post_source'),
+      \ 'hook_source' : function('s:hook_source'),
       \ 'if' : (v:version >= 800 || has('nvim-0.3.1')) && executable('node'),
       \ 'merged' : 0,
-      \ 'on_cmd' : ['<Plug>(coc-'],
-      \ 'on_event' : ['CursorHold', 'CursorHoldI', 'InsertEnter'],
-      \ 'on_func' : ['CocAction', 'CocActionAsync'],
-      \ 'on_map' : [',ld', ',lt', ',li', ',lr', ',lR'],
       \ 'rev' : 'release',
       \ })
 

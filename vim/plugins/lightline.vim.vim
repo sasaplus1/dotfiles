@@ -4,6 +4,10 @@ if !exists('*dein#add')
   finish
 endif
 
+if !has('gui_running')
+  set t_Co=256
+endif
+
 function! s:hook_source() abort
   if dein#tap('vim-gruvbox8')
     let g:lightline = { 'colorscheme' : 'gruvbox8' }
