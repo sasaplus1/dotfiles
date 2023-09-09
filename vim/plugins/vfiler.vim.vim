@@ -19,8 +19,8 @@ function! s:hook_source() abort
   nnoremap <expr> ,vF ':<C-u>VFiler -keep -layout=left -width=30 -columns=indent,icon,name -show-hidden-files ' . fnameescape(expand('%:p:h')) . '<CR>'
 endfunction
 
-" TODO: VFilerの表示が崩れてしまう問題がある、調整中
-" Neovimで起動直後にVFilerを開くと表示が崩れる
+" NOTE: VFilerの表示が初回のみ崩れる問題について
+" 表示が崩れていたのはvim-parenmatchのlazyloadのタイミング設定が悪かった
 call dein#add('obaland/vfiler.vim', {
       \ 'hook_source' : function('s:hook_source'),
       \ 'lazy' : 1,
