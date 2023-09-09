@@ -6,7 +6,6 @@ endif
 
 call dein#add('mattn/ctrlp-matchfuzzy', {
       \ 'if' : exists('*matchfuzzy'),
-      \ 'lazy' : 1,
       \ })
 
 " vim:ft=vim:fdm=marker:fen:

@@ -15,8 +15,6 @@ endfunction
 autocmd vimrc FileType css,scss call s:setup_ameba_color_palette_dict()
 
 call dein#add('sasaplus1/ameba-color-palette.dict', {
-      \ 'lazy' : 1,
-      \ 'on_ft' : ['css', 'scss'],
       \ 'rev' : 'release',
       \ })
 
