@@ -147,6 +147,9 @@ function! s:hook_source() abort
   nmap <silent> ,lR <Plug>(coc-rename)
 endfunction
 
+" 遅延読み込みを指定していない場合はhook_sourceは呼ばれない
+autocmd vimrc VimEnter * call s:hook_source()
+
 " g:coc_node_path と npm.binPath を指定しても正常に動作しない
 " https://github.com/neoclide/coc.nvim/issues/1826#issuecomment-1149259027
 
@@ -157,5 +160,12 @@ call dein#add('neoclide/coc.nvim', {
       \ 'merged' : 0,
       \ 'rev' : 'release',
       \ })
+
+"     \ 'depends' : ['copilot.vim'],
+"     \ 'lazy' : 1,
+"     \ 'on_cmd' : ['<Plug>(coc-'],
+"     \ 'on_event' : ['CursorHold', 'CursorHoldI', 'CursorMoved', 'CursorMovedI', 'InsertEnter'],
+"     \ 'on_func' : ['CocAction', 'CocActionAsync'],
+"     \ 'on_map' : [',ld', ',lt', ',li', ',lr', ',lR'],
 
 " vim:ft=vim:fdm=marker:fen:

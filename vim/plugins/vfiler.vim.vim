@@ -21,6 +21,7 @@ endfunction
 
 " NOTE: VFilerの表示が初回のみ崩れる問題について
 " 表示が崩れていたのはvim-parenmatchのlazyloadのタイミング設定が悪かった
+" coc.nvimをlazyloadするようにしたらまた崩れるようになった
 call dein#add('obaland/vfiler.vim', {
       \ 'hook_source' : function('s:hook_source'),
       \ 'lazy' : 1,
