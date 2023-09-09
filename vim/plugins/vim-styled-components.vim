@@ -5,8 +5,8 @@ if !exists('*dein#add') || has('nvim')
 endif
 
 call dein#add('styled-components/vim-styled-components', {
-      \ 'lazy' : 1,
       \ 'if' : !has('nvim'),
+      \ 'lazy' : 1,
       \ 'merge_ftdetect' : 1,
       \ 'on_ft' : [
       \   'javascript',

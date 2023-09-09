@@ -5,14 +5,10 @@ if !exists('*dein#add') || has('nvim')
 endif
 
 call dein#add('hail2u/vim-css3-syntax', {
-      \ 'lazy' : 1,
       \ 'if' : !has('nvim'),
+      \ 'lazy' : 1,
       \ 'merge_ftdetect' : 1,
-      \ 'on_ft' : [
-      \   'css',
-      \   'html',
-      \   'scss',
-      \ ],
+      \ 'on_ft' : ['css', 'html', 'scss'],
       \ })
 
 " vim:ft=vim:fdm=marker:fen:

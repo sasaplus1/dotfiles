@@ -9,15 +9,15 @@ let g:loaded_matchparen = 1
 
 let g:parenmatch_highlight = 0
 
-function! s:hook_source_vim_parenmatch() abort
+function! s:hook_source() abort
   " parenmatchの強調表示にmatchparenの色を使う
   highlight default link ParenMatch MatchParen
 endfunction
 
 call dein#add('itchyny/vim-parenmatch', {
-      \ 'hook_source' : function('s:hook_source_vim_parenmatch'),
+      \ 'hook_source' : function('s:hook_source'),
       \ 'lazy' : 1,
-      \ 'on_event' : ['CursorHold', 'CursorHoldI', 'CursorMoved', 'CursorMovedI'],
+      \ 'on_event' : ['VimEnter'],
       \ })
 
 " vim:ft=vim:fdm=marker:fen:

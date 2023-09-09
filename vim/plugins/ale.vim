@@ -4,7 +4,7 @@ if !exists('*dein#add')
   finish
 endif
 
-function! s:hook_add_ale() abort
+function! s:hook_add() abort
   " 明示的に指定する
   let g:ale_linters_explicit = 1
 
@@ -154,7 +154,7 @@ function! s:hook_add_ale() abort
 endfunction
 
 call dein#add('dense-analysis/ale', {
-      \ 'hook_add' : function('s:hook_add_ale'),
+      \ 'hook_add' : function('s:hook_add'),
       \ 'lazy' : 1,
       \ 'on_ft' : [
       \   'css',

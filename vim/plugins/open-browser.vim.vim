@@ -4,8 +4,9 @@ if !exists('*dein#add')
   finish
 endif
 
+let g:netrw_nogx = 1
+
 function! s:hook_source_open_browser_vim() abort
-  let g:netrw_nogx = 1
   nmap gx <Plug>(openbrowser-smart-search)
   vmap gx <Plug>(openbrowser-smart-search)
 endfunction
@@ -19,7 +20,7 @@ call dein#add('tyru/open-browser.vim', {
       \   'OpenBrowserSmartSearch',
       \   '<Plug>(openbrowser-',
       \ ],
-      \ 'on_map' : 'gx',
+      \ 'on_map' : ['gx'],
       \ })
 " }}}
 

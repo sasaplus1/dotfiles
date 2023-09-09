@@ -25,27 +25,23 @@ function! GfImport() abort
   let dir = simplify(expand('%:p:h') . '/' . path)
 
   for completion in completions
-    let test = resolve(dir . completion)
+    let file = resolve(dir . completion)
 
-    if filereadable(test)
-      return {
-            \ 'path' : test,
-            \ 'line' : 0,
-            \ 'col' : 0,
-            \ }
+    if filereadable(file)
+      return { 'path' : file, 'line' : 0, 'col' : 0 }
     endif
   endfor
 
   return 0
 endfunction
 
-function! s:hook_post_source_vim_gf_user() abort
+function! s:hook_source() abort
   call gf#user#extend('GfImport', 1000)
 endfunction
 
 call dein#add('kana/vim-gf-user', {
+      \ 'hook_source' : function('s:hook_source'),
       \ 'lazy' : 1,
-      \ 'hook_post_source' : function('s:hook_post_source_vim_gf_user'),
       \ 'on_ft' : [
       \   'javascript',
       \   'javascriptreact',

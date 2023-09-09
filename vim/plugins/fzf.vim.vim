@@ -4,36 +4,34 @@ if !exists('*dein#add')
   finish
 endif
 
-function! s:hook_add_junegunn_fzf() abort
-  " 枠線が崩れるのを抑止する
-  " https://github.com/junegunn/fzf/releases/tag/0.36.0
-  " https://twitter.com/hayajo/status/1625846313060548609
-  if !exists('$RUNEWIDTH_EASTASIAN')
-    let $RUNEWIDTH_EASTASIAN=0
-  endif
+" 枠線が崩れるのを抑止する
+" https://github.com/junegunn/fzf/releases/tag/0.36.0
+" https://twitter.com/hayajo/status/1625846313060548609
+if !exists('$RUNEWIDTH_EASTASIAN')
+  let $RUNEWIDTH_EASTASIAN=0
+endif
 
-  " ポップアップウィンドウをサポートしているかどうか
-  let s:support_popup = has('nvim-0.4') || (has('popupwin') && has('patch-8.2.191'))
+" ポップアップウィンドウをサポートしているかどうか
+let s:support_popup = has('nvim-0.4') || (has('popupwin') && has('patch-8.2.191'))
 
-  " コマンド名にプレフィックスをつける
-  let g:fzf_command_prefix = 'Fzf'
-  " バッファを既に開いているのならそれを使う
-  let g:fzf_buffers_jump = 1
-  " Vimのプロセスだけデフォルトオプションを変更する
-  let $FZF_DEFAULT_OPTS = join([
-        \   $FZF_DEFAULT_OPTS,
-        \   '--border=none',
-        \   '--layout=reverse-list',
-        \   '--margin=0,0,0,0',
-        \   '--preview-window=border-left',
-        \ ], ' ')
-  " 共通レイアウトの指定
-  let g:fzf_layout = {
-        \ 'down' : '60%'
-        \ }
-endfunction
+" コマンド名にプレフィックスをつける
+let g:fzf_command_prefix = 'Fzf'
+" バッファを既に開いているのならそれを使う
+let g:fzf_buffers_jump = 1
+" Vimのプロセスだけデフォルトオプションを変更する
+let $FZF_DEFAULT_OPTS = join([
+      \   $FZF_DEFAULT_OPTS,
+      \   '--border=none',
+      \   '--layout=reverse-list',
+      \   '--margin=0,0,0,0',
+      \   '--preview-window=border-left',
+      \ ], ' ')
+" 共通レイアウトの指定
+let g:fzf_layout = {
+      \ 'down' : '60%'
+      \ }
 
-function! s:hook_source_junegunn_fzf() abort
+function! s:hook_source() abort
   " プレビューウィンドウの位置を動的に決定する
   " function! s:get_preview_position() abort
   "   if $TERM =~# '^screen' && executable('tmux')
@@ -97,21 +95,12 @@ function! s:hook_source_junegunn_fzf() abort
 endfunction
 
 call dein#add('junegunn/fzf.vim', {
-      \ 'depends' : [
-      \   'fzf',
-      \ ],
-      \ 'hook_add' : function('s:hook_add_junegunn_fzf'),
-      \ 'hook_source' : function('s:hook_source_junegunn_fzf'),
+      \ 'depends' : ['fzf'],
+      \ 'hook_source' : function('s:hook_source'),
       \ 'if' : v:version >= 704 && dein#tap('fzf'),
       \ 'lazy' : 1,
-      \ 'on_cmd' : [
-      \   '<Plug>(fzf-',
-      \ ],
-      \ 'on_map' : [
-      \   ',ch',
-      \   ',rg',
-      \   ',rG',
-      \ ],
+      \ 'on_cmd' : ['<Plug>(fzf-'],
+      \ 'on_map' : [',ch', ',rg', ',rG'],
       \ })
 
 " vim:ft=vim:fdm=marker:fen:

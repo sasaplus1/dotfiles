@@ -4,7 +4,7 @@ if !exists('*dein#add')
   finish
 endif
 
-function! s:hook_add_ctrlpvim() abort
+function! s:hook_add() abort
   " <C-p>のコマンドを変更する
   " let g:ctrlp_cmd = 'CtrlPMixed'
 
@@ -117,7 +117,7 @@ function! s:ctrlp_grep(pattern) abort
   endif
 endfunction
 
-function! s:hook_source_ctrlpvim() abort
+function! s:hook_source() abort
   " CtrlPGrepを定義する
   command! -nargs=1 CtrlPGrep call <SID>ctrlp_grep(<f-args>)
 
@@ -133,18 +133,12 @@ endfunction
 
 call dein#add('ctrlpvim/ctrlp.vim', {
       \ 'depends' : exists('*matchfuzzy') ? ['ctrlp-matchfuzzy'] : [],
-      \ 'hook_add' : function('s:hook_add_ctrlpvim'),
-      \ 'hook_source' : function('s:hook_source_ctrlpvim'),
+      \ 'hook_add' : function('s:hook_add'),
+      \ 'hook_source' : function('s:hook_source'),
       \ 'if' : v:version >= 700,
       \ 'lazy' : 1,
-      \ 'on_cmd' : '<Plug>(CtrlP',
-      \ 'on_map' : [
-      \   '<C-p>',
-      \   ',ub',
-      \   ',ug',
-      \   ',ul',
-      \   ',um',
-      \ ],
+      \ 'on_cmd' : ['<Plug>(CtrlP'],
+      \ 'on_map' : ['<C-p>', ',ub', ',ug', ',ul', ',um'],
       \ })
 
 " vim:ft=vim:fdm=marker:fen:

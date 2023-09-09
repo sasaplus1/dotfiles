@@ -8,8 +8,8 @@ endif
 let g:javascript_plugin_jsdoc = 1
 
 call dein#add('pangloss/vim-javascript', {
-      \ 'lazy' : 1,
       \ 'if' : !has('nvim'),
+      \ 'lazy' : 1,
       \ 'merge_ftdetect' : 1,
       \ 'on_ft' : [
       \   'javascript',

@@ -14,10 +14,10 @@ function! s:hook_source() abort
 endfunction
 
 call dein#add('rhysd/vim-operator-surround', {
-      \ 'depends' : 'vim-operator-user',
+      \ 'depends' : ['vim-operator-user'],
       \ 'hook_source' : function('s:hook_source'),
       \ 'lazy' : 1,
-      \ 'on_cmd' : '<Plug>(operator-surround-',
+      \ 'on_cmd' : ['<Plug>(operator-surround-'],
       \ 'on_map' : ['sa', 'sd', 'sr', 'sbd', 'sbr'],
       \ })
 " }}}

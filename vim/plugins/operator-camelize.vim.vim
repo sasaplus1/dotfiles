@@ -10,19 +10,14 @@ function! s:hook_source_operator_camelize() abort
 endfunction
 
 call dein#add('tyru/operator-camelize.vim', {
-      \ 'depends' : [
-      \   'vim-operator-user',
-      \ ],
+      \ 'depends' : ['vim-operator-user'],
       \ 'hook_source' : function('s:hook_source_operator_camelize'),
       \ 'lazy' : 1,
       \ 'on_cmd' : [
       \   '<Plug>(operator-camelize-',
       \   '<Plug>(operator-decamelize-',
       \ ],
-      \ 'on_map' : [
-      \   'c',
-      \   '_',
-      \ ],
+      \ 'on_map' : ['c', '_'],
       \ })
 
 " vim:ft=vim:fdm=marker:fen:

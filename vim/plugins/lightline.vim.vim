@@ -14,6 +14,7 @@ function! s:hook_source() abort
   endif
 endfunction
 
+" NOTE: ColorSchemeは初回起動時に必要
 call dein#add('itchyny/lightline.vim', {
       \ 'hook_source' : function('s:hook_source'),
       \ 'lazy' : 1,
