@@ -76,13 +76,19 @@ set mouse=
 " ステータスラインを常に表示する
 set laststatus=2
 
+" コマンドラインの高さを2にする
+set cmdheight=2
+
 if has('statusline')
   " ステータスラインの表示を変更
   set statusline=%n\:%y%F\ \|%{(&fenc!=''?&fenc:&enc).'\|'.(&ff=='dos'?'crlf':&ff=='mac'?'cr':'lf').'\|'}%m%r%=<%l:%v>
 endif
 
-" コマンドラインの高さを2にする
-set cmdheight=2
+" 256色にする
+" https://stackoverflow.com/a/15378816
+if !has('gui_running') && &term == "screen"
+  set t_Co=256
+endif
 
 if has('smartindent')
   " 高度な自動インデント
