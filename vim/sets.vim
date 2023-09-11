@@ -86,7 +86,7 @@ endif
 
 " 256色にする
 " https://stackoverflow.com/a/15378816
-if !has('gui_running') && &term ==# "screen"
+if !has('gui_running') && &term ==# 'screen'
   set t_Co=256
 endif
 
