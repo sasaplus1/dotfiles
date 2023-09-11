@@ -14,8 +14,8 @@ let g:copilot_assume_mapped = 1
 call dein#add('github/copilot.vim', {
       \ 'lazy' : 1,
       \ 'if' : (has('patch-9.0.0185') || has('nvim')) && executable('node'),
-      \ 'on_cmd' : ['<Plug>(copilot-'],
       \ 'on_event' : ['InsertEnter'],
+      \ 'on_map' : ['<Plug>(copilot-'],
       \ })
 
 " vim:ft=vim:fdm=marker:fen:

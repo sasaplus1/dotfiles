@@ -18,9 +18,8 @@ call dein#add('tyru/open-browser.vim', {
       \   'OpenBrowser',
       \   'OpenBrowserSearch',
       \   'OpenBrowserSmartSearch',
-      \   '<Plug>(openbrowser-',
       \ ],
-      \ 'on_map' : ['gx'],
+      \ 'on_map' : ['gx', '<Plug>(openbrowser-'],
       \ })
 " }}}
 

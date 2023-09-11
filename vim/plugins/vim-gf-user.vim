@@ -7,32 +7,17 @@ endif
 function! GfImport() abort
   let path = expand('<cfile>')
 
-  if path !~# '^\.\.\?'
+  if path !~# '\v^..?'
     return 0
   endif
 
-  let completions = [
-        \   '.tsx',
-        \   '.ts',
-        \   '.d.ts',
-        \   '.mjs',
-        \   '.cjs',
-        \   '.jsx',
-        \   '.js',
-        \   '.json',
-        \ ]
+  let files = split(glob(path . '.{tsx,ts,d.ts,mjs,cjs,jsx,js,json}'), '\n')
 
-  let dir = simplify(expand('%:p:h') . '/' . path)
+  if empty(files)
+    return 0
+  endif
 
-  for completion in completions
-    let file = resolve(dir . completion)
-
-    if filereadable(file)
-      return { 'path' : file, 'line' : 0, 'col' : 0 }
-    endif
-  endfor
-
-  return 0
+  return { 'path' : file[0], 'line' : 0, 'col' : 0 }
 endfunction
 
 function! s:hook_source() abort
@@ -49,6 +34,7 @@ call dein#add('kana/vim-gf-user', {
       \   'typescript',
       \   'typescriptreact',
       \ ],
+      \ 'on_map' : ['gf', 'gF', '<C-w>f', '<C-w><C-f>', '<C-w>F', '<C-w>gf', '<C-w>gF', '<Plug>(gf-user-'],
       \ })
 
 " vim:ft=vim:fdm=marker:fen:

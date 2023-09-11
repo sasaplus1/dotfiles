@@ -99,8 +99,7 @@ call dein#add('junegunn/fzf.vim', {
       \ 'hook_source' : function('s:hook_source'),
       \ 'if' : v:version >= 704 && dein#tap('fzf'),
       \ 'lazy' : 1,
-      \ 'on_cmd' : ['<Plug>(fzf-'],
-      \ 'on_map' : [',ch', ',rg', ',rG'],
+      \ 'on_map' : [',ch', ',rg', ',rG', '<Plug>(fzf-'],
       \ })
 
 " vim:ft=vim:fdm=marker:fen:

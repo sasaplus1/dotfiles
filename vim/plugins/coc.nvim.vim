@@ -147,7 +147,7 @@ function! s:hook_source() abort
   nmap <silent> ,lR <Plug>(coc-rename)
 endfunction
 
-" 遅延読み込みを指定していない場合はhook_sourceは呼ばれない
+" 遅延読み込みを指定していない場合はhook_sourceは呼ばれないので呼ばれるようにする
 autocmd vimrc VimEnter * call s:hook_source()
 
 " g:coc_node_path と npm.binPath を指定しても正常に動作しない
