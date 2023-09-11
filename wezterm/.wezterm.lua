@@ -52,12 +52,62 @@ return {
   -- フルスクリーンを有効にする
   native_macos_fullscreen_mode = true,
 
+  -- デフォルトのキーバインドを無効化する
+  -- https://wezfurlong.org/wezterm/config/default-keys.html
+  disable_default_key_bindings = true,
+
   -- キーボードショートカットの設定
   keys = {
+    -- コピー&ペースト
+    {
+      key = 'c',
+      mods = 'CMD',
+      action = wezterm.action.CopyTo 'Clipboard'
+    },
+    {
+      key = 'v',
+      mods = 'CMD',
+      action = wezterm.action.PasteFrom 'Clipboard'
+    },
+    -- フォントサイズ
+    {
+      key = '-',
+      mods = 'CMD',
+      action = wezterm.action.DecreaseFontSize,
+    },
+    {
+      key = '+',
+      mods = 'CMD',
+      action = wezterm.action.IncreaseFontSize,
+    },
+    {
+      key = '0',
+      mods = 'CMD',
+      action = wezterm.action.ResetFontSize,
+    },
+    -- ウィンドウ
+    {
+      key = 'n',
+      mods = 'CMD',
+      action = wezterm.action.SpawnWindow,
+    },
+    -- フルスクリーン
     {
       key = 'f',
       mods = 'CMD|CTRL',
       action = wezterm.action.ToggleFullScreen,
+    },
+    -- デバッグパネル
+    {
+      key = 'L',
+      mods = 'CMD|CTRL',
+      action = wezterm.action.ShowDebugOverlay,
+    },
+    -- コマンドパレット
+    {
+      key = 'P',
+      mods = 'CMD|CTRL',
+      action = wezterm.action.ActivateCommandPalette,
     },
   },
 
