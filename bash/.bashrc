@@ -511,9 +511,9 @@ __main() {
   dw() {
     if git rev-parse --is-inside-work-tree >/dev/null 2>&1
     then
-      cd "$(git ls-tree -dr --full-tree --name-only HEAD | fzf --query="$@")"
+      cd "$(fzf --query="$*" < <(git ls-tree -dr --full-tree --name-only HEAD))" || return
     else
-      cd "$(cat <(eval 'find . -type d -print') | fzf --query="$@")"
+      cd "$(fzf --query="$*" < <(find . -type d -print 2>/dev/null))" || return
     fi
   }
 
