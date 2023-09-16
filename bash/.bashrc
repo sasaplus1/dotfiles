@@ -507,6 +507,15 @@ __main() {
     git rev-parse --is-inside-work-tree >/dev/null && cd "$(git rev-parse --show-toplevel)" || return
   }
 
+  dw() {
+    if git rev-parse --is-inside-work-tree >/dev/null 2>&1
+    then
+      cd "$(git ls-tree -dr --full-tree --name-only HEAD | fzf --query="$@")"
+    else
+      cd "$(cat <(eval 'find . -type d -print') | fzf --query="$@")"
+    fi
+  }
+
   #-----------------------------------------------------------------------------
 
   # switch tmux session
