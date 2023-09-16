@@ -392,6 +392,7 @@ __main() {
 
   if [ -n "$VIM_TERMINAL" ]
   then
+    # TODO: for Neovim
     # https://vim-jp.org/vimdoc-en/terminal.html#terminal-api
     vim() {
       for _ in $(seq $#)
