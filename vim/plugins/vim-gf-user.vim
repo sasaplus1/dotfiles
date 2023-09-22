@@ -17,7 +17,7 @@ function! GfImport() abort
     return 0
   endif
 
-  return { 'path' : file[0], 'line' : 0, 'col' : 0 }
+  return { 'path' : files[0], 'line' : 0, 'col' : 0 }
 endfunction
 
 function! s:hook_source() abort
