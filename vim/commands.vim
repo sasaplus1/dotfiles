@@ -147,16 +147,18 @@ autocmd vimrc FilterWritePre * if &diff | colorscheme industry | endif
 
 " Terminal {{{
 
-" ターミナルを開いたら行番号を表示しない
-if has('nvim')
-  autocmd vimrc TermOpen * setlocal nonumber norelativenumber
-elseif has('terminal') && has('patch-8.1.2219')
+if has('terminal') && has('patch-8.1.2219')
+  " ターミナルを開いたら行番号を表示しない
   autocmd vimrc TerminalWinOpen * setlocal nonumber norelativenumber
 endif
 
-" ターミナルを開いたら挿入モードにする
 if has('nvim')
+  " ターミナルを開いたら行番号を表示しない
+  autocmd vimrc TermOpen * setlocal nonumber norelativenumber
+  " ターミナルを開いたら挿入モードにする
   autocmd vimrc TermOpen * startinsert
+  " ターミナルで正常終了したら閉じてバッファを削除する
+  autocmd vimrc TermClose * if !v:event.status | execute 'bdelete! ' . expand('<abuf>') | endif
 endif
 
 " }}}
