@@ -31,8 +31,7 @@ let g:ale_lint_on_insert_leave = 1
 
 " 無視するファイルの設定
 let g:ale_pattern_options = {
-      \ '\.d\.ts$' : { 'ale_enabled' : 0 },
-      \ '\.min\.js$' : { 'ale_enabled' : 0 }
+      \ '\.min\.js$' : { 'ale_enabled' : 0 },
       \ }
 
 " 特定のファイルタイプに対して他のファイルタイプで使用するlinterを使えるようにする
