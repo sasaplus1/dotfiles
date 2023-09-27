@@ -14,6 +14,9 @@ let g:ale_completion_enabled = 0
 " tsserverが使えなくなってしまうのでコメントアウトする
 " let g:ale_disable_lsp = 1
 
+" LSPのヒントや提案を有効にする
+let g:ale_lsp_suggestions = 1
+
 " メッセージ書式を変更する
 let g:ale_echo_msg_format = '[%linter%] %code: %%s'
 
