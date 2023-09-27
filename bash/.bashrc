@@ -712,6 +712,7 @@ __main() {
 
   alias gt='git'
   alias gti='git'
+  alias igt='git'
 
   if [ -n "$apple_silicon" ]
   then
