@@ -519,11 +519,16 @@ __main() {
 
   #-----------------------------------------------------------------------------
 
-  # switch tmux session
   if type tmux >/dev/null 2>&1
   then
+    # switch tmux session
     switch-session() {
       tmux switch-client -t "$(tmux list-sessions | fzf --no-multi | awk '{ print $1 }')"
+    }
+
+    # reorder tmux session
+    reorder-session() {
+      tmux ls -F#S | awk '{ if ($0 != NR - 1) print $0, NR - 1 }' | xargs -P 0 -n 2 tmux rename -t
     }
   fi
 
