@@ -528,7 +528,7 @@ __main() {
 
     # reorder tmux session
     reorder-session() {
-      tmux ls -F#S | awk '{ if ($0 != NR - 1) print $0, NR - 1 }' | xargs -P 0 -n 2 tmux rename -t
+      tmux list-sessions -F#S | awk '{ if ($0 != NR - 1) print $0, NR - 1 }' | xargs -P 0 -n 2 tmux rename -t
     }
   fi
 
