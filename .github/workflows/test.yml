@@ -46,8 +46,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v1
+      - uses: actions/setup-python@v4
         with:
-          python-version: 3.x
+          python-version: 3.11
       - run: pip install vim-vint
       - run: vint vim/.vim* vim/*.vim
