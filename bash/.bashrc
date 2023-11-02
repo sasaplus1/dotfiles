@@ -208,11 +208,20 @@ __main() {
     [ -r "$fzf_completion" ] && source "$fzf_completion" && break
   done
 
+  local -r fzf_key_bindings=(
+    'ctrl-b:preview-page-up'
+    'ctrl-d:preview-half-page-down'
+    'ctrl-f:preview-page-down'
+    'ctrl-j:preview-down'
+    'ctrl-k:preview-up'
+    'ctrl-u:preview-half-page-up'
+  )
+
   local fzf_options=
 
   fzf_options='--border --cycle --height=80%'
   fzf_options="${fzf_options} --info=hidden --layout=reverse --preview-window=right"
-  fzf_options="${fzf_options} --bind ctrl-j:preview-down,ctrl-k:preview-up"
+  fzf_options="${fzf_options} --bind $(IFS=,; echo "${fzf_key_bindings[*]}")"
 
   export FZF_DEFAULT_OPTS="$fzf_options"
 
