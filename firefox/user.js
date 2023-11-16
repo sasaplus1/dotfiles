@@ -1,6 +1,3 @@
-// Ctrl+Tabをタブの並び順にする
-user_pref('browser.ctrlTab.recentlyUsedOrder', false);
-
 // ダウンロードファイルを最近使ったファイルに追加しない
 user_pref('browser.download.manager.addToRecentDocs', false);
 
