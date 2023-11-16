@@ -217,13 +217,17 @@ __main() {
     'ctrl-u:preview-half-page-up'
   )
 
-  local fzf_options=
+  local -r fzf_options=(
+    '--border'
+    '--cycle'
+    '--height=80%'
+    '--info=hidden'
+    '--layout=reverse'
+    '--preview-window=right'
+    "--bind=$(IFS=,; echo "${fzf_key_bindings[*]}")"
+  )
 
-  fzf_options='--border --cycle --height=80%'
-  fzf_options="${fzf_options} --info=hidden --layout=reverse --preview-window=right"
-  fzf_options="${fzf_options} --bind $(IFS=,; echo "${fzf_key_bindings[*]}")"
-
-  export FZF_DEFAULT_OPTS="$fzf_options"
+  export FZF_DEFAULT_OPTS="$(IFS=' '; echo "${fzf_options[*]}")"
 
   fzf() {
     local position=
