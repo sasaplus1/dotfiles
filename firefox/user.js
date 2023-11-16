@@ -11,12 +11,13 @@ user_pref('browser.newtabpage.activity-stream.feeds.section.highlights', false);
 user_pref('browser.newtabpage.activity-stream.feeds.snippets', false);
 user_pref('browser.newtabpage.activity-stream.feeds.topsites', false);
 
-// 最後のタブを閉じれないようにする
-user_pref('browser.tabs.closeWindowWithLastTab', false);
-
 // ブラウザコンソールを有効にする
 // https://developer.mozilla.org/ja/docs/Tools/Browser_Console
 user_pref('devtools.chrome.enabled', true);
+
+// ブラウザーツールボックスを有効にする
+// https://firefox-source-docs.mozilla.org/devtools-user/browser_toolbox/index.html
+user_pref('devtools.debugger.remote-enabled', true);
 
 // おすすめの拡張機能を非表示にする
 user_pref('extensions.htmlaboutaddons.recommendations.enabled', false)
