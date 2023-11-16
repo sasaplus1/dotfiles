@@ -1,3 +1,5 @@
+// NOTE: see about:profiles
+
 // ダウンロードファイルを最近使ったファイルに追加しない
 user_pref('browser.download.manager.addToRecentDocs', false);
 
