@@ -227,7 +227,9 @@ __main() {
     "--bind=$(IFS=,; echo "${fzf_key_bindings[*]}")"
   )
 
-  export FZF_DEFAULT_OPTS="$(IFS=' '; echo "${fzf_options[*]}")"
+  # https://www.shellcheck.net/wiki/SC2155
+  FZF_DEFAULT_OPTS="$(IFS=' '; echo "${fzf_options[*]}")"
+  export FZF_DEFAULT_OPTS
 
   fzf() {
     local position=
