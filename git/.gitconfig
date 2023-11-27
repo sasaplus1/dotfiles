@@ -93,10 +93,23 @@
   useConfigOnly = true
 
 [interactive]
-  diffFilter = (delta --color-only --theme OneHalfDark 2>/dev/null || cat) | ${PAGER:-less}
+  diffFilter = delta 2>/dev/null || cat
 
+[delta]
+  file-decoration-style = cyan ul box
+  file-style = cyan bold
+  keep-plus-minus-markers = true
+  line-numbers = true
+  side-by-side = true
+  whitespace-error-style = 22 reverse
+
+; if you want to use default pager:
+; $ git --no-pager [command]
 [pager]
-  diff = (delta --color-only --theme OneHalfDark 2>/dev/null || cat) | ${PAGER:-less}
+  diff = delta 2>/dev/null || cat
+; log = delta 2>/dev/null || cat
+; reflog = delta 2>/dev/null || cat
+  show = delta 2>/dev/null || cat
 
 [push]
   default = nothing
