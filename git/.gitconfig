@@ -67,6 +67,10 @@
 
 [diff]
   indentHeuristic = true
+  tool = vimdiff
+
+[difftool]
+  prompt = false
 
 [github]
   user = sasaplus1
@@ -80,6 +84,10 @@
 ; conflictStyle = diff3
 ; conflictStyle = zdiff3
   tool = vimdiff
+
+[mergetool]
+  prompt = false
+  keepBackup = true
 
 [user]
   useConfigOnly = true
