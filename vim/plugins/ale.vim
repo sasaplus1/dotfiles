@@ -61,6 +61,12 @@ let g:ale_linters = {
       \ }
 
 " fixerの設定
+" NOTE: aleでprettierを実行すると別窓のカーソル位置が変わってしまう
+" 以下はvim-prettierのissueだがaleでも同様の問題が発生する
+" https://github.com/prettier/vim-prettier/issues/192
+" https://github.com/prettier/vim-prettier/issues/248
+" 仕方がないのでcoc-prettierを使っている
+" coc-prettierを設定した後にale.vimに戻したらale.vimでも発生しなくなった、何故？
 let g:ale_fixers = {
       \ 'css' : ['prettier'],
       \ 'javascript' : ['prettier'],

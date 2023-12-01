@@ -5,6 +5,7 @@ if !exists('*dein#add')
 endif
 
 function! s:hook_add() abort
+  " 'coc-prettier',
   let g:coc_global_extensions = [
         \ 'coc-css',
         \ 'coc-cssmodules',
@@ -13,8 +14,8 @@ function! s:hook_add() abort
         \ 'coc-json',
         \ 'coc-rust-analyzer',
         \ 'coc-tsserver',
-        \ 'coc-yaml',
         \ 'coc-vimlsp',
+        \ 'coc-yaml',
         \ ]
 
   " NOTE: autocmd_add() を使う方が良さそうだがコピペで済むので避けた
@@ -63,6 +64,7 @@ function! s:hook_source() abort
   if exists('*json_encode') && empty(glob(coc_settings_path))
     " javascript.suggestionActions.enabled は tsserver 80001 抑止のため
     " https://github.com/microsoft/vscode/issues/47299
+    " 'coc.preferences.formatOnSaveFiletypes' : ["typescript"],
     let coc_settings = {
           \ 'css.validate': v:false,
           \ 'diagnostic.displayByAle': v:true,
