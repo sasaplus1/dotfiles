@@ -93,7 +93,7 @@
   useConfigOnly = true
 
 [interactive]
-  diffFilter = delta 2>/dev/null || cat
+  diffFilter = delta --color-only 2>/dev/null || cat
 
 [delta]
   file-decoration-style = cyan ul box
