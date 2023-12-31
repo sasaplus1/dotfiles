@@ -311,6 +311,10 @@ __main() {
     local -r subcommand="$(__detect_subcommand "$command")"
 
     case "$subcommand" in
+      add)
+        _fzf_complete --ansi --multi --preview='git diff --color=always {2}' -- "$@" < \
+          <(git status --short)
+        ;;
       checkout|co)
         _fzf_complete --ansi --preview='git show --color=always {}' -- "$@" < \
           <(git branch --all --format='%(refname:short)')
@@ -333,6 +337,9 @@ __main() {
     local -r subcommand="$(__detect_subcommand git)"
 
     case "$subcommand" in
+      add)
+        awk '{ print $2 }'
+        ;;
       checkout|co)
         head -n 1
         ;;
