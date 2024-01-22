@@ -36,8 +36,8 @@ endif
 dotfile_dirs += $(dest)/.config/gh-dash
 dotfile_dirs += $(dest)/.config/git
 dotfile_dirs += $(dest)/.config/nvim
-dotfile_dirs += $(dest)/.config/vifm
 # dotfile_dirs += $(dest)/.config/ranger
+dotfile_dirs += $(dest)/.config/vifm
 dotfile_dirs += $(dest)/.ctags.d
 dotfile_dirs += $(dest)/.docker
 dotfile_dirs += $(dest)/.ghq
