@@ -20,6 +20,7 @@ ifeq ($(os),macos)
 # see: https://please-sleep.cou929.nu/gnu-make-spaces-in-pathname.html
 # see: https://savannah.gnu.org/bugs/index.php?712
 # see: https://m-hiyama.hatenablog.com/entry/20140920/1411186147
+dotfile_dirs += $(dest)/Memo
 dotfile_dirs += $(dest)/Library
 dotfile_dirs += $(dest)/Library/Application+Support
 dotfile_dirs += $(dest)/Library/Application+Support/Code
