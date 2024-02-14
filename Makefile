@@ -48,6 +48,7 @@ dotfile_dirs += $(dest)/.go/src
 dotfile_dirs += $(dest)/.local
 # dotfile_dirs += $(dest)/.nodebrew
 # dotfile_dirs += $(dest)/.peco
+dotfile_dirs += $(dest)/.pseudo_trash
 # dotfile_dirs += $(dest)/.rbenv
 dotfile_dirs += $(dest)/.ssh
 ifeq ($(os),linux)

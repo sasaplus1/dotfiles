@@ -458,6 +458,38 @@ __main() {
   #-----------------------------------------------------------------------------
 
   # functions and aliases {{{
+  rm() {
+    # NOTE: this script is not work in non-interactive shell
+
+    if type rmtrash >/dev/null 2>&1
+    then
+      set -x
+      # for macOS
+      # options are ignoring
+      rmtrash -- "$@"
+      set +x
+    elif type trash-put >/dev/null 2>&1
+    then
+      set -x
+      # for Linux
+      # NOTE: untested
+      trash-put -- "$@"
+      set +x
+    else
+      local -r trash_dir="$HOME/.pseudo_trash"
+
+      command mkdir -p "$trash_dir"
+
+      set -x
+      for arg in "$@"
+      do
+        # success if arg is file or directory
+        command mv -- "$arg" "$trash_dir/$arg-$(command date +%Y%m%dT%H%M%S)"
+      done
+      set +x
+    fi
+  }
+
   server() {
     python -m SimpleHTTPServer "$@"
   }
