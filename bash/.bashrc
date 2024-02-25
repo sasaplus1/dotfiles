@@ -461,17 +461,38 @@ __main() {
   rm() {
     # NOTE: this script is not work in non-interactive shell
 
-    if type rmtrash >/dev/null 2>&1
+    if type osascript >/dev/null 2>&1
     then
-      set -x
       # for macOS
-      # options are ignoring
-      rmtrash -- "$@"
+      local args=()
+      for arg in "$@"
+      do
+        if [ -d "$arg" ]
+        then
+          # readlink -f
+          args+=("$(cd "$arg" && pwd)")
+        elif [ -f "$arg" ]
+        then
+          # readlink -f
+          args+=("$(cd $(dirname "$arg") && pwd)/$(basename "$arg")")
+        fi
+      done
+      set -x
+      # NOTE: rmtrash cannot revert files and directories, osascript does
+      osascript - <<-'EOB' "${args[@]}"
+			on run argv
+			    repeat with i in argv
+			        tell application "Finder"
+			            move (i as POSIX file) to trash
+			        end tell
+			    end repeat
+			end run
+			EOB
       set +x
     elif type trash-put >/dev/null 2>&1
     then
-      set -x
       # for Linux
+      set -x
       # NOTE: untested
       trash-put -- "$@"
       set +x
