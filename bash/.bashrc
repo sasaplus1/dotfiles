@@ -474,7 +474,7 @@ __main() {
         elif [ -f "$arg" ]
         then
           # readlink -f
-          args+=("$(cd $(dirname "$arg") && pwd)/$(basename "$arg")")
+          args+=("$(cd "$(dirname "$arg")" && pwd)/$(basename "$arg")")
         fi
       done
       set -x
