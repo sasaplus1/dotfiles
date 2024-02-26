@@ -95,6 +95,10 @@ function! s:hook_source() abort
 
   if !dein#tap('ctrlp')
     nnoremap <expr> <C-p> len(finddir('.git', '.;')) != 0 ? ':<C-u>FzfGitFiles<CR>' : ':<C-u>FzfFiles<CR>'
+    nnoremap <silent> ,ub :<C-u>FzfBuffers<CR>
+    nnoremap <silent> ,ug :<C-u>FzfRg<CR>
+    nnoremap <silent> ,ul :<C-u>FzfLines<CR>
+    nnoremap <silent> ,um :<C-u>FzfHistory<CR>
   endif
 
 endfunction
@@ -104,7 +108,7 @@ call dein#add('junegunn/fzf.vim', {
       \ 'hook_source' : function('s:hook_source'),
       \ 'if' : v:version >= 704 && dein#tap('fzf'),
       \ 'lazy' : 1,
-      \ 'on_map' : [',ch', ',rg', ',rG', '<C-p>', '<Plug>(fzf-'],
+      \ 'on_map' : [',ch', ',rg', ',rG', '<Plug>(fzf-', '<C-p>', ',ub', ',ug', ',ul', ',um'],
       \ })
 
 " vim:ft=vim:fdm=marker:fen:
