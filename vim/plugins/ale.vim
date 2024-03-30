@@ -137,6 +137,78 @@ endfunction
 " textlintがインストールされていたらlinterに追加する
 autocmd vimrc BufNewFile,BufRead * call s:add_textlint(expand('%:p'))
 
+function! s:overwrite_eslint_function() abort
+  if exists('s:patched_eslint_functions') && s:patched_eslint_functions
+    return
+  endif
+
+  " The functions in this file are based on ale#handlers#eslint#FindConfig and ale#handlers#eslint#GetCwd,
+  " which are under the MIT license.
+  " Copyright (c) 2016-2023, Dense Analysis
+  " All rights reserved.
+  " https://github.com/dense-analysis/ale/blob/6c10a519f1460179cf8f8e329d8eb3186247be2b/LICENSE
+
+  if exists('*ale#handlers#eslint#FindConfig')
+    let s:sep = has('win32') ? '\' : '/'
+
+    function! ale#handlers#eslint#FindConfig(buffer) abort
+      for l:path in ale#path#Upwards(expand('#' . a:buffer . ':p:h'))
+        for l:basename in [
+              \ 'eslint.config.js',
+              \ 'eslint.config.cjs',
+              \ 'eslint.config.mjs',
+              \ '.eslintrc.js',
+              \ '.eslintrc.cjs',
+              \ '.eslintrc.yaml',
+              \ '.eslintrc.yml',
+              \ '.eslintrc.json',
+              \ '.eslintrc',
+              \ ]
+          let l:config = ale#path#Simplify(join([l:path, l:basename], s:sep))
+
+          if filereadable(l:config)
+            return l:config
+          endif
+        endfor
+      endfor
+
+      return ale#path#FindNearestFile(a:buffer, 'package.json')
+    endfunction
+
+    let s:patched_upwards = 1
+  endif
+
+  if exists('*ale#handlers#eslint#GetCwd')
+    " see: https://github.com/dense-analysis/ale/issues/4487#issuecomment-1772044826
+    " see: https://github.com/dense-analysis/ale/pull/4637
+    function! ale#handlers#eslint#GetCwd(buffer) abort
+      " Obtain the path to the ESLint configuration
+      let l:config_path = ale#handlers#eslint#FindConfig(a:buffer)
+
+      " Extract the directory from the config path
+      let l:config_dir = fnamemodify(l:config_path, ':h')
+
+      " Return the directory as the cwd
+      return l:config_dir
+    endfunction
+
+    let s:patched_getcwd = 1
+  endif
+
+  let s:patched_eslint_functions =
+        \ (exists('s:patched_upwards') && s:patched_upwards) &&
+        \ (exists('s:patched_getcwd') && s:patched_getcwd)
+
+  if s:patched_eslint_functions
+    " 遅延読み込みをしている場合は設定を再読み込みさせる必要がある
+    " :help ale-lint-settings-on-startup
+    execute 'ALEDisable | ALEEnable'
+  endif
+endfunction
+" flat configに対応する
+autocmd vimrc FileType javascript,javascriptreact,typescript,typescriptreact
+      \ call s:overwrite_eslint_function()
+
 call dein#add('dense-analysis/ale', {
       \ 'lazy' : 1,
       \ 'on_ft' : [
