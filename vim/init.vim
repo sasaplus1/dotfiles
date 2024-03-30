@@ -31,9 +31,9 @@ function! s:install_node() abort
 
   let uname = trim(system('uname -m'))
 
-  if uname =~# '\v^(arm64|aarch64)'
+  if uname =~# '\v^(arm64|aarch64)$'
     let arch = 'arm64'
-  elseif uname =~# '\v^x86_64'
+  elseif uname ==# 'x86_64'
     let arch = 'x64'
   endif
 
