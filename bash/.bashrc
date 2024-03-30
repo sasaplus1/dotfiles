@@ -315,6 +315,10 @@ __main() {
         _fzf_complete --ansi --multi --preview='git diff --color=always {2}' -- "$@" < \
           <(git status --short)
         ;;
+      branch)
+        _fzf_complete --ansi --multi --preview='git show --color=always {}' -- "$@" < \
+          <(git branch --all --format='%(refname:short)')
+        ;;
       checkout|co)
         _fzf_complete --ansi --preview='git show --color=always {}' -- "$@" < \
           <(git branch --all --format='%(refname:short)')
@@ -338,13 +342,16 @@ __main() {
 
     case "$subcommand" in
       add)
-        awk '{ print $2 }'
+        awk '{ print $2 }' # get by git status
+        ;;
+      branch)
+        awk '{ print $1 }' # get by git branch
         ;;
       checkout|co)
         head -n 1
         ;;
       cherry-pick|cp|rebase)
-        grep -Eo '[0-9a-f]{7,40}' | head -n 1
+        grep -Eo '[0-9a-f]{7,40}' | head -n 1 # get by git log
         ;;
     esac
   }
