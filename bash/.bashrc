@@ -22,6 +22,7 @@ __main() {
       ;;
   esac
 
+  # This machine can run Apple Silicon binaries?
   if [ "$os" == 'macos' ] && arch -arm64e echo -n >/dev/null 2>&1
   then
     local -r apple_silicon=1
@@ -742,6 +743,7 @@ __main() {
     local prompt=
 
     # architecture
+    # `uname -m` prints `x86_64` when `arch -x86_64 /bin/bash` executed
     [ -n "$__APPLE_SILICON" ] && [ "$(uname -m)" != 'arm64' ] &&
       prompt="${prompt} ${red}[x86_64]${reset}"
 
