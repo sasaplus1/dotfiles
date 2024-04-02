@@ -739,7 +739,7 @@ __main() {
           local default_branch=
 
           read -r _ default_branch < "$origin_head_file"
-          default_branch="${default_branch/refs\/remotes\/origin\//}"
+          default_branch="${default_branch#refs/remotes/origin/}"
         fi
 
         break
