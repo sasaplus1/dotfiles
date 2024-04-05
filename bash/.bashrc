@@ -35,6 +35,31 @@ __main() {
   export EDITOR=vim
   export PAGER=less
 
+  if type bat >/dev/null 2>&1
+  then
+    # highlight with bat
+    export MANPAGER="$SHELL -c 'col -bx | bat -l man --style=plain --paging=always'"
+  elif type vim >/dev/null 2>&1
+  then
+    # use vim
+    local -r manpager_vim_command=(
+      'set' 
+      'hlsearch'
+      'incsearch'
+      'nolist'
+      'noma'
+      'nomod'
+      'nu'
+      'showcmd'
+      'smartcase'
+      'wrap'
+      'ft=man'
+      '|'
+      'syntax enable'
+    )
+    export MANPAGER="$SHELL -c 'col -bx | vim -u NONE -NR -c \"$(IFS=' '; echo "${manpager_vim_command[*]}")\" -'"
+  fi
+
   # export LESS_TERMCAP_mb=$'\E[01;31m'
   # export LESS_TERMCAP_md=$'\E[01;38;5;74m'
   # export LESS_TERMCAP_me=$'\E[0m'
