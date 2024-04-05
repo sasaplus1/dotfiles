@@ -475,7 +475,7 @@ __main() {
 
   # functions and aliases {{{
   rm() {
-    # NOTE: this script is not work in non-interactive shell
+    # NOTE: this script define within interactive shell only
 
     if type osascript >/dev/null 2>&1
     then
