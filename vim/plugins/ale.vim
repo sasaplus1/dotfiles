@@ -68,14 +68,14 @@ let g:ale_linters = {
 " 仕方がないのでcoc-prettierを使っている
 " coc-prettierを設定した後にale.vimに戻したらale.vimでも発生しなくなった、何故？
 let g:ale_fixers = {
-      \ 'css' : ['prettier'],
+      \ 'css' : ['stylelint', 'prettier'],
       \ 'javascript' : ['prettier'],
       \ 'javascript.jsx' : ['prettier'],
       \ 'javascriptreact' : ['prettier'],
       \ 'json' : ['prettier'],
       \ 'markdown' : ['textlint'],
       \ 'rust' : ['rustfmt', 'trim_whitespace', 'remove_trailing_lines'],
-      \ 'scss' : ['prettier'],
+      \ 'scss' : ['stylelint', 'prettier'],
       \ 'typescript' : ['prettier'],
       \ 'typescriptreact' : ['prettier'],
       \ }
