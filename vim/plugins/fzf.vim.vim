@@ -90,6 +90,7 @@ function! s:hook_source() abort
   command! -nargs=* MyCheatSheet call s:fzf_my_cheat_sheet(<q-args>)
 
   nnoremap <silent> ,ch :<C-u>MyCheatSheet<CR>
+  nnoremap <silent> ,gs :<C-u>FzfGFiles?<CR>
   nnoremap <silent> ,rg :<C-u>FzfRg<CR>
   nnoremap <silent> ,rG :<C-u>FzfRG<CR>
 
@@ -108,7 +109,7 @@ call dein#add('junegunn/fzf.vim', {
       \ 'hook_source' : function('s:hook_source'),
       \ 'if' : v:version >= 704 && dein#tap('fzf'),
       \ 'lazy' : 1,
-      \ 'on_map' : [',ch', ',rg', ',rG', '<Plug>(fzf-', '<C-p>', ',ub', ',ug', ',ul', ',um'],
+      \ 'on_map' : [',ch', ',gs', ',rg', ',rG', '<Plug>(fzf-', '<C-p>', ',ub', ',ug', ',ul', ',um'],
       \ })
 
 " vim:ft=vim:fdm=marker:fen:
