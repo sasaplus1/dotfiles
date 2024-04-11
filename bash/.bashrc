@@ -22,6 +22,11 @@ __main() {
       ;;
   esac
 
+  # current session architecture
+  # `uname -m` prints `x86_64` when `arch -x86_64 /bin/bash` executed
+  # e.g. x86_64, arm64
+  local -r cpu="$(uname -m)"
+
   # This machine can run Apple Silicon binaries?
   if [ "$os" == 'macos' ] && arch -arm64e echo -n >/dev/null 2>&1
   then
@@ -189,6 +194,58 @@ __main() {
   #-----------------------------------------------------------------------------
 
   # NOTE: lazy load command https://qiita.com/uasi/items/80865646607b966aedc8
+
+  # mise {{{
+  if [ "$os" == 'macos' ]
+  then
+    # how to install mise when macOS:
+    # $ curl https://mise.run | sh # install native binary
+    # $ export MISE_INSTALL_PATH=$HOME/.local/bin/mise-x86
+    # $ curl https://mise.run | sh # install x86_64 binary
+    # $ unset -v MISE_INSTALL_PATH
+
+    # current session is `arch -x86_64 /bin/bash`
+    # NOTE: `uname -m` is cannot cache
+    if [ "$(uname -m)" == 'x86_64' ] && type mise-x86 >/dev/null 2>&1
+    then
+      mise() {
+        if [ "$1" == 'install' ]
+        then
+          for arg in "$@"
+          do
+            if [[ $arg =~ ^node@ ]]
+            then
+              local semver="${arg#node@}"
+              local major="${semver%%.*}"
+              (( $major >= 16 )) &&
+                echo 'node.js ver.16 and above support Apple Silicon' >&2 &&
+                return 1
+            fi
+          done
+        fi
+        command mise-x86 "$@"
+      }
+    else
+      mise() {
+        if [ "$1" == 'install' ]
+        then
+          for arg in "$@"
+          do
+            if [[ $arg =~ ^node@ ]]
+            then
+              local semver="${arg#node@}"
+              local major="${semver%%.*}"
+              (( $major <= 15 )) &&
+                echo 'node.js ver.15 and below require an x86_64 shell session' >&2 &&
+                return 1
+            fi
+          done
+        fi
+        command mise "$@"
+      }
+    fi
+  fi
+  # }}}
 
   # direnv {{{
   if type direnv >/dev/null 2>&1
@@ -778,6 +835,7 @@ __main() {
 
     # architecture
     # `uname -m` prints `x86_64` when `arch -x86_64 /bin/bash` executed
+    # NOTE: `uname -m` is cannot cache
     [ -n "$__APPLE_SILICON" ] && [ "$(uname -m)" != 'arm64' ] &&
       prompt="${prompt} ${red}[x86_64]${reset}"
 

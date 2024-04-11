@@ -122,6 +122,10 @@ __main() {
 
   #-----------------------------------------------------------------------------
 
+  # mise {{{
+  [ -d "$HOME/.local/share/mise" ] && export PATH="$HOME/.local/share/mise/shims:$PATH"
+  # }}}
+
   # nvm {{{
   if [ -z "${XDG_CONFIG_HOME-}" ]
   then
