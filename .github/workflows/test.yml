@@ -50,4 +50,5 @@ jobs:
         with:
           python-version: 3.11
       - run: pip install vim-vint
-      - run: vint vim/.vim* vim/*.vim
+      - run: >
+          find vim -name '.vimrc*' -or -name '*.vim' -print0 | xargs -0 vint
