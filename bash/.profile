@@ -135,10 +135,6 @@ __main() {
   fi
   # }}}
 
-  # nodebrew {{{
-  [ -d "$HOME/.nodebrew" ] && export PATH="$HOME/.nodebrew/current/bin:$PATH"
-  # }}}
-
   # rbenv {{{
   [ -d "$HOME/.rbenv" ] && export PATH="$HOME/.rbenv/bin:$PATH"
   # }}}

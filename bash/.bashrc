@@ -156,19 +156,6 @@ __main() {
   complete -F __nvm_completion nvm
   # }}}
 
-  # nodebrew-completion {{{
-  __nodebrew_completion() {
-    unset -f __nodebrew_completion
-    complete -r nodebrew
-
-    local -r completion="$HOME/.nodebrew/completions/bash/nodebrew-completion"
-
-    # shellcheck disable=SC1090
-    [ -f "$completion" ] && source "$completion" && return 124
-  }
-  complete -F __nodebrew_completion nodebrew
-  # }}}
-
   # npm-completion {{{
   __npm_completion() {
     unset -f __npm_completion
