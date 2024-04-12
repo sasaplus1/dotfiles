@@ -260,12 +260,6 @@ __main() {
   type zoxide >/dev/null 2>&1 && eval "$(zoxide init bash)"
   # }}}
 
-  # cocproxy for nginx {{{
-  cocproxy() {
-    (cd "$HOME/.cocproxy" && nginx -p . -c "$HOME/.cocproxy.nginx.conf")
-  }
-  # }}}
-
   # fzf {{{
   for fzf_completion in \
     "$macports_prefix/share/fzf/shell/completion.bash" \
