@@ -510,19 +510,6 @@ __main() {
   fi
   # }}}
 
-  # github-slug.sh {{{
-  export _GITHUB_SLUG_COMMAND=slug
-
-  __lazy-github-slug() {
-    unset -f __lazy-github-slug
-    # shellcheck disable=SC1091
-    source "$HOME/.ghq/github.com/sasaplus1/github-slug.sh/github-slug.sh" 2>/dev/null
-    __github-slug "$@"
-    eval "$_GITHUB_SLUG_COMMAND"'() { __github-slug "$@"; }'
-  }
-  eval "$_GITHUB_SLUG_COMMAND"'() { __lazy-github-slug "$@"; }'
-  # }}}
-
   #-----------------------------------------------------------------------------
 
   # functions and aliases {{{
