@@ -27,7 +27,7 @@ __main() {
   # e.g. x86_64, arm64
   # local -r cpu="$(uname -m)"
 
-  # This machine can run Apple Silicon binaries?
+  # Is this machine can run Apple Silicon binaries?
   if [ "$os" == 'macos' ] && arch -arm64e echo -n >/dev/null 2>&1
   then
     local -r apple_silicon=1
