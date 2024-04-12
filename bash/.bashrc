@@ -561,10 +561,6 @@ __main() {
     fi
   }
 
-  server() {
-    python -m SimpleHTTPServer "$@"
-  }
-
   add-ssh-key() {
     for key in $(find "$HOME/.ssh" -type f -name '*.pub' -print0 | xargs -0)
     do
