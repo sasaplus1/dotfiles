@@ -39,25 +39,26 @@ __main() {
   then
     # highlight with bat
     export MANPAGER="$SHELL -c 'col -bx | bat -l man --style=plain --paging=always'"
-  elif type vim >/dev/null 2>&1
-  then
-    # use vim
-    local -r manpager_vim_command=(
-      'set' 
-      'hlsearch'
-      'incsearch'
-      'nolist'
-      'noma'
-      'nomod'
-      'nu'
-      'showcmd'
-      'smartcase'
-      'wrap'
-      'ft=man'
-      '|'
-      'syntax enable'
-    )
-    export MANPAGER="$SHELL -c 'col -bx | vim -u NONE -NR -c \"$(IFS=' '; echo "${manpager_vim_command[*]}")\" -'"
+  # elif type vim >/dev/null 2>&1
+  # then
+  #   # use vim
+  #   local -r manpager_vim_command=(
+  #     'set' 
+  #     'hlsearch'
+  #     'incsearch'
+  #     'nolist'
+  #     'noma'
+  #     'nomod'
+  #     'nu'
+  #     'showcmd'
+  #     'smartcase'
+  #     'wrap'
+  #     'ft=man'
+  #     '|'
+  #     'syntax enable'
+  #   )
+  #   # NOTE: shellcheck output warning
+  #   export MANPAGER="$SHELL -c 'col -bx | vim -u NONE -NR -c \"$(IFS=' '; echo "${manpager_vim_command[*]}")\" -'"
   fi
 
   # export LESS_TERMCAP_mb=$'\E[01;31m'
