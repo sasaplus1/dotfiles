@@ -163,13 +163,6 @@ __main() {
 
   # vim {{{
   # my KaoriYa Vim for macOS
-  # via https://github.com/sasaplus1/portable-vim
-  __main_pvim="$HOME/Binary/vim"
-  [ -d "$__main_pvim" ] &&
-    export MANPATH="$__main_pvim/share/man:$MANPATH" &&
-    export PATH="$__main_pvim/bin:$PATH"
-
-  # my KaoriYa Vim for macOS
   # via https://github.com/sasaplus1/macos-vim
   __main_mvim="$GHQ_ROOT/github.com/sasaplus1/macos-vim"
   [ -x "$__main_mvim/usr/bin/vim" ] &&
