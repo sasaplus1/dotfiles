@@ -248,10 +248,7 @@ __main() {
   # }}}
 
   # direnv {{{
-  if type direnv >/dev/null 2>&1
-  then
-    eval "$(direnv hook bash)"
-  fi
+  type direnv >/dev/null 2>&1 && eval "$(direnv hook bash)"
   # }}}
 
   # nvm {{{
