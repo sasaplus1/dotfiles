@@ -25,7 +25,7 @@ __main() {
   # current session architecture
   # `uname -m` prints `x86_64` when `arch -x86_64 /bin/bash` executed
   # e.g. x86_64, arm64
-  local -r cpu="$(uname -m)"
+  # local -r cpu="$(uname -m)"
 
   # This machine can run Apple Silicon binaries?
   if [ "$os" == 'macos' ] && arch -arm64e echo -n >/dev/null 2>&1
@@ -217,7 +217,7 @@ __main() {
             then
               local semver="${arg#node@}"
               local major="${semver%%.*}"
-              (( $major >= 16 )) &&
+              (( "$major" >= 16 )) &&
                 echo 'node.js ver.16 and above support Apple Silicon' >&2 &&
                 return 1
             fi
@@ -235,7 +235,7 @@ __main() {
             then
               local semver="${arg#node@}"
               local major="${semver%%.*}"
-              (( $major <= 15 )) &&
+              (( "$major" <= 15 )) &&
                 echo 'node.js ver.15 and below require an x86_64 shell session' >&2 &&
                 return 1
             fi
