@@ -256,16 +256,10 @@ __main() {
   [ -r "$HOME/.cargo/env" ] && source "$HOME/.cargo/env"
   # }}}
 
-  # zoxide or z {{{
-  local -r z="$GHQ_ROOT/github.com/rupa/z/z.sh"
-
+  # zoxide {{{
   if type zoxide >/dev/null 2>&1
   then
     eval "$(zoxide init bash)"
-  elif [ -s "$z" ]
-  then
-    # shellcheck disable=SC1090
-    source "$z"
   fi
   # }}}
 
