@@ -565,10 +565,6 @@ __main() {
     python -m SimpleHTTPServer "$@"
   }
 
-  fake-dev() {
-    nginx -p . -c "$(ghq list -p fake-dev)/fake-dev.conf"
-  }
-
   add-ssh-key() {
     for key in $(find "$HOME/.ssh" -type f -name '*.pub' -print0 | xargs -0)
     do
