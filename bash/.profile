@@ -192,7 +192,7 @@ __main() {
   if type bat >/dev/null 2>&1
   then
     # highlighting man page with bat
-    export MANPAGER="$SHELL -c 'col -bx | bat -l man -p --paging=always'"
+    export MANPAGER="$SHELL -c 'col -bx | bat -l man --style=plain --paging=always'"
   elif [ "$EDITOR" = 'vim' ]
   then
     # use vim
