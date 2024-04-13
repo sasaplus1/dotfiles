@@ -178,6 +178,11 @@ __main() {
 
   #-----------------------------------------------------------------------------
 
+  # stop flow mode (disable C-s and C-q)
+  # stty stop undef
+  # stty start undef
+  type stty >/dev/null 2>&1 && stty -ixon
+
   type vi >/dev/null 2>&1 && export EDITOR=vi
   type vim >/dev/null 2>&1 && export EDITOR=vim
   type less >/dev/null 2>&1 && export PAGER=less

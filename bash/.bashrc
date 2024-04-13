@@ -51,11 +51,6 @@ __main() {
   # fix typo of path for cd command
   shopt -s cdspell
 
-  # stop flow mode (disable C-s and C-q)
-  # stty stop undef
-  # stty start undef
-  stty -ixon
-
   #-----------------------------------------------------------------------------
 
   local -r macports_prefix=/opt/local
