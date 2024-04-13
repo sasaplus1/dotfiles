@@ -18,6 +18,11 @@ __main() {
   export ORIGINAL_TERM_PROGRAM_VERSION="$TERM_PROGRAM_VERSION"
   readonly ORIGINAL_TERM_PROGRAM_VERSION
 
+  export HISTSIZE=10000
+  export HISTFILESIZE=10000
+  export HISTTIMEFORMAT='%Y/%m/%d %T '
+  export HISTCONTROL='ignoredups:erasedups'
+
   #-----------------------------------------------------------------------------
 
   # NOTE: In POSIX sh, 'local' is undefined: SC3043
@@ -93,10 +98,6 @@ __main() {
 
   #-----------------------------------------------------------------------------
 
-  export GHQ_ROOT="$HOME/.ghq"
-
-  #-----------------------------------------------------------------------------
-
   # ssh-agent {{{
   __main_ssh_agent_info="$HOME/.ssh-agent-info"
 
@@ -121,6 +122,10 @@ __main() {
   # }}}
 
   #-----------------------------------------------------------------------------
+
+  # ghq {{{
+  export GHQ_ROOT="$HOME/.ghq"
+  # }}}
 
   # mise {{{
   [ -d "$HOME/.local/share/mise" ] && export PATH="$HOME/.local/share/mise/shims:$PATH"

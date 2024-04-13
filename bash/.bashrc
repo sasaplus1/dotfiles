@@ -66,6 +66,7 @@ __main() {
   #   export MANPAGER="$SHELL -c 'col -bx | vim -u NONE -NR -c \"$(IFS=' '; echo "${manpager_vim_command[*]}")\" -'"
   fi
 
+  # highlighting manpages
   # export LESS_TERMCAP_mb=$'\E[01;31m'
   # export LESS_TERMCAP_md=$'\E[01;38;5;74m'
   # export LESS_TERMCAP_me=$'\E[0m'
@@ -83,14 +84,6 @@ __main() {
   # stty stop undef
   # stty start undef
   stty -ixon
-
-  if [ "$SHLVL" -eq 1 ]
-  then
-    export HISTSIZE=10000
-    export HISTFILESIZE=10000
-    export HISTTIMEFORMAT='%Y/%m/%d %T '
-    export HISTCONTROL=ignoredups:erasedups
-  fi
 
   #-----------------------------------------------------------------------------
 
