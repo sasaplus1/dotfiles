@@ -18,10 +18,11 @@ __main() {
   export ORIGINAL_TERM_PROGRAM_VERSION="$TERM_PROGRAM_VERSION"
   readonly ORIGINAL_TERM_PROGRAM_VERSION
 
+  # history settings
   export HISTSIZE=10000
   export HISTFILESIZE=10000
   export HISTTIMEFORMAT='%Y/%m/%d %T '
-  export HISTCONTROL='ignoredups:erasedups'
+  export HISTCONTROL=ignoredups:erasedups
 
   #-----------------------------------------------------------------------------
 
@@ -174,6 +175,24 @@ __main() {
     export MANPATH="$__main_mvim/share/man:$MANPATH" &&
     export PATH="$__main_mvim/usr/bin:$PATH"
   # }}}
+
+  #-----------------------------------------------------------------------------
+
+  type vi >/dev/null 2>&1 && export EDITOR=vi
+  type vim >/dev/null 2>&1 && export EDITOR=vim
+  type less >/dev/null 2>&1 && export PAGER=less
+
+  # NOTE: `$ man bash` outputs `UNSUPP: unsupported control character: 0x7` error
+  # https://github.com/orgs/Homebrew/discussions/2506
+  if type bat >/dev/null 2>&1
+  then
+    # highlighting man page with bat
+    export MANPAGER="$SHELL -c 'col -bx | bat -l man -p --paging=always'"
+  elif [ "$EDITOR" = 'vim' ]
+  then
+    # use vim
+    export MANPAGER="$SHELL -c 'col -bx | vim -u NONE -NR -c \"se hls is nolist noma nomod sc scs wrap ft=man | syntax enable\" -'"
+  fi
 }
 __main "$@"
 

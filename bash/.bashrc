@@ -37,35 +37,6 @@ __main() {
 
   #-----------------------------------------------------------------------------
 
-  export EDITOR=vim
-  export PAGER=less
-
-  if type bat >/dev/null 2>&1
-  then
-    # highlight with bat
-    export MANPAGER="$SHELL -c 'col -bx | bat -l man --style=plain --paging=always'"
-  # elif type vim >/dev/null 2>&1
-  # then
-  #   # use vim
-  #   local -r manpager_vim_command=(
-  #     'set' 
-  #     'hlsearch'
-  #     'incsearch'
-  #     'nolist'
-  #     'noma'
-  #     'nomod'
-  #     'nu'
-  #     'showcmd'
-  #     'smartcase'
-  #     'wrap'
-  #     'ft=man'
-  #     '|'
-  #     'syntax enable'
-  #   )
-  #   # NOTE: shellcheck output warning
-  #   export MANPAGER="$SHELL -c 'col -bx | vim -u NONE -NR -c \"$(IFS=' '; echo "${manpager_vim_command[*]}")\" -'"
-  fi
-
   # highlighting manpages
   # export LESS_TERMCAP_mb=$'\E[01;31m'
   # export LESS_TERMCAP_md=$'\E[01;38;5;74m'
@@ -874,11 +845,10 @@ __main() {
   # export NO_PROXY=$no_proxy
   # }}}
 
+  # return if terminal multiplexer used
+  [[ "$TERM" =~ ^(screen|tmux) ]] && return 0
+
   # always use terminal multiplexer
-  if [[ "$TERM" =~ ^(screen|tmux) ]]
-  then
-    return 0
-  fi
   if [ -z "$TMUX" ] && [ -z "$VIM_TERMINAL" ] && [ ! -f '/.dockerenv' ] && type tmux >/dev/null 2>&1
   then
     if [ -n "$COLORTERM" ]
