@@ -578,15 +578,6 @@ __main() {
     git rev-parse --is-inside-work-tree >/dev/null && cd "$(git rev-parse --show-toplevel)" || return
   }
 
-  dw() {
-    if git rev-parse --is-inside-work-tree >/dev/null 2>&1
-    then
-      cd "$(git rev-parse --show-toplevel)/$(fzf --query="$*" < <(git ls-tree -dr --full-tree --name-only HEAD))" || return
-    else
-      cd "$(fzf --query="$*" < <(find . -type d -print 2>/dev/null))" || return
-    fi
-  }
-
   memo() {
     "$EDITOR" "$HOME/Memo/$(date +%Y%m%dT%H%M%S).md"
   }
