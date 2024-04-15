@@ -3,7 +3,8 @@
 
 # return if not interactive
 # https://www.gnu.org/software/bash/manual/html_node/Is-this-Shell-Interactive_003f.html
-[ -z "$PS1" ] && return
+#[ -z "$PS1" ] && return
+[[ ! "$-" =~ i ]] && return
 
 __main() {
   unset -f __main
@@ -71,27 +72,26 @@ __main() {
     /bin/bash \
     /bin/sh
   do
+    # break if already set
     [ -n "$TMUX_SHELL" ] && break
-    [ -x "$shell_path" ] && export TMUX_SHELL="$shell_path"
+    [ -x "$shell_path" ] && export TMUX_SHELL="$shell_path" && break
   done
   # }}}
 
   #-----------------------------------------------------------------------------
 
   # bash-completion {{{
-  if [ -z "$BASH_COMPLETION" ]
-  then
-    for bash_completion in \
-      "$macports_prefix/etc/profile.d/bash_completion.sh" \
-      "$macports_prefix/etc/bash_completion" \
-      "$HOMEBREW_PREFIX/etc/bash_completion" \
-      /etc/bash_completion
-    do
-      [ -n "$BASH_COMPLETION" ] && break
-      # shellcheck disable=SC1090
-      [ -f "$bash_completion" ] && source "$bash_completion"
-    done
-  fi
+  for bash_completion in \
+    "$macports_prefix/etc/profile.d/bash_completion.sh" \
+    "$macports_prefix/etc/bash_completion" \
+    "$HOMEBREW_PREFIX/etc/bash_completion" \
+    /etc/bash_completion
+  do
+    # break if already set
+    [ -n "$BASH_COMPLETION" ] && break
+    # shellcheck disable=SC1090
+    [ -f "$bash_completion" ] && source "$bash_completion" && break
+  done
   # }}}
 
   #-----------------------------------------------------------------------------
@@ -780,7 +780,7 @@ __main() {
     printf -- '%b' "${prompt}"
   }
 
-  __print_PS1() {
+  __print_ps1() {
     local -r green='\e[01;32m'
     local -r reset='\e[00m'
 
@@ -794,7 +794,7 @@ __main() {
 
   # NOTE: SC2155
   # https://github.com/koalaman/shellcheck/wiki/SC2155
-  PS1=$(__print_PS1)
+  PS1=$(__print_ps1)
   export PS1
   # }}}
 
