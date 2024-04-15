@@ -572,13 +572,6 @@ __main() {
     cd "$(cat <(eval "$repo_cmd") <(eval "$z_cmd") <(eval "$git_cmd") | sort -u | fzf --query="$@" --preview="$fzf_preview")"
   }
 
-  git-hash() {
-    # shellcheck disable=SC2016
-    local -r preview='git show --color=always "$(echo {} | grep -Eo \[0-9a-f\]\{7,40\} | head -n 1)" 2>/dev/null'
-
-    git log --all --color=always --graph --oneline | fzf --ansi --preview="$preview" | grep -Eo '[0-9a-f]{7,40}' | head -n 1
-  }
-
   # cd to repository root
   rr() {
     # error message print to stderr if failed
