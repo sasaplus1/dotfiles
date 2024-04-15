@@ -290,6 +290,17 @@ __main() {
     printf -- '%s' "${COMP_WORDS[index+1]}"
   }
 
+  # cd complete by fzf with preview
+  _fzf_complete_cd() {
+    if type fd >/dev/null 2>&1
+    then
+      _fzf_complete --preview='ls -al {}' -- "$@" < <(fd -t d)
+    else
+      _fzf_complete --preview='ls -al {}' -- "$@" < <(find . -maxdepth 10 -type d)
+    fi
+  }
+  complete -F _fzf_complete_cd -o default -o bashdefault cd
+
   # docker complete by fzf with preview
   _fzf_complete_docker() {
     local -r command="${FUNCNAME[0]##*_}"
