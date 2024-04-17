@@ -292,12 +292,14 @@ __main() {
 
   # cd complete by fzf with preview
   _fzf_complete_cd() {
-    if type fd >/dev/null 2>&1
-    then
-      _fzf_complete --preview='ls -al {}' -- "$@" < <(fd -t d)
-    else
-      _fzf_complete --preview='ls -al {}' -- "$@" < <(find . -maxdepth 10 -type d)
-    fi
+    _fzf_complete --preview='ls -al {}' -- "$@" < \
+      <(cat \
+            <(fd -t d 2>/dev/null) \
+            <(ghq list --full-path 2>/dev/null) \
+            <(git worktree list 2>/dev/null | awk '{ print $1 }') \
+            <(zoxide query --list 2>/dev/null) \
+          )
+            # <(git ls-tree -dr --name-only --full-name HEAD ) \
   }
   complete -F _fzf_complete_cd -o default -o bashdefault cd
 
