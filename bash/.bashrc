@@ -290,6 +290,10 @@ __main() {
     printf -- '%s' "${COMP_WORDS[index+1]}"
   }
 
+  # NOTE: get command name from completion function name
+  # _fzf_complete_git
+  # local -r command="${FUNCNAME[0]##*_}" # => "git"
+
   # cd complete by fzf with preview
   _fzf_complete_cd() {
     _fzf_complete --preview='ls -al {}' -- "$@" < \
@@ -305,7 +309,7 @@ __main() {
 
   # docker complete by fzf with preview
   _fzf_complete_docker() {
-    local -r command="${FUNCNAME[0]##*_}"
+    local -r command=docker
     local -r subcommand="$(__detect_subcommand "$command")"
 
     case "$subcommand" in
@@ -340,7 +344,7 @@ __main() {
 
   # git complete by fzf with preview
   _fzf_complete_git() {
-    local -r command="${FUNCNAME[0]##*_}"
+    local -r command=git
     local -r subcommand="$(__detect_subcommand "$command")"
 
     case "$subcommand" in
@@ -364,6 +368,9 @@ __main() {
         _fzf_complete --ansi --preview="$preview" -- "$@" < \
           <(git log --all --color=always --graph --date=short --format="$format")
         ;;
+      worktree)
+        _fzf_complete_git_worktree "$@"
+        ;;
       *)
         # call original completion
         _fzf_handle_dynamic_completion "$command" "$@"
@@ -386,13 +393,51 @@ __main() {
       cherry-pick|cp|rebase)
         grep -Eo '[0-9a-f]{7,40}' | head -n 1 # get by git log
         ;;
+      worktree)
+        _fzf_complete_git_worktree_post "$@"
+        ;;
     esac
   }
   complete -F _fzf_complete_git -o default -o bashdefault git
 
+  # git-worktree complete by fzf with preview, called by _fzf_complete_git
+  _fzf_complete_git_worktree() {
+    local -r command=worktree
+    local -r subcommand="$(__detect_subcommand worktree)"
+
+    case "$subcommand" in
+      add)
+        _fzf_complete --preview='GH_FORCE_TTY=1 gh pr view {1}' -- "$@" < \
+          <(gh pr list --json 'number,headRefName,author' --jq '.[] | "#\(.number)\t\(.author.login)\t\(.headRefName)"')
+      ;;
+      remove)
+        # NOTE: { gsub(/[\]\[]/, ""); } is not work
+        _fzf_complete -- "$@" < \
+          <(git worktree list | awk '{ print $3 }' | grep -v "$(git rev-parse --abbrev-ref HEAD)" | tr -d '[]')
+      ;;
+      *)
+        # call original completion
+        _fzf_handle_dynamic_completion git "$command" "$@"
+      ;;
+    esac
+  }
+  _fzf_complete_git_worktree_post() {
+    local -r subcommand="$(__detect_subcommand worktree)"
+
+    case "$subcommand" in
+      add)
+        local -r branch="$(awk '{ print $3 }')" # get by gh pr list
+        printf -- '"%s" %s' "$(git rev-parse --git-dir)/non-bare-worktrees/$branch" "$branch"
+        ;;
+      remove)
+        cat # get by git worktree list
+        ;;
+    esac
+  }
+
   # gh complete by fzf with preview
   _fzf_complete_gh() {
-    local -r command="${FUNCNAME[0]##*_}"
+    local -r command=gh
     local -r subcommand="$(__detect_subcommand "$command")"
 
     case "$subcommand" in
