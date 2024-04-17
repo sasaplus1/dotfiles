@@ -632,8 +632,24 @@ __main() {
 
   # cd to repository root
   rr() {
+    # NOTE: git rev-parse --show-toplevel is cannot execute in .git directory
     # error message print to stderr if failed
     git rev-parse --is-inside-work-tree >/dev/null && cd "$(git rev-parse --show-toplevel)" || return
+
+    # local -r git_dir="$(git rev-parse --git-dir)"
+    # if [ -f "$git_dir/.git" ]
+    # then
+    #   # in git submodule or git worktree
+    # elif [ "$git_dir" == '.' ]
+    # then
+    #   # in .git directory
+    #   cd ..
+    # elif [ "$git_dir" == '.git' ]
+    # then
+    #   # currentyly in repository root
+    # else
+    #   cd "$(git rev-parse --git-dir)/.." || return
+    # fi
   }
 
   memo() {
