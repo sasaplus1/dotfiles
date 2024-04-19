@@ -155,6 +155,8 @@ __main() {
   # }}}
 
   # nvm {{{
+  # NOTE: nvm very slow to start
+  # https://github.com/nvm-sh/nvm/issues/2724
   # shellcheck disable=SC1091
   # [ -n "${NVM_DIR-}" ] && [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
   # }}}
