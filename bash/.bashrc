@@ -636,20 +636,22 @@ __main() {
     # error message print to stderr if failed
     # git rev-parse --is-inside-work-tree >/dev/null && cd "$(git rev-parse --show-toplevel)" || return
 
+    local -r git_common_dir="$(git rev-parse --git-common-dir)"
+
     if [ "$(git rev-parse --is-inside-git-dir)" == 'true' ]
     then
       # in .git directory
-      cd "$(git rev-parse --git-common-dir)/.." || return
+      cd "$git_common_dir/.." || return
     else
       local -r root="$(git rev-parse --show-toplevel)"
 
       if [ "$root" == "$PWD" ] && [ -f "$root/.git" ]
       then
         # worktree root in .git/non-bare-worktrees
-        cd "$(git rev-parse --git-common-dir)/.." || return
+        cd "$git_common_dir/.." || return
       else
         # in worktree
-        cd "$(git rev-parse --show-toplevel)" || return
+        cd "$root" || return
       fi
     fi
   }
