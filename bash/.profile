@@ -128,17 +128,20 @@ __main() {
   export GHQ_ROOT="$HOME/.ghq"
   # }}}
 
-  # mise {{{
-  [ -d "$HOME/.local/share/mise" ] && export PATH="$HOME/.local/share/mise/shims:$PATH"
+  # nvm {{{
+  # if [ -z "${XDG_CONFIG_HOME-}" ]
+  # then
+  #   export NVM_DIR="$HOME/.nvm"
+  # else
+  #   export NVM_DIR="$XDG_CONFIG_HOME/nvm"
+  # fi
   # }}}
 
-  # nvm {{{
-  if [ -z "${XDG_CONFIG_HOME-}" ]
-  then
-    export NVM_DIR="$HOME/.nvm"
-  else
-    export NVM_DIR="$XDG_CONFIG_HOME/nvm"
-  fi
+  # proto {{{
+  __main_proto_home="$HOME/.proto"
+  [ -d "$__main_proto_home" ] &&
+    export PROTO_HOME="$__main_proto_home" &&
+    export PATH="$PROTO_HOME/shims:$PROTO_HOME/bin:$PATH"
   # }}}
 
   # rbenv {{{

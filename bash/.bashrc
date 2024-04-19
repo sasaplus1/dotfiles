@@ -102,19 +102,6 @@ __main() {
   # NOTE: see fzf section
   # }}}
 
-  # nvm-completion {{{
-  __nvm_completion() {
-    unset -f __nvm_completion
-    complete -r nvm
-
-    local -r completion="$NVM_DIR/bash_completion"
-
-    # shellcheck disable=SC1090
-    [ -f "$completion" ] && source "$completion" && return 124
-  }
-  complete -F __nvm_completion nvm
-  # }}}
-
   # npm-completion {{{
   __npm_completion() {
     unset -f __npm_completion
@@ -122,6 +109,28 @@ __main() {
     eval "$(npm completion)" && return 124
   }
   complete -F __npm_completion npm
+  # }}}
+
+  # nvm-completion {{{
+  # __nvm_completion() {
+  #   unset -f __nvm_completion
+  #   complete -r nvm
+
+  #   local -r completion="$NVM_DIR/bash_completion"
+
+  #   # shellcheck disable=SC1090
+  #   [ -f "$completion" ] && source "$completion" && return 124
+  # }
+  # complete -F __nvm_completion nvm
+  # }}}
+
+  # proto-completion {{{
+  __proto_completion() {
+    unset -f __proto_completion
+    complete -r proto
+    eval "$(proto completions --shell bash)" && return 124
+  }
+  complete -F __proto_completion proto
   # }}}
 
   # rbenv-completion {{{
@@ -141,65 +150,13 @@ __main() {
 
   # NOTE: lazy load command https://qiita.com/uasi/items/80865646607b966aedc8
 
-  # mise {{{
-  if [ "$os" == 'macos' ]
-  then
-    # how to install mise when macOS:
-    # $ curl https://mise.run | sh # install native binary
-    # $ export MISE_INSTALL_PATH=$HOME/.local/bin/mise-x86
-    # $ curl https://mise.run | sh # install x86_64 binary
-    # $ unset -v MISE_INSTALL_PATH
-
-    # current session is `arch -x86_64 /bin/bash`
-    # NOTE: `uname -m` is cannot cache
-    if [ "$(uname -m)" == 'x86_64' ] && type mise-x86 >/dev/null 2>&1
-    then
-      mise() {
-        if [ "$1" == 'install' ]
-        then
-          for arg in "$@"
-          do
-            if [[ $arg =~ ^node@ ]]
-            then
-              local semver="${arg#node@}"
-              local major="${semver%%.*}"
-              (( "$major" >= 16 )) &&
-                echo 'node.js ver.16 and above support Apple Silicon' >&2 &&
-                return 1
-            fi
-          done
-        fi
-        command mise-x86 "$@"
-      }
-    else
-      mise() {
-        if [ "$1" == 'install' ]
-        then
-          for arg in "$@"
-          do
-            if [[ $arg =~ ^node@ ]]
-            then
-              local semver="${arg#node@}"
-              local major="${semver%%.*}"
-              (( "$major" <= 15 )) &&
-                echo 'node.js ver.15 and below require an x86_64 shell session' >&2 &&
-                return 1
-            fi
-          done
-        fi
-        command mise "$@"
-      }
-    fi
-  fi
-  # }}}
-
   # direnv {{{
   type direnv >/dev/null 2>&1 && eval "$(direnv hook bash)"
   # }}}
 
   # nvm {{{
   # shellcheck disable=SC1091
-  [ -n "${NVM_DIR-}" ] && [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
+  # [ -n "${NVM_DIR-}" ] && [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
   # }}}
 
   # rbenv {{{
