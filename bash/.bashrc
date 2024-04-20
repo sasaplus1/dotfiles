@@ -174,6 +174,15 @@ __main() {
   [ -r "$HOME/.cargo/env" ] && source "$HOME/.cargo/env"
   # }}}
 
+  # up {{{
+  up() {
+    unset -f up
+    # shellcheck disable=SC1091
+    source "$HOME/.ghq/github.com/shannonmoeller/up/up.sh" 2>/dev/null
+    up "$@"
+  }
+  # }}}
+
   # zoxide {{{
   type zoxide >/dev/null 2>&1 && eval "$(zoxide init bash)"
   # }}}
