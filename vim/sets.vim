@@ -163,7 +163,10 @@ elseif has('multi_byte')
   " set fileencodings=iso-2022-jp,ucs-bom,utf-8,euc-jp,cp932,default,latin1
 
   " encodingの値がUnicodeに設定された時のデフォルトの値を指定する
-  set fileencodings=ucs-bom,utf-8,default,latin1
+  " set fileencodings=ucs-bom,utf-8,default,latin1
+
+  " 様々な文字コードのファイルを開けるようにする
+  set fileencodings=ucs-bom,utf-8,iso-2022-jp-3,cp932,euc-jp,default,latin1
 endif
 
 if exists('+fixendofline')
