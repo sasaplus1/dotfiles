@@ -36,7 +36,16 @@ call dein#add('kana/vim-gf-user', {
       \   'typescript',
       \   'typescriptreact',
       \ ],
-      \ 'on_map' : ['gf', 'gF', '<C-w>f', '<C-w><C-f>', '<C-w>F', '<C-w>gf', '<C-w>gF', '<Plug>(gf-user-'],
+      \ 'on_map' : [
+      \   'gf',
+      \   'gF',
+      \   '<C-w>f',
+      \   '<C-w><C-f>',
+      \   '<C-w>F',
+      \   '<C-w>gf',
+      \   '<C-w>gF',
+      \   '<Plug>(gf-user-',
+      \ ],
       \ })
 
 " vim:ft=vim:fdm=marker:fen:
