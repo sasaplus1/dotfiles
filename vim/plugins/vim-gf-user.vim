@@ -18,6 +18,7 @@ function! GfImport() abort
   endif
 
   " TODO: tsconfig-pathsやrequire.resolveなどを使ってパスを解決したい
+  " TODO: coc-definitionを使う方が良いかもしれない
 
   return { 'path' : files[0], 'line' : 0, 'col' : 0 }
 endfunction

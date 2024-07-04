@@ -52,6 +52,10 @@ function! s:hook_add() abort
   autocmd vimrc FileType css,html,javascript,javascriptreact,json,rust,scss,typescript,typescriptreact,yaml
         \ nnoremap <buffer><silent> F :call CocAction('fold')<CR>
 
+  " gf で定義へジャンプする形で擬似的にファイルを開く
+  autocmd vimrc FileType css,html,javascript,javascriptreact,json,rust,scss,typescript,typescriptreact,yaml
+        \ nmap <buffer><expr> gf coc#rpc#ready() ? '<Plug>(coc-definition)' : 'feedkeys("gf", "nt")'
+
   autocmd vimrc CursorHold * silent call CocActionAsync('highlight')
 endfunction
 
