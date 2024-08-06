@@ -90,6 +90,7 @@ symlinks += $(makefile_dir)/git/.gitignore $(dest)/.config/git/ignore
 symlinks += $(makefile_dir)/nginx/.cocproxy.nginx.conf $(dest)/.cocproxy.nginx.conf
 # symlinks += $(makefile_dir)/pt/.ptignore $(dest)/.ptignore
 # symlinks += $(makefile_dir)/peco/config.json $(dest)/.peco/config.json
+symlinks += $(makefile_dir)/proto/.prototools $(dest)/.prototools
 # symlinks += $(makefile_dir)/ranger/commands.py $(dest)/.config/ranger/commands.py
 # symlinks += $(makefile_dir)/ranger/rc.conf $(dest)/.config/ranger/rc.conf
 # symlinks += $(makefile_dir)/ruby/.gemrc $(dest)/.gemrc
