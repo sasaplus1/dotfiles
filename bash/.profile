@@ -118,7 +118,7 @@ __main() {
     unset SSH_AGENT_PID
     rm -f "$__main_ssh_agent_info"
 
-    eval "$(command ssh-agent | grep -v 'echo' >"$__main_ssh_agent_info")" 2>/dev/null
+    eval "$(command ssh-agent | grep -v 'echo' | tee "$__main_ssh_agent_info")" 2>/dev/null
   fi
   # }}}
 
@@ -194,12 +194,14 @@ __main() {
   # https://github.com/orgs/Homebrew/discussions/2506
   if type bat >/dev/null 2>&1
   then
+    set -- "$SHELL -c 'col -bx | bat -l man --style=plain --paging=always'"
     # highlighting man page with bat
-    export MANPAGER="$SHELL -c 'col -bx | bat -l man --style=plain --paging=always'"
+    export MANPAGER="$*"
   elif [ "$EDITOR" = 'vim' ]
   then
+    set -- "$SHELL -c 'col -bx | vim -u NONE -NR -c \"se hls is nolist noma nomod sc scs wrap ft=man | syntax enable\" -'"
     # use vim
-    export MANPAGER="$SHELL -c 'col -bx | vim -u NONE -NR -c \"se hls is nolist noma nomod sc scs wrap ft=man | syntax enable\" -'"
+    export MANPAGER="$*"
   fi
 }
 __main "$@"
