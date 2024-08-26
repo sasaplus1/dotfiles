@@ -546,6 +546,15 @@ __main() {
     fi
   }
 
+  help() {
+    if type bat >/dev/null 2>&1
+    then
+      command help "$@" | bat -l bash --style=plain --paging=always
+    else
+      command help "$@"
+    fi
+  }
+
   add-ssh-key() {
     for key in $(find "$HOME/.ssh" -type f -name '*.pub' -print0 | xargs -0)
     do
