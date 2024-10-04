@@ -178,7 +178,7 @@ __main() {
   up() {
     unset -f up
     # shellcheck disable=SC1091
-    source "$HOME/.ghq/github.com/shannonmoeller/up/up.sh" 2>/dev/null
+    source "${GHQ_ROOT:-$HOME/.ghq}/github.com/shannonmoeller/up/up.sh" 2>/dev/null
     up "$@"
   }
   # }}}
@@ -459,7 +459,7 @@ __main() {
 
   # vim {{{
   local -r lvim="$HOME/.local/bin/vim"
-  local -r mvim="$HOME/.ghq/github.com/sasaplus1/macos-vim/usr/bin/vim"
+  local -r mvim="${GHQ_ROOT:-$HOME/.ghq}/github.com/sasaplus1/macos-vim/usr/bin/vim"
 
   [ -x "$lvim" ] && export EDITOR="$lvim"
   [ -x "$mvim" ] && export EDITOR="$mvim"
@@ -573,7 +573,7 @@ __main() {
       repo_cmd='ghq list --full-path'
     else
       # shellcheck disable=SC2016
-      repo_cmd='find "$GHQ_ROOT" -mindepth 3 -maxdepth 3 -type d -print'
+      repo_cmd='find "${GHQ_ROOT:-$HOME/.ghq}" -mindepth 3 -maxdepth 3 -type d -print'
     fi
 
     if type zoxide >/dev/null 2>&1
