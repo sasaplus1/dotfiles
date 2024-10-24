@@ -174,6 +174,15 @@ __main() {
   [ -r "$HOME/.cargo/env" ] && source "$HOME/.cargo/env"
   # }}}
 
+  # ni.bash {{{
+  ni() {
+    unset -f ni
+    # shellcheck disable=SC1091
+    source "${GHQ_ROOT:-$HOME/.ghq}/github.com/sasaplus1/ni.bash/ni.bash" 2>/dev/null
+    ni "$@"
+  }
+  # }}}
+
   # up {{{
   up() {
     unset -f up
