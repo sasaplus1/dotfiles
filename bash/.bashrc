@@ -205,6 +205,10 @@ __main() {
     [ -r "$fzf_completion" ] && source "$fzf_completion" && break
   done
 
+  local fzf_completion_loaded=
+  type _fzf_complete >/dev/null 2>&1 && fzf_completion_loaded=1
+  readonly fzf_completion_loaded
+
   # NOTE: Don't override default key bindings
   # local -r fzf_key_bindings=(
   #   'ctrl-alt-b:preview-page-up'
@@ -282,7 +286,7 @@ __main() {
           )
             # <(git ls-tree -dr --name-only --full-name HEAD ) \
   }
-  complete -F _fzf_complete_cd -o default -o bashdefault cd
+  [ -n "$fzf_completion_loaded" ] && complete -F _fzf_complete_cd -o default -o bashdefault cd
 
   # docker complete by fzf with preview
   _fzf_complete_docker() {
@@ -317,7 +321,7 @@ __main() {
         ;;
     esac
   }
-  complete -F _fzf_complete_docker -o default -o bashdefault docker
+  [ -n "$fzf_completion_loaded" ] && complete -F _fzf_complete_docker -o default -o bashdefault docker
 
   # git complete by fzf with preview
   _fzf_complete_git() {
@@ -375,7 +379,7 @@ __main() {
         ;;
     esac
   }
-  complete -F _fzf_complete_git -o default -o bashdefault git
+  [ -n "$fzf_completion_loaded" ] && complete -F _fzf_complete_git -o default -o bashdefault git
 
   # git-worktree complete by fzf with preview, called by _fzf_complete_git
   _fzf_complete_git_worktree() {
@@ -454,6 +458,7 @@ __main() {
     complete -r gh
 
     eval "$(gh completion --shell bash)" && \
+      [ -n "$fzf_completion_loaded" ] && \
       complete -F _fzf_complete_gh -o default -o bashdefault gh && \
       return 124
   }
@@ -463,7 +468,7 @@ __main() {
   _fzf_complete_tig() {
     _fzf_complete --preview='git show --color=always {}' -- "$@" < <(git branch --all --format='%(refname:short)')
   }
-  complete -F _fzf_complete_tig -o default -o bashdefault tig
+  [ -n "$fzf_completion_loaded" ] && complete -F _fzf_complete_tig -o default -o bashdefault tig
   # }}}
 
   # vim {{{
