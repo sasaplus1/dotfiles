@@ -1,5 +1,7 @@
 local wezterm = require 'wezterm'
 
+local config = {}
+
 -- https://coralpink.github.io/commentary/wezterm/dpi-detection.html
 -- window:get_dimensions().dpi
 -- MacBook Pro (13-inch, M1, 2020) 内蔵Retinaディスプレイ 13.3インチ(2560x1600) : 144dpi
@@ -25,102 +27,102 @@ wezterm.on('window-focus-changed', function(window, pane)
   prev_dpi = dpi
 end)
 
-return {
-  -- ベルを無効化する
-  audible_bell = 'Disabled',
+-- ベルを無効化する
+config.audible_bell = 'Disabled'
 
-  -- 色を変更する
-  colors = {
-    -- カーソルの背景色
-    cursor_bg = 'silver',
-    -- カーソルの枠の色（フォーカスが外れた時に描画される）
-    cursor_border = 'silver',
-  },
-
-  -- フォントを変更する
-  font = wezterm.font_with_fallback {
-    'Menlo',
-    'ヒラギノ角ゴシック',
-  },
-  font_size = 11,
-  -- cell_width = 0.996,
-  -- line_height = 1.0,
-
-  -- タブを非表示にする
-  enable_tab_bar = false,
-
-  -- フルスクリーンを有効にする
-  native_macos_fullscreen_mode = true,
-
-  -- デフォルトのキーバインドを無効化する
-  -- https://wezfurlong.org/wezterm/config/default-keys.html
-  disable_default_key_bindings = true,
-
-  -- キーボードショートカットの設定
-  keys = {
-    -- コピー&ペースト
-    {
-      key = 'c',
-      mods = 'CMD',
-      action = wezterm.action.CopyTo 'Clipboard'
-    },
-    {
-      key = 'v',
-      mods = 'CMD',
-      action = wezterm.action.PasteFrom 'Clipboard'
-    },
-    -- フォントサイズ
-    {
-      key = '-',
-      mods = 'CMD',
-      action = wezterm.action.DecreaseFontSize,
-    },
-    {
-      key = '+',
-      mods = 'CMD',
-      action = wezterm.action.IncreaseFontSize,
-    },
-    {
-      key = '0',
-      mods = 'CMD',
-      action = wezterm.action.ResetFontSize,
-    },
-    -- ウィンドウ
-    {
-      key = 'n',
-      mods = 'CMD',
-      action = wezterm.action.SpawnWindow,
-    },
-    -- フルスクリーン
-    {
-      key = 'f',
-      mods = 'CMD|CTRL',
-      action = wezterm.action.ToggleFullScreen,
-    },
-    -- デバッグパネル
-    {
-      key = 'L',
-      mods = 'CMD|CTRL',
-      action = wezterm.action.ShowDebugOverlay,
-    },
-    -- コマンドパレット
-    {
-      key = 'P',
-      mods = 'CMD|CTRL',
-      action = wezterm.action.ActivateCommandPalette,
-    },
-  },
-
-  -- Altキー（Optionキー）をコンポジションキーとする
-  -- JIS配列では1つしかキーがないためtrueにしないと特定の文字が入力できない（例えば option + ; など）
-  -- https://wezfurlong.org/wezterm/config/keyboard-concepts.html#macos-left-and-right-option-key
-  send_composed_key_when_left_alt_is_pressed = true,
-
-  -- IMEへ送信する修飾キー
-  -- Ctrl-hでIME入力中の文字列に対してBackspaceの挙動をしてほしい
-  -- Alt-;で「…」をきちんとIMEに送信して欲しい
-  -- https://github.com/wez/wezterm/pull/2435
-  -- https://github.com/wez/wezterm/pull/2435#issuecomment-1491290065
-  -- https://wezfurlong.org/wezterm/config/lua/config/macos_forward_to_ime_modifier_mask.html
-  macos_forward_to_ime_modifier_mask = "ALT|CTRL|SHIFT",
+-- 色を変更する
+config.colors = {
+  -- カーソルの背景色
+  cursor_bg = 'silver',
+  -- カーソルの枠の色（フォーカスが外れた時に描画される）
+  cursor_border = 'silver',
 }
+
+-- フォントを変更する
+config.font = wezterm.font_with_fallback {
+  'Menlo',
+  'ヒラギノ角ゴシック',
+}
+config.font_size = 11
+-- cell_width = 0.996
+-- line_height = 1.0
+
+-- タブを非表示にする
+config.enable_tab_bar = false
+
+-- フルスクリーンを有効にする
+config.native_macos_fullscreen_mode = true
+
+-- デフォルトのキーバインドを無効化する
+-- https://wezfurlong.org/wezterm/config/default-keys.html
+config.disable_default_key_bindings = true
+
+-- キーボードショートカットの設定
+config.keys = {
+  -- コピー&ペースト
+  {
+    key = 'c',
+    mods = 'CMD',
+    action = wezterm.action.CopyTo 'Clipboard'
+  },
+  {
+    key = 'v',
+    mods = 'CMD',
+    action = wezterm.action.PasteFrom 'Clipboard'
+  },
+  -- フォントサイズ
+  {
+    key = '-',
+    mods = 'CMD',
+    action = wezterm.action.DecreaseFontSize,
+  },
+  {
+    key = '+',
+    mods = 'CMD',
+    action = wezterm.action.IncreaseFontSize,
+  },
+  {
+    key = '0',
+    mods = 'CMD',
+    action = wezterm.action.ResetFontSize,
+  },
+  -- ウィンドウ
+  {
+    key = 'n',
+    mods = 'CMD',
+    action = wezterm.action.SpawnWindow,
+  },
+  -- フルスクリーン
+  {
+    key = 'f',
+    mods = 'CMD|CTRL',
+    action = wezterm.action.ToggleFullScreen,
+  },
+  -- デバッグパネル
+  {
+    key = 'L',
+    mods = 'CMD|CTRL',
+    action = wezterm.action.ShowDebugOverlay,
+  },
+  -- コマンドパレット
+  {
+    key = 'P',
+    mods = 'CMD|CTRL',
+    action = wezterm.action.ActivateCommandPalette,
+  },
+}
+
+-- Altキー（Optionキー）をコンポジションキーとする
+-- JIS配列では1つしかキーがないためtrueにしないと特定の文字が入力できない（例えば option + ; など）
+-- https://wezfurlong.org/wezterm/config/keyboard-concepts.html#macos-left-and-right-option-key
+config.send_composed_key_when_left_alt_is_pressed = true
+
+-- IMEへ送信する修飾キー
+-- Ctrl-hでIME入力中の文字列に対してBackspaceの挙動をしてほしい
+-- Alt-;で「…」をきちんとIMEに送信して欲しい
+-- https://github.com/wez/wezterm/pull/2435
+-- https://github.com/wez/wezterm/pull/2435#issuecomment-1491290065
+-- https://wezfurlong.org/wezterm/config/lua/config/macos_forward_to_ime_modifier_mask.html
+config.macos_forward_to_ime_modifier_mask = "ALT|CTRL|SHIFT"
+
+return config
