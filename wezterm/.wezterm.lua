@@ -48,6 +48,24 @@ config.enable_tab_bar = false
 -- https://wezfurlong.org/wezterm/config/default-keys.html
 config.disable_default_key_bindings = true
 
+if is_linux then
+  -- フォントを変更する
+  config.font = wezterm.font_with_fallback {
+    'DejaVu Sans Mono',
+    'Noto Sans Mono CJK JP',
+  }
+  config.font_size = 11
+  -- ウィンドウの装飾を指定する
+  config.window_decorations = 'TITLE | RESIZE'
+  -- パディングをなくす
+  config.window_padding = {
+    left = 0,
+    right = 0,
+    top = 0,
+    bottom = 0,
+  }
+end
+
 if is_macos then
   -- フォントを変更する
   config.font = wezterm.font_with_fallback {
@@ -72,7 +90,7 @@ if is_macos then
   -- https://github.com/wez/wezterm/pull/2435
   -- https://github.com/wez/wezterm/pull/2435#issuecomment-1491290065
   -- https://wezfurlong.org/wezterm/config/lua/config/macos_forward_to_ime_modifier_mask.html
-  config.macos_forward_to_ime_modifier_mask = "ALT|CTRL|SHIFT"
+  config.macos_forward_to_ime_modifier_mask = 'ALT|CTRL|SHIFT'
 end
 
 -- キーボードショートカットの設定
