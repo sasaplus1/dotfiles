@@ -2,6 +2,9 @@ local wezterm = require 'wezterm'
 
 local config = {}
 
+local is_linux = string.find(wezterm.target_triple, 'linux')
+local is_macos = string.find(wezterm.target_triple, 'apple')
+
 -- https://coralpink.github.io/commentary/wezterm/dpi-detection.html
 -- window:get_dimensions().dpi
 -- MacBook Pro (13-inch, M1, 2020) 内蔵Retinaディスプレイ 13.3インチ(2560x1600) : 144dpi
