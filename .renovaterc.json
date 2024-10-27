@@ -3,6 +3,7 @@
     "config:base",
     ":label(renovate)",
     ":reviewer(sasaplus1)",
-    ":timezone(Asia/Tokyo)"
+    ":timezone(Asia/Tokyo)",
+    "helpers:pinGithubActionDigest"
   ]
 }
