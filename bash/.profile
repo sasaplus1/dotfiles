@@ -179,6 +179,13 @@ __main() {
     export PATH="$__main_mvim/usr/bin:$PATH"
   # }}}
 
+  # tmux {{{
+  __main_tmux="$GHQ_ROOT/github.com/sasaplus1/macos-tmux"
+  [ -x "$__main_tmux/usr/bin/tmux" ] &&
+    export MANPATH="$__main_tmux/share/man:$MANPATH" &&
+    export PATH="$__main_tmux/usr/bin:$PATH"
+  # }}}
+
   #-----------------------------------------------------------------------------
 
   # stop flow mode (disable C-s and C-q)
