@@ -50,6 +50,25 @@ function! s:hook_source() abort
   "   return 'right'
   " endfunction
 
+  " lcdを変更してGFilesを実行する
+  function! s:fzf_change_directory_and_reload(selected)
+    let l:old_dir = getcwd()
+    execute 'lcd' fnameescape(a:selected)
+    execute 'FzfGFiles'
+    execute 'lcd' fnameescape(l:old_dir)
+  endfunction
+
+  function! s:fzf_select_directory(_selected)
+    call fzf#run(fzf#wrap({
+          \ 'source': 'ghq list --full-path',
+          \ 'sink': function('s:fzf_change_directory_and_reload'),
+          \ }))
+  endfunction
+
+  let g:fzf_action = {
+        \ 'ctrl-w': function('s:fzf_select_directory'),
+        \ }
+
   function! s:fzf_my_cheat_sheet(query) abort
     let command = executable('rg') ?
           \ 'rg --color=always --column --line-number --no-heading --smart-case -- %s || true' :
@@ -101,7 +120,6 @@ function! s:hook_source() abort
     nnoremap <silent> ,ul :<C-u>FzfLines<CR>
     nnoremap <silent> ,um :<C-u>FzfHistory<CR>
   endif
-
 endfunction
 
 call dein#add('junegunn/fzf.vim', {
