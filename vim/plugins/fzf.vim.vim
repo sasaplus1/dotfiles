@@ -51,22 +51,28 @@ function! s:hook_source() abort
   " endfunction
 
   " lcdを変更してGFilesを実行する
-  function! s:fzf_change_directory_and_reload(selected)
+  function! s:fzf_change_directory_and_reload(selected) abort
     let l:old_dir = getcwd()
     execute 'lcd' fnameescape(a:selected)
     execute 'FzfGFiles'
     execute 'lcd' fnameescape(l:old_dir)
   endfunction
 
-  function! s:fzf_select_directory(_selected)
+  " 別のリポジトリを選択してGFilesを実行する
+  function! s:fzf_switch_directory(_selected) abort
     call fzf#run(fzf#wrap({
           \ 'source': 'ghq list --full-path',
           \ 'sink': function('s:fzf_change_directory_and_reload'),
+          \ 'options' : [
+          \   '--preview', 'bat --color=always -pp {}/README*',
+          \   '--preview-window', 'right,50%',
+          \   '--prompt', 'Repository> ',
+          \ ],
           \ }))
   endfunction
 
   let g:fzf_action = {
-        \ 'ctrl-w': function('s:fzf_select_directory'),
+        \ 'ctrl-o': function('s:fzf_switch_directory'),
         \ }
 
   function! s:fzf_my_cheat_sheet(query) abort
@@ -106,9 +112,45 @@ function! s:hook_source() abort
           \ )
   endfunction
 
+  " Vimに関するメモの検索をする
   command! -nargs=* MyCheatSheet call s:fzf_my_cheat_sheet(<q-args>)
 
+  function! s:fzf_grep_memo(query) abort
+    let repos = [
+          \ '$HOME/.ghq/github.com/sasaplus1/random-notes',
+          \ '$HOME/.ghq/github.com/sasaplus1/notes',
+          \ '$HOME/.ghq/github.com/sasaplus1/memo',
+          \ '$HOME/.ghq/github.com/sasaplus1/diary',
+          \ '$HOME/.ghq/github.com/sasaplus1/til',
+          \ '$HOME/.ghq/github.com/sasaplus1/blog',
+          \ ]
+    " let ignores = join()
+    let command = printf(
+          \ "rg --color=always --column --line-number --no-heading --smart-case %s -e '%%s'",
+          \ join(l:repos, ' ')
+          \ )
+    let options = {
+          \ 'options' : [
+          \   '--bind', 'change:reload:' . printf(command, '{q}'),
+          \   '--border',
+          \   '--preview-window', 'top,80%',
+          \   '--prompt', 'Memo> ',
+          \   '--query', a:query,
+          \ ]
+          \ }
+
+    call fzf#vim#grep(
+          \ command,
+          \ 0,
+          \ fzf#vim#with_preview(options)
+          \ )
+  endfunction
+
+  " 様々なメモを検索する
+  command! -nargs=* GrepMemo call s:fzf_grep_memo(<q-args>)
+
   nnoremap <silent> ,ch :<C-u>MyCheatSheet<CR>
+  nnoremap <silent> ,gm :<C-u>GrepMemo<CR>
   nnoremap <silent> ,gs :<C-u>FzfGFiles?<CR>
   nnoremap <silent> ,rg :<C-u>FzfRg<CR>
   nnoremap <silent> ,rG :<C-u>FzfRG<CR>
@@ -127,7 +169,7 @@ call dein#add('junegunn/fzf.vim', {
       \ 'hook_source' : function('s:hook_source'),
       \ 'if' : v:version >= 704 && dein#tap('fzf'),
       \ 'lazy' : 1,
-      \ 'on_map' : [',ch', ',gs', ',rg', ',rG', '<Plug>(fzf-', '<C-p>', ',ub', ',ug', ',ul', ',um'],
+      \ 'on_map' : [',ch', ',gs', ',gm', ',rg', ',rG', '<Plug>(fzf-', '<C-p>', ',ub', ',ug', ',ul', ',um'],
       \ })
 
 " vim:ft=vim:fdm=marker:fen:
