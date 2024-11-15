@@ -1,12 +1,5 @@
 [alias]
   clear-branch = !git branch --merged | grep -v '^*' | tr -d ' ' | grep -v '^\\(main\\|master\\|develop\\)$' | xargs git branch -v -d
-  # not-an-aardvark/git-delete-squashed is under the MIT License
-  # https://github.com/not-an-aardvark/git-delete-squashed/blob/e2c99b6a10343fb2a9310719824972f2f10cd7b7/LICENSE.md
-	delete-squashed = "!f() { local targetBranch=${1:-$(git symbolic-ref refs/remotes/origin/HEAD | sed 's|^refs/remotes/origin/||')} && git checkout -q $targetBranch && git branch --merged | grep -v \"\\*\" | xargs -n 1 git branch -d && git for-each-ref refs/heads/ \"--format=%(refname:short)\" | while read branch; do mergeBase=$(git merge-base $targetBranch $branch) && [[ $(git cherry $targetBranch $(git commit-tree $(git rev-parse $branch^{tree}) -p $mergeBase -m _)) == \"-\"* ]] && git branch -D $branch; done; }; f"
-  export = !sh -c 'git checkout-index -a -f --prefix=$1/' -
-  set-mirror = !git remote set-url --add origin "$(git remote get-url --push origin | sed -e 's/github.com/bitbucket.org/')"
-  set-user = !git config --local user.name sasaplus1 && git config --local user.email sasaplus1@gmail.com
-  fixup-latest = !sh -c 'git commit --fixup "$(git log -1 --pretty=%H "$1")"' -
   rm-untracked = !git clean -df
 
 [alias]
