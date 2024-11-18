@@ -211,8 +211,14 @@ __main() {
   done
 
   local fzf_completion_loaded=
-  type _fzf_complete >/dev/null 2>&1 && fzf_completion_loaded=1
+  export __FZF_COMPLETION_LOADED=
+
+  type _fzf_complete >/dev/null 2>&1 &&
+    fzf_completion_loaded=1 &&
+    __FZF_COMPLETION_LOADED=$fzf_completion_loaded
+
   readonly fzf_completion_loaded
+  readonly __FZF_COMPLETION_LOADED
 
   # NOTE: Don't override default key bindings
   # local -r fzf_key_bindings=(
@@ -463,7 +469,7 @@ __main() {
     complete -r gh
 
     eval "$(gh completion --shell bash)" && \
-      [ -n "$fzf_completion_loaded" ] && \
+      [ -n "$__FZF_COMPLETION_LOADED" ] && \
       complete -F _fzf_complete_gh -o default -o bashdefault gh && \
       return 124
   }
