@@ -433,6 +433,10 @@ __main() {
     local -r subcommand="$(__detect_subcommand "$command")"
 
     case "$subcommand" in
+      co)
+        _fzf_complete --preview="GH_FORCE_TTY=1 gh pr view {1}" -- "$@" < \
+          <(gh pr list --json number,title -q '.[] | "#\(.number)\t\(.title)"')
+        ;;
       gist)
         _fzf_complete --preview="GH_FORCE_TTY=1 gh gist view {1}" -- "$@" < \
           <(gh gist list)
