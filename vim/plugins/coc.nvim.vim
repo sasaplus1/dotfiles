@@ -16,6 +16,7 @@ function! s:hook_add() abort
         \ 'coc-tsserver',
         \ 'coc-vimlsp',
         \ 'coc-yaml',
+        \ 'coc-zls',
         \ ]
 
   " NOTE: autocmd_add() を使う方が良さそうだがコピペで済むので避けた
