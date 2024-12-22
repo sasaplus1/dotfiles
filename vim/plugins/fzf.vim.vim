@@ -28,7 +28,7 @@ let $FZF_DEFAULT_OPTS = join([
       \ ], ' ')
 " 共通レイアウトの指定
 let g:fzf_layout = {
-      \ 'down' : '60%'
+      \ 'down' : '30%'
       \ }
 
 function! s:hook_source() abort
