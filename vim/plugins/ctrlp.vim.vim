@@ -1,9 +1,7 @@
 scriptencoding utf-8
 
-" NOTE: for temporary use fzf.vim
-if 1
-  finish
-endif
+" use fzf
+finish
 
 if !exists('*dein#add')
   finish
