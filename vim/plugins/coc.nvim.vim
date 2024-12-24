@@ -61,6 +61,10 @@ function! s:hook_add() abort
 endfunction
 
 function! s:hook_source() abort
+  if dein#tap('copilot.vim') && !dein#is_sourced('copilot.vim')
+    call dein#source(['copilot.vim'])
+  endif
+
   " おそらく coc#util#get_config_home() が post_source でないと使用できない（未検証）
   let coc_settings_path = resolve(
         \ coc#util#get_config_home() . '/coc-settings.json'
@@ -154,24 +158,19 @@ function! s:hook_source() abort
   nmap <silent> ,lR <Plug>(coc-rename)
 endfunction
 
-" 遅延読み込みを指定していない場合はhook_sourceは呼ばれないので呼ばれるようにする
-autocmd vimrc VimEnter * call s:hook_source()
-
 " g:coc_node_path と npm.binPath を指定しても正常に動作しない
 " https://github.com/neoclide/coc.nvim/issues/1826#issuecomment-1149259027
 
 call dein#add('neoclide/coc.nvim', {
       \ 'hook_add' : function('s:hook_add'),
       \ 'hook_source' : function('s:hook_source'),
+      \ 'lazy' : 1,
       \ 'merged' : 0,
+      \ 'on_cmd' : ['<Plug>(coc-'],
+      \ 'on_event' : ['BufNewFile', 'BufRead', 'CursorHold', 'CursorHoldI', 'CursorMoved', 'CursorMovedI', 'InsertEnter'],
+      \ 'on_func' : ['CocAction', 'CocActionAsync'],
+      \ 'on_map' : [',ld', ',lt', ',li', ',lr', ',lR'],
       \ 'rev' : 'release',
       \ })
-
-"     \ 'depends' : ['copilot.vim'],
-"     \ 'lazy' : 1,
-"     \ 'on_cmd' : ['<Plug>(coc-'],
-"     \ 'on_event' : ['CursorHold', 'CursorHoldI', 'CursorMoved', 'CursorMovedI', 'InsertEnter'],
-"     \ 'on_func' : ['CocAction', 'CocActionAsync'],
-"     \ 'on_map' : [',ld', ',lt', ',li', ',lr', ',lR'],
 
 " vim:ft=vim:fdm=marker:fen:
