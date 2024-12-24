@@ -14,8 +14,7 @@ autocmd vimrc BufNewFile,BufRead *.{cts,mts,ts,tsx} setfiletype typescript
 
 if has('file_in_path')
   " gfで開く際に拡張子を補完する
-  autocmd vimrc BufNewFile,BufRead *.{cjs,js,jsx,mjs,pac,ts,tsx}
-        \ setlocal suffixesadd+=.tsx,.ts,.mjs,.cjs,.jsx,.js,.json,.pac
+  autocmd vimrc BufNewFile,BufRead *.{cjs,js,jsx,mjs,pac,ts,tsx} setlocal suffixesadd+=.tsx,.ts,.mjs,.cjs,.jsx,.js,.json,.pac
 endif
 
 " *.ftlはHTML
@@ -102,8 +101,10 @@ autocmd vimrc InsertLeave * setlocal nopaste pastetoggle=
 " }}}
 
 " コメント中の特定の単語を強調表示する
-autocmd vimrc WinEnter,WinLeave,BufRead,BufNew *
-      \ call matchadd('Todo', '\<\%(TODO\|FIXME\|CHANGED\|XXX\|BUG\|HACK\|NOTE\|INFO\|IDEA\)\>')
+let s:todo = '\<\%(TODO\|FIXME\|CHANGED\|XXX\|BUG\|HACK\|NOTE\|INFO\|IDEA\)\>'
+" TODO: matchaddが増えすぎる
+" TODO: highlightにTodoがないとエラーになる
+autocmd vimrc WinEnter,WinLeave,BufRead,BufNew * call matchadd('Todo', s:todo)
 
 " ウィンドウを移動したらバッファ番号とフルパスを表示する
 autocmd vimrc WinEnter * execute 'normal! 2\<C-g>'
