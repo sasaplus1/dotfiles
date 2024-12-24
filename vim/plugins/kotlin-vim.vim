@@ -4,10 +4,7 @@ if has('nvim')
   finish
 endif
 
-call dein#add('udalov/kotlin-vim', {
-      \ 'lazy' : 1,
-      \ 'merge_ftdetect' : 1,
-      \ 'on_ft' : 'kotlin',
-      \ })
+" NOTE: pluginディレクトリがないのでlazyにする必要はない
+call dein#add('udalov/kotlin-vim')
 
 " vim:ft=vim:fdm=marker:fen:

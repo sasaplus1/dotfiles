@@ -3,11 +3,8 @@ scriptencoding utf-8
 if has('nvim')
   finish
 endif
-
-call dein#add('othree/html5.vim', {
-      \ 'lazy' : 1,
-      \ 'merge_ftdetect' : 1,
-      \ 'on_ft' : ['html', 'php'],
-      \ })
+ 
+" NOTE: pluginディレクトリがないのでlazyにする必要はない
+call dein#add('othree/html5.vim')
 
 " vim:ft=vim:fdm=marker:fen:

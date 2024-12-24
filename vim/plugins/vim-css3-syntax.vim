@@ -4,10 +4,7 @@ if has('nvim')
   finish
 endif
 
-call dein#add('hail2u/vim-css3-syntax', {
-      \ 'lazy' : 1,
-      \ 'merge_ftdetect' : 1,
-      \ 'on_ft' : ['css', 'html', 'scss'],
-      \ })
+" NOTE: pluginディレクトリがないのでlazyにする必要はない
+call dein#add('hail2u/vim-css3-syntax')
 
 " vim:ft=vim:fdm=marker:fen:

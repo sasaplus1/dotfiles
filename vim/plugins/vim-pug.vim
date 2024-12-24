@@ -4,10 +4,7 @@ if has('nvim')
   finish
 endif
 
-call dein#add('digitaltoad/vim-pug', {
-      \ 'lazy' : 1,
-      \ 'merge_ftdetect' : 1,
-      \ 'on_ft' : 'pug',
-      \ })
+" NOTE: pluginディレクトリがないのでlazyにする必要はない
+call dein#add('digitaltoad/vim-pug')
 
 " vim:ft=vim:fdm=marker:fen:

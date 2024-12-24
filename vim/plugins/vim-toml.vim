@@ -4,10 +4,7 @@ if has('nvim')
   finish
 endif
 
-call dein#add('cespare/vim-toml', {
-      \ 'lazy' : 1,
-      \ 'merge_ftdetect' : 1,
-      \ 'on_ft' : 'toml',
-      \ })
+" NOTE: pluginディレクトリがないのでlazyにする必要はない
+call dein#add('cespare/vim-toml')
 
 " vim:ft=vim:fdm=marker:fen:
