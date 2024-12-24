@@ -17,6 +17,9 @@ if has('file_in_path')
   autocmd vimrc BufNewFile,BufRead *.{cjs,js,jsx,mjs,pac,ts,tsx} setlocal suffixesadd+=.tsx,.ts,.mjs,.cjs,.jsx,.js,.json,.pac
 endif
 
+" *.ejsと*.vueのファイルタイプをHTMLとする
+autocmd vimrc BufNewFile,BufRead *.{ejs,vue} setlocal filetype=html
+
 " *.ftlはHTML
 autocmd vimrc BufNewFile,BufRead *.ftl setfiletype html
 
