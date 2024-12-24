@@ -8,6 +8,11 @@ let g:loaded_netrwSettings = 1
 
 " このタイミングで設定しないと実行された後に消えてしまう
 function! s:hook_source() abort
+  " NOTE: 初回実行時なぜか表示が崩れるのでcoc.nvimを読み込んでおく
+  if dein#tap('coc.nvim') && !dein#is_sourced('coc.nvim')
+    call dein#source(['coc.nvim'])
+  endif
+
   " ,vfでvfilerを開く
   " TODO: -layout=none以外を指定すると表示が崩れない
   nnoremap <expr> ,vf ':<C-u>VFiler -show-hidden-files ' . fnameescape(expand('%:p:h')) . '<CR>'
