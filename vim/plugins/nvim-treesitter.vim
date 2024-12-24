@@ -4,22 +4,12 @@ if !has('nvim')
   finish
 endif
 
-function! s:hook_source() abort
-lua << EOB
-  require('nvim-treesitter.configs').setup {
-    auto_install = false,
-    ensure_installed = 'all',
-    highlight = {
-      enable = true,
-      additional_vim_regex_highlighting = false,
-    },
-    indent = {
-      enable = true,
-    },
-    sync_install = false,
-  }
-EOB
+" このファイルの拡張子をvimからluaに変更したもの
+let s:config = expand('<sfile>:r') . '.lua'
 
+function! s:hook_source() abort
+  " Luaの設定ファイルを読み込む
+  execute 'luafile' s:config
   " nvim-treesitterでの折りたたみを使用する
   setglobal foldmethod=expr
   setglobal foldexpr=nvim_treesitter#foldexpr()
