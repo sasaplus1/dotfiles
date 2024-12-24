@@ -1,6 +1,6 @@
 scriptencoding utf-8
 
-if !exists('*dein#add')
+if !(v:version >= 704)
   finish
 endif
 
@@ -165,11 +165,10 @@ function! s:hook_source() abort
 endfunction
 
 call dein#add('junegunn/fzf.vim', {
-      \ 'depends' : ['fzf'],
       \ 'hook_source' : function('s:hook_source'),
-      \ 'if' : v:version >= 704 && dein#tap('fzf'),
       \ 'lazy' : 1,
       \ 'on_map' : [',ch', ',gs', ',gm', ',rg', ',rG', '<Plug>(fzf-', '<C-p>', ',ub', ',ug', ',ul', ',um'],
+      \ 'on_source' : 'fzf',
       \ })
 
 " vim:ft=vim:fdm=marker:fen:

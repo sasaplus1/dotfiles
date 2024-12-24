@@ -1,9 +1,5 @@
 scriptencoding utf-8
 
-if !exists('*dein#add')
-  finish
-endif
-
 " see https://github.com/termstandard/colors
 
 " see :help xterm-true-color
@@ -21,11 +17,18 @@ endif
 let &t_8f = "\<Esc>[38:2:%lu:%lu:%lum"
 let &t_8b = "\<Esc>[48:2:%lu:%lu:%lum"
 
-" https://qiita.com/kawaz/items/ee725f6214f91337b42b#colorscheme-%E3%81%AF-vimenter-%E3%81%AB-nested-%E6%8C%87%E5%AE%9A%E3%81%A7%E9%81%85%E5%BB%B6%E8%A8%AD%E5%AE%9A%E3%81%99%E3%82%8B
-autocmd vimrc VimEnter * ++nested set background=dark | colorscheme gruvbox8
+function! s:hook_source() abort
+  if !dein#tap('lightline.vim')
+    " https://qiita.com/kawaz/items/ee725f6214f91337b42b#colorscheme-%E3%81%AF-vimenter-%E3%81%AB-nested-%E6%8C%87%E5%AE%9A%E3%81%A7%E9%81%85%E5%BB%B6%E8%A8%AD%E5%AE%9A%E3%81%99%E3%82%8B
+    autocmd vimrc VimEnter * ++nested set background=dark | colorscheme gruvbox8
+  endif
+endfunction
 
 call dein#add('lifepillar/vim-gruvbox8', {
+      \ 'hook_source' : function('s:hook_source'),
+      \ 'lazy' : 1,
       \ 'merged' : 0,
+      \ 'on_event' : ['ColorScheme', 'VimEnter'],
       \ })
 
 " vim:ft=vim:fdm=marker:fen:

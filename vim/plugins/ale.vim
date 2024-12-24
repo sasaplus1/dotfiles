@@ -1,9 +1,5 @@
 scriptencoding utf-8
 
-if !exists('*dein#add')
-  finish
-endif
-
 " 明示的に指定する
 let g:ale_linters_explicit = 1
 

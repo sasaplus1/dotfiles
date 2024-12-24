@@ -1,6 +1,6 @@
 scriptencoding utf-8
 
-if !exists('*dein#add') || !has('nvim')
+if !has('nvim')
   finish
 endif
 
@@ -30,7 +30,6 @@ endfunction
 call dein#add('nvim-treesitter/nvim-treesitter', {
       \ 'hook_source' : function('s:hook_source'),
       \ 'hook_done_update' : 'TSUpdate',
-      \ 'if' : has('nvim'),
       \ 'merged' : 0,
       \ })
 

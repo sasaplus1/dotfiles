@@ -3,12 +3,12 @@ scriptencoding utf-8
 " use fzf
 finish
 
-if !exists('*dein#add')
+if !exists('*matchfuzzy')
   finish
 endif
 
 call dein#add('mattn/ctrlp-matchfuzzy', {
-      \ 'if' : exists('*matchfuzzy'),
+      \ 'on_source' : 'ctrlp.vim',
       \ })
 
 " vim:ft=vim:fdm=marker:fen:

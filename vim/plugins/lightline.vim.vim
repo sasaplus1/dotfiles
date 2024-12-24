@@ -1,12 +1,13 @@
 scriptencoding utf-8
 
-if !exists('*dein#add')
-  finish
-endif
-
 function! s:hook_source() abort
   if dein#tap('vim-gruvbox8')
+    if !dein#is_sourced('vim-gruvbox8')
+      call dein#source(['vim-gruvbox8'])
+    endif
     let g:lightline = { 'colorscheme' : 'gruvbox8' }
+    set background=dark
+    colorscheme gruvbox8
   endif
 endfunction
 

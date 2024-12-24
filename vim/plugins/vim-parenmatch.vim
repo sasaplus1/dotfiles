@@ -1,9 +1,5 @@
 scriptencoding utf-8
 
-if !exists('*dein#add')
-  finish
-endif
-
 " matchparenを読み込まない
 let g:loaded_matchparen = 1
 

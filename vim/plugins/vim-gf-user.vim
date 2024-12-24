@@ -1,9 +1,5 @@
 scriptencoding utf-8
 
-if !exists('*dein#add')
-  finish
-endif
-
 function! GfImport() abort
   let path = expand('<cfile>')
 

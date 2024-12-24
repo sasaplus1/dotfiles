@@ -1,6 +1,6 @@
 scriptencoding utf-8
 
-if !exists('*dein#add')
+if !(v:version >= 800 || has('nvim-0.3.1')) || !executable('node')
   finish
 endif
 
@@ -163,7 +163,6 @@ autocmd vimrc VimEnter * call s:hook_source()
 call dein#add('neoclide/coc.nvim', {
       \ 'hook_add' : function('s:hook_add'),
       \ 'hook_source' : function('s:hook_source'),
-      \ 'if' : (v:version >= 800 || has('nvim-0.3.1')) && executable('node'),
       \ 'merged' : 0,
       \ 'rev' : 'release',
       \ })

@@ -3,7 +3,7 @@ scriptencoding utf-8
 " use fzf
 finish
 
-if !exists('*dein#add')
+if !(v:version >= 700)
   finish
 endif
 
@@ -133,9 +133,7 @@ function! s:hook_source() abort
 endfunction
 
 call dein#add('ctrlpvim/ctrlp.vim', {
-      \ 'depends' : exists('*matchfuzzy') ? ['ctrlp-matchfuzzy'] : [],
       \ 'hook_source' : function('s:hook_source'),
-      \ 'if' : v:version >= 700,
       \ 'lazy' : 1,
       \ 'on_map' : ['<C-p>', ',ub', ',ug', ',ul', ',um', '<Plug>(CtrlP'],
       \ })

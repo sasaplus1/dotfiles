@@ -1,19 +1,15 @@
 scriptencoding utf-8
 
-if !exists('*dein#add')
-  finish
-endif
-
 function! s:hook_source() abort
   vmap <silent>c <Plug>(operator-camelize)
   vmap <silent>_ <Plug>(operator-decamelize)
 endfunction
 
 call dein#add('tyru/operator-camelize.vim', {
-      \ 'depends' : 'vim-operator-user',
       \ 'hook_source' : function('s:hook_source'),
       \ 'lazy' : 1,
-      \ 'on_map' : ['c', '_', '<Plug>(operator-camelize)', '<Plug>(operator-decamelize)'],
+      \ 'on_source' : 'vim-operator-user',
+      \ 'on_map' : ['c', '_', '<Plug>(operator-'],
       \ })
 
 " vim:ft=vim:fdm=marker:fen:

@@ -1,9 +1,5 @@
 scriptencoding utf-8
 
-if !exists('*dein#add')
-  finish
-endif
-
 " netrwを読み込まない
 let g:loaded_netrw = 1
 let g:loaded_netrwFileHandlers = 1
@@ -25,8 +21,8 @@ endfunction
 call dein#add('obaland/vfiler.vim', {
       \ 'hook_source' : function('s:hook_source'),
       \ 'lazy' : 1,
-      \ 'on_map' : [',vf', ',vF'],
       \ 'on_cmd' : ['VFiler'],
+      \ 'on_map' : [',vf', ',vF'],
       \ })
 
 " vim:ft=vim:fdm=marker:fen:

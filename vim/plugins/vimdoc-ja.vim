@@ -1,11 +1,9 @@
 scriptencoding utf-8
 
-if !exists('*dein#add') || has('nvim')
+if has('nvim')
   finish
 endif
 
-call dein#add('vim-jp/vimdoc-ja', {
-      \ 'if' : !has('nvim')
-      \ })
+call dein#add('vim-jp/vimdoc-ja')
 
 " vim:ft=vim:fdm=marker:fen:
