@@ -2,28 +2,22 @@ scriptencoding utf-8
 
 let s:plugin_dir = simplify(g:vimrc_vim_dir . '/dein')
 
-let s:dein_tag = v:version >= 802 || has('nvim-0.5')
-      \ ? '3.1'
-      \ : '2.2'
-let s:dein_dir = simplify(
-      \ s:plugin_dir . '/repos/github.com/Shougo/dein.vim_' . s:dein_tag,
-      \ )
-
-if empty(glob(s:dein_dir))
-  call system(printf(
-        \ "git -c '%s' clone --branch '%s' 'https://github.com/Shougo/dein.vim' '%s'",
-        \ 'advice.detachedHead=false',
-        \ s:dein_tag,
-        \ s:dein_dir,
-        \ ))
+if !isdirectory(s:plugin_dir)
+  call mkdir(s:plugin_dir, 'p')
 endif
 
 if &runtimepath !~# '/dein.vim'
+  let s:dein_dir = s:plugin_dir . '/repos/github.com/Shougo/dein.vim'
+  if !isdirectory(s:dein_dir)
+    execute '!git clone https://github.com/Shougo/dein.vim' s:dein_dir
+  endif
   execute 'set' 'runtimepath^=' . s:dein_dir
 endif
 
+" NOTE: hook_sourceに関数を渡しているのでstateが使えない
+" NOTE: hooks_fileを駆使するなど別の方法が必要
+" if dein#min#load_state(s:plugin_dir)
 call dein#begin(s:plugin_dir)
-
 call dein#add(s:dein_dir)
 
 let plugin_files = split(glob(expand('<sfile>:h') . '/plugins/*.vim'), '\n')
@@ -33,6 +27,8 @@ for plugin_file in plugin_files
 endfor
 
 call dein#end()
+"   call dein#save_state
+" endif
 
 " sourceフックを呼ぶ
 call dein#call_hook('source')
