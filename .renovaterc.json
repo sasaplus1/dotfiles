@@ -6,6 +6,6 @@
     ":reviewer(sasaplus1)",
     ":timezone(Asia/Tokyo)",
     ":disableDependencyDashboard",
-    "helpers:pinGithubActionDigest"
+    "helpers:pinGitHubActionDigestsToSemver"
   ]
 }
