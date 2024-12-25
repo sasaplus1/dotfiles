@@ -5,8 +5,8 @@ on:
   - pull_request
 
 jobs:
-  deploy-on-physical-os:
-    name: on physical OS
+  deploy-and-test:
+    name: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
@@ -24,15 +24,6 @@ jobs:
       - run: make deploy
       - run: make test
       - run: test "$(make test)" = 'done.'
-  deploy-on-docker:
-    name: on Docker
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: docker build -t "${GITHUB_REPOSITORY}" .
-      - run: >
-          docker run --rm "${GITHUB_REPOSITORY}"
-          bash -c 'rm -f ~/.bashrc ~/.profile && make deploy >/dev/null && [ "$(make test)" = "done." ]'
   shellcheck:
     name: shellcheck
     runs-on: ubuntu-latest
