@@ -21,7 +21,7 @@ function! s:install_node() abort
     return
   endif
 
-  let ver = '20.15.0'
+  let ver = '20.18.1'
 
   if has('osxdarwin')
     let platform = 'darwin'
