@@ -20,14 +20,14 @@ endif
 call dein#begin(s:plugin_dir)
 call dein#add(s:dein_dir)
 
-let plugin_files = split(glob(expand('<sfile>:h') . '/plugins/*.vim'), '\n')
+let plugin_files = split(glob(expand('<script>:h') . '/plugins/*.vim'), '\n')
 
 for plugin_file in plugin_files
   execute 'source' plugin_file
 endfor
 
 call dein#end()
-"   call dein#save_state
+"   call dein#save_state()
 " endif
 
 " sourceフックを呼ぶ

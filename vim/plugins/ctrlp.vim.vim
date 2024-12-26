@@ -119,6 +119,7 @@ function! s:ctrlp_grep(pattern) abort
 endfunction
 
 function! s:hook_source() abort
+" hook_source {{{
   " CtrlPGrepを定義する
   command! -nargs=1 CtrlPGrep call <SID>ctrlp_grep(<f-args>)
 
@@ -130,10 +131,11 @@ function! s:hook_source() abort
   nnoremap ,ul :<C-u>CtrlPLine<CR>
   " ,umで最近開いたファイル一覧
   nnoremap ,um :<C-u>CtrlPMRUFiles<CR>
+" }}}
 endfunction
 
 call dein#add('ctrlpvim/ctrlp.vim', {
-      \ 'hook_source' : function('s:hook_source'),
+      \ 'hooks_file' : expand('<script>:p'),
       \ 'lazy' : 1,
       \ 'on_map' : ['<C-p>', ',ub', ',ug', ',ul', ',um', '<Plug>(CtrlP'],
       \ })

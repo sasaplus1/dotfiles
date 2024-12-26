@@ -5,6 +5,7 @@ if !(v:version >= 800 || has('nvim-0.3.1')) || !executable('node')
 endif
 
 function! s:hook_add() abort
+" hook_add {{{
   " 'coc-prettier',
   let g:coc_global_extensions = [
         \ 'coc-css',
@@ -58,9 +59,11 @@ function! s:hook_add() abort
         \ nmap <buffer><expr> gf coc#rpc#ready() ? '<Plug>(coc-definition)' : 'feedkeys("gf", "nt")'
 
   autocmd vimrc CursorHold * silent call CocActionAsync('highlight')
+" }}}
 endfunction
 
 function! s:hook_source() abort
+" hook_source {{{
   if dein#tap('copilot.vim') && !dein#is_sourced('copilot.vim')
     call dein#source(['copilot.vim'])
   endif
@@ -156,14 +159,14 @@ function! s:hook_source() abort
   nmap <silent> ,li <Plug>(coc-implementation)
   nmap <silent> ,lr <Plug>(coc-references)
   nmap <silent> ,lR <Plug>(coc-rename)
+" }}}
 endfunction
 
 " g:coc_node_path と npm.binPath を指定しても正常に動作しない
 " https://github.com/neoclide/coc.nvim/issues/1826#issuecomment-1149259027
 
 call dein#add('neoclide/coc.nvim', {
-      \ 'hook_add' : function('s:hook_add'),
-      \ 'hook_source' : function('s:hook_source'),
+      \ 'hooks_file' : expand('<script>:p'),
       \ 'lazy' : 1,
       \ 'merged' : 0,
       \ 'on_cmd' : ['<Plug>(coc-'],

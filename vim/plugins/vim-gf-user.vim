@@ -20,11 +20,13 @@ function! GfImport() abort
 endfunction
 
 function! s:hook_source() abort
+" hook_source {{{
   call gf#user#extend('GfImport', 1000)
+" }}}
 endfunction
 
 call dein#add('kana/vim-gf-user', {
-      \ 'hook_source' : function('s:hook_source'),
+      \ 'hooks_file' : expand('<script>:p'),
       \ 'lazy' : 1,
       \ 'on_ft' : [
       \   'javascript',
