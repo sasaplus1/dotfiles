@@ -1,6 +1,7 @@
 scriptencoding utf-8
 
 function! s:hook_source() abort
+" hook_source {{{
   if dein#tap('vim-gruvbox8')
     if !dein#is_sourced('vim-gruvbox8')
       call dein#source(['vim-gruvbox8'])
@@ -9,11 +10,12 @@ function! s:hook_source() abort
     set background=dark
     colorscheme gruvbox8
   endif
+" }}}
 endfunction
 
 " NOTE: ColorSchemeイベントは初回起動時に必要
 call dein#add('itchyny/lightline.vim', {
-      \ 'hook_source' : function('s:hook_source'),
+      \ 'hooks_file' : expand('<sfile>:p'),
       \ 'lazy' : 1,
       \ 'on_event' : ['ColorScheme', 'VimEnter']
       \ })

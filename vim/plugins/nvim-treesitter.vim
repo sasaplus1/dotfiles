@@ -8,6 +8,7 @@ endif
 let s:config = expand('<sfile>:r') . '.lua'
 
 function! s:hook_source() abort
+" hook_source {{{
   " Luaの設定ファイルを読み込む
   execute 'luafile' s:config
   " nvim-treesitterでの折りたたみを使用する
@@ -15,11 +16,17 @@ function! s:hook_source() abort
   setglobal foldexpr=nvim_treesitter#foldexpr()
   " 折りたたみを無効にする
   setglobal nofoldenable
+" }}}
+endfunction
+
+function! s:hook_done_update() abort
+" hook_done_update {{{
+  execute 'TSUpdate'
+" }}}
 endfunction
 
 call dein#add('nvim-treesitter/nvim-treesitter', {
-      \ 'hook_source' : function('s:hook_source'),
-      \ 'hook_done_update' : 'TSUpdate',
+      \ 'hooks_file' : expand('<sfile>:p'),
       \ 'merged' : 0,
       \ })
 

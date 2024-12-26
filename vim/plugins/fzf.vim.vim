@@ -32,6 +32,7 @@ let g:fzf_layout = {
       \ }
 
 function! s:hook_source() abort
+" hook_source {{{
   " プレビューウィンドウの位置を動的に決定する
   " function! s:get_preview_position() abort
   "   if $TERM =~# '^screen' && executable('tmux')
@@ -162,10 +163,11 @@ function! s:hook_source() abort
     nnoremap <silent> ,ul :<C-u>FzfLines<CR>
     nnoremap <silent> ,um :<C-u>FzfHistory<CR>
   endif
+" }}}
 endfunction
 
 call dein#add('junegunn/fzf.vim', {
-      \ 'hook_source' : function('s:hook_source'),
+      \ 'hooks_file' : expand('<sfile>:p'),
       \ 'lazy' : 1,
       \ 'on_map' : [',ch', ',gs', ',gm', ',rg', ',rG', '<Plug>(fzf-', '<C-p>', ',ub', ',ug', ',ul', ',um'],
       \ 'on_source' : 'fzf',
