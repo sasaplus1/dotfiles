@@ -1,10 +1,14 @@
 scriptencoding utf-8
 
-" netrwを読み込まない
-let g:loaded_netrw = 1
-let g:loaded_netrwFileHandlers = 1
-let g:loaded_netrwPlugin = 1
-let g:loaded_netrwSettings = 1
+function! s:hook_add() abort
+" hook_add {{{
+  " netrwを読み込まない
+  let g:loaded_netrw = 1
+  let g:loaded_netrwFileHandlers = 1
+  let g:loaded_netrwPlugin = 1
+  let g:loaded_netrwSettings = 1
+" }}}
+endfunction
 
 " このタイミングで設定しないと実行された後に消えてしまう
 function! s:hook_source() abort

@@ -1,9 +1,13 @@
 scriptencoding utf-8
 
-" matchparenを読み込まない
-let g:loaded_matchparen = 1
+function! s:hook_add() abort
+" hook_add {{{
+  " matchparenを読み込まない
+  let g:loaded_matchparen = 1
 
-let g:parenmatch_highlight = 0
+  let g:parenmatch_highlight = 0
+" }}}
+endfunction
 
 function! s:hook_source() abort
 " hook_source {{{

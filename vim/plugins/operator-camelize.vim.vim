@@ -1,7 +1,7 @@
 scriptencoding utf-8
 
-function! s:hook_source() abort
-" hook_source {{{
+function! s:hook_add() abort
+" hook_add {{{
   vmap <silent>c <Plug>(operator-camelize)
   vmap <silent>_ <Plug>(operator-decamelize)
 " }}}

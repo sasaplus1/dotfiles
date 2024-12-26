@@ -1,26 +1,25 @@
 scriptencoding utf-8
 
-function! GfImport() abort
-  let path = expand('<cfile>')
-
-  if path !~# '\v^..?'
-    return 0
-  endif
-
-  let files = split(glob(path . '.{tsx,ts,d.ts,mjs,cjs,jsx,js,json}'), '\n')
-
-  if empty(files)
-    return 0
-  endif
-
-  " TODO: tsconfig-pathsやrequire.resolveなどを使ってパスを解決したい
-  " TODO: coc-definitionを使う方が良いかもしれない
-
-  return { 'path' : files[0], 'line' : 0, 'col' : 0 }
-endfunction
-
 function! s:hook_source() abort
 " hook_source {{{
+  function! GfImport() abort
+    let path = expand('<cfile>')
+
+    if path !~# '\v^..?'
+      return 0
+    endif
+
+    let files = split(glob(path . '.{tsx,ts,d.ts,mjs,cjs,jsx,js,json}'), '\n')
+
+    if empty(files)
+      return 0
+    endif
+
+    " TODO: tsconfig-pathsやrequire.resolveなどを使ってパスを解決したい
+    " TODO: coc-definitionを使う方が良いかもしれない
+
+    return { 'path' : files[0], 'line' : 0, 'col' : 0 }
+  endfunction
   call gf#user#extend('GfImport', 1000)
 " }}}
 endfunction
