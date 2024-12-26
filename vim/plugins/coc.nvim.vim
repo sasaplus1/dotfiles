@@ -1,9 +1,5 @@
 scriptencoding utf-8
 
-if !(v:version >= 800 || has('nvim-0.3.1')) || !executable('node')
-  finish
-endif
-
 function! s:hook_add() abort
 " hook_add {{{
   " 'coc-prettier',
@@ -167,6 +163,7 @@ endfunction
 
 call dein#add('neoclide/coc.nvim', {
       \ 'hooks_file' : expand('<script>:p'),
+      \ 'if' : '(v:version >= 800 || has("nvim-0.3.1")) && executable("node")',
       \ 'lazy' : 1,
       \ 'merged' : 0,
       \ 'on_cmd' : ['<Plug>(coc-'],
