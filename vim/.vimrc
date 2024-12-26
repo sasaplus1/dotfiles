@@ -14,9 +14,7 @@ if 1
         \ '/mappings.vim',
         \ ]
 
-  for s:vimrc_file in s:vimrc_files
-    execute 'source' simplify(s:vimrc_dir . s:vimrc_file)
-  endfor
+  call foreach(s:vimrc_files, 'execute "source" simplify(s:vimrc_dir . v:val)')
   " }}}
 
   " 環境固有の設定を読み込む {{{
