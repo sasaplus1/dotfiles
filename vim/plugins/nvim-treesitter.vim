@@ -4,13 +4,12 @@ if !has('nvim')
   finish
 endif
 
-" このファイルの拡張子をvimからluaに変更したもの
-let s:config = expand('<sfile>:r') . '.lua'
-
 function! s:hook_source() abort
 " hook_source {{{
+  " このスクリプトのパスを取得する
+  let script = dein#get('nvim-treesitter').hooks_file
   " Luaの設定ファイルを読み込む
-  execute 'luafile' s:config
+  execute 'luafile' fnamemodify(script, ':r') . '.lua'
   " nvim-treesitterでの折りたたみを使用する
   setglobal foldmethod=expr
   setglobal foldexpr=nvim_treesitter#foldexpr()
@@ -26,7 +25,7 @@ function! s:hook_done_update() abort
 endfunction
 
 call dein#add('nvim-treesitter/nvim-treesitter', {
-      \ 'hooks_file' : expand('<sfile>:p'),
+      \ 'hooks_file' : expand('<script>:p'),
       \ 'merged' : 0,
       \ })
 

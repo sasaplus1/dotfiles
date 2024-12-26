@@ -8,7 +8,7 @@ function! s:hook_source() abort
 endfunction
 
 call dein#add('tyru/operator-camelize.vim', {
-      \ 'hooks_file' : expand('<sfile>:p'),
+      \ 'hooks_file' : expand('<script>:p'),
       \ 'lazy' : 1,
       \ 'on_source' : 'vim-operator-user',
       \ 'on_map' : ['c', '_', '<Plug>(operator-'],

@@ -15,7 +15,7 @@ endfunction
 
 " NOTE: ColorSchemeイベントは初回起動時に必要
 call dein#add('itchyny/lightline.vim', {
-      \ 'hooks_file' : expand('<sfile>:p'),
+      \ 'hooks_file' : expand('<script>:p'),
       \ 'lazy' : 1,
       \ 'on_event' : ['ColorScheme', 'VimEnter']
       \ })

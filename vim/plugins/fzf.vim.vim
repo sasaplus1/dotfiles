@@ -167,7 +167,7 @@ function! s:hook_source() abort
 endfunction
 
 call dein#add('junegunn/fzf.vim', {
-      \ 'hooks_file' : expand('<sfile>:p'),
+      \ 'hooks_file' : expand('<script>:p'),
       \ 'lazy' : 1,
       \ 'on_map' : [',ch', ',gs', ',gm', ',rg', ',rG', '<Plug>(fzf-', '<C-p>', ',ub', ',ug', ',ul', ',um'],
       \ 'on_source' : 'fzf',

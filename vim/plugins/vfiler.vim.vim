@@ -26,7 +26,7 @@ endfunction
 " 表示が崩れていたのはvim-parenmatchのlazyloadのタイミング設定が悪かった
 " coc.nvimをlazyloadするようにしたらまた崩れるようになった
 call dein#add('obaland/vfiler.vim', {
-      \ 'hooks_file' : expand('<sfile>:p'),
+      \ 'hooks_file' : expand('<script>:p'),
       \ 'lazy' : 1,
       \ 'on_cmd' : ['VFiler'],
       \ 'on_map' : [',vf', ',vF'],

@@ -31,7 +31,7 @@ function! s:hook_source() abort
 endfunction
 
 call dein#add('lifepillar/vim-gruvbox8', {
-      \ 'hooks_file' : expand('<sfile>:p'),
+      \ 'hooks_file' : expand('<script>:p'),
       \ 'lazy' : 1,
       \ 'merged' : 0,
       \ 'on_event' : ['ColorScheme', 'VimEnter'],

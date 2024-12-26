@@ -135,7 +135,7 @@ function! s:hook_source() abort
 endfunction
 
 call dein#add('ctrlpvim/ctrlp.vim', {
-      \ 'hooks_file' : expand('<sfile>:p'),
+      \ 'hooks_file' : expand('<script>:p'),
       \ 'lazy' : 1,
       \ 'on_map' : ['<C-p>', ',ub', ',ug', ',ul', ',um', '<Plug>(CtrlP'],
       \ })

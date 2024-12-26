@@ -166,7 +166,7 @@ endfunction
 " https://github.com/neoclide/coc.nvim/issues/1826#issuecomment-1149259027
 
 call dein#add('neoclide/coc.nvim', {
-      \ 'hooks_file' : expand('<sfile>:p'),
+      \ 'hooks_file' : expand('<script>:p'),
       \ 'lazy' : 1,
       \ 'merged' : 0,
       \ 'on_cmd' : ['<Plug>(coc-'],
