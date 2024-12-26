@@ -27,7 +27,7 @@ for plugin_file in plugin_files
 endfor
 
 call dein#end()
-"   call dein#save_state
+"   call dein#save_state()
 " endif
 
 " sourceフックを呼ぶ
