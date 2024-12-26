@@ -14,21 +14,19 @@ if &runtimepath !~# '/dein.vim'
   execute 'set' 'runtimepath^=' . s:dein_dir
 endif
 
-" NOTE: hook_sourceに関数を渡しているのでstateが使えない
-" NOTE: hooks_fileを駆使するなど別の方法が必要
-" if dein#min#load_state(s:plugin_dir)
-call dein#begin(s:plugin_dir)
-call dein#add(s:dein_dir)
+if dein#min#load_state(s:plugin_dir)
+  call dein#begin(s:plugin_dir)
+  call dein#add(s:dein_dir)
 
-let plugin_files = split(glob(expand('<script>:h') . '/plugins/*.vim'), '\n')
+  let plugin_files = split(glob(expand('<script>:h') . '/plugins/*.vim'), '\n')
 
-for plugin_file in plugin_files
-  execute 'source' plugin_file
-endfor
+  for plugin_file in plugin_files
+    execute 'source' plugin_file
+  endfor
 
-call dein#end()
-"   call dein#save_state()
-" endif
+  call dein#end()
+  call dein#save_state()
+endif
 
 " sourceフックを呼ぶ
 call dein#call_hook('source')
