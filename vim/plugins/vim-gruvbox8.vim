@@ -5,17 +5,21 @@ scriptencoding utf-8
 " see :help xterm-true-color
 " https://qiita.com/yami_beta/items/ef535d3458addd2e8fbb
 
-" vscode を起動すると COLORTERM が定義される
-" Terminal.app では COLORTERM は定義されない
-" ただし Terminal.app で tmux を起動した際に空文字で定義している
-let is_support_true_color = $COLORTERM =~# '\vtruecolor|24bit'
+function! s:hook_add() abort
+" hook_add {{{
+  " vscode を起動すると COLORTERM が定義される
+  " Terminal.app では COLORTERM は定義されない
+  " ただし Terminal.app で tmux を起動した際に空文字で定義している
+  let is_support_true_color = $COLORTERM =~# '\vtruecolor|24bit'
 
-if has('termguicolors') && is_support_true_color
-  set termguicolors
-endif
+  if has('termguicolors') && is_support_true_color
+    set termguicolors
+  endif
 
-let &t_8f = "\<Esc>[38:2:%lu:%lu:%lum"
-let &t_8b = "\<Esc>[48:2:%lu:%lu:%lum"
+  let &t_8f = "\<Esc>[38:2:%lu:%lu:%lum"
+  let &t_8b = "\<Esc>[48:2:%lu:%lu:%lum"
+" }}}
+endfunction
 
 function! s:hook_source() abort
 " hook_source {{{
