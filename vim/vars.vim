@@ -66,7 +66,6 @@ let g:markdown_fenced_languages = [
       \ 'css',
       \ 'diff',
       \ 'erb=eruby',
-      \ 'help',
       \ 'html',
       \ 'javascript',
       \ 'js=javascript',
