@@ -31,6 +31,7 @@ endfunction
 " coc.nvimをlazyloadするようにしたらまた崩れるようになった
 call dein#add('obaland/vfiler.vim', {
       \ 'hooks_file' : expand('<script>:p'),
+      \ 'if' : 'has("lua") || has("nvim")',
       \ 'lazy' : 1,
       \ 'on_cmd' : ['VFiler'],
       \ 'on_map' : [',vf', ',vF'],
