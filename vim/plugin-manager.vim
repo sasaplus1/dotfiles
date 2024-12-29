@@ -19,7 +19,10 @@ if dein#min#load_state(s:plugin_dir)
   call dein#add(s:dein_dir)
 
   let s:plugin_files = split(glob(expand('<script>:h') . '/plugins/*.vim'), '\n')
-  call foreach(s:plugin_files, 'execute "source" v:val')
+  " call foreach(s:plugin_files, 'execute "source" v:val')
+  for s:plugin_file in s:plugin_files
+    execute 'source' s:plugin_file
+  endfor
 
   call dein#end()
   call dein#save_state()
