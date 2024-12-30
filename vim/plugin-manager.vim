@@ -19,6 +19,8 @@ if dein#min#load_state(s:plugin_dir)
   call dein#add(s:dein_dir)
 
   let s:plugin_files = split(glob(expand('<script>:h') . '/plugins/*.vim'), '\n')
+  " NOTE: foreach needs patch-9.1.0027
+  " https://github.com/vim/vim/commit/e79e2077607e8f829ba823308c91104a795736ba
   " call foreach(s:plugin_files, 'execute "source" v:val')
   for s:plugin_file in s:plugin_files
     execute 'source' s:plugin_file

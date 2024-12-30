@@ -14,6 +14,8 @@ if 1
         \ '/mappings.vim',
         \ ]
 
+  " NOTE: foreach needs patch-9.1.0027
+  " https://github.com/vim/vim/commit/e79e2077607e8f829ba823308c91104a795736ba
   " call foreach(s:vimrc_files, 'execute "source" simplify(s:vimrc_dir . v:val)')
   for s:vimrc_file in s:vimrc_files
     execute 'source' simplify(s:vimrc_dir . s:vimrc_file)
