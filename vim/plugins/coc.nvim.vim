@@ -61,7 +61,7 @@ endfunction
 function! s:hook_source() abort
 " hook_source {{{
   if dein#tap('copilot.vim') && !dein#is_sourced('copilot.vim')
-    call dein#source(['copilot.vim'])
+    call dein#source('copilot.vim')
   endif
 
   " おそらく coc#util#get_config_home() が post_source でないと使用できない（未検証）

@@ -15,7 +15,7 @@ function! s:hook_source() abort
 " hook_source {{{
   " NOTE: 初回実行時なぜか表示が崩れるのでcoc.nvimを読み込んでおく
   if dein#tap('coc.nvim') && !dein#is_sourced('coc.nvim')
-    call dein#source(['coc.nvim'])
+    call dein#source('coc.nvim')
   endif
 
   " ,vfでvfilerを開く
