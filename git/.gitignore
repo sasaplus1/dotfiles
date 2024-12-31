@@ -118,3 +118,7 @@ $RECYCLE.BIN/
 *.lnk
 
 
+### Original
+
+# coc.nvim settings file
+/.vim/coc-settings.json
