@@ -54,8 +54,8 @@ function! s:hook_add() abort
         \ 'markdown' : ['textlint'],
         \ 'rust' : ['rust-analyzer', 'rls', 'cargo'],
         \ 'scss' : ['stylelint'],
-        \ 'typescript' : ['tsserver', 'eslint', 'tslint'],
-        \ 'typescriptreact' : ['tsserver', 'eslint', 'tslint'],
+        \ 'typescript' : ['tsserver', 'deno', 'eslint', 'tslint'],
+        \ 'typescriptreact' : ['tsserver', 'deno', 'eslint', 'tslint'],
         \ }
 
   " fixerの設定
@@ -74,8 +74,8 @@ function! s:hook_add() abort
         \ 'markdown' : ['textlint'],
         \ 'rust' : ['rustfmt', 'trim_whitespace', 'remove_trailing_lines'],
         \ 'scss' : ['stylelint', 'prettier'],
-        \ 'typescript' : ['prettier'],
-        \ 'typescriptreact' : ['prettier'],
+        \ 'typescript' : ['prettier', 'deno'],
+        \ 'typescriptreact' : ['prettier', 'deno'],
         \ }
 
   " 保存時fixする
