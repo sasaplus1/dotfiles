@@ -139,10 +139,10 @@ autocmd vimrc BufNewFile,BufRead *.{md,markdown,mkd,mdown,mkdn,mark} setfiletype
 " }}}
 
 " JavaScriptの著名なモジュールの設定ファイルをJSONとして開く
-autocmd vimrc BufNewFile,BufRead .{babel,eslint,stylelint,swc,textlint}rc setfiletype json
+autocmd vimrc BufNewFile,BufRead .{babel,stylelint,swc,textlint}rc setfiletype json
 
-" tsconfig.jsonはJSONCとして開く
-autocmd vimrc BufNewFile,BufRead tsconfig.json setfiletype jsonc
+" JavaScriptの著名なモジュールのJSONはJSONCとして開く
+autocmd vimrc BufNewFile,BufRead babel.config.json,.eslintrc.json,tsconfig.json setfiletype jsonc
 
 " make,vimgrep,vimgrepaddを実行したらcopenをする
 " grep,grepaddはCtrlPQuickfixを使用する
