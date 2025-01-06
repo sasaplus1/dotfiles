@@ -1,7 +1,7 @@
 scriptencoding utf-8
 
-function! s:hook_add() abort
-" hook_add {{{
+function! s:hook_source() abort
+" hook_source {{{
   let g:netrw_nogx = 1
 
   nmap gx <Plug>(openbrowser-smart-search)
