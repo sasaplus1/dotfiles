@@ -54,8 +54,8 @@ function! s:hook_add() abort
         \ 'markdown' : ['textlint'],
         \ 'rust' : ['rust-analyzer', 'rls', 'cargo'],
         \ 'scss' : ['stylelint'],
-        \ 'typescript' : ['tsserver', 'deno', 'eslint', 'tslint'],
-        \ 'typescriptreact' : ['tsserver', 'deno', 'eslint', 'tslint'],
+        \ 'typescript' : ['tsserver', 'eslint', 'tslint'],
+        \ 'typescriptreact' : ['tsserver', 'eslint', 'tslint'],
         \ }
 
   " fixerの設定
@@ -74,8 +74,8 @@ function! s:hook_add() abort
         \ 'markdown' : ['textlint'],
         \ 'rust' : ['rustfmt', 'trim_whitespace', 'remove_trailing_lines'],
         \ 'scss' : ['stylelint', 'prettier'],
-        \ 'typescript' : ['prettier', 'deno'],
-        \ 'typescriptreact' : ['prettier', 'deno'],
+        \ 'typescript' : ['prettier'],
+        \ 'typescriptreact' : ['prettier'],
         \ }
 
   " 保存時fixする
@@ -206,6 +206,27 @@ function! s:hook_add() abort
   " flat configに対応する
   autocmd vimrc FileType javascript,javascriptreact,typescript,typescriptreact
         \ call s:overwrite_eslint_function()
+  
+  function! s:use_deno() abort
+    let dir = expand('%:p:h') . ';'
+    let files = ['deno.json', 'deno.jsonc', 'deno.lock']
+    let results = map(files, { file -> findfile(file, dir) })
+
+    if empty(filter(results, { result -> !empty(result) }))
+      return
+    endif
+
+    let b:ale_linters = extend(get(b:, 'ale_linters', {}), {
+          \ 'typescript' : ['deno'],
+          \ 'typescriptreact' : ['deno'],
+          \ })
+    let b:ale_fixers = extend(get(b:, 'ale_fixers', {}), {
+          \ 'typescript' : ['deno'],
+          \ 'typescriptreact' : ['deno'],
+          \ })
+  endfunction
+  " denoのプロジェクトではdenoを使う
+  autocmd vimrc FileType typescript,typescriptreact call s:use_deno()
 " }}}
 endfunction
 
