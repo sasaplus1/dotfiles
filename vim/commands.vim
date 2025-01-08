@@ -165,7 +165,7 @@ if has('nvim')
   " ターミナルを開いたら挿入モードにする
   autocmd vimrc TermOpen * startinsert
   " ターミナルで正常終了したら閉じてバッファを削除する
-  autocmd vimrc TermClose * if !v:event.status | execute 'bdelete! ' . expand('<abuf>') | endif
+  " autocmd vimrc TermClose * if !v:event.status | execute 'bdelete! ' . expand('<abuf>') | endif
 endif
 
 " }}}
