@@ -14,7 +14,7 @@ let g:vimrc_vim_dir = has('nvim') ? expand('~/.nvim') : expand('~/.vim')
 " プラグインが使用するnode.jsのパス
 let s:node_bin = simplify(g:vimrc_vim_dir . '/node/bin/node')
 let s:node_dir = fnamemodify(s:node_bin, ':h:h')
-let s:node_ver = '20.18.1'
+let s:node_ver = '22.12.0'
 
 " プラグインが使用するnode.jsをインストールする
 " TODO: シェルスクリプトに移した方が良さそう
