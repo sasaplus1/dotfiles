@@ -6,7 +6,6 @@ function! s:hook_add() abort
   let g:coc_global_extensions = [
         \ 'coc-css',
         \ 'coc-cssmodules',
-        \ 'coc-deno',
         \ 'coc-dictionary',
         \ 'coc-html',
         \ 'coc-json',
