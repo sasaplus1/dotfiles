@@ -14,8 +14,33 @@ autocmd vimrc BufNewFile,BufRead *.{cts,mts,ts,tsx} setfiletype typescript
 
 if has('file_in_path')
   " gfで開く際に拡張子を補完する
-  autocmd vimrc BufNewFile,BufRead *.{cjs,js,jsx,mjs,pac,ts,tsx} setlocal suffixesadd+=.tsx,.ts,.mjs,.cjs,.jsx,.js,.json,.pac
+  autocmd vimrc BufNewFile,BufRead *.{cjs,cts,js,jsx,mjs,mts,pac,ts,tsx}
+        \ setlocal suffixesadd+=.tsx,.mts,ctx,.ts,.jsx,.mjs,.cjs,.js,.json,.pac
 endif
+
+" JavaScriptまたはTypeScriptのfromにディレクトリが指定されていたらindex.*を試す
+function! s:resolve_import() abort
+  let cfile = expand('<cfile>')
+
+  if cfile =~# '\v\.\.?'
+    let path = printf('%s/%s', expand('%:p:h'), cfile)
+
+    if isdirectory(path)
+      let files = split(glob(
+            \ path . '/index.{tsx,ts,mts,cts,jsx,js,mjs,cjs,json,d.ts}'),
+            \ '\n')
+
+      if !empty(files)
+        execute 'edit' fnameescape(files[0])
+        return
+      endif
+    endif
+  endif
+
+  execute 'normal! gf'
+endfunction
+autocmd vimrc FileType javascript,javascriptreact,typescript,typescriptreact
+      \ nnoremap <buffer><silent> gf :<C-u>call <SID>resolve_import()<CR>
 
 " *.ejsと*.vueのファイルタイプをHTMLとする
 autocmd vimrc BufNewFile,BufRead *.{ejs,vue} setlocal filetype=html
