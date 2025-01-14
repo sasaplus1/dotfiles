@@ -208,22 +208,43 @@ function! s:hook_add() abort
         \ call s:overwrite_eslint_function()
   
   function! s:use_deno() abort
-    let dir = expand('%:p:h') . ';'
-    let files = ['deno.json', 'deno.jsonc', 'deno.lock']
-    let results = map(files, { file -> findfile(file, dir) })
-
-    if empty(filter(results, { result -> !empty(result) }))
+    if exists('b:called_use_deno') && b:called_use_deno
       return
     endif
 
-    let b:ale_linters = extend(get(b:, 'ale_linters', {}), {
-          \ 'typescript' : ['deno'],
-          \ 'typescriptreact' : ['deno'],
+    let dir = expand('%:p:h') . ';'
+    let files = ['deno.json', 'deno.jsonc', 'deno.lock']
+
+    let results = []
+
+    " map(files, { v -> findfile(v, dir) })
+    " だと思ったような結果にならないのでfor文で書く
+    for file in files
+      call add(results, findfile(file, dir))
+    endfor
+
+    if empty(filter(results, '!empty(v:val)'))
+      return
+    endif
+
+    " 他のlinterも使っている可能性があるので追加する
+    let linters = get(b:, 'ale_linters', {
+          \ 'typescript' : [],
+          \ 'typescriptreact' : [],
           \ })
+    call add(linters.typescript, 'deno')
+    call add(linters.typescriptreact, 'deno')
+    let b:ale_linters = linters
+
+    " fixerはおそらくdenoだけだと思うのでdenoにする
     let b:ale_fixers = extend(get(b:, 'ale_fixers', {}), {
           \ 'typescript' : ['deno'],
           \ 'typescriptreact' : ['deno'],
           \ })
+    let b:ale_fixers.typescript = ['deno']
+    let b:ale_fixers.typescriptreact = ['deno']
+
+    let b:called_use_deno = 1
   endfunction
   " denoのプロジェクトではdenoを使う
   autocmd vimrc FileType typescript,typescriptreact call s:use_deno()
