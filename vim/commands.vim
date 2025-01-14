@@ -18,29 +18,31 @@ if has('file_in_path')
         \ setlocal suffixesadd+=.tsx,.mts,ctx,.ts,.jsx,.mjs,.cjs,.js,.json,.pac
 endif
 
-" JavaScriptまたはTypeScriptのfromにディレクトリが指定されていたらindex.*を試す
-function! s:resolve_import() abort
-  let cfile = expand('<cfile>')
+if (exists('*dein#tap') && !dein#tap('coc.nvim'))
+  " JavaScriptまたはTypeScriptのfromにディレクトリが指定されていたらindex.*を試す
+  function! s:resolve_import() abort
+    let cfile = expand('<cfile>')
 
-  if cfile =~# '\v\.\.?'
-    let path = printf('%s/%s', expand('%:p:h'), cfile)
+    if cfile =~# '\v\.\.?'
+      let path = printf('%s/%s', expand('%:p:h'), cfile)
 
-    if isdirectory(path)
-      let files = split(glob(
-            \ path . '/index.{tsx,ts,mts,cts,jsx,js,mjs,cjs,json,d.ts}'),
-            \ '\n')
+      if isdirectory(path)
+        let files = split(glob(
+              \ path . '/index.{tsx,ts,mts,cts,jsx,js,mjs,cjs,json,d.ts}'),
+              \ '\n')
 
-      if !empty(files)
-        execute 'edit' fnameescape(files[0])
-        return
+        if !empty(files)
+          execute 'edit' fnameescape(files[0])
+          return
+        endif
       endif
     endif
-  endif
 
-  execute 'normal! gf'
-endfunction
-autocmd vimrc FileType javascript,javascriptreact,typescript,typescriptreact
-      \ nnoremap <buffer><silent> gf :<C-u>call <SID>resolve_import()<CR>
+    execute 'normal! gf'
+  endfunction
+  autocmd vimrc FileType javascript,javascriptreact,typescript,typescriptreact
+        \ nnoremap <buffer><silent> gf :<C-u>call <SID>resolve_import()<CR>
+endif
 
 " *.ejsと*.vueのファイルタイプをHTMLとする
 autocmd vimrc BufNewFile,BufRead *.{ejs,vue} setlocal filetype=html
