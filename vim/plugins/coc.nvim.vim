@@ -1,5 +1,7 @@
 scriptencoding utf-8
 
+finish
+
 function! s:hook_add() abort
 " hook_add {{{
   " 'coc-prettier',
@@ -64,7 +66,6 @@ function! s:hook_source() abort
     call dein#source('copilot.vim')
   endif
 
-  " おそらく coc#util#get_config_home() が post_source でないと使用できない（未検証）
   let coc_settings_path = resolve(
         \ coc#util#get_config_home() . '/coc-settings.json'
         \ )
@@ -92,34 +93,34 @@ function! s:hook_source() abort
     call writefile([json_encode(coc_settings)], coc_settings_path)
   endif
 
-  if !exists('*CocTagFunc')
-    " tagfuncでタグスタックを使うようにして<C-t>で戻ってこれるようにする
-    " https://github.com/neoclide/coc.nvim/issues/1054#issuecomment-531839361
-    function! CocTagFunc(pattern, flags, info) abort
-      " ノーマルモードでなかったら無視
-      if a:flags !=# 'c'
-        return v:null
-      endif
+  " if !exists('*CocTagFunc')
+  "   " tagfuncでタグスタックを使うようにして<C-t>で戻ってこれるようにする
+  "   " https://github.com/neoclide/coc.nvim/issues/1054#issuecomment-531839361
+  "   function! CocTagFunc(pattern, flags, info) abort
+  "     " ノーマルモードでなかったら無視
+  "     if a:flags !=# 'c'
+  "       return v:null
+  "     endif
 
-      let name = expand('<cword>')
+  "     let name = expand('<cword>')
 
-      execute('call CocAction("jumpDefinition")')
+  "     execute('call CocAction("jumpDefinition")')
 
-      let filename = expand('%:p')
-      let cursor_pos = getpos('.')
-      let cmd = '/\%' . cursor_pos[1] . 'l\%' . cursor_pos[2] . 'c/'
+  "     let filename = expand('%:p')
+  "     let cursor_pos = getpos('.')
+  "     let cmd = '/\%' . cursor_pos[1] . 'l\%' . cursor_pos[2] . 'c/'
 
-      execute("normal \<C-o>")
+  "     execute("normal \<C-o>")
 
-      return [ { 'name': name, 'filename': filename, 'cmd': cmd } ]
-    endfunction
-  endif
+  "     return [ { 'name': name, 'filename': filename, 'cmd': cmd } ]
+  "   endfunction
+  " endif
 
-  if maparg('<Plug>(coc-definition)', 'n')
-    autocmd vimrc FileType * nmap <buffer><silent> <C-]> <Plug>(coc-definition)
-  elseif has('eval') && exists('&tagfunc')
-    autocmd vimrc FileType * setlocal tagfunc=CocTagFunc
-  endif
+  " if maparg('<Plug>(coc-definition)', 'n')
+  "   autocmd vimrc FileType * nmap <buffer><silent> <C-]> <Plug>(coc-definition)
+  " elseif has('eval') && exists('&tagfunc')
+  "   autocmd vimrc FileType * setlocal tagfunc=CocTagFunc
+  " endif
 
   function! s:check_back_space() abort
     let col = col('.') - 1

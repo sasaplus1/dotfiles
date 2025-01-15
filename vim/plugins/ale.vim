@@ -5,12 +5,31 @@ function! s:hook_add() abort
   " 明示的に指定する
   let g:ale_linters_explicit = 1
 
-  " aleで入力補完をしない
-  let g:ale_completion_enabled = 0
+  " aleでLSPを使う
+  " LSPを使わないとtsserverが使えなくなってしまう
+  let g:ale_disable_lsp = 0
 
-  " aleでLSPを使わない
-  " tsserverが使えなくなってしまうのでコメントアウトする
-  " let g:ale_disable_lsp = 1
+  " aleで入力補完をしないがcoc.nvimがなければ入力補完をする
+  let g:ale_completion_enabled = dein#tap('coc.nvim') ? 0 : 1
+
+  " 入力補完を遅延させない
+  let g:ale_completion_delay = 0
+
+  " 自動的にimportを追加する
+  let g:ale_completion_autoimport = 1
+
+  " ホバーを有効にする
+  let g:ale_hover_cursor = 1
+
+  " バルーンで表示する？
+  " 対応しているとデフォルトで有効になる
+  " let g:ale_set_balloons = 1
+
+  " エコーの遅延させない
+  let g:ale_echo_delay = 0
+
+  " カーソル位置の詳細を表示する
+  " let g:ale_cursor_detail = 1
 
   " LSPのヒントや提案を有効にする
   let g:ale_lsp_suggestions = 1
@@ -21,8 +40,21 @@ function! s:hook_add() abort
   " プレビューでメッセージを表示する
   let g:ale_hover_to_preview = 1
 
+  if has('nvim') || has('popupwin')
+    " フローティングウィンドウでメッセージを表示する
+    let g:ale_floating_preview = 1
+    " let g:ale_hover_to_floating_preview = 1
+    " let g:ale_detail_to_floating_preview = 1
+  endif
+
+  " coc.nvimに似せる
+  let g:ale_floating_window_border = [' ', '', ' ', ' ', ' ', ' ', ' ', '']
+
   " 保存した時にlintする
   let g:ale_lint_on_save = 1
+
+  " 保存した時にfixする
+  let g:ale_fix_on_save = 1
 
   " 編集してもlintしない
   let g:ale_lint_on_text_changed = 'never'
@@ -38,7 +70,6 @@ function! s:hook_add() abort
   " 特定のファイルタイプに対して他のファイルタイプで使用するlinterを使えるようにする
   let g:ale_linter_aliases = {
         \ 'javascript' : ['javascript', 'markdown'],
-        \ 'javascript.jsx' : ['javascript', 'markdown'],
         \ 'javascriptreact' : ['javascript', 'markdown'],
         \ 'typescript' : ['typescript', 'markdown'],
         \ 'typescriptreact' : ['typescript', 'markdown'],
@@ -48,14 +79,13 @@ function! s:hook_add() abort
   let g:ale_linters = {
         \ 'css' : ['stylelint'],
         \ 'javascript' : ['tsserver', 'eslint'],
-        \ 'javascript.jsx' : ['tsserver', 'eslint'],
         \ 'javascriptreact' : ['tsserver', 'eslint'],
         \ 'json' : [],
         \ 'markdown' : ['textlint'],
         \ 'rust' : ['rust-analyzer', 'rls', 'cargo'],
         \ 'scss' : ['stylelint'],
-        \ 'typescript' : ['tsserver', 'eslint', 'tslint'],
-        \ 'typescriptreact' : ['tsserver', 'eslint', 'tslint'],
+        \ 'typescript' : ['tsserver', 'eslint'],
+        \ 'typescriptreact' : ['tsserver', 'eslint'],
         \ }
 
   " fixerの設定
@@ -68,7 +98,6 @@ function! s:hook_add() abort
   let g:ale_fixers = {
         \ 'css' : ['stylelint', 'prettier'],
         \ 'javascript' : ['prettier'],
-        \ 'javascript.jsx' : ['prettier'],
         \ 'javascriptreact' : ['prettier'],
         \ 'json' : ['prettier'],
         \ 'markdown' : ['textlint'],
@@ -77,9 +106,6 @@ function! s:hook_add() abort
         \ 'typescript' : ['prettier'],
         \ 'typescriptreact' : ['prettier'],
         \ }
-
-  " 保存時fixする
-  autocmd vimrc BufNewFile,BufRead * let b:ale_fix_on_save = 1
 
   function! s:ale_buffer_setup() abort
     " エラーのある行に移動する
@@ -93,9 +119,37 @@ function! s:hook_add() abort
     " ALEの有効・無効を切り替える
     nnoremap <buffer> ,aD :<C-u>ALEDisable<CR>
     nnoremap <buffer> ,aE :<C-u>ALEEnable<CR>
+
+    if !dein#tap('coc.nvim')
+      " LSP系機能
+      nnoremap <silent> <C-]> :<C-u>ALEGoToDefinition<CR>
+      nnoremap <silent> ,ld :<C-u>ALEGoToDefinition<CR>
+      nnoremap <silent> ,lt :<C-u>ALEGoToTypeDefinition<CR>
+      nnoremap <silent> ,li :<C-u>ALEGoToImplementation<CR>
+      nnoremap <silent> ,lr :<C-u>ALEFindReferences<CR>
+      nnoremap <silent> ,lR :<C-u>ALERename<CR>
+    endif
+
+    if !empty(finddir('node_modules/textlint', a:dir . ';'))
+      " textlintがインストールされていたらlinterに追加する
+      let linters = get(b:, 'ale_linters', {})
+
+      if !has_key(linters, &filetype)
+        let linters[&filetype] = []
+      endif
+      if index(linters[&filetype], 'textlint') == -1
+        call add(linters[&filetype], 'textlint')
+      endif
+
+      let b:ale_linters = linters
+    endif
+
   endfunction
   " バッファ固有のマップを設定する
   autocmd vimrc BufNewFile,BufRead * call s:ale_buffer_setup()
+
+  autocmd vimrc FileType css,html,javascript,javascriptreact,json,rust,scss,typescript,typescriptreact
+        \ if !dein#tap('coc.nvim') | nnoremap <buffer><silent> K :<C-u>ALEHover<CR> | endif
 
   " ファイルのカレントディレクトリから実行する
   " monorepo毎に.eslintignoreがある場合などに有効
@@ -116,7 +170,6 @@ function! s:hook_add() abort
     let b:ale_fixers = extend(get(b:, 'ale_fixers', {}), {
           \ 'javascript' : ['eslint'],
           \ 'javascriptreact' : ['eslint'],
-          \ 'javascript.jsx' : ['eslint'],
           \ 'typescript' : ['eslint'],
           \ 'typescriptreact' : ['eslint'],
           \ })
@@ -125,88 +178,78 @@ function! s:hook_add() abort
   autocmd vimrc FileType javascript,javascriptreact,typescript,typescriptreact
         \ call s:fix_with_eslint_plugin_prettier(expand('%:p:h'))
 
-  function! s:add_textlint(dir) abort
-    if empty(finddir('node_modules/textlint', a:dir . ';'))
-      return
-    endif
+  " function! s:overwrite_eslint_function() abort
+  "   if exists('s:patched_eslint_functions') && s:patched_eslint_functions
+  "     return
+  "   endif
 
-    let b:ale_linters = ['textlint']
-  endfunction
-  " textlintがインストールされていたらlinterに追加する
-  autocmd vimrc BufNewFile,BufRead * call s:add_textlint(expand('%:p'))
+  "   " The functions in this file are based on ale#handlers#eslint#FindConfig and ale#handlers#eslint#GetCwd,
+  "   " which are under the MIT license.
+  "   " Copyright (c) 2016-2023, Dense Analysis
+  "   " All rights reserved.
+  "   " https://github.com/dense-analysis/ale/blob/6c10a519f1460179cf8f8e329d8eb3186247be2b/LICENSE
 
-  function! s:overwrite_eslint_function() abort
-    if exists('s:patched_eslint_functions') && s:patched_eslint_functions
-      return
-    endif
+  "   if exists('*ale#handlers#eslint#FindConfig')
+  "     let s:sep = has('win32') ? '\' : '/'
 
-    " The functions in this file are based on ale#handlers#eslint#FindConfig and ale#handlers#eslint#GetCwd,
-    " which are under the MIT license.
-    " Copyright (c) 2016-2023, Dense Analysis
-    " All rights reserved.
-    " https://github.com/dense-analysis/ale/blob/6c10a519f1460179cf8f8e329d8eb3186247be2b/LICENSE
+  "     function! ale#handlers#eslint#FindConfig(buffer) abort
+  "       for l:path in ale#path#Upwards(expand('#' . a:buffer . ':p:h'))
+  "         for l:basename in [
+  "               \ 'eslint.config.js',
+  "               \ 'eslint.config.cjs',
+  "               \ 'eslint.config.mjs',
+  "               \ '.eslintrc.js',
+  "               \ '.eslintrc.cjs',
+  "               \ '.eslintrc.yaml',
+  "               \ '.eslintrc.yml',
+  "               \ '.eslintrc.json',
+  "               \ '.eslintrc',
+  "               \ ]
+  "           let l:config = ale#path#Simplify(join([l:path, l:basename], s:sep))
 
-    if exists('*ale#handlers#eslint#FindConfig')
-      let s:sep = has('win32') ? '\' : '/'
+  "           if filereadable(l:config)
+  "             return l:config
+  "           endif
+  "         endfor
+  "       endfor
 
-      function! ale#handlers#eslint#FindConfig(buffer) abort
-        for l:path in ale#path#Upwards(expand('#' . a:buffer . ':p:h'))
-          for l:basename in [
-                \ 'eslint.config.js',
-                \ 'eslint.config.cjs',
-                \ 'eslint.config.mjs',
-                \ '.eslintrc.js',
-                \ '.eslintrc.cjs',
-                \ '.eslintrc.yaml',
-                \ '.eslintrc.yml',
-                \ '.eslintrc.json',
-                \ '.eslintrc',
-                \ ]
-            let l:config = ale#path#Simplify(join([l:path, l:basename], s:sep))
+  "       return ale#path#FindNearestFile(a:buffer, 'package.json')
+  "     endfunction
 
-            if filereadable(l:config)
-              return l:config
-            endif
-          endfor
-        endfor
+  "     let s:patched_upwards = 1
+  "   endif
 
-        return ale#path#FindNearestFile(a:buffer, 'package.json')
-      endfunction
+  "   if exists('*ale#handlers#eslint#GetCwd')
+  "     " see: https://github.com/dense-analysis/ale/issues/4487#issuecomment-1772044826
+  "     " see: https://github.com/dense-analysis/ale/pull/4637
+  "     function! ale#handlers#eslint#GetCwd(buffer) abort
+  "       " Obtain the path to the ESLint configuration
+  "       let l:config_path = ale#handlers#eslint#FindConfig(a:buffer)
 
-      let s:patched_upwards = 1
-    endif
+  "       " Extract the directory from the config path
+  "       let l:config_dir = fnamemodify(l:config_path, ':h')
 
-    if exists('*ale#handlers#eslint#GetCwd')
-      " see: https://github.com/dense-analysis/ale/issues/4487#issuecomment-1772044826
-      " see: https://github.com/dense-analysis/ale/pull/4637
-      function! ale#handlers#eslint#GetCwd(buffer) abort
-        " Obtain the path to the ESLint configuration
-        let l:config_path = ale#handlers#eslint#FindConfig(a:buffer)
+  "       " Return the directory as the cwd
+  "       return l:config_dir
+  "     endfunction
 
-        " Extract the directory from the config path
-        let l:config_dir = fnamemodify(l:config_path, ':h')
+  "     let s:patched_getcwd = 1
+  "   endif
 
-        " Return the directory as the cwd
-        return l:config_dir
-      endfunction
+  "   let s:patched_eslint_functions =
+  "         \ (exists('s:patched_upwards') && s:patched_upwards) &&
+  "         \ (exists('s:patched_getcwd') && s:patched_getcwd)
 
-      let s:patched_getcwd = 1
-    endif
+  "   if s:patched_eslint_functions
+  "     " 遅延読み込みをしている場合は設定を再読み込みさせる必要がある
+  "     " :help ale-lint-settings-on-startup
+  "     execute 'ALEDisable | ALEEnable'
+  "   endif
+  " endfunction
+  " " flat configに対応する
+  " autocmd vimrc FileType javascript,javascriptreact,typescript,typescriptreact
+  "       \ call s:overwrite_eslint_function()
 
-    let s:patched_eslint_functions =
-          \ (exists('s:patched_upwards') && s:patched_upwards) &&
-          \ (exists('s:patched_getcwd') && s:patched_getcwd)
-
-    if s:patched_eslint_functions
-      " 遅延読み込みをしている場合は設定を再読み込みさせる必要がある
-      " :help ale-lint-settings-on-startup
-      execute 'ALEDisable | ALEEnable'
-    endif
-  endfunction
-  " flat configに対応する
-  autocmd vimrc FileType javascript,javascriptreact,typescript,typescriptreact
-        \ call s:overwrite_eslint_function()
-  
   function! s:use_deno() abort
     if exists('b:called_use_deno') && b:called_use_deno
       return
@@ -220,6 +263,7 @@ function! s:hook_add() abort
     " map(files, { v -> findfile(v, dir) })
     " だと思ったような結果にならないのでfor文で書く
     for file in files
+      " それぞれのファイルを上方向に検索する
       call add(results, findfile(file, dir))
     endfor
 
@@ -251,13 +295,21 @@ function! s:hook_add() abort
 " }}}
 endfunction
 
+function! s:hook_source() abort
+" hook_source {{{
+  if g:ale_completion_enabled
+    set omnifunc=ale#completion#OmniFunc
+  endif
+" }}}
+endfunction
+
 call dein#add('dense-analysis/ale', {
       \ 'hooks_file' : expand('<script>:p'),
       \ 'lazy' : 1,
+      \ 'on_cmd' : ['<Plug>(ale_'],
       \ 'on_ft' : [
       \   'css',
       \   'javascript',
-      \   'javascript.jsx',
       \   'javascriptreact',
       \   'json',
       \   'markdown',
