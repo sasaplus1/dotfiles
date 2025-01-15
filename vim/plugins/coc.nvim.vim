@@ -1,7 +1,5 @@
 scriptencoding utf-8
 
-finish
-
 function! s:hook_add() abort
 " hook_add {{{
   " 'coc-prettier',
