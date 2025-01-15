@@ -20,8 +20,9 @@ let s:node_ver = '22.12.0'
 " TODO: シェルスクリプトに移した方が良さそう
 function! s:install_node() abort
   let commands = ['curl', 'tar', 'uname']
-  
-  if commands->map('executable(v:val) ? 0 : 1')->filter('v:val != 0')->len() > 0
+
+  " 必要なコマンドが存在しない場合は何もしない
+  if !empty(filter(commands, '!executable(v:val)'))
     return
   endif
 
