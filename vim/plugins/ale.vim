@@ -130,7 +130,7 @@ function! s:hook_add() abort
       nnoremap <silent> ,lR :<C-u>ALERename<CR>
     endif
 
-    if !empty(finddir('node_modules/textlint', a:dir . ';'))
+    if !empty(finddir('node_modules/textlint', expand('%:p') . ';'))
       " textlintがインストールされていたらlinterに追加する
       let linters = get(b:, 'ale_linters', {})
 
