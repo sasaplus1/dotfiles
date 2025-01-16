@@ -1,5 +1,8 @@
 scriptencoding utf-8
 
+" NOTE: LSP系の機能は入力補完系の方が高速で充実している
+" NOTE: aleは基本的にlinterやfixerのみを扱う方が良い
+
 function! s:hook_add() abort
 " hook_add {{{
   " 明示的に指定する
@@ -9,8 +12,8 @@ function! s:hook_add() abort
   " LSPを使わないとtsserverが使えなくなってしまう
   let g:ale_disable_lsp = 0
 
-  " aleで入力補完をしないがcoc.nvimがなければ入力補完をする
-  let g:ale_completion_enabled = dein#tap('coc.nvim') ? 0 : 1
+  " aleで入力補完をしない
+  let g:ale_completion_enabled = 0
 
   " 入力補完を遅延させない
   let g:ale_completion_delay = 0
@@ -22,7 +25,7 @@ function! s:hook_add() abort
   let g:ale_hover_cursor = 1
 
   " バルーンで表示する？
-  " 対応しているとデフォルトで有効になる
+  " 対応しているとデフォルトで有効になるので指定しない
   " let g:ale_set_balloons = 1
 
   " エコーの遅延させない
@@ -47,7 +50,7 @@ function! s:hook_add() abort
     " let g:ale_detail_to_floating_preview = 1
   endif
 
-  " coc.nvimに似せる
+  " 見た目をcoc.nvimに似せる
   let g:ale_floating_window_border = [' ', '', ' ', ' ', ' ', ' ', ' ', '']
 
   " 保存した時にlintする
@@ -143,13 +146,9 @@ function! s:hook_add() abort
 
       let b:ale_linters = linters
     endif
-
   endfunction
   " バッファ固有のマップを設定する
   autocmd vimrc BufNewFile,BufRead * call s:ale_buffer_setup()
-
-  autocmd vimrc FileType css,html,javascript,javascriptreact,json,rust,scss,typescript,typescriptreact
-        \ if !dein#tap('coc.nvim') | nnoremap <buffer><silent> K :<C-u>ALEHover<CR> | endif
 
   " ファイルのカレントディレクトリから実行する
   " monorepo毎に.eslintignoreがある場合などに有効
@@ -254,6 +253,7 @@ function! s:hook_add() abort
     if exists('b:called_use_deno') && b:called_use_deno
       return
     endif
+    let b:called_use_deno = 1
 
     let dir = expand('%:p:h') . ';'
     let files = ['deno.json', 'deno.jsonc', 'deno.lock']
@@ -287,19 +287,9 @@ function! s:hook_add() abort
           \ })
     let b:ale_fixers.typescript = ['deno']
     let b:ale_fixers.typescriptreact = ['deno']
-
-    let b:called_use_deno = 1
   endfunction
   " denoのプロジェクトではdenoを使う
   autocmd vimrc FileType typescript,typescriptreact call s:use_deno()
-" }}}
-endfunction
-
-function! s:hook_source() abort
-" hook_source {{{
-  if g:ale_completion_enabled
-    set omnifunc=ale#completion#OmniFunc
-  endif
 " }}}
 endfunction
 
