@@ -65,7 +65,7 @@ let $PATH = fnamemodify(s:node_bin, ':h') . ':' . $PATH
 " プラグインが使用するnode.jsのパス
 let s:deno_bin = simplify(g:vimrc_vim_dir . '/deno/bin/deno')
 let s:deno_dir = fnamemodify(s:deno_bin, ':h')
-let s:deno_ver = '2.1.5'
+let s:deno_ver = '1.46.3' " '2.1.5'
 
 " プラグインが使用するdenoをインストールする
 function! s:install_deno() abort
