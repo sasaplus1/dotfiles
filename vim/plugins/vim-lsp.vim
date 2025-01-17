@@ -30,14 +30,6 @@ function! s:hook_add() abort
 " }}}
 endfunction
 
-function! s:hook_source() abort
-" hook_source {{{
-  if !dein#is_sourced('vim-lsp-settings')
-    call dein#source('vim-lsp-settings')
-  endif
-" }}}
-endfunction
-
 call dein#add('prabirshrestha/vim-lsp', {
       \ 'hooks_file' : expand('<script>:p'),
       \ 'lazy' : 1,
