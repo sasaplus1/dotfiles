@@ -130,11 +130,16 @@ autocmd vimrc InsertLeave * setlocal nopaste pastetoggle=
 
 " }}}
 
-" コメント中の特定の単語を強調表示する
-let s:todo = '\<\%(TODO\|FIXME\|CHANGED\|XXX\|BUG\|HACK\|NOTE\|INFO\|IDEA\)\>'
-" TODO: matchaddが増えすぎる
-" TODO: highlightにTodoがないとエラーになる
-autocmd vimrc WinEnter,WinLeave,BufRead,BufNew * call matchadd('Todo', s:todo)
+function! s:addTodo() abort
+  if exists('b:called_add_todo') && b:called_add_todo
+    return
+  endif
+  " コメント中の特定の単語を強調表示する
+  " TODO: highlightにTodoがないとエラーになる
+  call matchadd('Todo', '\<\%(TODO\|FIXME\|CHANGED\|XXX\|BUG\|HACK\|NOTE\|INFO\|IDEA\)\>')
+  let b:called_add_todo = 1
+endfunction
+autocmd vimrc WinEnter,WinLeave,BufRead,BufNew * call s:addTodo()
 
 " ウィンドウを移動したらバッファ番号とフルパスを表示する
 autocmd vimrc WinEnter * execute 'normal! 2\<C-g>'
