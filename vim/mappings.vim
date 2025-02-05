@@ -183,7 +183,20 @@ endfunction
 command! -nargs=0 UpdateQuickFix call <SID>update_quickfix()
 
 if exists(':Scratch') != 2
-  command! -nargs=0 Scratch vertical new +setlocal\ buftype=nofile\ filetype=markdown\ noswapfile
+  let s:scratch_dir = simplify(g:vimrc_vim_dir . "/scratch")
+
+  if !isdirectory(s:scratch_dir)
+    call mkdir(s:scratch_dir, "p")
+  endif
+
+  function! s:create_scratch()
+    execute 'vsplit' simplify(printf('%s/%s.md', s:scratch_dir, strftime('%Y%m%d%H%M%S'))
+    " 自動保存する
+    " NOTE: TextChanged,TextChangedI,b:changedtickを使ってもいいが複雑になる
+    autocmd vimrc CursorHold <buffer> if getbufvar('%', '&mod') == 1 | silent! write | endif
+  endfunction
+
+  command! -nargs=0 Scratch call s:create_scratch()
 endif
 
 if executable('sudo') && executable('tee')
