@@ -183,10 +183,10 @@ endfunction
 command! -nargs=0 UpdateQuickFix call <SID>update_quickfix()
 
 if exists(':Scratch') != 2
-  let s:scratch_dir = simplify(g:vimrc_vim_dir . "/scratch")
+  let s:scratch_dir = simplify(g:vimrc_vim_dir . '/scratch')
 
   if !isdirectory(s:scratch_dir)
-    call mkdir(s:scratch_dir, "p")
+    call mkdir(s:scratch_dir, 'p')
   endif
 
   function! s:create_scratch()
