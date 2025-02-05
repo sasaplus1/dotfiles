@@ -190,7 +190,7 @@ if exists(':Scratch') != 2
   endif
 
   function! s:create_scratch()
-    execute 'vsplit' simplify(printf('%s/%s.md', s:scratch_dir, strftime('%Y%m%d%H%M%S'))
+    execute 'vsplit' simplify(printf('%s/%s.md', s:scratch_dir, strftime('%Y%m%d%H%M%S')))
     " 自動保存する
     " NOTE: TextChanged,TextChangedI,b:changedtickを使ってもいいが複雑になる
     autocmd vimrc CursorHold <buffer> if getbufvar('%', '&mod') == 1 | silent! write | endif
