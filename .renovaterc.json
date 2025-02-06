@@ -1,11 +1,8 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:recommended",
-    ":label(renovate)",
-    ":reviewer(sasaplus1)",
-    ":timezone(Asia/Tokyo)",
-    ":disableDependencyDashboard",
-    "helpers:pinGitHubActionDigestsToSemver"
+    "local>sasaplus1/renovate-config:main.json5",
+    "local>sasaplus1/renovate-config:automerge-all.json5",
+    ":assignee(sasaplus1)"
   ]
 }
