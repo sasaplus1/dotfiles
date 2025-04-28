@@ -18,10 +18,13 @@ let g:vimrc_vim_dir = has('nvim') ? expand('~/.nvim') : expand('~/.vim')
 
 " node.js {{{
 
+" renovate: datasource=github-tags depName=nodejs/node
+let s:node_version = 'v22.12.0'
+
 " プラグインが使用するnode.jsのパス
 let s:node_bin = simplify(g:vimrc_vim_dir . '/node/bin/node')
 let s:node_dir = fnamemodify(s:node_bin, ':h:h')
-let s:node_ver = '22.12.0'
+let s:node_ver = substitute(s:node_version, '^v', '', '')
 
 " プラグインが使用するnode.jsをインストールする
 " TODO: シェルスクリプトに移した方が良さそう
@@ -62,10 +65,13 @@ let $PATH = fnamemodify(s:node_bin, ':h') . ':' . $PATH
 
 " deno {{{
 
+" renovate: datasource=github-tags depName=denoland/deno
+let deno_version= 'v1.46.3'
+
 " プラグインが使用するnode.jsのパス
 let s:deno_bin = simplify(g:vimrc_vim_dir . '/deno/bin/deno')
 let s:deno_dir = fnamemodify(s:deno_bin, ':h')
-let s:deno_ver = '1.46.3' " '2.1.5'
+let s:deno_ver = substitute(s:deno_version, '^v', '', '')
 
 " プラグインが使用するdenoをインストールする
 function! s:install_deno() abort
