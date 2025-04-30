@@ -66,7 +66,7 @@ let $PATH = fnamemodify(s:node_bin, ':h') . ':' . $PATH
 " deno {{{
 
 " renovate: datasource=github-tags depName=denoland/deno
-let s:deno_version = 'v2.2.12'
+let s:deno_version = 'v2.3.1'
 
 " プラグインが使用するnode.jsのパス
 let s:deno_bin = simplify(g:vimrc_vim_dir . '/deno/bin/deno')
