@@ -19,7 +19,7 @@ let g:vimrc_vim_dir = has('nvim') ? expand('~/.nvim') : expand('~/.vim')
 " node.js {{{
 
 " renovate: datasource=github-tags depName=nodejs/node
-let s:node_version = 'v23.11.0'
+let s:node_version = 'v24.0.0'
 
 " プラグインが使用するnode.jsのパス
 let s:node_bin = simplify(g:vimrc_vim_dir . '/node/bin/node')
