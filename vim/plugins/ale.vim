@@ -292,6 +292,44 @@ function! s:hook_add() abort
   endfunction
   " denoのプロジェクトではdenoを使う
   autocmd vimrc FileType typescript,typescriptreact call s:use_deno()
+
+  function! s:use_biome() abort
+    if exists('b:called_use_biome') && b:called_use_biome
+      return
+    endif
+    let b:called_use_biome = 1
+
+    if empty(finddir('node_modules/@biomejs/biome', expand('%:p:h') . ';'))
+      return
+    endif
+
+    " 他のlinterも使っている可能性があるので追加する
+    let linters = get(b:, 'ale_linters', {
+          \ 'javascript' : [],
+          \ 'javascriptreact' : [],
+          \ 'typescript' : [],
+          \ 'typescriptreact' : [],
+          \ })
+    call add(linters.javascript, 'biome')
+    call add(linters.javascriptreact, 'biome')
+    call add(linters.typescript, 'biome')
+    call add(linters.typescriptreact, 'biome')
+    let b:ale_linters = linters
+
+    " fixerはおそらくbiomeだけだと思うのでbiomeにする
+    let b:ale_fixers = extend(get(b:, 'ale_fixers', {}), {
+          \ 'javascript' : ['biome'],
+          \ 'javascriptreact' : ['biome'],
+          \ 'typescript' : ['biome'],
+          \ 'typescriptreact' : ['biome'],
+          \ })
+    let b:ale_fixers.javascript = ['biome']
+    let b:ale_fixers.javascriptreact = ['biome']
+    let b:ale_fixers.typescript = ['biome']
+    let b:ale_fixers.typescriptreact = ['biome']
+  endfunction
+  " biomeのプロジェクトではbiomeを使う
+  autocmd vimrc FileType javascript,javascriptreact,typescript,typescriptreact,vue call s:use_biome()
 " }}}
 endfunction
 
