@@ -13,21 +13,16 @@
         "/.g?vimrc(.local)?$/"
       ],
       "matchStrings": [
-        "\"\\s*renovate:\\s*datasource=(?<datasource>.*?) depName=(?<depName>nodejs/node)( versioning=(?<versioning>.*?))?\\s*let\\s*.*?_ver(sion)?\\s*=\\s*'?(?<currentValue>.*?)'?\\s"
-      ],
-      "versioningTemplate": "{{#if versioning}}{{versioning}}{{else}}semver{{/if}}",
-      "allowedVersions": "/^v[0-9]*[02468]\\./"
-    },
-    {
-      "customType": "regex",
-      "managerFilePatterns": [
-        "/.vim$/",
-        "/.g?vimrc(.local)?$/"
-      ],
-      "matchStrings": [
         "\"\\s*renovate:\\s*datasource=(?<datasource>.*?) depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?\\s*let\\s*.*?_ver(sion)?\\s*=\\s*'?(?<currentValue>.*?)'?\\s"
       ],
       "versioningTemplate": "{{#if versioning}}{{versioning}}{{else}}semver{{/if}}"
+    }
+  ],
+  "packageRules": [
+    {
+      "matchDepNames": ["nodejs/node"],
+      "matchDatasources": ["github-releases", "github-tags"],
+      "allowedVersions": "/^[0-9]*[02468]\\./"
     }
   ]
 }
