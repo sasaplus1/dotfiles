@@ -617,7 +617,7 @@ __main() {
     local git_dir=
     local git_cmd=
 
-    if git rev-parse --is-inside-work-tree >/dev/null 2>&1
+    if type git >/dev/null 2>&1 && [ "$(git rev-parse --is-inside-work-tree)" == 'true' ]
     then
       git_dir="$(git rev-parse --show-toplevel)"
       git_cmd="git ls-tree -dr --name-only --full-name HEAD '$git_dir' | sed -e 's|^|${git_dir}/|'"
@@ -723,6 +723,7 @@ __main() {
     # HEAD dir and file
     local head_dir=
     local head_file=
+    local origin_head_file=
 
     # origin's default branch name
     local default_branch=
@@ -742,38 +743,61 @@ __main() {
       # is too slow
       [ -f "${cwd}/lerna.json" ] && is_lerna=1
 
+      # vcs info
+      #     $ vcprompt -f '%n:%b:%r' 2>/dev/null
+      # is too slow
+      #     $ git rev-parse --is-inside-work-tree
+      # too
+
       # git-worktree or git-submodule
       # maybe read is faster than awk
       # https://qiita.com/hasegit/items/5be056d67347e1553f08
       if [ -f "${cwd}/.git" ]
       then
-        read -r _ head_dir < "${cwd}/.git"
+        is_git=1
 
-        [[ "$head_dir" =~ ^\.\.?\/ ]] &&
-          # maybe head_dir is relative path
-          head_file="${cwd}/${head_dir}/HEAD" ||
-          # maybe head_dir is absolute path
-          head_file="${head_dir}/HEAD"
+        local original_head_dir=
+        read -r _ original_head_dir < "${cwd}/.git"
+
+        [[ "$original_head_dir" =~ ^\.\.?\/ ]] &&
+          # maybe original_head_dir is relative path
+          head_dir="${cwd}/${original_head_dir}" ||
+          # maybe original_head_dir is absolute path
+          head_dir="$original_head_dir"
+
+        head_file="${head_dir}/HEAD"
 
         [[ "$head_file" =~ \.git\/worktrees ]] &&
           repo_type=git-worktree ||
           repo_type=git-submodule
+
+        if [ -f "${head_dir}/commondir" ]
+        then
+          # git-worktree has commondir file
+          local commondir=
+          read -r commondir < "${head_dir}/commondir"
+          origin_head_file="${head_dir}/${commondir}/refs/remotes/origin/HEAD"
+        else
+          # git-submodule hasnot commondir file
+          origin_head_file="${head_dir}/refs/remotes/origin/HEAD"
+        fi
       fi
 
-      # vcs info
-      # $ vcprompt -f '%n:%b:%r' 2>/dev/null
-      # is too slow
-      # $ git rev-parse --is-inside-work-tree
-      # too
+      # git repository
       if [ -d "${cwd}/.git" ]
+      then
+        is_git=1
+
+        repo_type=git
+        head_file="${cwd}/.git/HEAD"
+        origin_head_file="${cwd}/.git/refs/remotes/origin/HEAD"
+      fi
+
+      # get refs
+      if [ -n "$head_file" ]
       then
         local col1=
         local col2=
-
-        is_git=1
-
-        [ -z "$repo_type" ] && repo_type=git
-        [ -z "$head_file" ] && head_file="${cwd}/.git/HEAD"
 
         read -r col1 col2 < "$head_file"
 
@@ -784,19 +808,17 @@ __main() {
           is_hash=1
           refs=${col1::7}
         fi
-
-        local origin_head_file="${cwd}/.git/refs/remotes/origin/HEAD"
-
-        if [ -f "$origin_head_file" ]
-        then
-          local default_branch=
-
-          read -r _ default_branch < "$origin_head_file"
-          default_branch="${default_branch#refs/remotes/origin/}"
-        fi
-
-        break
       fi
+
+      # get origin's default branch name
+      if [ -f "$origin_head_file" ]
+      then
+        read -r _ default_branch < "$origin_head_file"
+        default_branch="${default_branch#refs/remotes/origin/}"
+      fi
+
+      # break if git repository found
+      [ -n "$repo_type" ] && break
 
       cwd="$(cd "${cwd}/.." && pwd)"
     done
