@@ -107,6 +107,16 @@ __main() {
   # NOTE: see fzf section
   # }}}
 
+  # gw-completion {{{
+  __gw-completion() {
+    unset -f __gw-completion
+    local cmd="${__GW_CMD:-gw}"
+    complete -r "$cmd"
+    eval "$("${cmd}" completion)" && return 124
+  }
+  complete -F __gw-completion "${__GW_CMD:-gw}"
+  # }}}
+
   # npm-completion {{{
   __npm_completion() {
     unset -f __npm_completion
@@ -177,6 +187,16 @@ __main() {
   # rustup {{{
   # shellcheck disable=SC1091
   [ -r "$HOME/.cargo/env" ] && source "$HOME/.cargo/env"
+  # }}}
+
+  # git-worktree.bash {{{
+  gw() {
+    unset -f gw
+    # shellcheck disable=SC1091
+    source "${GHQ_ROOT:-$HOME/.ghq}/github.com/sasaplus1/git-worktree.bash/git-worktree.bash" 2>/dev/null
+    __gw "$@"
+  }
+  # NOTE: use `eval "$(declare -f gw | sed "1s/gw/${__GW_CMD:-gw}/")"` if $__GW_CMD is set
   # }}}
 
   # ni.bash {{{
