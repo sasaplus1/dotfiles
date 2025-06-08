@@ -1,3 +1,6 @@
+[settings]
+auto-install = true
+
 [plugins]
 zig = "github://konomae/zig-plugin"
 
