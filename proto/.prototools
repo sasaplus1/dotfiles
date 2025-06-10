@@ -1,5 +1,8 @@
 [settings]
+auto-clean = true
 auto-install = true
+# $ proto plugin list # needs pnpm
+# builtin-plugins = ["bun", "deno", "go", "node", "npm", "rust", "yarn", "zig"]
 
 [plugins]
 zig = "github://konomae/zig-plugin"
