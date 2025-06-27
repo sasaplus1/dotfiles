@@ -1,3 +1,5 @@
+Include ~/.ssh/config.d/*.conf
+
 Host bitbucket.org
     Compression yes
     HostName bitbucket.org
@@ -11,5 +13,9 @@ Host github.com
     IdentitiesOnly yes
 #   IdentityFile ~/.ssh/path/to/file
     User git
+
+Host *
+  ServerAliveInterval 60
+# VisualHostKey yes
 
 # vim:ft=sshconfig:

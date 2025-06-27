@@ -53,6 +53,7 @@ dotfile_dirs += $(dest)/.local
 dotfile_dirs += $(dest)/.pseudo_trash
 # dotfile_dirs += $(dest)/.rbenv
 dotfile_dirs += $(dest)/.ssh
+dotfile_dirs += $(dest)/.ssh/config.d
 ifeq ($(os),linux)
 dotfile_dirs += $(dest)/.urxvt
 endif
