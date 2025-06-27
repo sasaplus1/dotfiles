@@ -52,6 +52,10 @@
   status = auto
   ui = auto
 
+;[commit]
+; gpgsign = true
+; verifySignatures = true
+
 [core]
 ; editor = vim
 ; editor = $EDITOR
@@ -87,6 +91,7 @@
 
 [user]
   useConfigOnly = true
+; signingkey =
 
 [interactive]
   diffFilter = delta --color-only 2>/dev/null || cat
