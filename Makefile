@@ -53,7 +53,6 @@ dotfile_dirs += $(dest)/.local
 dotfile_dirs += $(dest)/.pseudo_trash
 # dotfile_dirs += $(dest)/.rbenv
 dotfile_dirs += $(dest)/.ssh
-dotfile_dirs += $(dest)/.ssh/config.d
 ifeq ($(os),linux)
 dotfile_dirs += $(dest)/.urxvt
 endif
@@ -99,6 +98,7 @@ symlinks += $(makefile_dir)/proto/.prototools $(dest)/.prototools
 # symlinks += $(makefile_dir)/ruby/.gemrc $(dest)/.gemrc
 symlinks += $(makefile_dir)/screen/.screenrc $(dest)/.screenrc
 # symlinks += $(makefile_dir)/slate/.slate $(dest)/.slate
+symlinks := $(makefile_dir)/sshconfig/config $(dest)/.ssh/config
 # symlinks += $(makefile_dir)/tern/.tern-project $(dest)/.tern-project
 symlinks += $(makefile_dir)/tig/.tigrc $(dest)/.tigrc
 symlinks += $(makefile_dir)/tmux/.tmux.conf $(dest)/.tmux.conf
@@ -116,7 +116,6 @@ symlinks := $(subst +,\\\ ,$(abspath $(strip $(symlinks))))
 # static files {{{
 
 copy_targets :=
-copy_targets := $(makefile_dir)/sshconfig/config $(dest)/.ssh/config
 copy_targets += $(makefile_dir)/curl/.curlrc $(dest)/.curlrc
 copy_targets += $(makefile_dir)/node.js/.npmrc $(dest)/.npmrc
 # copy_targets += $(makefile_dir)/ruby/default-gems $(dest)/.rbenv/default-gems
