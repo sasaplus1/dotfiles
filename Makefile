@@ -126,18 +126,6 @@ copy_targets := $(abspath $(strip $(copy_targets)))
 
 # }}}
 
-# create files {{{
-
-create_targets :=
-# create_targets += $(dest)/.bash_logout.local
-# create_targets += $(dest)/.bashrc.local
-# create_targets += $(dest)/.gitconfig.local
-# create_targets += $(dest)/.hgrc.local
-
-create_targets := $(abspath $(strip $(create_targets)))
-
-# }}}
-
 #-------------------------------------------------------------------------------
 
 .PHONY: all
@@ -146,18 +134,17 @@ all: ## output targets
 
 .PHONY: deploy
 deploy: ## deploy dotfiles
-	-@printf -- '%s\n' $(dotfile_dirs)   | xargs -n 1 bash -c 'mkdir -pv "$$0"'
-	-@printf -- '%s\n' $(symlinks)       | xargs -n 2 bash -c 'ln -sv "$$0" "$$1"'
-	-@printf -- '%s\n' $(copy_targets)   | xargs -n 2 bash -c 'cp -nv "$$0" "$$1"'
-	-@printf -- '%s\n' $(create_targets) | xargs -n 1 bash -c 'cp -nv <(echo -n) "$$0"'
+	-@printf -- '%s\n' $(dotfile_dirs) | xargs -n 1 bash -c 'mkdir -pv "$$0"'
+	-@printf -- '%s\n' $(symlinks)     | xargs -n 2 bash -c 'ln -sv "$$0" "$$1"'
+	-@printf -- '%s\n' $(copy_targets) | xargs -n 2 bash -c 'cp -nv "$$0" "$$1"'
+	@chmod 0700 $(dest)/.ssh
 	@echo 'done.'
 
 .PHONY: test
 test: ## check deployed files
-	@printf -- '%s\n' $(dotfile_dirs)   | xargs -n 1 bash -c '[ -d "$$0" ] || echo "$$0 is not found"'
-	@printf -- '%s\n' $(symlinks)       | xargs -n 2 bash -c '[ -L "$$1" ] || echo "$$1 is not found"'
-	@printf -- '%s\n' $(copy_targets)   | xargs -n 2 bash -c '[ -f "$$1" ] || echo "$$1 is not found"'
-	@printf -- '%s\n' $(create_targets) | xargs -n 1 bash -c '[ -f "$$0" ] || echo "$$0 is not found"'
+	@printf -- '%s\n' $(dotfile_dirs) | xargs -n 1 bash -c '[ -d "$$0" ] || echo "$$0 is not found"'
+	@printf -- '%s\n' $(symlinks)     | xargs -n 2 bash -c '[ -L "$$1" ] || echo "$$1 is not found"'
+	@printf -- '%s\n' $(copy_targets) | xargs -n 2 bash -c '[ -f "$$1" ] || echo "$$1 is not found"'
 	@echo 'done.'
 
 .PHONY: vars
