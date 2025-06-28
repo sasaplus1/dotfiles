@@ -129,9 +129,9 @@ copy_targets := $(abspath $(strip $(copy_targets)))
 # create files {{{
 
 create_targets :=
-create_targets += $(dest)/.bash_logout.local
-create_targets += $(dest)/.bashrc.local
-create_targets += $(dest)/.gitconfig.local
+# create_targets += $(dest)/.bash_logout.local
+# create_targets += $(dest)/.bashrc.local
+# create_targets += $(dest)/.gitconfig.local
 # create_targets += $(dest)/.hgrc.local
 
 create_targets := $(abspath $(strip $(create_targets)))
