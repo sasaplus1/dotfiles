@@ -123,10 +123,12 @@ autocmd vimrc FileType netrw nmap <buffer><silent> \ :<C-u>Explore /<CR>
 
 " ペーストモード {{{
 
-" 挿入モードを開始したときにペーストモードのキーバインドを設定する
-autocmd vimrc InsertEnter * setlocal pastetoggle=<C-t>
-" 挿入モードから抜けるときにペーストモードを抜け、キーバインドも解除する
-autocmd vimrc InsertLeave * setlocal nopaste pastetoggle=
+if !has('nvim')
+  " 挿入モードを開始したときにペーストモードのキーバインドを設定する
+  autocmd vimrc InsertEnter * setlocal pastetoggle=<C-t>
+  " 挿入モードから抜けるときにペーストモードを抜け、キーバインドも解除する
+  autocmd vimrc InsertLeave * setlocal nopaste pastetoggle=
+endif
 
 " }}}
 
