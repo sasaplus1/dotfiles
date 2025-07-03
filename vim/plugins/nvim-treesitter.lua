@@ -1,6 +1,11 @@
 require('nvim-treesitter.configs').setup {
   auto_install = false,
   ensure_installed = 'all',
+  ignore_install = {
+    -- https://github.com/nvim-treesitter/nvim-treesitter/issues/7941
+    -- https://github.com/nvim-treesitter/nvim-treesitter/discussions/7942
+    "ipkg",
+  },
   -- ensure_installed = {
   --   "query", -- required
   -- },
