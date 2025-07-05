@@ -18,23 +18,15 @@ function! s:hook_add() abort
 
   let &t_8f = "\<Esc>[38:2:%lu:%lu:%lum"
   let &t_8b = "\<Esc>[48:2:%lu:%lu:%lum"
-" }}}
-endfunction
 
-function! s:hook_source() abort
-" hook_source {{{
-  if !dein#tap('lightline.vim')
-    " https://qiita.com/kawaz/items/ee725f6214f91337b42b#colorscheme-%E3%81%AF-vimenter-%E3%81%AB-nested-%E6%8C%87%E5%AE%9A%E3%81%A7%E9%81%85%E5%BB%B6%E8%A8%AD%E5%AE%9A%E3%81%99%E3%82%8B
-    autocmd vimrc VimEnter * ++nested set background=dark | colorscheme gruvbox8
-  endif
+  " https://qiita.com/kawaz/items/ee725f6214f91337b42b#colorscheme-%E3%81%AF-vimenter-%E3%81%AB-nested-%E6%8C%87%E5%AE%9A%E3%81%A7%E9%81%85%E5%BB%B6%E8%A8%AD%E5%AE%9A%E3%81%99%E3%82%8B
+  autocmd vimrc VimEnter * ++nested set background=dark | colorscheme gruvbox8
 " }}}
 endfunction
 
 call dein#add('lifepillar/vim-gruvbox8', {
       \ 'hooks_file' : expand('<script>:p'),
-      \ 'lazy' : 1,
       \ 'merged' : 0,
-      \ 'on_event' : ['ColorScheme', 'VimEnter'],
       \ })
 
 " vim:ft=vim:fdm=marker:fen:
