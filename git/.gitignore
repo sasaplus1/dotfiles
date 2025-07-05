@@ -122,3 +122,6 @@ $RECYCLE.BIN/
 
 # coc.nvim settings file
 /.vim/coc-settings.json
+
+# moonrepo/proto
+/.prototools
