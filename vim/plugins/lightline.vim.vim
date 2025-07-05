@@ -14,6 +14,7 @@ function! s:hook_source() abort
       " https://github.com/nvim-lualine/lualine.nvim/issues/1312
       " https://github.com/neovim/neovim/commit/e049c6e4c08a141c94218672e770f86f91c27a11
       highlight StatusLine gui=NONE
+      highlight StatusLineNC gui=NONE
     endif
   endif
 " }}}
