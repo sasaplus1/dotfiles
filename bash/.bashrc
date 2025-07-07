@@ -169,6 +169,13 @@ __main() {
   type direnv >/dev/null 2>&1 && eval "$(direnv hook bash)"
   # }}}
 
+  # proto {{{
+  # NOTE: very slow
+  # type proto >/dev/null 2>&1 && eval "$(proto activate bash)"
+  # NOTE: very slow
+  # PROMPT_COMMAND='eval "$(proto activate --export bash)"'
+  # }}}
+
   # nvm {{{
   # NOTE: nvm very slow to start
   # https://github.com/nvm-sh/nvm/issues/2724
