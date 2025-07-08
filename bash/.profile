@@ -141,7 +141,7 @@ __main() {
   __main_proto_home="$HOME/.proto"
   [ -d "$__main_proto_home" ] &&
     export PROTO_HOME="$__main_proto_home" &&
-    export PATH="$PROTO_HOME/shims:$PROTO_HOME/bin:$PATH"
+    export PATH="$PROTO_HOME/shims:$PROTO_HOME/bin:$PROTO_HOME/tools/node/globals/bin:$PATH"
   # }}}
 
   # rbenv {{{
