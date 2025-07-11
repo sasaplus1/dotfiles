@@ -112,6 +112,9 @@ __main() {
     unset -f __gw-completion
     local cmd="${__GW_CMD:-gw}"
     complete -r "$cmd"
+    # Initialize gw function by loading the actual script
+    # shellcheck disable=SC1091
+    source "${GHQ_ROOT:-$HOME/.ghq}/github.com/sasaplus1/git-worktree.bash/git-worktree.bash" 2>/dev/null
     eval "$("${cmd}" completion)" && return 124
   }
   complete -F __gw-completion "${__GW_CMD:-gw}"
