@@ -644,7 +644,7 @@ __main() {
     local git_dir=
     local git_cmd=
 
-    if type git >/dev/null 2>&1 && [ "$(git rev-parse --is-inside-work-tree)" == 'true' ]
+    if type git >/dev/null 2>&1 && [ "$(git rev-parse --is-inside-work-tree 2>/dev/null)" == 'true' ]
     then
       git_dir="$(git rev-parse --show-toplevel)"
       git_cmd="git ls-tree -dr --name-only --full-name HEAD '$git_dir' | sed -e 's|^|${git_dir}/|'"
