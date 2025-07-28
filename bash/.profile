@@ -186,6 +186,13 @@ __main() {
     export PATH="$__main_tmux/usr/bin:$PATH"
   # }}}
 
+  # git {{{
+  __main_git="$GHQ_ROOT/github.com/sasaplus1/macos-git"
+  [ -x "$__main_git/usr/bin/git" ] &&
+    export MANPATH="$__main_git/share/man:$MANPATH" &&
+    export PATH="$__main_git/usr/bin:$PATH"
+  # }}}
+
   #-----------------------------------------------------------------------------
 
   # stop flow mode (disable C-s and C-q)
