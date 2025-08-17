@@ -38,6 +38,17 @@ __main() {
 
   #-----------------------------------------------------------------------------
 
+  update_path() {
+    source "$HOME/.sh_path"
+  }
+
+  if [ ! -f "$HOME/.cache/sh_user_path" ] || [ "$HOME/.sh_path" -nt "$HOME/.cache/sh_user_path" ]
+  then
+    update_path
+  fi
+
+  #-----------------------------------------------------------------------------
+
   # for Ubuntu
   type batcat >/dev/null 2>&1 && bat() { batcat "$@"; }
 

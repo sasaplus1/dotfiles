@@ -1,0 +1,183 @@
+#!/bin/sh
+# NOTE: shebang for shellcheck
+
+__main() {
+  unset -f __main
+
+  # NOTE: In POSIX sh, $OSTYPE is undefined: SC3028
+  case "$(uname | tr '[:upper:]' '[:lower:]')" in
+    darwin*)
+      __main_os=macos
+      ;;
+    linux*)
+      __main_os=linux
+      ;;
+    *)
+      __main_os=
+      ;;
+  esac
+
+  #-----------------------------------------------------------------------------
+
+  __sh_path_cache_sh_base_path="$HOME/.cache/sh_base_path"
+
+  if [ -r "$__sh_path_cache_sh_base_path" ]
+  then
+    . "$__sh_path_cache_sh_base_path"
+  else
+    # initialize PATHs
+    case "$__main_os" in
+      darwin*)
+        eval "$(env -i /usr/libexec/path_helper -s)"
+        export MANPATH="$(env -i /usr/bin/manpath 2>/dev/null || echo '/usr/share/man')"
+        ;;
+      linux*)
+        export PATH="$(env -i /bin/sh -c 'echo $PATH')"
+        export MANPATH="$(env -i /usr/bin/manpath 2>/dev/null || echo '/usr/local/share/man:/usr/share/man')"
+        ;;
+    esac
+    export INFOPATH=
+    # cache base PATHs
+    command mkdir -p "$HOME/.cache"
+    {
+      echo '#!/bin/sh'
+      printf "export PATH='%s'\n" "$PATH"
+      printf "export MANPATH='%s'\n" "$MANPATH"
+      printf "export INFOPATH='%s'\n" "$INFOPATH"
+    } > "$__sh_path_cache_sh_base_path"
+  fi
+
+  #-----------------------------------------------------------------------------
+
+  # ghq {{{
+  export GHQ_ROOT="$HOME/.ghq"
+  # }}}
+
+  #-----------------------------------------------------------------------------
+
+  # Homebrew {{{
+  __main_homebrew_prefix=
+
+  if [ "$__main_os" = 'macos' ]
+  then
+    [ -d '/usr/local/Homebrew' ] && __main_homebrew_prefix=/usr/local
+    # NOTE: my original location
+    [ -d "$HOME/Homebrew" ] && __main_homebrew_prefix=$HOME/Homebrew
+  fi
+
+  if [ "$__main_os" = 'linux' ]
+  then
+    [ -d '/home/linuxbrew/.linuxbrew/Homebrew' ] &&
+      __main_homebrew_prefix=/home/linuxbrew/.linuxbrew
+    [ -d "$HOME/.linuxbrew/Homebrew" ] &&
+      __main_homebrew_prefix=$HOME/.linuxbrew
+  fi
+
+  if [ -d "$__main_homebrew_prefix" ]
+  then
+    export INFOPATH="$__main_homebrew_prefix/share/info:$INFOPATH"
+    export MANPATH="$__main_homebrew_prefix/share/man:$MANPATH"
+    export PATH="$__main_homebrew_prefix/bin:$PATH"
+
+    # NOTE: In POSIX sh, type -t is undefined: SC3045
+    # NOTE: brew --prefix is very slow https://github.com/Homebrew/brew/issues/3097
+    [ -d "$(dirname "$(dirname "$(command -v brew)")")" ] &&
+      export HOMEBREW_PREFIX="$__main_homebrew_prefix"
+  fi
+  # }}}
+
+  # MacPorts {{{
+  __main_macports_prefix=/opt/local
+
+  if [ "$__main_os" = 'macos' ] && [ -d "$__main_macports_prefix" ]
+  then
+    export INFOPATH="$__main_macports_prefix/share/info:$INFOPATH"
+    export MANPATH="$__main_macports_prefix/share/man:$MANPATH"
+    export PATH="$__main_macports_prefix/sbin:$PATH"
+    export PATH="$__main_macports_prefix/bin:$PATH"
+  fi
+  # }}}
+
+  # .local {{{
+  __main_dotlocal_prefix="$HOME/.local"
+
+  if [ -d "$__main_dotlocal_prefix" ]
+  then
+    export PATH="$__main_dotlocal_prefix/bin:$PATH"
+  fi
+  # }}}
+
+  #-----------------------------------------------------------------------------
+
+  # proto {{{
+  __main_proto_home="$HOME/.proto"
+  [ -d "$__main_proto_home" ] &&
+    export PROTO_HOME="$__main_proto_home" &&
+    export PATH="$PROTO_HOME/shims:$PROTO_HOME/bin:$PROTO_HOME/tools/node/globals/bin:$PATH"
+  # }}}
+
+  # rbenv {{{
+  [ -d "$HOME/.rbenv" ] && export PATH="$HOME/.rbenv/bin:$PATH"
+  # }}}
+
+  # go {{{
+  __main_go_gopath="$HOME/.go"
+  __main_go_gopath_bin="$__main_go_gopath/bin"
+  export GOPATH="$__main_go_gopath"
+  export PATH="$__main_go_gopath_bin:$PATH"
+  # }}}
+
+  # adb/android-platform-tools {{{
+  __main_android_platform_tools="$HOME/Library/Android/sdk/platform-tools"
+  [ -d "$__main_android_platform_tools" ] && export PATH="$__main_android_platform_tools:$PATH"
+  # }}}
+
+  # wezterm {{{
+  [ "$__main_os" = 'macos' ] && __main_wezterm="/Applications/WezTerm.app/Contents/MacOS"
+  [ -d "$__main_wezterm" ] && export PATH="$__main_wezterm:$PATH"
+  # }}}
+
+  # gibo {{{
+  __main_gibo="$GHQ_ROOT/github.com/simonwhitaker/gibo"
+  [ -s "$__main_gibo/gibo" ] && export PATH="$__main_gibo:$PATH"
+  # }}}
+
+  # vim {{{
+  # my Vim for macOS
+  # via https://github.com/sasaplus1/macos-vim
+  __main_mvim="$GHQ_ROOT/github.com/sasaplus1/macos-vim"
+  [ -x "$__main_mvim/usr/bin/vim" ] &&
+    export MANPATH="$__main_mvim/share/man:$MANPATH" &&
+    export PATH="$__main_mvim/usr/bin:$PATH"
+  # }}}
+
+  # tmux {{{
+  # my tmux for macOS
+  # via https://github.com/sasaplus1/macos-tmux
+  __main_tmux="$GHQ_ROOT/github.com/sasaplus1/macos-tmux"
+  [ -x "$__main_tmux/usr/bin/tmux" ] &&
+    export MANPATH="$__main_tmux/share/man:$MANPATH" &&
+    export PATH="$__main_tmux/usr/bin:$PATH"
+  # }}}
+
+  # git {{{
+  # my git for macOS
+  # via https://github.com/sasaplus1/macos-git
+  __main_git="$GHQ_ROOT/github.com/sasaplus1/macos-git"
+  [ -x "$__main_git/usr/bin/git" ] &&
+    export MANPATH="$__main_git/share/man:$MANPATH" &&
+    export PATH="$__main_git/usr/bin:$PATH"
+  # }}}
+
+  #-----------------------------------------------------------------------------
+
+  # cache user setting PATHs
+  command mkdir -p "$HOME/.cache"
+  {
+    echo '#!/bin/sh'
+    printf "export PATH='%s'\n" "$PATH"
+    printf "export MANPATH='%s'\n" "$MANPATH"
+    printf "export INFOPATH='%s'\n" "$INFOPATH"
+  } > "$HOME/.cache/sh_user_path"
+}
+__main "$@"
