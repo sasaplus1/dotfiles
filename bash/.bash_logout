@@ -5,7 +5,7 @@
 [ -n "$SSH_AGENT_PID" ] && eval "$(command ssh-agent -k)"
 
 # delete ssh-agent env
-rm -f "$HOME/.ssh-agent-info"
+command rm -f "$HOME/.ssh-agent-info"
 
 # source .bash_logout.local
 # shellcheck disable=SC1091
