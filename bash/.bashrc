@@ -696,6 +696,12 @@ __main() {
     "$EDITOR" "$HOME/Memo/$(date +%Y%m%dT%H%M%S).md"
   }
 
+  printpath() {
+    local -r var="${1:-PATH}"
+    local -r path="${!var}"
+    echo "${path//:/$'\n'}"
+  }
+
   #-----------------------------------------------------------------------------
 
   if type tmux >/dev/null 2>&1
