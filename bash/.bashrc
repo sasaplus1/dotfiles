@@ -39,7 +39,7 @@ __main() {
   #-----------------------------------------------------------------------------
 
   update_path() {
-    # shellcheck source=.sh_path
+    # shellcheck disable=SC1091
     source "$HOME/.sh_path"
   }
 
