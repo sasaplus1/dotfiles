@@ -12,7 +12,7 @@ __main() {
 
   __main_sh_path="$HOME/.sh_path"
   # In POSIX sh, 'source' in place of '.' is undefined: SC3046
-  # shellcheck disable=SC1091
+  # shellcheck disable=SC1090
   [ -r "$__main_sh_path" ] && . "$__main_sh_path"
 
   #-----------------------------------------------------------------------------
