@@ -5,11 +5,11 @@ __main() {
   unset -f __main
 
   # NOTE: In POSIX sh, $OSTYPE is undefined: SC3028
-  case "$(uname | tr '[:upper:]' '[:lower:]')" in
-    darwin*)
+  case "$(uname -s)" in
+    Darwin)
       __main_os=macos
       ;;
-    linux*)
+    Linux)
       __main_os=linux
       ;;
     *)
