@@ -6,14 +6,14 @@ __main() {
 
   # NOTE: In POSIX sh, 'local' is undefined: SC3043
 
-  [ -n "$__SOURCED_PROFILE" ] && return
-  export __SOURCED_PROFILE=1
-  readonly __SOURCED_PROFILE
+  [ -n "$__PROFILE_SOURCED" ] && return
+  export __PROFILE_SOURCED=1
+  readonly __PROFILE_SOURCED
 
-  __main_sh_path="$HOME/.sh_path"
+  __profile_sh_path="$HOME/.sh_path"
   # In POSIX sh, 'source' in place of '.' is undefined: SC3046
   # shellcheck disable=SC1090
-  [ -r "$__main_sh_path" ] && . "$__main_sh_path"
+  [ -r "$__profile_sh_path" ] && . "$__profile_sh_path"
 
   #-----------------------------------------------------------------------------
 
@@ -34,11 +34,11 @@ __main() {
   #-----------------------------------------------------------------------------
 
   # ssh-agent {{{
-  __main_ssh_agent_info="$HOME/.ssh-agent-info"
+  __profile_ssh_agent_info="$HOME/.ssh-agent-info"
 
   # In POSIX sh, 'source' in place of '.' is undefined: SC3046
   # shellcheck disable=SC1090
-  . "$__main_ssh_agent_info" 2>/dev/null
+  . "$__profile_ssh_agent_info" 2>/dev/null
 
   command ssh-add -l >/dev/null 2>&1
 
@@ -50,9 +50,9 @@ __main() {
     # force remove
     unset SSH_AUTH_SOCK
     unset SSH_AGENT_PID
-    rm -f "$__main_ssh_agent_info"
+    rm -f "$__profile_ssh_agent_info"
 
-    eval "$(command ssh-agent | grep -v 'echo' | tee "$__main_ssh_agent_info")" 2>/dev/null
+    eval "$(command ssh-agent | grep -v 'echo' | tee "$__profile_ssh_agent_info")" 2>/dev/null
   fi
   # }}}
 
