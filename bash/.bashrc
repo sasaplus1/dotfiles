@@ -39,6 +39,7 @@ __main() {
   #-----------------------------------------------------------------------------
 
   update_path() {
+    # shellcheck source=.sh_path
     source "$HOME/.sh_path"
   }
 

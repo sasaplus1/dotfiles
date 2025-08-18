@@ -10,9 +10,9 @@ __main() {
   export __SOURCED_PROFILE=1
   readonly __SOURCED_PROFILE
 
-  # In POSIX sh, 'source' in place of '.' is undefined: SC3046
-  # shellcheck disable=SC1090
   __main_sh_path="$HOME/.sh_path"
+  # In POSIX sh, 'source' in place of '.' is undefined: SC3046
+  # shellcheck source=.sh_path
   [ -r "$__main_sh_path" ] && . "$__main_sh_path"
 
   #-----------------------------------------------------------------------------
