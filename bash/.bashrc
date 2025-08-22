@@ -991,6 +991,10 @@ __main() {
   # return if terminal multiplexer used
   [[ "$TERM" =~ ^(screen|tmux) ]] && return 0
 
+  # return if coding agent
+  [ -n "$CLAUDECODE" ] && return 0
+  [ -n "$CURSOR_AGENT" ] && return 0
+
   # always use terminal multiplexer
   if [ -z "$TMUX" ] && [ -z "$VIM_TERMINAL" ] && [ ! -f '/.dockerenv' ] && type tmux >/dev/null 2>&1
   then
