@@ -17,14 +17,6 @@ __main() {
 
   #-----------------------------------------------------------------------------
 
-  # NOTE: tmux overwrite TERM_PROGRAM and TERM_PROGRAM_VERSION
-  # ex: Terminal.app = Apple_Terminal, 440
-  # ex: VSCode       = vscode, 1.68.1
-  export ORIGINAL_TERM_PROGRAM="$TERM_PROGRAM"
-  readonly ORIGINAL_TERM_PROGRAM
-  export ORIGINAL_TERM_PROGRAM_VERSION="$TERM_PROGRAM_VERSION"
-  readonly ORIGINAL_TERM_PROGRAM_VERSION
-
   # history settings
   export HISTSIZE=10000
   export HISTFILESIZE=10000
