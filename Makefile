@@ -82,7 +82,6 @@ symlinks += $(makefile_dir)/bash/.profile $(dest)/.profile
 symlinks += $(makefile_dir)/bash/.sh_path $(dest)/.sh_path
 # symlinks += $(makefile_dir)/ctags/.ctags $(dest)/.ctags
 # symlinks += $(makefile_dir)/ctags/.ctagsignore $(dest)/.ctagsignore
-symlinks += $(makefile_dir)/docker/config.json $(dest)/.docker/config.json
 symlinks += $(makefile_dir)/gh-dash/config.yml $(dest)/.config/gh-dash/config.yml
 symlinks += $(makefile_dir)/git/.gitconfig $(dest)/.gitconfig
 symlinks += $(makefile_dir)/git/.gitignore $(dest)/.config/git/ignore
@@ -116,6 +115,7 @@ symlinks := $(subst +,\\\ ,$(abspath $(strip $(symlinks))))
 
 copy_targets :=
 copy_targets += $(makefile_dir)/curl/.curlrc $(dest)/.curlrc
+copy_targets += $(makefile_dir)/docker/config.json $(dest)/.docker/config.json
 copy_targets += $(makefile_dir)/node.js/.npmrc $(dest)/.npmrc
 # copy_targets += $(makefile_dir)/ruby/default-gems $(dest)/.rbenv/default-gems
 copy_targets += $(makefile_dir)/vim/.vimrc.local $(dest)/.vimrc.local
