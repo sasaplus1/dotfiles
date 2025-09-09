@@ -31,7 +31,7 @@ function! s:hook_add() abort
 
   " 特定のファイルタイプでのみ setlocal をする
   " https://github.com/neoclide/coc.nvim/issues/649 via README.md
-  autocmd vimrc FileType css,html,javascript,javascriptreact,json,rust,scss,typescript,typescriptreact,yaml
+  autocmd vimrc FileType css,html,javascript,javascriptreact,json,nim,rust,scss,typescript,typescriptreact,yaml
         \ setlocal nobackup nowritebackup updatetime=300
 
   function s:show_documentation() abort
@@ -43,15 +43,15 @@ function! s:hook_add() abort
   endfunction
 
   " K は特定のファイルタイプでのみ有効にする
-  autocmd vimrc FileType css,html,javascript,javascriptreact,json,rust,scss,typescript,typescriptreact,yaml
+  autocmd vimrc FileType css,html,javascript,javascriptreact,json,nim,rust,scss,typescript,typescriptreact,yaml
         \ nnoremap <buffer><silent> K :call <SID>show_documentation()<CR>
 
   " F で折りたたみをする
-  autocmd vimrc FileType css,html,javascript,javascriptreact,json,rust,scss,typescript,typescriptreact,yaml
+  autocmd vimrc FileType css,html,javascript,javascriptreact,json,nim,rust,scss,typescript,typescriptreact,yaml
         \ nnoremap <buffer><silent> F :call CocAction('fold')<CR>
 
   " gf で定義へジャンプする形で擬似的にファイルを開く
-  autocmd vimrc FileType css,html,javascript,javascriptreact,json,rust,scss,typescript,typescriptreact,yaml
+  autocmd vimrc FileType css,html,javascript,javascriptreact,json,nim,rust,scss,typescript,typescriptreact,yaml
         \ nmap <buffer><expr> gf coc#rpc#ready() ? '<Plug>(coc-definition)' : 'feedkeys("gf", "nt")'
 
   autocmd vimrc CursorHold * silent call CocActionAsync('highlight')
@@ -86,6 +86,20 @@ function! s:hook_source() abort
           \ 'typescript.suggestionActions.enabled': v:true,
           \ 'typescript.validate.enable': v:false,
           \ 'wxss.validate': v:false,
+          \ }
+
+    let coc_settings.languageserver = {}
+    " NOTE: デバッグが必要な場合は nimlsp を nimlsp_debug に変更する
+    let coc_settings.languageserver.nim = {
+          \ 'command': expand('~/.nimble/bin/nimlsp'),
+          \ 'filetypes': ['nim', 'nims'],
+          \ 'rootPatterns': ['.git', '*.nimble', 'nim.cfg'],
+          \ 'settings': {
+          \   'nim': {
+          \     'nimsuggestPath': expand('~/.nimble/bin/nimsuggest'),
+          \   },
+          \ },
+          \ 'trace.server': 'verbose',
           \ }
 
     call writefile([json_encode(coc_settings)], coc_settings_path)
