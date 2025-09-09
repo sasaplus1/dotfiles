@@ -121,6 +121,10 @@ __main() {
   [ -d "$__main_cargo_home" ] && . "$__main_cargo_home/env" 2>/dev/null
   # }}}
 
+  # choosenim - nim/nimble {{{
+  [ -d "$HOME/.nimble" ] && export PATH="$HOME/.nimble/bin:$PATH"
+  # }}}
+
   # rbenv {{{
   [ -d "$HOME/.rbenv" ] && export PATH="$HOME/.rbenv/bin:$PATH"
   # }}}
