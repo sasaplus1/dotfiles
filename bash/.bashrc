@@ -53,7 +53,7 @@ __main() {
     source "$HOME/.sh_path"
   }
 
-  if [ ! -f "$HOME/.cache/sh_user_path" ] || [ "$HOME/.sh_path" -nt "$HOME/.cache/sh_user_path" ]
+  if [ ! -f "$HOME/.cache/sh_user_path" ] || [ "$(readlink -f "$HOME/.sh_path")" -nt "$HOME/.cache/sh_user_path" ]
   then
     update_path
   fi

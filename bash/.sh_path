@@ -27,11 +27,11 @@ __main() {
   else
     # initialize PATHs
     case "$__main_os" in
-      darwin*)
+      macos)
         eval "$(env -i /usr/libexec/path_helper -s)"
         export MANPATH="$(env -i /usr/bin/manpath 2>/dev/null || echo '/usr/share/man')"
         ;;
-      linux*)
+      linux)
         export PATH="$(env -i /bin/sh -c 'echo $PATH')"
         export MANPATH="$(env -i /usr/bin/manpath 2>/dev/null || echo '/usr/local/share/man:/usr/share/man')"
         ;;
