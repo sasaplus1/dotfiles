@@ -204,6 +204,11 @@ if executable('sudo') && executable('tee')
   command! -nargs=0 W execute 'w !sudo tee %'
 endif
 
+if has('terminal')
+  " ターミナルではプレフィックスキーを<C-g>にする
+  set termwinkey=<C-g>
+endif
+
 if has('terminal') || has('nvim')
   " ターミナルを開く
   nnoremap <silent> ,t :<C-u>terminal<CR>
