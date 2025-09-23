@@ -1,0 +1,62 @@
+expand:
+  - HOME
+  - PWD
+
+directories:
+  - "$HOME/Memo"
+  - "$HOME/Library/Application Support/Code/User"
+  - "$HOME/.chrome-local-overrides"
+  - "$HOME/.cocproxy"
+# - "$HOME/.config/Code/User"
+  - "$HOME/.config/alacritty"
+  - "$HOME/.config/gh-dash"
+  - "$HOME/.config/ghostty"
+  - "$HOME/.config/git"
+  - "$HOME/.config/nvim"
+  - "$HOME/.config/vifm"
+  - "$HOME/.ctags.d"
+  - "$HOME/.docker"
+  - "$HOME/.ghq"
+  - "$HOME/.go/bin"
+  - "$HOME/.go/pkg"
+  - "$HOME/.go/src"
+  - "$HOME/.local"
+  - "$HOME/.pseudo_trash"
+  - "$HOME/.ssh"
+# - "$HOME/.urxvt"
+  - "$HOME/.vim/backup"
+  - "$HOME/.vim/swap"
+  - "$HOME/.vim/undo"
+
+symlinks:
+# - ["$PWD/X11/.Xdefaults", "$HOME/.Xdefaults"]
+  - ["$PWD/alacritty/alacritty.toml", "$HOME/.config/alacritty/alacritty.toml"]
+  - ["$PWD/bash/.bash_logout", "$HOME/.bash_logout"]
+  - ["$PWD/bash/.bash_profile", "$HOME/.bash_profile"]
+  - ["$PWD/bash/.bashrc", "$HOME/.bashrc"]
+  - ["$PWD/bash/.profile", "$HOME/.profile"]
+  - ["$PWD/bash/.sh_path", "$HOME/.sh_path"]
+  - ["$PWD/gh-dash/config.yml", "$HOME/.config/gh-dash/config.yml"]
+  - ["$PWD/ghostty/config", "$HOME/.config/ghostty/config"]
+  - ["$PWD/git/.gitconfig", "$HOME/.gitconfig"]
+  - ["$PWD/git/.gitignore", "$HOME/.config/git/ignore"]
+  - ["$PWD/nginx/.cocproxy.nginx.conf", "$HOME/.cocproxy.nginx.conf"]
+  - ["$PWD/proto/.prototools", "$HOME/.prototools"]
+  - ["$PWD/screen/.screenrc", "$HOME/.screenrc"]
+  - ["$PWD/sshconfig/config", "$HOME/.ssh/config"]
+  - ["$PWD/tig/.tigrc", "$HOME/.tigrc"]
+  - ["$PWD/tmux/.tmux.conf", "$HOME/.tmux.conf"]
+  - ["$PWD/universal-ctags/main.ctags", "$HOME/.ctags.d/main.ctags"]
+  - ["$PWD/vifm/vifmrc", "$HOME/.config/vifm/vifmrc"]
+  - ["$PWD/vim/.vimrc", "$HOME/.config/nvim/init.vim"]
+  - ["$PWD/vim/.vimrc", "$HOME/.vimrc"]
+# - ["$PWD/vscode/settings.json", "$HOME/.config/Code/User/settings.json"]
+  - ["$PWD/vscode/settings.json", "$HOME/Library/Application Support/Code/User/settings.json"]
+  - ["$PWD/wezterm/.wezterm.lua", "$HOME/.wezterm.lua"]
+
+copies:
+  - ["$PWD/curl/.curlrc", "$HOME/.curlrc"]
+  - ["$PWD/docker/config.json", "$HOME/.docker/config.json"]
+  - ["$PWD/node.js/.npmrc", "$HOME/.npmrc"]
+  - ["$PWD/vim/.vimrc.local", "$HOME/.vimrc.local"]
+  - ["$PWD/wget/.wgetrc", "$HOME/.wgetrc"]
