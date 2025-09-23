@@ -40,6 +40,9 @@ family = "Menlo"
 [scrolling]
 history = 5000
 
+## TODO: cannot input backslash on macOS with Japanese IME
+# https://github.com/alacritty/alacritty/issues/6769
+
 [[keyboard.bindings]]
 action = "SpawnNewInstance"
 key = "N"
