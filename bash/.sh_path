@@ -141,6 +141,16 @@ __main() {
   [ -d "$__main_android_platform_tools" ] && export PATH="$__main_android_platform_tools:$PATH"
   # }}}
 
+  # alacritty {{{
+  [ "$__main_os" = 'macos' ] && __main_alacritty="/Applications/Alacritty.app/Contents/MacOS"
+  [ -d "$__main_alacritty" ] && export PATH="$__main_alacritty:$PATH"
+  # }}}
+
+  # ghostty {{{
+  [ "$__main_os" = 'macos' ] && __main_ghostty="/Applications/Ghostty.app/Contents/MacOS"
+  [ -d "$__main_ghostty" ] && export PATH="$__main_ghostty:$PATH"
+  # }}}
+
   # wezterm {{{
   [ "$__main_os" = 'macos' ] && __main_wezterm="/Applications/WezTerm.app/Contents/MacOS"
   [ -d "$__main_wezterm" ] && export PATH="$__main_wezterm:$PATH"
