@@ -2,7 +2,7 @@
 background-opacity = 0.9
 
 # テーマを指定する
-theme = Monokai Classic
+theme = Tomorrow Night
 
 # フォントを指定する
 font-family = ""
