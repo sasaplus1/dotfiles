@@ -1,0 +1,66 @@
+[window]
+opacity = 0.9
+
+[colors.bright]
+black = "#666666"
+blue = "#7799ff"
+cyan = "#00e5e5"
+green = "#00d900"
+magenta = "#e500e5"
+red = "#e50000"
+white = "#e5e5e5"
+yellow = "#e5e500"
+
+[colors.normal]
+black = "#000000"
+blue = "#5566ff"
+cyan = "#00a6b2"
+green = "#00a600"
+magenta = "#b200b2"
+red = "#990000"
+white = "#bfbfbf"
+yellow = "#999900"
+
+[colors.primary]
+background = "#000000"
+foreground = "#f2f2f2"
+
+[env]
+LANG = "ja_JP.UTF-8"
+TERM = "xterm-256color"
+
+[font]
+size = 11.0
+# NOTE: defaults write org.alacritty AppleFontSmoothing -int 0
+# use_thin_strokes = true
+
+[font.normal]
+family = "Menlo"
+
+[scrolling]
+history = 5000
+
+[[keyboard.bindings]]
+action = "SpawnNewInstance"
+key = "N"
+mods = "Command"
+
+[[keyboard.bindings]]
+chars = "\u001B"
+key = "LBracket"
+mods = "Control"
+
+[[keyboard.bindings]]
+chars = "\u001D"
+key = "RBracket"
+mods = "Control"
+
+[[keyboard.bindings]]
+action = "Copy"
+key = "C"
+mods = "Command"
+
+[[keyboard.bindings]]
+action = "Paste"
+key = "V"
+mods = "Command"
