@@ -33,7 +33,7 @@ ifeq ($(os),linux)
 dotfile_dirs += $(dest)/.config/Code
 dotfile_dirs += $(dest)/.config/Code/User
 endif
-# dotfile_dirs += $(dest)/.config/alacritty
+dotfile_dirs += $(dest)/.config/alacritty
 dotfile_dirs += $(dest)/.config/gh-dash
 dotfile_dirs += $(dest)/.config/git
 dotfile_dirs += $(dest)/.config/nvim
@@ -74,7 +74,7 @@ ifeq ($(os),linux)
 symlinks += $(makefile_dir)/vscode/settings.json $(dest)/.config/Code/User/settings.json
 symlinks += $(makefile_dir)/X11/.Xdefaults $(dest)/.Xdefaults
 endif
-# symlinks += $(makefile_dir)/alacritty/alacritty.yml $(dest)/.config/alacritty/alacritty.yml
+symlinks += $(makefile_dir)/alacritty/alacritty.toml $(dest)/.config/alacritty/alacritty.toml
 symlinks += $(makefile_dir)/bash/.bash_logout $(dest)/.bash_logout
 symlinks += $(makefile_dir)/bash/.bash_profile $(dest)/.bash_profile
 symlinks += $(makefile_dir)/bash/.bashrc $(dest)/.bashrc

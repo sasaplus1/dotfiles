@@ -13,6 +13,7 @@ directories:
   - "$HOME/.config/ghostty"
   - "$HOME/.config/git"
   - "$HOME/.config/nvim"
+# - "$HOME/.config/ranger"
   - "$HOME/.config/vifm"
   - "$HOME/.ctags.d"
   - "$HOME/.docker"
@@ -21,7 +22,10 @@ directories:
   - "$HOME/.go/pkg"
   - "$HOME/.go/src"
   - "$HOME/.local"
+# - "$HOME/.nodebrew"
+# - "$HOME/.peco"
   - "$HOME/.pseudo_trash"
+# - "$HOME/.rbenv"
   - "$HOME/.ssh"
 # - "$HOME/.urxvt"
   - "$HOME/.vim/backup"
@@ -36,18 +40,30 @@ symlinks:
   - ["$PWD/bash/.bashrc", "$HOME/.bashrc"]
   - ["$PWD/bash/.profile", "$HOME/.profile"]
   - ["$PWD/bash/.sh_path", "$HOME/.sh_path"]
+# - ["$PWD/ctags/.ctags", "$HOME/.ctags"]
+# - ["$PWD/ctags/.ctagsignore", "$HOME/.ctagsignore"]
   - ["$PWD/gh-dash/config.yml", "$HOME/.config/gh-dash/config.yml"]
   - ["$PWD/ghostty/config", "$HOME/.config/ghostty/config"]
   - ["$PWD/git/.gitconfig", "$HOME/.gitconfig"]
   - ["$PWD/git/.gitignore", "$HOME/.config/git/ignore"]
+# - ["$PWD/locate/.locate.rc", "$HOME/.locate.rc"]
+# - ["$PWD/mercurial/.hgrc", "$HOME/.hgrc"]
   - ["$PWD/nginx/.cocproxy.nginx.conf", "$HOME/.cocproxy.nginx.conf"]
+# - ["$PWD/pt/.ptignore", "$HOME/.ptignore"]
+# - ["$PWD/peco/config.json", "$HOME/.peco/config.json"]
   - ["$PWD/proto/.prototools", "$HOME/.prototools"]
+# - ["$PWD/ranger/commands.py", "$HOME/.config/ranger/commands.py"]
+# - ["$PWD/ranger/rc.conf", "$HOME/.config/ranger/rc.conf"]
+# - ["$PWD/ruby/.gemrc", "$HOME/.gemrc"]
   - ["$PWD/screen/.screenrc", "$HOME/.screenrc"]
+# - ["$PWD/slate/.slate", "$HOME/.slate"]
   - ["$PWD/sshconfig/config", "$HOME/.ssh/config"]
+# - ["$PWD/tern/.tern-project", "$HOME/.tern-project"]
   - ["$PWD/tig/.tigrc", "$HOME/.tigrc"]
   - ["$PWD/tmux/.tmux.conf", "$HOME/.tmux.conf"]
   - ["$PWD/universal-ctags/main.ctags", "$HOME/.ctags.d/main.ctags"]
   - ["$PWD/vifm/vifmrc", "$HOME/.config/vifm/vifmrc"]
+# - ["$PWD/vim/.gvimrc", "$HOME/.gvimrc"]
   - ["$PWD/vim/.vimrc", "$HOME/.config/nvim/init.vim"]
   - ["$PWD/vim/.vimrc", "$HOME/.vimrc"]
 # - ["$PWD/vscode/settings.json", "$HOME/.config/Code/User/settings.json"]
@@ -58,5 +74,6 @@ copies:
   - ["$PWD/curl/.curlrc", "$HOME/.curlrc"]
   - ["$PWD/docker/config.json", "$HOME/.docker/config.json"]
   - ["$PWD/node.js/.npmrc", "$HOME/.npmrc"]
+# - ["$PWD/ruby/default-gems", "$HOME/.rbenv/default-gems"]
   - ["$PWD/vim/.vimrc.local", "$HOME/.vimrc.local"]
   - ["$PWD/wget/.wgetrc", "$HOME/.wgetrc"]
