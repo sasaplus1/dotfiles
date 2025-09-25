@@ -9,6 +9,7 @@ auto-install = true
 
 [plugins]
 zig = "github://konomae/zig-plugin"
+zls = "github://konomae/zls-plugin"
 
 [tools.npm]
 shared-globals-dir = true
