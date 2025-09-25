@@ -2,7 +2,11 @@
 background-opacity = 0.9
 
 # テーマを指定する
-theme = Tomorrow Night
+# theme = Catppuccin Frappe
+# theme = Catppuccin Macchiato
+# theme = Catppuccin Mocha
+# theme = Chalk
+theme = Ghostty Default Style Dark
 
 # フォントを指定する
 font-family = ""
