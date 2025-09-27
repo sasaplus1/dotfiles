@@ -4,6 +4,9 @@ background-opacity = 0.9
 # 背景の透明度をセルごとに設定する
 background-opacity-cells
 
+# カーソルの点滅を無効化する
+cursor-style-blink = false
+
 # テーマを指定する
 # theme = Catppuccin Frappe
 # theme = Catppuccin Macchiato
