@@ -30,6 +30,12 @@ wezterm.on('window-focus-changed', function(window, pane)
   prev_dpi = dpi
 end)
 
+-- ウィンドウ背景の不透明度を設定する
+config.window_background_opacity = 0.9
+
+-- テキスト背景の不透明度を設定する
+config.text_background_opacity = 0.9
+
 -- ベルを無効化する
 config.audible_bell = 'Disabled'
 

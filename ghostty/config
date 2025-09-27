@@ -1,6 +1,9 @@
 # 背景を少し透明にする
 background-opacity = 0.9
 
+# 背景の透明度をセルごとに設定する
+background-opacity-cells
+
 # テーマを指定する
 # theme = Catppuccin Frappe
 # theme = Catppuccin Macchiato
