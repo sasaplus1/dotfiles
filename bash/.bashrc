@@ -730,12 +730,28 @@ __main() {
   then
     # switch tmux session
     switch-session() {
-      tmux switch-client -t "$(tmux list-sessions | fzf --no-multi | awk '{ print $1 }')"
+      tmux switch-client -t "$(tmux ls | fzf --no-multi | awk '{ print $1 }')"
     }
 
     # reorder tmux session
     reorder-session() {
-      tmux list-sessions -F#S | awk '{ if ($0 != NR - 1) print $0, NR - 1 }' | xargs -P 0 -n 2 tmux rename -t
+      # without popup session
+      tmux ls -F#S | grep -v popup | awk '{ if ($0 != NR - 1) print $0, NR - 1 }' | xargs -n 2 tmux rename -t
+    }
+
+    # popup tmux session
+    # based on https://zenn.dev/skanehira/articles/2020-10-25-tmux-toggle-popup
+    popup-session() {
+      local width=90%
+      local height=90%
+      local session="$(tmux display-message -p -F "#{session_name}")"
+
+      if [[ "$session" == *popup* ]]
+      then
+        tmux detach-client
+      else
+        tmux popup -d '#{pane_current_path}' -xC -yC -w"$width" -h"$height" -E 'tmux attach -t popup || tmux new -s popup'
+      fi
     }
   fi
 
