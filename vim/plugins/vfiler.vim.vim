@@ -21,8 +21,10 @@ function! s:hook_source() abort
   " ,vfでvfilerを開く
   " TODO: -layout=none以外を指定すると表示が崩れない
   nnoremap <expr> ,vf ':<C-u>VFiler -show-hidden-files ' . fnameescape(expand('%:p:h')) . '<CR>'
-  " ,vFでサイドバー風にvfilerを開く
-  nnoremap <expr> ,vF ':<C-u>VFiler -keep -layout=left -width=30 -columns=indent,icon,name -show-hidden-files ' . fnameescape(expand('%:p:h')) . '<CR>'
+  " ,vpでフローティングウィンドウでvfilerを開く
+  nnoremap <expr> ,vp ':<C-u>VFiler -layout=floating -show-hidden-files ' . fnameescape(expand('%:p:h')) . '<CR>'
+  " ,vtでサイドバー風にvfilerを開く
+  nnoremap <expr> ,vt ':<C-u>VFiler -keep -toggle -layout=left -width=30 -columns=indent,icon,name -show-hidden-files ' . fnameescape(expand('%:p:h')) . '<CR>'
 " }}}
 endfunction
 
@@ -34,7 +36,7 @@ call dein#add('obaland/vfiler.vim', {
       \ 'if' : 'has("lua") || has("nvim")',
       \ 'lazy' : 1,
       \ 'on_cmd' : ['VFiler'],
-      \ 'on_map' : [',vf', ',vF'],
+      \ 'on_map' : [',vf', ',vp', ',vt'],
       \ })
 
 " vim:ft=vim:fdm=marker:fen:
