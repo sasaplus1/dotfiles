@@ -125,6 +125,15 @@ __main() {
 
   # NOTE: lazy load completion https://qiita.com/kawaz/items/ba6140bca32bbd3cb928
 
+  # devbox completion {{{
+  # __devbox_completion() {
+  #   unset -f __devbox_completion
+  #   complete -r devbox
+  #   eval "$(devbox completion bash)" && return 124
+  # }
+  # complete -F __devbox_completion devbox
+  # }}}
+
   # gh-completion {{{
   # NOTE: see fzf section
   # }}}
