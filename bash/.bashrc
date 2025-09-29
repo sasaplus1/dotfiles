@@ -983,7 +983,10 @@ __main() {
 
   case "$os" in
     macos)
-      alias ls='ls -G'
+      ls() {
+        # new macOS ls has --color option
+        command ls --color "$@" || command ls -G "$@"
+      }
       alias grep='grep --color=auto'
       alias ios='open -a "Simulator" || open -a "iOS Simulator" || open -a "iPhone Simulator"'
       ;;
