@@ -8,6 +8,8 @@ auto-install = true
 # builtin-plugins = ["bun", "deno", "go", "node", "npm", "rust", "yarn", "zig"]
 
 [plugins]
+crystal = "github://sasaplus1/proto-plugin-crystal"
+github-mcp-server = "https://raw.githubusercontent.com/sasaplus1/proto-plugins/main/github-mcp-server/plugin.toml"
 zig = "github://konomae/zig-plugin"
 zls = "github://konomae/zls-plugin"
 
