@@ -1030,8 +1030,7 @@ __main() {
     then
       command tmux new-session -e "COLORTERM=${COLORTERM}"
     else
-      # TODO: I want to unset COLORTERM
-      command tmux new-session -e "COLORTERM="
+      env -u COLORTERM command tmux new-session
     fi
   fi
 }
