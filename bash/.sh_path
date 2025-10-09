@@ -161,6 +161,14 @@ __main() {
   [ -s "$__main_gibo/gibo" ] && export PATH="$__main_gibo:$PATH"
   # }}}
 
+  # nix with devbox {{{
+  # NOTE: https://github.com/NixOS/nix/issues/13255
+  __main_nix=/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+  [ -r "$__main_nix" ] &&
+    unset __ETC_PROFILE_NIX_SOURCED &&
+    source "$__main_nix"
+  # }}}
+
   # vim {{{
   # my Vim for macOS
   # via https://github.com/sasaplus1/macos-vim
