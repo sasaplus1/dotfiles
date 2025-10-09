@@ -91,6 +91,16 @@ __main() {
 
   #-----------------------------------------------------------------------------
 
+  # nix(by devbox) {{{
+  # NOTE: https://github.com/NixOS/nix/issues/13255
+  local -r nix=/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+  [ -r "$nix" ] &&
+    unset __ETC_PROFILE_NIX_SOURCED &&
+    source "$nix"
+  # }}}
+
+  #-----------------------------------------------------------------------------
+
   # tmux shell {{{
   for shell_path in \
     "$dotlocal_prefix/bin/bash" \
