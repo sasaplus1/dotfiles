@@ -79,6 +79,9 @@
   lineNumber = true
   patternType = extended
 
+[init]
+	defaultBranch = main
+
 [merge]
   conflictStyle = merge
 ; conflictStyle = diff3
