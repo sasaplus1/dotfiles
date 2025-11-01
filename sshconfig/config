@@ -8,6 +8,8 @@ Host github.com
     User git
 
 Host *
+  ControlMaster auto
+  ControlPath ~/.ssh/sockets/%r@%h:%p
   ServerAliveInterval 60
 # VisualHostKey yes
 

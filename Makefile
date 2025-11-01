@@ -52,6 +52,7 @@ dotfile_dirs += $(dest)/.local
 dotfile_dirs += $(dest)/.pseudo_trash
 # dotfile_dirs += $(dest)/.rbenv
 dotfile_dirs += $(dest)/.ssh
+dotfile_dirs += $(dest)/.ssh/sockets
 ifeq ($(os),linux)
 dotfile_dirs += $(dest)/.urxvt
 endif
@@ -136,7 +137,7 @@ deploy: ## deploy dotfiles
 	-@printf -- '%s\n' $(dotfile_dirs) | xargs -n 1 bash -c 'mkdir -pv "$$0"'
 	-@printf -- '%s\n' $(symlinks)     | xargs -n 2 bash -c 'ln -sv "$$0" "$$1"'
 	-@printf -- '%s\n' $(copy_targets) | xargs -n 2 bash -c 'cp -nv "$$0" "$$1"'
-	@chmod 0700 $(dest)/.ssh
+	@chmod 0700 $(dest)/.ssh $(dest)/.ssh/sockets
 	@echo 'done.'
 
 .PHONY: test
