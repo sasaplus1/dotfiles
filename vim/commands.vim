@@ -56,9 +56,9 @@ autocmd vimrc BufNewFile,BufRead *.ftl setfiletype html
 " *.xulはXML
 autocmd vimrc BufNewFile,BufRead *.xul setfiletype xml
 
-" *.*.njkは1つ目の拡張子で判定する
+" *.*.j2と*.*.njkは1つ目の拡張子で判定する
 " https://vi.stackexchange.com/a/29271
-autocmd vimrc BufNewFile,BufRead *.*.njk execute 'doautocmd filetypedetect BufRead' fnameescape(expand('<afile>:r'))
+autocmd vimrc BufNewFile,BufRead *.*.j2,*.*.njk execute 'doautocmd filetypedetect BufRead' fnameescape(expand('<afile>:r'))
 
 " HTML編集時にシンタックスハイライトを400桁までに制限する
 autocmd vimrc FileType html setlocal synmaxcol=400
