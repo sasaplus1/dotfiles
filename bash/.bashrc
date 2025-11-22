@@ -975,9 +975,19 @@ __main() {
     printf -- '%b' "${green}\w${reset}\$(__print_status \$?)\n${u}@\h$ "
   }
 
+  # direnv with virtualenv
+  __show_virtual_env() {
+    if [ -n "$VIRTUAL_ENV" ] && [ -n "$DIRENV_DIR" ]
+    then
+      echo "($(basename $VIRTUAL_ENV)) "
+    fi
+  }
+  export -f __show_virtual_env
+
   # NOTE: SC2155
   # https://github.com/koalaman/shellcheck/wiki/SC2155
   PS1=$(__print_ps1)
+  PS1='$(__show_virtual_env)'$PS1
   export PS1
   # }}}
 

@@ -34,6 +34,8 @@ dotfile_dirs += $(dest)/.config/Code
 dotfile_dirs += $(dest)/.config/Code/User
 endif
 dotfile_dirs += $(dest)/.config/alacritty
+dotfile_dirs += $(dest)/.config/direnv
+dotfile_dirs += $(dest)/.config/direnv/lib
 dotfile_dirs += $(dest)/.config/gh-dash
 dotfile_dirs += $(dest)/.config/ghostty
 dotfile_dirs += $(dest)/.config/git
@@ -84,6 +86,7 @@ symlinks += $(makefile_dir)/bash/.profile $(dest)/.profile
 symlinks += $(makefile_dir)/bash/.sh_path $(dest)/.sh_path
 # symlinks += $(makefile_dir)/ctags/.ctags $(dest)/.ctags
 # symlinks += $(makefile_dir)/ctags/.ctagsignore $(dest)/.ctagsignore
+symlinks += $(makefile_dir)/direnv/lib/layout_uv.sh $(dest)/.config/direnv/lib/layout_uv.sh
 symlinks += $(makefile_dir)/gh-dash/config.yml $(dest)/.config/gh-dash/config.yml
 symlinks += $(makefile_dir)/ghostty/config $(dest)/.config/ghostty/config
 symlinks += $(makefile_dir)/git/.gitconfig $(dest)/.gitconfig
