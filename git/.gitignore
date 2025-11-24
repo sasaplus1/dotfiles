@@ -118,6 +118,12 @@ $RECYCLE.BIN/
 *.lnk
 
 
+### Direnv stuff
+### https://github.com/direnv/direnv/wiki/Git
+.direnv
+.envrc
+
+
 ### Original
 
 # coc.nvim settings file
