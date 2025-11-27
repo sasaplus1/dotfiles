@@ -94,10 +94,8 @@ __main() {
   # nix(by devbox) {{{
   # NOTE: https://github.com/NixOS/nix/issues/13255
   local -r nix=/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
-  [ -r "$nix" ] &&
-    unset __ETC_PROFILE_NIX_SOURCED &&
-    # shellcheck disable=SC1091
-    source "$nix"
+  # shellcheck disable=SC1090
+  [ -r "$nix" ] && unset __ETC_PROFILE_NIX_SOURCED && source "$nix"
   # }}}
 
   #-----------------------------------------------------------------------------
@@ -764,7 +762,8 @@ __main() {
     popup-session() {
       local width=90%
       local height=90%
-      local session="$(tmux display-message -p -F "#{session_name}")"
+      local session
+      session="$(tmux display-message -p -F "#{session_name}")"
 
       if [[ "$session" == *popup* ]]
       then

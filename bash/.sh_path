@@ -23,17 +23,22 @@ __main() {
 
   if [ -r "$__sh_path_cache_sh_base_path" ]
   then
+    # shellcheck disable=SC1090
     . "$__sh_path_cache_sh_base_path"
   else
     # initialize PATHs
     case "$__main_os" in
       macos)
         eval "$(env -i /usr/libexec/path_helper -s)"
-        export MANPATH="$(env -i /usr/bin/manpath 2>/dev/null || echo '/usr/share/man')"
+        MANPATH="$(env -i /usr/bin/manpath 2>/dev/null || echo '/usr/share/man')"
+        export MANPATH
         ;;
       linux)
-        export PATH="$(env -i /bin/sh -c 'echo $PATH')"
-        export MANPATH="$(env -i /usr/bin/manpath 2>/dev/null || echo '/usr/local/share/man:/usr/share/man')"
+        # shellcheck disable=SC2016
+        PATH="$(env -i /bin/sh -c 'echo $PATH')"
+        export PATH
+        MANPATH="$(env -i /usr/bin/manpath 2>/dev/null || echo '/usr/local/share/man:/usr/share/man')"
+        export MANPATH
         ;;
     esac
     export INFOPATH=
@@ -118,6 +123,7 @@ __main() {
 
   # rust/cargo {{{
   __main_cargo_home="$HOME/.cargo"
+  # shellcheck disable=SC1091
   [ -d "$__main_cargo_home" ] && . "$__main_cargo_home/env" 2>/dev/null
   # }}}
 
