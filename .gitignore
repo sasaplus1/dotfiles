@@ -1,0 +1,5 @@
+# repository local binaries
+/.bin/*
+
+# local environment variables
+/.envrc.local
