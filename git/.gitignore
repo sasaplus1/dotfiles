@@ -120,8 +120,8 @@ $RECYCLE.BIN/
 
 ### Direnv stuff
 ### https://github.com/direnv/direnv/wiki/Git
-.direnv
-.envrc
+#.direnv
+#.envrc
 
 
 ### Original
