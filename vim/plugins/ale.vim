@@ -87,6 +87,7 @@ function! s:hook_add() abort
         \ 'markdown' : ['textlint'],
         \ 'rust' : ['rust-analyzer', 'rls', 'cargo'],
         \ 'scss' : ['stylelint'],
+        \ 'sh' : ['shellcheck'],
         \ 'typescript' : ['tsserver', 'eslint'],
         \ 'typescriptreact' : ['tsserver', 'eslint'],
         \ }
@@ -346,6 +347,7 @@ call dein#add('dense-analysis/ale', {
       \   'jsonc',
       \   'markdown',
       \   'scss',
+      \   'sh',
       \   'typescript',
       \   'typescriptreact',
       \ ],
