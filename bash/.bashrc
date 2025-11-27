@@ -96,6 +96,7 @@ __main() {
   local -r nix=/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
   [ -r "$nix" ] &&
     unset __ETC_PROFILE_NIX_SOURCED &&
+    # shellcheck disable=SC1091
     source "$nix"
   # }}}
 
@@ -749,13 +750,13 @@ __main() {
   then
     # switch tmux session
     switch-session() {
-      tmux switch-client -t "$(tmux ls | fzf --no-multi | awk '{ print $1 }')"
+      tmux switch-client -t "$(tmux list-sessions | fzf --no-multi | awk '{ print $1 }')"
     }
 
     # reorder tmux session
     reorder-session() {
       # without popup session
-      tmux ls -F#S | grep -v popup | awk '{ if ($0 != NR - 1) print $0, NR - 1 }' | xargs -n 2 tmux rename -t
+      tmux list-sessions -F#S | grep -v popup | awk '{ if ($0 != NR - 1) print $0, NR - 1 }' | xargs -n 2 tmux rename -t
     }
 
     # popup tmux session
@@ -979,7 +980,7 @@ __main() {
   __show_virtual_env() {
     if [ -n "$VIRTUAL_ENV" ] && [ -n "$DIRENV_DIR" ]
     then
-      echo "($(basename $VIRTUAL_ENV)) "
+      echo "($(basename "$VIRTUAL_ENV")) "
     fi
   }
   export -f __show_virtual_env
