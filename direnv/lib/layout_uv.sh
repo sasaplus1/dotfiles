@@ -1,24 +1,22 @@
 # via: https://github.com/direnv/direnv/wiki/Python#uv
 layout_uv() {
-  if [[ -d ".venv" ]]
-  then
-    VIRTUAL_ENV="$(pwd)/.venv"
-  fi
+  [ -d '.venv' ] && VIRTUAL_ENV="$(pwd)/.venv"
 
-  if [[ -z $VIRTUAL_ENV || ! -d $VIRTUAL_ENV ]]
+  if [ -z $VIRTUAL_ENV ] || [ ! -d $VIRTUAL_ENV ]
   then
     log_status "No virtual environment exists. Executing \`uv venv\` to create one."
     uv venv
     VIRTUAL_ENV="$(pwd)/.venv"
   fi
 
-  if [ -d ".venv/bin" ]
+  if [ -d '.venv/bin' ]
   then
     PATH_add .venv/bin
-  elif [ -d ".venv/Scripts" ]
+  elif [ -d '.venv/Scripts' ]
   then
-      PATH_add .venv/Scripts
+    PATH_add .venv/Scripts
   fi
+
   export UV_ACTIVE=1  # or VENV_ACTIVE=1
   export VIRTUAL_ENV
 }
