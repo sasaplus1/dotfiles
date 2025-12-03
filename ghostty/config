@@ -31,4 +31,8 @@ font-feature = -calt,-liga,-dlig
 # OptionをAltではなくOptionとして扱う
 macos-option-as-alt = false
 
+# xterm-ghosttyに対応していない場合xterm-256colorにフォールバックする
+# https://ghostty.org/docs/help/terminfo#ssh
+shell-integration-features = ssh-env
+
 # vim:ft=conf:
