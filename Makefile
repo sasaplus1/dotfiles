@@ -76,6 +76,7 @@ symlinks += $(makefile_dir)/vscode/settings.json $(dest)/Library/Application+Sup
 endif
 ifeq ($(os),linux)
 symlinks += $(makefile_dir)/vscode/settings.json $(dest)/.config/Code/User/settings.json
+symlinks += $(makefile_dir)/xdg/user-dirs.dirs $(dest)/.config/user-dirs.dirs
 symlinks += $(makefile_dir)/X11/.Xdefaults $(dest)/.Xdefaults
 endif
 symlinks += $(makefile_dir)/alacritty/alacritty.toml $(dest)/.config/alacritty/alacritty.toml
