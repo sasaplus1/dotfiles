@@ -100,6 +100,19 @@ __main() {
 
   #-----------------------------------------------------------------------------
 
+  # Bitwarden as ssh-agent {{{
+  for sock in \
+    "$HOME/.bitwarden-ssh-agent.sock" \
+    "$HOME/Library/Containers/com.bitwarden.desktop/Data/.bitwarden-ssh-agent.sock" \
+    "$HOME/snap/bitwarden/current/.bitwarden-ssh-agent.sock" \
+    "$HOME/.var/app/com.bitwarden.desktop/data/.bitwarden-ssh-agent.sock"
+  do
+    [ -S "$sock" ] && export SSH_AUTH_SOCK="$sock" && break
+  done
+  # }}}
+
+  #-----------------------------------------------------------------------------
+
   # tmux shell {{{
   for shell_path in \
     "$dotlocal_prefix/bin/bash" \
@@ -975,6 +988,15 @@ __main() {
     printf -- '%b' "${green}\w${reset}\$(__print_status \$?)\n${u}@\h$ "
   }
 
+  # ssh-agent
+  __show_ssh_agent() {
+    if [[ "$SSH_AUTH_SOCK" == *bitwarden* ]]
+    then
+      echo '[ssh:bitwarden] '
+    fi
+  }
+  export -f __show_ssh_agent
+
   # direnv with virtualenv
   __show_virtual_env() {
     if [ -n "$VIRTUAL_ENV" ] && [ -n "$DIRENV_DIR" ]
@@ -987,7 +1009,7 @@ __main() {
   # NOTE: SC2155
   # https://github.com/koalaman/shellcheck/wiki/SC2155
   PS1=$(__print_ps1)
-  PS1='$(__show_virtual_env)'$PS1
+  PS1='$(__show_ssh_agent)$(__show_virtual_env)'$PS1
   export PS1
   # }}}
 

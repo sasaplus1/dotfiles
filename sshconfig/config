@@ -1,11 +1,17 @@
-Include ~/.ssh/config.d/*.conf
+# Host github.com
+#     Compression yes
+#     HostName github.com
+#     IdentitiesOnly yes
+#     IdentityFile ~/.ssh/path/to/file.pub
+#     User git
 
-Host github.com
-    Compression yes
-    HostName github.com
-#   IdentitiesOnly yes
-#   IdentityFile ~/.ssh/path/to/file
-    User git
+# IdentityFile
+#         ..snip.........................................  You can
+#         also specify a public key file to use the corresponding
+#         private key that is loaded in ssh-agent(1) when the
+#         private key file is not present locally.
+
+Include ~/.ssh/config.d/*.conf
 
 Host *
   ControlMaster auto
