@@ -30,22 +30,29 @@ __main() {
 
   # In POSIX sh, 'source' in place of '.' is undefined: SC3046
   # shellcheck disable=SC1090
-  . "$__profile_ssh_agent_info" 2>/dev/null
+  [ -r "$__profile_ssh_agent_info" ] && . "$__profile_ssh_agent_info"
 
   command ssh-add -l >/dev/null 2>&1
+  __ssh_add_status=$?
 
   # ssh-add is unable to contact the authentication agent
-  if [ "$?" -eq 2 ] && [ -x "$(command -v ssh-agent)" ]
+  if [ "$__ssh_add_status" -eq 2 ]
   then
-    eval "$(command ssh-agent -k)" 2>/dev/null
-
     # force remove
-    unset SSH_AUTH_SOCK
-    unset SSH_AGENT_PID
+    unset SSH_AUTH_SOCK SSH_AGENT_PID
     rm -f "$__profile_ssh_agent_info"
 
-    eval "$(command ssh-agent | grep -v 'echo' | tee "$__profile_ssh_agent_info")" 2>/dev/null
+    if command -v ssh-agent >/dev/null 2>&1
+    then
+      eval "$(command ssh-agent | grep -v 'echo')"
+      {
+        printf 'SSH_AUTH_SOCK=%s; export SSH_AUTH_SOCK;\n' "$SSH_AUTH_SOCK"
+        printf 'SSH_AGENT_PID=%s; export SSH_AGENT_PID;\n' "$SSH_AGENT_PID"
+      } > "$__profile_ssh_agent_info"
+    fi
   fi
+
+  unset __ssh_add_status
   # }}}
 
   #-----------------------------------------------------------------------------
