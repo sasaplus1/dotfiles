@@ -990,9 +990,12 @@ __main() {
 
   # ssh-agent
   __show_ssh_agent() {
+    local -r cyan='\e[01;36m'
+    local -r reset='\e[00m'
+
     if [[ "$SSH_AUTH_SOCK" == *bitwarden* ]]
     then
-      echo '[ssh:bitwarden] '
+      printf -- '%b' "${cyan}[ssh:bitwarden]${reset} "
     fi
   }
   export -f __show_ssh_agent
