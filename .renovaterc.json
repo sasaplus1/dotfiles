@@ -3,6 +3,7 @@
   "extends": [
     "local>sasaplus1/renovate-config:main.json5",
     "local>sasaplus1/renovate-config:automerge-all.json5",
+    "local>aquaproj/aqua-renovate-config#2.9.0",
     ":assignee(sasaplus1)"
   ],
   "customManagers": [
