@@ -1,0 +1,6 @@
+registries:
+  - type: standard
+    ref: v4.445.0 # renovate: depName=aquaproj/aqua-registry
+
+packages:
+  - name: zigtools/zls@2.55.3
