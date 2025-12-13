@@ -118,6 +118,12 @@ __main() {
 
   #-----------------------------------------------------------------------------
 
+  # aqua {{{
+  __main_aqua_home="${XDG_DATA_HOME:-$HOME/.local/share}/aquaproj-aqua"
+  [ -d "$__main_aqua_home" ] &&
+    export PATH="$__main_aqua_home/bin:$PATH"
+  # }}}
+
   # proto {{{
   __main_proto_home="$HOME/.proto"
   [ -d "$__main_proto_home" ] &&
