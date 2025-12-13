@@ -34,6 +34,7 @@ dotfile_dirs += $(dest)/.config/Code
 dotfile_dirs += $(dest)/.config/Code/User
 endif
 dotfile_dirs += $(dest)/.config/alacritty
+dotfile_dirs += $(dest)/.config/aqua
 dotfile_dirs += $(dest)/.config/direnv
 dotfile_dirs += $(dest)/.config/direnv/lib
 dotfile_dirs += $(dest)/.config/gh-dash
@@ -80,6 +81,7 @@ symlinks += $(makefile_dir)/xdg/user-dirs.dirs $(dest)/.config/user-dirs.dirs
 symlinks += $(makefile_dir)/X11/.Xdefaults $(dest)/.Xdefaults
 endif
 symlinks += $(makefile_dir)/alacritty/alacritty.toml $(dest)/.config/alacritty/alacritty.toml
+symlinks += $(makefile_dir)/aqua/aqua.yaml $(dest)/.config/aquaproj-aqua/aqua.yaml
 symlinks += $(makefile_dir)/bash/.bash_logout $(dest)/.bash_logout
 symlinks += $(makefile_dir)/bash/.bash_profile $(dest)/.bash_profile
 symlinks += $(makefile_dir)/bash/.bashrc $(dest)/.bashrc
