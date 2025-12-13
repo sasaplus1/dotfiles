@@ -10,9 +10,7 @@ auto-install = true
 
 [plugins]
 crystal = "github://sasaplus1/proto-plugin-crystal"
-github-mcp-server = "https://raw.githubusercontent.com/sasaplus1/proto-plugins/main/github-mcp-server/plugin.toml"
 zig = "github://konomae/zig-plugin"
-zls = "github://konomae/zls-plugin"
 
 [tools.npm]
 shared-globals-dir = true
