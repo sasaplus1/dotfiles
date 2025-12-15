@@ -12,6 +12,7 @@ directories:
   - "$HOME/.config/gh-dash"
   - "$HOME/.config/ghostty"
   - "$HOME/.config/git"
+  - "$HOME/.config/git/hooks"
   - "$HOME/.config/nvim"
 # - "$HOME/.config/ranger"
   - "$HOME/.config/vifm"
@@ -46,6 +47,8 @@ symlinks:
   - ["$PWD/ghostty/config", "$HOME/.config/ghostty/config"]
   - ["$PWD/git/.gitconfig", "$HOME/.gitconfig"]
   - ["$PWD/git/.gitignore", "$HOME/.config/git/ignore"]
+  - ["$PWD/git/hooks/multiple-hooks.sh", "$HOME/.config/git/hooks/multiple-hooks.sh"]
+  - ["$PWD/git/hooks/pre-commit", "$HOME/.config/git/hooks/pre-commit"]
 # - ["$PWD/locate/.locate.rc", "$HOME/.locate.rc"]
 # - ["$PWD/mercurial/.hgrc", "$HOME/.hgrc"]
   - ["$PWD/nginx/.cocproxy.nginx.conf", "$HOME/.cocproxy.nginx.conf"]

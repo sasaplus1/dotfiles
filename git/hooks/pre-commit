@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# 元のフックを呼ぶ
+"$(dirname "$0")/multiple-hooks.sh" pre-commit "$@" || exit 1
+
+# gitleaks
+if type gitleaks >/dev/null 2>&1
+then
+  gitleaks git --pre-commit --staged --no-banner || exit 1
+fi

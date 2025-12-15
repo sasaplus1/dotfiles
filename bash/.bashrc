@@ -605,6 +605,27 @@ __main() {
   #-----------------------------------------------------------------------------
 
   # functions and aliases {{{
+  git() {
+    local git_dir original_hooks_path
+    git_dir="$(command git rev-parse --git-dir 2>/dev/null)"
+
+    if [ -n "$git_dir" ]
+    then
+      # 元のhooksPathを取得
+      original_hooks_path="$(command git config --local core.hooksPath 2>/dev/null)"
+      if [ -n "$original_hooks_path" ]
+      then
+        export GIT_ORIGINAL_HOOKS_PATH="$original_hooks_path"
+      else
+        export GIT_ORIGINAL_HOOKS_PATH="$git_dir/hooks"
+      fi
+      # -c オプションで一時的にhooksPathを上書き
+      command git -c core.hooksPath="$HOME/.config/git/hooks" "$@"
+    else
+      command git "$@"
+    fi
+  }
+
   rm() {
     # NOTE: this script define within interactive shell only
 
