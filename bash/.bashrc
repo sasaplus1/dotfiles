@@ -611,7 +611,7 @@ __main() {
 
     if [ -n "$git_dir" ]
     then
-      # 元のhooksPathを取得
+      # get hooksPath if defined
       original_hooks_path="$(command git config --local core.hooksPath 2>/dev/null)"
       if [ -n "$original_hooks_path" ]
       then
@@ -619,7 +619,7 @@ __main() {
       else
         export GIT_ORIGINAL_HOOKS_PATH="$git_dir/hooks"
       fi
-      # -c オプションで一時的にhooksPathを上書き
+      # override hooksPath with -c
       command git -c core.hooksPath="$HOME/.config/git/hooks" "$@"
     else
       command git "$@"
