@@ -8,7 +8,7 @@ __main() {
   export __PROFILE_SOURCED=1
   readonly __PROFILE_SOURCED
 
-  local -r sh_path="$(readlink -f "$HOME/.sh_path")"
+  local -r sh_path="$(readlink -f "$HOME/.bashrc.d/path")"
   local -r sh_user_path="$HOME/.cache/sh_user_path"
   if [ -r "$sh_user_path" ] && [ "$sh_user_path" -nt "$sh_path" ]
   then

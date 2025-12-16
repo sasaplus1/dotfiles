@@ -7,7 +7,6 @@
 # delete ssh-agent env
 command rm -f "$HOME/.ssh-agent-info"
 
-# source .bash_logout.local
 # shellcheck disable=SC1091
 [ -r "$HOME/.bash_logout.local" ] && source "$HOME/.bash_logout.local"
 

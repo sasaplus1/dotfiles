@@ -1,6 +1,12 @@
 #!/bin/bash
 # NOTE: shebang for shellcheck
 
+# shellcheck disable=SC1091
+[ -r "$HOME/.cache/sh_user_path" ] && source "$HOME/.cache/sh_user_path"
+
+# shellcheck disable=SC1091
+source "$HOME/.bashrc.d/profile"
+
 # return if not interactive
 # https://www.gnu.org/software/bash/manual/html_node/Is-this-Shell-Interactive_003f.html
 #[ -z "$PS1" ] && return
@@ -50,13 +56,8 @@ __main() {
 
   update_path() {
     # shellcheck disable=SC1091
-    source "$HOME/.sh_path"
+    source "$HOME/.bashrc.d/path"
   }
-
-  if [ ! -f "$HOME/.cache/sh_user_path" ] || [ "$(readlink -f "$HOME/.sh_path")" -nt "$HOME/.cache/sh_user_path" ]
-  then
-    update_path
-  fi
 
   #-----------------------------------------------------------------------------
 
