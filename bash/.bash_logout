@@ -1,13 +1,7 @@
 #!/bin/bash
 # NOTE: shebang for shellcheck
 
-# shutdown ssh-agent
-[ -n "$SSH_AGENT_PID" ] && eval "$(command ssh-agent -k)"
-
-# delete ssh-agent env
-command rm -f "$HOME/.ssh-agent-info"
-
 # shellcheck disable=SC1091
-[ -r "$HOME/.bash_logout.local" ] && source "$HOME/.bash_logout.local"
+[ -r "$HOME/.bashrc.d/logout" ] && source "$HOME/.bashrc.d/logout"
 
 # vim:ft=sh:fdm=marker:fen:

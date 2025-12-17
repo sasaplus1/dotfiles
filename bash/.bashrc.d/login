@@ -1,0 +1,15 @@
+#!/bin/bash
+# NOTE: shebang for shellcheck
+
+__main() {
+  unset -f __main
+
+  # shellcheck disable=SC1091
+  [ -r "$HOME/.bashrc.d/profile" ] && source "$HOME/.bashrc.d/profile"
+
+  # shellcheck disable=SC1091
+  [ -r "$HOME/.bashrc.d/interactive" ] && source "$HOME/.bashrc.d/interactive"
+}
+__main "$@"
+
+# vim:ft=sh:fdm=marker:fen:
