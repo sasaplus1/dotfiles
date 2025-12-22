@@ -1,32 +1,28 @@
 #!/bin/bash
 # NOTE: shebang for shellcheck
 
-# shellcheck disable=SC1091
-[ -r "$HOME/.cache/sh_user_path" ] && source "$HOME/.cache/sh_user_path"
-
-# shellcheck disable=SC1091
-source "$HOME/.bashrc.d/profile"
-
-# return if not interactive
-# https://www.gnu.org/software/bash/manual/html_node/Is-this-Shell-Interactive_003f.html
-#[ -z "$PS1" ] && return
-[[ ! "$-" =~ i ]] && return
-
 __main() {
   unset -f __main
 
   #-----------------------------------------------------------------------------
 
+  # shellcheck disable=SC1091
+  [ -r "$HOME/.cache/sh_user_path" ] && source "$HOME/.cache/sh_user_path"
+
+  # shellcheck disable=SC1091
+  source "$HOME/.bashrc.d/profile"
+
+  # return if not interactive
+  # https://www.gnu.org/software/bash/manual/html_node/Is-this-Shell-Interactive_003f.html
+  #[ -z "$PS1" ] && return
+  [[ ! "$-" =~ i ]] && return
+
+  #-----------------------------------------------------------------------------
+
   case "$OSTYPE" in
-    darwin*)
-      local -r os=macos
-      ;;
-    linux*)
-      local -r os=linux
-      ;;
-    *)
-      local -r os=
-      ;;
+    darwin*) local -r os=macos ;;
+    linux*)  local -r os=linux ;;
+    *)       local -r os= ;;
   esac
 
   # current session architecture

@@ -5,15 +5,9 @@ __main() {
   unset -f __main
 
   case "$OSTYPE" in
-    darwin*)
-      local -r os=macos
-      ;;
-    linux*)
-      local -r os=linux
-      ;;
-    *)
-      local -r os=
-      ;;
+    darwin*) local -r os=macos ;;
+    linux*)  local -r os=linux ;;
+    *)       local -r os= ;;
   esac
 
   #-----------------------------------------------------------------------------
@@ -209,6 +203,12 @@ __main() {
     printf "export PATH='%s'\n" "$PATH"
     printf "export MANPATH='%s'\n" "$MANPATH"
     printf "export INFOPATH='%s'\n" "$INFOPATH"
+    # App paths
+    printf "export AQUA_GLOBAL_CONFIG='%s'\n" "$AQUA_GLOBAL_CONFIG"
+    printf "export GHQ_ROOT='%s'\n" "$GHQ_ROOT"
+    printf "export GOPATH='%s'\n" "$GOPATH"
+    [ -n "$HOMEBREW_PREFIX" ] && printf "export HOMEBREW_PREFIX='%s'\n" "$HOMEBREW_PREFIX"
+    [ -n "$PROTO_HOME" ] && printf "export PROTO_HOME='%s'\n" "$PROTO_HOME"
   } > "$HOME/.cache/sh_user_path"
 }
 __main "$@"
