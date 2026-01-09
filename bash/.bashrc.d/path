@@ -127,6 +127,10 @@ __main() {
   [ -d "$cargo_home" ] && source "$cargo_home/env"
   # }}}
 
+  # moonbit {{{
+  [ -d "$HOME/.moon" ] && export PATH="$HOME/.moon/bin:$PATH"
+  # }}}
+
   # choosenim - nim/nimble {{{
   [ -d "$HOME/.nimble" ] && export PATH="$HOME/.nimble/bin:$PATH"
   # }}}
