@@ -30,7 +30,11 @@ jobs:
       - uses: docker://koalaman/shellcheck:stable
         with:
           args: >
+            bash/.bashrc.d/interactive
+            bash/.bashrc.d/login
+            bash/.bashrc.d/logout
+            bash/.bashrc.d/path
+            bash/.bashrc.d/profile
             bash/.bash_logout
             bash/.bash_profile
             bash/.bashrc
-            bash/.profile
