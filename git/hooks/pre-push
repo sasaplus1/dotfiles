@@ -7,6 +7,8 @@
 if type gitleaks >/dev/null 2>&1
 then
   z40="0000000000000000000000000000000000000000"
+  yellow=$'\033[33m'
+  reset=$'\033[0m'
 
   while read -r _local_ref local_sha _remote_ref remote_sha
   do
@@ -19,10 +21,14 @@ then
     # 新規ブランチの場合
     if [ "$remote_sha" = "$z40" ]
     then
-      # リモートのHEAD（通常はmain/master）からの差分をチェック
+      range="origin/HEAD..$local_sha"
+    # remote_shaがローカルに存在しない場合（フォールバック）
+    elif ! git cat-file -e "$remote_sha" 2>/dev/null
+    then
+      printf -- '%sWarning: remote SHA not found locally, using origin/HEAD as base%s\n' "$yellow" "$reset" >&2
       range="origin/HEAD..$local_sha"
     else
-      # 既存ブランチの場合、リモートとローカルの差分
+      # 既存ブランチの場合
       range="$remote_sha..$local_sha"
     fi
 
