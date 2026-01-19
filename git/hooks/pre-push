@@ -7,8 +7,10 @@
 if type gitleaks >/dev/null 2>&1
 then
   z40="0000000000000000000000000000000000000000"
-  yellow=$'\033[33m'
+
+  cyan='\e[01;36m'
   reset=$'\033[0m'
+  yellow=$'\033[33m'
 
   while read -r _local_ref local_sha _remote_ref remote_sha
   do
@@ -28,7 +30,7 @@ then
       # 新規ブランチ、remote_sha欠落、force push等で使用
       if [ "$remote_sha" = "$z40" ]
       then
-        printf -- '%sInfo: new branch, scanning commits not yet in origin%s\n' "$yellow" "$reset" >&2
+        printf -- '%sInfo: new branch, scanning commits not yet in origin%s\n' "$cyan" "$reset" >&2
       else
         printf -- '%sWarning: remote SHA not found locally, scanning commits not yet in origin%s\n' "$yellow" "$reset" >&2
       fi
