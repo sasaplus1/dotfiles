@@ -13,6 +13,10 @@ endfunction
 " このタイミングで設定しないと実行された後に消えてしまう
 function! s:hook_source() abort
 " hook_source {{{
+  " NOTE: 初回実行時なぜか表示が崩れるのでvim-parenmatchを読み込んでおく
+  if dein#tap('vim-parenmatch') && !dein#is_sourced('vim-parenmatch')
+    call dein#source('vim-parenmatch')
+  endif
   " NOTE: 初回実行時なぜか表示が崩れるのでcoc.nvimを読み込んでおく
   if dein#tap('coc.nvim') && !dein#is_sourced('coc.nvim')
     call dein#source('coc.nvim')
