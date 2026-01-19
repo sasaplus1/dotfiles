@@ -16,7 +16,9 @@ endif
 
 if dein#min#load_state(s:plugin_dir)
   call dein#begin(s:plugin_dir)
-  call dein#add(s:dein_dir)
+  call dein#add(s:dein_dir, {
+        \   'hook_done_update' : 'silent! helptags ' . simplify(s:dein_dir . '/doc'),
+        \ })
 
   let s:plugin_files = split(glob(expand('<script>:h') . '/plugins/*.vim'), '\n')
   " NOTE: foreach needs patch-9.1.0027
@@ -45,8 +47,5 @@ endif
 if dein#check_install()
   call dein#install()
 endif
-
-" dein.vimのヘルプタグを作る
-autocmd vimrc VimEnter * silent! execute 'helptags' simplify(s:dein_dir . '/doc')
 
 " vim:ft=vim:fdm=marker:fen:

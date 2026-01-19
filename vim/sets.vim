@@ -189,19 +189,14 @@ else
   set grepprg=grep\ -inrEH
 endif
 
-if executable('locale') && system('locale -a') =~# 'ja_JP.UTF-8'
-  " 表示を日本語にする
-  language ja_JP.UTF-8
-endif
+" 表示を日本語にする
+silent! language ja_JP.UTF-8
 
 " mkdir関数が存在する場合
 if exists('*mkdir')
   " バックアップファイルの保存先を変更 {{{
   let backupdir = simplify(g:vimrc_vim_dir . '/backup')
-
-  if empty(glob(backupdir))
-    call mkdir(backupdir, 'p')
-  endif
+  silent! call mkdir(backupdir, 'p')
 
   execute 'set' 'backupdir=' . backupdir
   set backupdir+=.
@@ -211,10 +206,7 @@ if exists('*mkdir')
 
   " スワップファイルの保存先を変更 {{{
   let swapdir = simplify(g:vimrc_vim_dir . '/swap')
-
-  if empty(glob(swapdir))
-    call mkdir(swapdir, 'p')
-  endif
+  silent! call mkdir(swapdir, 'p')
 
   execute 'set' 'directory=' . swapdir
   set directory+=.
@@ -225,10 +217,7 @@ if exists('*mkdir')
 
   " アンドゥファイルの保存先を指定する {{{
   let undodir = simplify(g:vimrc_vim_dir . '/undo')
-
-  if empty(glob(undodir))
-    call mkdir(undodir, 'p')
-  endif
+  silent! call mkdir(undodir, 'p')
 
   if has('persistent_undo')
     set undofile

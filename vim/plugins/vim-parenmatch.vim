@@ -19,7 +19,7 @@ endfunction
 call dein#add('itchyny/vim-parenmatch', {
       \ 'hooks_file' : expand('<script>:p'),
       \ 'lazy' : 1,
-      \ 'on_event' : ['VimEnter'],
+      \ 'on_event' : ['CursorMoved', 'CursorMovedI'],
       \ })
 
 " vim:ft=vim:fdm=marker:fen:
