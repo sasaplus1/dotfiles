@@ -1,0 +1,31 @@
+#!/bin/bash
+
+# 元のフックを呼ぶ
+"$(dirname "$0")/multiple-hooks.sh" pre-push "$@" || exit 1
+
+# gitleaks
+if type gitleaks >/dev/null 2>&1
+then
+  z40="0000000000000000000000000000000000000000"
+
+  while read -r _local_ref local_sha _remote_ref remote_sha
+  do
+    # ブランチ削除の場合はスキップ
+    if [ "$local_sha" = "$z40" ]
+    then
+      continue
+    fi
+
+    # 新規ブランチの場合
+    if [ "$remote_sha" = "$z40" ]
+    then
+      # リモートのHEAD（通常はmain/master）からの差分をチェック
+      range="origin/HEAD..$local_sha"
+    else
+      # 既存ブランチの場合、リモートとローカルの差分
+      range="$remote_sha..$local_sha"
+    fi
+
+    gitleaks git --log-opts="$range" --no-banner || exit 1
+  done
+fi
