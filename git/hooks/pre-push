@@ -18,18 +18,21 @@ then
       continue
     fi
 
-    # 新規ブランチの場合
-    if [ "$remote_sha" = "$z40" ]
+    # 範囲を決定
+    if [ "$remote_sha" != "$z40" ] && git cat-file -e "$remote_sha" 2>/dev/null
     then
-      range="origin/HEAD..$local_sha"
-    # remote_shaがローカルに存在しない場合（フォールバック）
-    elif ! git cat-file -e "$remote_sha" 2>/dev/null
-    then
-      printf -- '%sWarning: remote SHA not found locally, using origin/HEAD as base%s\n' "$yellow" "$reset" >&2
-      range="origin/HEAD..$local_sha"
-    else
-      # 既存ブランチの場合
+      # 理想: remote_shaがローカルに存在する
       range="$remote_sha..$local_sha"
+    else
+      # フォールバック: originに未到達の全コミットをスキャン
+      # 新規ブランチ、remote_sha欠落、force push等で使用
+      if [ "$remote_sha" = "$z40" ]
+      then
+        printf -- '%sInfo: new branch, scanning commits not yet in origin%s\n' "$yellow" "$reset" >&2
+      else
+        printf -- '%sWarning: remote SHA not found locally, scanning commits not yet in origin%s\n' "$yellow" "$reset" >&2
+      fi
+      range="$local_sha --not --remotes=origin"
     fi
 
     gitleaks git --log-opts="$range" --no-banner || exit 1
