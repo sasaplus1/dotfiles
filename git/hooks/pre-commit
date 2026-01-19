@@ -6,5 +6,5 @@
 # gitleaks
 if type gitleaks >/dev/null 2>&1
 then
-  gitleaks git --pre-commit --staged --no-banner || exit 1
+  gitleaks git --pre-commit --staged --no-banner --verbose || exit 1
 fi

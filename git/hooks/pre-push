@@ -37,6 +37,6 @@ then
       range="$local_sha --not --remotes=origin"
     fi
 
-    gitleaks git --log-opts="$range" --no-banner || exit 1
+    gitleaks git --log-opts="$range" --no-banner --verbose || exit 1
   done
 fi
