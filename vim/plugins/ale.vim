@@ -81,6 +81,7 @@ function! s:hook_add() abort
   " linterの設定
   let g:ale_linters = {
         \ 'css' : ['stylelint'],
+        \ 'go' : ['gofmt', 'gopls'],
         \ 'javascript' : ['tsserver', 'eslint'],
         \ 'javascriptreact' : ['tsserver', 'eslint'],
         \ 'json' : [],
@@ -101,6 +102,7 @@ function! s:hook_add() abort
   " coc-prettierを設定した後にale.vimに戻したらale.vimでも発生しなくなった、何故？
   let g:ale_fixers = {
         \ 'css' : ['stylelint', 'prettier'],
+        \ 'go' : ['gofmt', 'gopls'],
         \ 'javascript' : ['prettier'],
         \ 'javascriptreact' : ['prettier'],
         \ 'json' : ['prettier'],
@@ -340,6 +342,7 @@ call dein#add('dense-analysis/ale', {
       \ 'on_cmd' : ['<Plug>(ale_'],
       \ 'on_ft' : [
       \   'css',
+      \   'go',
       \   'javascript',
       \   'javascriptreact',
       \   'json',
