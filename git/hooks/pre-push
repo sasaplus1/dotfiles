@@ -8,7 +8,7 @@ if type gitleaks >/dev/null 2>&1
 then
   z40="0000000000000000000000000000000000000000"
 
-  cyan='\e[01;36m'
+  cyan=$'\033[01;36m'
   reset=$'\033[0m'
   yellow=$'\033[33m'
 
