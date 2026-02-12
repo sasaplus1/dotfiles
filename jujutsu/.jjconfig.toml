@@ -27,7 +27,6 @@
   # bookmark
   branches = ["bookmark", "list"]
   # describe
-  commit = ["describe"]
   ci = ["describe"]
   # diff
   di = ["diff"]
