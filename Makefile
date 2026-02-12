@@ -97,6 +97,7 @@ symlinks += $(makefile_dir)/git/.gitignore $(dest)/.config/git/ignore
 symlinks += $(makefile_dir)/git/hooks/multiple-hooks.sh $(dest)/.config/git/hooks/multiple-hooks.sh
 symlinks += $(makefile_dir)/git/hooks/pre-commit $(dest)/.config/git/hooks/pre-commit
 symlinks += $(makefile_dir)/git/hooks/pre-push $(dest)/.config/git/hooks/pre-push
+symlinks += $(makefile_dir)/jujutsu/.jjconfig.toml $(dest)/.jjconfig.toml
 # symlinks += $(makefile_dir)/locate/.locate.rc $(dest)/.locate.rc
 # symlinks += $(makefile_dir)/mercurial/.hgrc $(dest)/.hgrc
 symlinks += $(makefile_dir)/nginx/.cocproxy.nginx.conf $(dest)/.cocproxy.nginx.conf

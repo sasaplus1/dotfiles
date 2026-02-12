@@ -1,0 +1,41 @@
+[ui]
+# default-command = "log"
+
+# jj git init   => Gitと共存して初期化、gitが使える
+# jj init --git => Gitを隠して初期化、gitが使えない
+
+# jj new      => 作業開始（git checkout -b, git switch -c 相当）
+# jj edit     => 過去のコミットを編集
+# jj describe => コミットにメッセージを入力する
+# jj squash   => 直前のコミットに変更をまとめる（git commit --amend 相当）
+# jj split    => コミットを分割する（git add -p 相当）
+
+# jj rebase  => git rebase 相当
+# jj abandon => コミットを消す
+
+# jj evolog => 変更履歴を見る
+# jj op log => 操作履歴を見る
+# jj undo   => 直前の操作を取り消す
+
+# jj duplicate && jj rebase -r <id> -d @ => git cherry-pick 相当
+
+# jj bookmark list => ブランチの一覧を見る
+# jj bookmark set  => ブランチを切る
+# jj git push      => 変更をリモートに送る
+
+[aliases]
+  # bookmark
+  branches = ["bookmark", "list"]
+  # describe
+  commit = ["describe"]
+  ci = ["describe"]
+  # diff
+  di = ["diff"]
+  dif = ["diff"]
+  # log
+  cl = ["log", "-r", "all()"]
+  sl = ["log", "-r", "all()"]
+  # log
+  gl = ["log", "-r", "::@"]
+  # status
+  st = ["status"]
