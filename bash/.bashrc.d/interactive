@@ -843,6 +843,7 @@ __main() {
     local is_hash=
     local is_yarn=
     local is_lerna=
+    local is_jujutsu=
 
     # HEAD dir and file
     local head_dir=
@@ -866,6 +867,9 @@ __main() {
       # $ git ls-files ':(top)lerna.json'
       # is too slow
       [ -f "${cwd}/lerna.json" ] && is_lerna=1
+
+      # jujutsu
+      [ -d "${cwd}/.jj" ] && is_jujutsu=1
 
       # vcs info
       #     $ vcprompt -f '%n:%b:%r' 2>/dev/null
@@ -961,9 +965,16 @@ __main() {
     # some git infomations
     if [ -n "$is_git" ]
     then
-      [ "$repo_type" == 'git' ] &&
-        prompt="${prompt} ${cyan}(${repo_type}:${reset}" || 
+      if [ "$repo_type" == 'git' ]
+      then
+        # jujutsu(colocate)
+        [ -n "$is_jujutsu" ] &&
+          prompt="${prompt} ${cyan}(${repo_type}/${red}jujutsu${reset}${cyan}:${reset}" ||
+          prompt="${prompt} ${cyan}(${repo_type}:${reset}"
+      else
+        # git-submodule or git-worktree
         prompt="${prompt} ${cyan}(${red}${repo_type}${reset}${cyan}:${reset}"
+      fi
 
       [ -n "$default_branch" ] &&
         prompt="${prompt}${yellow}${default_branch}${reset}${cyan}:${reset}"
@@ -971,6 +982,9 @@ __main() {
       [ -z "$is_hash" ] &&
         prompt="${prompt}${cyan}${refs})${reset}" ||
         prompt="${prompt}${red}${refs}${reset}${cyan})${reset}"
+    elif [ -n "$is_jujutsu" ]
+    then
+      prompt="${prompt} ${cyan}(jujutsu)${reset}"
     fi
 
     # yarn and lerna
