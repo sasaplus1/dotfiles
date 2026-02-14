@@ -1,6 +1,7 @@
 [alias]
   clear-branch = !git branch --merged | grep -v '^*' | tr -d ' ' | grep -v '^\\(main\\|master\\|develop\\)$' | xargs git branch -v -d
   rm-untracked = !git clean -df
+  sweep = !git for-each-ref --format='delete %(refname)' refs/jj/ | git update-ref --stdin
 
 [alias]
   amend = commit --amend --reuse-message=HEAD
