@@ -71,6 +71,7 @@ __main() {
   # https://github.com/orgs/Homebrew/discussions/2506
   if type bat >/dev/null 2>&1
   then
+    export MANROFFOPT='-c'
     set -- "$SHELL -c 'col -bx | bat -l man --style=plain --paging=always'"
     # highlighting man page with bat
     export MANPAGER="$*"
