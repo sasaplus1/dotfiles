@@ -41,6 +41,7 @@ dotfile_dirs += $(dest)/.config/gh-dash
 dotfile_dirs += $(dest)/.config/ghostty
 dotfile_dirs += $(dest)/.config/git
 dotfile_dirs += $(dest)/.config/git/hooks
+# dotfile_dirs += $(dest)/.config/home-manager
 dotfile_dirs += $(dest)/.config/nvim
 # dotfile_dirs += $(dest)/.config/ranger
 dotfile_dirs += $(dest)/.config/vifm
@@ -97,6 +98,7 @@ symlinks += $(makefile_dir)/git/.gitignore $(dest)/.config/git/ignore
 symlinks += $(makefile_dir)/git/hooks/multiple-hooks.sh $(dest)/.config/git/hooks/multiple-hooks.sh
 symlinks += $(makefile_dir)/git/hooks/pre-commit $(dest)/.config/git/hooks/pre-commit
 symlinks += $(makefile_dir)/git/hooks/pre-push $(dest)/.config/git/hooks/pre-push
+symlinks += $(makefile_dir)/home-manager $(dest)/.config/home-manager
 symlinks += $(makefile_dir)/jujutsu/.jjconfig.toml $(dest)/.jjconfig.toml
 # symlinks += $(makefile_dir)/locate/.locate.rc $(dest)/.locate.rc
 # symlinks += $(makefile_dir)/mercurial/.hgrc $(dest)/.hgrc
@@ -147,7 +149,7 @@ all: ## output targets
 .PHONY: deploy
 deploy: ## deploy dotfiles
 	-@printf -- '%s\n' $(dotfile_dirs) | xargs -n 1 bash -c 'mkdir -pv "$$0"'
-	-@printf -- '%s\n' $(symlinks)     | xargs -n 2 bash -c 'ln -sv "$$0" "$$1"'
+	-@printf -- '%s\n' $(symlinks)     | xargs -n 2 bash -c 'ln -nsv "$$0" "$$1"'
 	-@printf -- '%s\n' $(copy_targets) | xargs -n 2 bash -c 'cp -nv "$$0" "$$1"'
 	@chmod 0700 $(dest)/.ssh $(dest)/.ssh/sockets
 	@echo 'done.'
