@@ -149,9 +149,22 @@ autocmd vimrc WinEnter,WinLeave,BufRead,BufNew * call s:addTodo()
 " ウィンドウを移動したらバッファ番号とフルパスを表示する
 autocmd vimrc WinEnter * execute 'normal! 2\<C-g>'
 
-" 全角スペースに下線を引く
+" 全角スペースに下線を引く {{{
+
 highlight FullWidthSpace cterm=underline ctermfg=Blue
-autocmd vimrc WinEnter,WinLeave,BufRead,BufNew * match FullWidthSpace /　/
+
+function! s:highlight_fullwidth_space()
+  if exists('w:fullwidth_space_added')
+    return
+  endif
+  let w:fullwidth_space_added = 1
+  call matchadd('FullWidthSpace', '　')
+endfunction
+
+autocmd vimrc ColorScheme * highlight FullWidthSpace cterm=underline ctermfg=Blue
+autocmd vimrc WinEnter,BufRead * call s:highlight_fullwidth_space()
+
+" }}}
 
 " Markdown {{{
 
