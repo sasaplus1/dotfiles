@@ -67,6 +67,7 @@
   quotepath = false
 
 [diff]
+  algorithm = histogram
   indentHeuristic = true
   tool = vimdiff
 
@@ -92,6 +93,9 @@
 [mergetool]
   prompt = false
   keepBackup = true
+
+[mergetool "vimdiff"]
+  layout = "LOCAL,REMOTE"
 
 [user]
   useConfigOnly = true
