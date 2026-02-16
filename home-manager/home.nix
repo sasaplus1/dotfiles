@@ -38,6 +38,7 @@
     # '')
 
     pkgs.bat
+    pkgs.fac
     pkgs.ripgrep
   ];
 
