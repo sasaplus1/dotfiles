@@ -85,6 +85,40 @@ autocmd vimrc FileType go call matchadd('goSemicolon', ';\ze\s*$')
 
 " }}}
 
+" Conflict Marker {{{
+
+function! s:define_conflict_highlights()
+  highlight ConflictMarkerBegin cterm=bold ctermbg=22 ctermfg=White guibg=#2e7d32 guifg=White
+  " highlight ConflictMarkerOurs ctermbg=22 guibg=#1b5e20
+  highlight ConflictMarkerSeparator cterm=bold ctermbg=238 ctermfg=White guibg=#424242 guifg=White
+  " highlight ConflictMarkerTheirs ctermbg=27 guibg=#0d47a1
+  highlight ConflictMarkerEnd cterm=bold ctermbg=27 ctermfg=White guibg=#1565c0 guifg=White
+endfunction
+call s:define_conflict_highlights()
+
+autocmd vimrc ColorScheme * call s:define_conflict_highlights()
+
+function! s:highlight_conflict_markers()
+  if exists('w:conflict_markers_added')
+    return
+  endif
+  let w:conflict_markers_added = 1
+  call matchadd('ConflictMarkerBegin', '^<\{7,}.*$')
+  call matchadd('ConflictMarkerSeparator', '^=\{7,}.*$', 20)
+  call matchadd('ConflictMarkerEnd', '^>\{7,}.*$')
+  " if has('nvim')
+  "   call matchadd('ConflictMarkerOurs', '^<\{7,}.*\n\zs\_.\{-}\ze=\{7,}')
+  "   call matchadd('ConflictMarkerTheirs', '^=\{7,}.*\n\zs\_.\{-}\ze>\{7,}')
+  " endif
+endfunction
+
+autocmd vimrc BufReadPost * call s:highlight_conflict_markers()
+
+nnoremap ]x /^<\{7,}\<CR>
+nnoremap [x /?^<\{7,}\<CR>
+
+" }}}
+
 " QuickFix {{{
 
 " QuickFixを開いた時に簡単にプレビューをしたりする
