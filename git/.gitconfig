@@ -67,7 +67,7 @@
   quotepath = false
 
 [diff]
-  algorithm = histogram
+; algorithm = histogram
   indentHeuristic = true
   tool = vimdiff
 
@@ -88,11 +88,16 @@
   conflictStyle = merge
 ; conflictStyle = diff3
 ; conflictStyle = zdiff3
-  tool = vimdiff
+  tool = fac
+; tool = vimdiff
 
 [mergetool]
   prompt = false
-  keepBackup = true
+  keepBackup = false
+
+[mergetool "fac"]
+  cmd = fac
+  trustExitCode = true
 
 [mergetool "vimdiff"]
   layout = "LOCAL,REMOTE"
