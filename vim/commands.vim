@@ -114,8 +114,8 @@ endfunction
 
 autocmd vimrc BufReadPost * call s:highlight_conflict_markers()
 
-nnoremap ]x /^<\{7,}\<CR>
-nnoremap [x /?^<\{7,}\<CR>
+nnoremap ]x /\v^\<{7,}<CR>zz
+nnoremap [x ?\v^\<{7,}<CR>zz
 
 " }}}
 
