@@ -37,9 +37,36 @@
     #   echo "Hello, ${config.home.username}!"
     # '')
 
+    pkgs.age
+    pkgs.ast-grep
+    pkgs.bash
+    pkgs.bash-completion
     pkgs.bat
+    pkgs.bitwarden-cli
+    pkgs.curl
+    pkgs.delta
+    pkgs.direnv
     pkgs.fac
+    pkgs.fd
+    pkgs.fswatch
+    pkgs.fzf
+    pkgs.gh
+    pkgs.ghq
+    pkgs.git
+    pkgs.gitleaks
+    pkgs.glow
+    pkgs.gron
+    pkgs.jq
+    pkgs.mas
+    pkgs.mmv-go
+    pkgs.neovim
     pkgs.ripgrep
+    pkgs.rsync
+    pkgs.sops
+    pkgs.tig
+    pkgs.tmux
+    pkgs.vim
+    pkgs.zoxide
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
