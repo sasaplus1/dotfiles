@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 # NOTE: need --impure
 # $ home-manager switch --flake . --impure
@@ -57,7 +57,6 @@
     pkgs.glow
     pkgs.gron
     pkgs.jq
-    pkgs.mas
     pkgs.mmv-go
     pkgs.neovim
     pkgs.ripgrep
@@ -67,6 +66,8 @@
     pkgs.tmux
     pkgs.vim
     pkgs.zoxide
+  ] ++ lib.optionals pkgs.stdenv.isDarwin [
+    pkgs.mas
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
