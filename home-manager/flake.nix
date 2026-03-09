@@ -17,9 +17,7 @@
     let
       system = builtins.currentSystem;
       pkgs = nixpkgs.legacyPackages.${system};
-    in
-    {
-      homeConfigurations.${builtins.getEnv "USER"} = home-manager.lib.homeManagerConfiguration {
+      homeConfig = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
 
         # Specify your home configuration modules here, for example,
@@ -29,5 +27,9 @@
         # Optionally use extraSpecialArgs
         # to pass through arguments to home.nix
       };
+    in
+    {
+      homeConfigurations.${builtins.getEnv "USER"} = homeConfig;
+      packages.${system}.default = homeConfig.activationPackage;
     };
 }
