@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 # NOTE: need --impure
 # $ home-manager switch --flake . --impure
@@ -37,9 +37,37 @@
     #   echo "Hello, ${config.home.username}!"
     # '')
 
+    pkgs.age
+    pkgs.ast-grep
+    pkgs.bash
+    pkgs.bash-completion
     pkgs.bat
+    pkgs.bitwarden-cli
+    pkgs.curl
+    pkgs.delta
+    pkgs.direnv
     pkgs.fac
+    pkgs.fd
+    pkgs.fswatch
+    pkgs.fzf
+    pkgs.gh
+    pkgs.ghq
+    pkgs.git
+    pkgs.gitleaks
+    pkgs.glow
+    pkgs.gron
+    pkgs.jq
+    pkgs.mmv-go
+    pkgs.neovim
     pkgs.ripgrep
+    pkgs.rsync
+    pkgs.sops
+    pkgs.tig
+    pkgs.tmux
+    pkgs.vim
+    pkgs.zoxide
+  ] ++ lib.optionals pkgs.stdenv.isDarwin [
+    pkgs.mas
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
