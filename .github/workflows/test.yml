@@ -6,7 +6,8 @@ on:
 
 jobs:
   deploy-and-test:
-    name: ${{ matrix.os }}
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
+    name: deploy & test (${{ matrix.os }})
     strategy:
       fail-fast: false
       matrix:
@@ -23,7 +24,8 @@ jobs:
       - run: make test
       - run: test "$(make test)" = 'done.'
   home-manager:
-    name: home-manager
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
+    name: home-manager (${{ matrix.os }})
     strategy:
       fail-fast: false
       matrix:
@@ -38,6 +40,7 @@ jobs:
           nix_path: nixpkgs=channel:nixos-unstable
       - run: nix build ./home-manager --impure
   shellcheck:
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
     name: shellcheck
     runs-on: ubuntu-latest
     steps:
