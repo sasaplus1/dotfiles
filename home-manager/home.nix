@@ -39,6 +39,7 @@
 
     pkgs.age
     pkgs.ast-grep
+    pkgs.atuin
     pkgs.bash
     pkgs.bash-completion
     pkgs.bat
