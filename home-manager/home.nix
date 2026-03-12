@@ -53,6 +53,7 @@
     pkgs.fzf
     pkgs.gh
     pkgs.ghq
+    pkgs.gibo
     pkgs.git
     pkgs.gitleaks
     pkgs.glow
@@ -60,6 +61,7 @@
     pkgs.jq
     pkgs.mmv-go
     pkgs.neovim
+    pkgs.proto
     pkgs.ripgrep
     pkgs.rsync
     pkgs.sops
@@ -69,6 +71,9 @@
     pkgs.zoxide
   ] ++ lib.optionals pkgs.stdenv.isDarwin [
     pkgs.mas
+  ] ++ lib.optionals pkgs.stdenv.isLinux [
+    pkgs.trash-cli
+    pkgs.xsel
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
