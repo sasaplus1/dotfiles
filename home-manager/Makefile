@@ -5,6 +5,8 @@ SHELL := /bin/bash
 makefile := $(abspath $(lastword $(MAKEFILE_LIST)))
 makefile_dir := $(dir $(makefile))
 
+os := $(subst darwin,macos,$(shell uname -s | tr 'A-Z' 'a-z'))
+
 #-------------------------------------------------------------------------------
 
 .PHONY: all
@@ -26,6 +28,18 @@ deep-clean: ## collect garbage (delete ALL old generations)
 .PHONY: generations
 generations: ## list home-manager generations
 	home-manager generations
+
+.PHONY: install
+install: ## install Nix
+install: install-nix-$(os)
+
+.PHONY: install-nix-macos
+install-nix-darwin: ## [subtarget] install Nix for macOS (Determinate Nix)
+	curl -fsSL https://install.determinate.systems/nix | sh -s -- install
+
+.PHONY: install-nix-linux
+install-nix-linux: ## [subtarget] install Nix for Linux (official installer)
+	curl -fsSL https://nixos.org/nix/install | sh
 
 .PHONY: switch
 switch: ## switch home-manager configuration
