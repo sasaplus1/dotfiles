@@ -38,7 +38,10 @@ jobs:
       - uses: cachix/install-nix-action@19effe9fe722874e6d46dd7182e4b8b7a43c4a99 # v31.10.0
         with:
           nix_path: nixpkgs=channel:nixos-unstable
-      - run: nix build ./home-manager --impure
+      - run: make install-home-manager
+        working-directory: home-manager
+      - run: make build
+        working-directory: home-manager
   shellcheck:
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
     name: shellcheck
