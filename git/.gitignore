@@ -132,5 +132,8 @@ $RECYCLE.BIN/
 # moonrepo/proto
 /.prototools
 
-# Claude Code
+# ClaudeCode local settings
 **/.claude/settings.local.json
+
+# ClaudeCode worktrees
+/.claude/worktrees
