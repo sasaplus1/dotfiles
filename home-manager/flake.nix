@@ -1,5 +1,5 @@
 # NOTE: need --impure
-# $ home-manager switch --flake . --impure
+# $ home-manager switch --flake ".#${USER}" --impure
 {
   description = "Home Manager configuration";
 
