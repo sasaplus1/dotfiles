@@ -29,6 +29,10 @@ deep-clean: ## collect garbage (delete ALL old generations)
 generations: ## list home-manager generations
 	home-manager generations
 
+.PHONY: install-home-manager
+install-home-manager: ## install home-manager CLI
+	nix profile install nixpkgs#home-manager
+
 .PHONY: install
 install: ## install Nix
 install: install-nix-$(os)
