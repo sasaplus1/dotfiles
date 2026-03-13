@@ -10,7 +10,7 @@ __main() {
   [ -r "$HOME/.cache/sh_user_path" ] && source "$HOME/.cache/sh_user_path"
 
   # shellcheck disable=SC1091
-  source "$HOME/.bashrc.d/profile"
+  source "$HOME/.bashrc.d/profile.sh"
 
   # return if not interactive
   # https://www.gnu.org/software/bash/manual/html_node/Is-this-Shell-Interactive_003f.html
@@ -52,7 +52,7 @@ __main() {
 
   update_path() {
     # shellcheck disable=SC1091
-    source "$HOME/.bashrc.d/path"
+    source "$HOME/.bashrc.d/path.sh"
   }
 
   #-----------------------------------------------------------------------------

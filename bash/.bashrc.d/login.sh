@@ -5,10 +5,10 @@ __main() {
   unset -f __main
 
   # shellcheck disable=SC1091
-  [ -r "$HOME/.bashrc.d/profile" ] && source "$HOME/.bashrc.d/profile"
+  [ -r "$HOME/.bashrc.d/profile.sh" ] && source "$HOME/.bashrc.d/profile.sh"
 
   # shellcheck disable=SC1091
-  [ -r "$HOME/.bashrc.d/interactive" ] && source "$HOME/.bashrc.d/interactive"
+  [ -r "$HOME/.bashrc.d/interactive.sh" ] && source "$HOME/.bashrc.d/interactive.sh"
 }
 __main "$@"
 
