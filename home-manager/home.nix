@@ -42,6 +42,7 @@
     pkgs.atuin
     pkgs.bash
     pkgs.bash-completion
+    pkgs.bash-preexec
     pkgs.bat
     pkgs.bitwarden-cli
     pkgs.curl

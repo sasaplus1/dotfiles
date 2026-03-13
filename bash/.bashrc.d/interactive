@@ -1113,4 +1113,22 @@ __main() {
 }
 __main "$@"
 
+# atuin {{{
+# NOTE: must be in global scope; bash-preexec's precmd_functions/preexec_functions
+# become local and are lost if sourced inside a function
+if type atuin >/dev/null 2>&1
+then
+  for __bash_preexec in \
+    "$HOME/.nix-profile/share/bash/bash-preexec.sh" \
+    "$HOME/.local/state/nix/profiles/profile/share/bash/bash-preexec.sh" \
+    "/etc/profiles/per-user/$USER/share/bash/bash-preexec.sh"
+  do
+    # shellcheck disable=SC1090
+    [ -f "$__bash_preexec" ] && source "$__bash_preexec" && break
+  done
+  unset __bash_preexec
+  eval "$(atuin init bash)"
+fi
+# }}}
+
 # vim:ft=sh:fdm=marker:fen:
