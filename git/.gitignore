@@ -137,3 +137,6 @@ $RECYCLE.BIN/
 
 # ClaudeCode worktrees
 /.claude/worktrees
+
+# ClaudeCode plan files
+/.claude/plans
