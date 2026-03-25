@@ -1,0 +1,41 @@
+{ pkgs, lib }:
+[
+  pkgs.age
+  pkgs.ast-grep
+  pkgs.atuin
+  pkgs.bash
+  pkgs.bash-completion
+  pkgs.bash-preexec
+  pkgs.bat
+  pkgs.bitwarden-cli
+  pkgs.curl
+  pkgs.delta
+  pkgs.direnv
+  pkgs.fac
+  pkgs.fd
+  pkgs.fswatch
+  pkgs.fzf
+  pkgs.gh
+  pkgs.ghq
+  pkgs.gibo
+  pkgs.git
+  pkgs.gitleaks
+  pkgs.glow
+  pkgs.gron
+  pkgs.jq
+  pkgs.mmv-go
+  pkgs.neovim
+  pkgs.proto
+  pkgs.ripgrep
+  pkgs.rsync
+  pkgs.sops
+  pkgs.tig
+  pkgs.tmux
+  pkgs.vim
+  pkgs.zoxide
+] ++ lib.optionals pkgs.stdenv.isDarwin [
+  pkgs.mas
+] ++ lib.optionals pkgs.stdenv.isLinux [
+  pkgs.trash-cli
+  pkgs.xsel
+]

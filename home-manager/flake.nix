@@ -1,5 +1,5 @@
 # NOTE: need --impure
-# $ home-manager switch --flake ".#${USER}" --impure
+# $ home-manager switch --flake ".#common" --impure
 {
   description = "Home Manager configuration";
 
@@ -17,19 +17,25 @@
     let
       system = builtins.currentSystem;
       pkgs = nixpkgs.legacyPackages.${system};
-      homeConfig = home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
+      lib = pkgs.lib;
 
-        # Specify your home configuration modules here, for example,
-        # the path to your home.nix.
-        modules = [ ./home.nix ];
+      commonPkgs = import ./packages/common.nix { inherit pkgs lib; };
+      extraPkgs = import ./packages/extra.nix { inherit pkgs lib; };
 
-        # Optionally use extraSpecialArgs
-        # to pass through arguments to home.nix
-      };
+      mkHome =
+        profilePackages:
+        home-manager.lib.homeManagerConfiguration {
+          inherit pkgs;
+          modules = [ ./home.nix ];
+          extraSpecialArgs = { inherit profilePackages; };
+        };
     in
     {
-      homeConfigurations.${builtins.getEnv "USER"} = homeConfig;
-      packages.${system}.default = homeConfig.activationPackage;
+      homeConfigurations = {
+        common = mkHome commonPkgs;
+        extra = mkHome (commonPkgs ++ extraPkgs);
+        full = mkHome (commonPkgs ++ extraPkgs); # 将来 music 等が増えたら全部入り
+      };
+      packages.${system}.default = (mkHome commonPkgs).activationPackage;
     };
 }

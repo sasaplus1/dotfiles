@@ -14,8 +14,16 @@ all: ## output targets
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(makefile) | awk 'BEGIN { FS = ":.*?## " }; { printf "\033[36m%-30s\033[0m %s\n", $$1, $$2 }'
 
 .PHONY: build
-build: ## build without activating (dry run)
-	home-manager build --flake ".#$${USER}" --impure
+build: ## build common profile without activating (dry run)
+	home-manager build --flake ".#common" --impure
+
+.PHONY: build-extra
+build-extra: ## build extra profile without activating (dry run)
+	home-manager build --flake ".#extra" --impure
+
+.PHONY: build-full
+build-full: ## build full profile without activating (dry run)
+	home-manager build --flake ".#full" --impure
 
 .PHONY: clean
 clean: ## collect garbage (keep recent 30 days)
@@ -46,8 +54,16 @@ install-nix-linux: ## [subtarget] install Nix for Linux (official installer)
 	curl -fsSL https://nixos.org/nix/install | sh
 
 .PHONY: switch
-switch: ## switch home-manager configuration
-	home-manager switch --flake ".#$${USER}" --impure
+switch: ## switch to common profile (default)
+	home-manager switch --flake ".#common" --impure
+
+.PHONY: switch-extra
+switch-extra: ## switch to extra profile
+	home-manager switch --flake ".#extra" --impure
+
+.PHONY: switch-full
+switch-full: ## switch to full profile
+	home-manager switch --flake ".#full" --impure
 
 .PHONY: update
 update: ## update flake inputs

@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, profilePackages ? [], ... }:
 
 # NOTE: need --impure
 # $ home-manager switch --flake . --impure
@@ -17,65 +17,9 @@
   # release notes.
   home.stateVersion = "25.11"; # Please read the comment before changing.
 
-  # The home.packages option allows you to install Nix packages into your
-  # environment.
-  home.packages = [
-    # # Adds the 'hello' command to your environment. It prints a friendly
-    # # "Hello, world!" when run.
-    # pkgs.hello
-
-    # # It is sometimes useful to fine-tune packages, for example, by applying
-    # # overrides. You can do that directly here, just don't forget the
-    # # parentheses. Maybe you want to install Nerd Fonts with a limited number of
-    # # fonts?
-    # (pkgs.nerdfonts.override { fonts = [ "FantasqueSansMono" ]; })
-
-    # # You can also create simple shell scripts directly inside your
-    # # configuration. For example, this adds a command 'my-hello' to your
-    # # environment:
-    # (pkgs.writeShellScriptBin "my-hello" ''
-    #   echo "Hello, ${config.home.username}!"
-    # '')
-
-    pkgs.age
-    pkgs.ast-grep
-    pkgs.atuin
-    pkgs.bash
-    pkgs.bash-completion
-    pkgs.bash-preexec
-    pkgs.bat
-    pkgs.bitwarden-cli
-    pkgs.curl
-    pkgs.delta
-    pkgs.direnv
-    pkgs.fac
-    pkgs.fd
-    pkgs.fswatch
-    pkgs.fzf
-    pkgs.gh
-    pkgs.ghq
-    pkgs.gibo
-    pkgs.git
-    pkgs.gitleaks
-    pkgs.glow
-    pkgs.gron
-    pkgs.jq
-    pkgs.mmv-go
-    pkgs.neovim
-    pkgs.proto
-    pkgs.ripgrep
-    pkgs.rsync
-    pkgs.sops
-    pkgs.tig
-    pkgs.tmux
-    pkgs.vim
-    pkgs.zoxide
-  ] ++ lib.optionals pkgs.stdenv.isDarwin [
-    pkgs.mas
-  ] ++ lib.optionals pkgs.stdenv.isLinux [
-    pkgs.trash-cli
-    pkgs.xsel
-  ];
+  # Packages are managed in packages/ directory and passed via profilePackages.
+  # See flake.nix for profile definitions.
+  home.packages = profilePackages;
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
   # plain files is through 'home.file'.
