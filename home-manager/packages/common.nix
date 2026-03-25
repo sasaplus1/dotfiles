@@ -8,6 +8,8 @@
   pkgs.bash-preexec
   pkgs.bat
   pkgs.bitwarden-cli
+  pkgs.claude-code-bin
+  pkgs.codex
   pkgs.curl
   pkgs.delta
   pkgs.direnv
@@ -19,12 +21,17 @@
   pkgs.ghq
   pkgs.gibo
   pkgs.git
+  pkgs.git-crypt
   pkgs.gitleaks
+  pkgs.gnupg
   pkgs.glow
   pkgs.gron
   pkgs.jq
+  pkgs.jujutsu
   pkgs.mmv-go
   pkgs.neovim
+  pkgs.nmap
+  pkgs.pinact
   pkgs.proto
   pkgs.ripgrep
   pkgs.rsync
@@ -32,6 +39,7 @@
   pkgs.tig
   pkgs.tmux
   pkgs.vim
+  pkgs.yq-go
   pkgs.zoxide
 ] ++ lib.optionals pkgs.stdenv.isDarwin [
   pkgs.mas
