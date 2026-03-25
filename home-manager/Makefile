@@ -38,7 +38,7 @@ install: ## install Nix
 install: install-nix-$(os)
 
 .PHONY: install-nix-macos
-install-nix-darwin: ## [subtarget] install Nix for macOS (Determinate Nix)
+install-nix-macos: ## [subtarget] install Nix for macOS (Determinate Nix)
 	curl -fsSL https://install.determinate.systems/nix | sh -s -- install
 
 .PHONY: install-nix-linux
