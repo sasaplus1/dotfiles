@@ -16,7 +16,10 @@
     { nixpkgs, home-manager, ... }:
     let
       system = builtins.currentSystem;
-      pkgs = nixpkgs.legacyPackages.${system};
+      pkgs = import nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+      };
       lib = pkgs.lib;
 
       commonPkgs = import ./packages/common.nix { inherit pkgs lib; };

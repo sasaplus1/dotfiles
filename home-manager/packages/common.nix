@@ -8,6 +8,7 @@
   pkgs.bash-preexec
   pkgs.bat
   pkgs.bitwarden-cli
+  pkgs.bws
   pkgs.claude-code-bin
   pkgs.codex
   pkgs.curl
