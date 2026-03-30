@@ -37,7 +37,7 @@
       homeConfigurations = {
         common = mkHome commonPkgs;
         extra = mkHome (commonPkgs ++ extraPkgs);
-        full = mkHome (commonPkgs ++ extraPkgs); # 将来 music 等が増えたら全部入り
+        full = mkHome (commonPkgs ++ extraPkgs);
       };
       packages.${system}.default = (mkHome commonPkgs).activationPackage;
     };
