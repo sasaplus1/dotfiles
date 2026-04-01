@@ -9,6 +9,8 @@ auto-install = true
 # builtin-plugins = ["bun", "deno", "go", "node", "npm", "rust", "yarn", "zig"]
 
 [plugins]
+claude-code = "https://raw.githubusercontent.com/sasaplus1/proto-plugins/main/claude-code/plugin.toml"
+codex = "https://raw.githubusercontent.com/sasaplus1/proto-plugins/main/codex/plugin.toml"
 crystal = "github://sasaplus1/proto-plugin-crystal"
 zig = "github://konomae/zig-plugin"
 

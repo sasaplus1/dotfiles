@@ -9,8 +9,6 @@
   pkgs.bat
   pkgs.bitwarden-cli
   pkgs.bws
-  pkgs.claude-code-bin
-  pkgs.codex
   pkgs.curl
   pkgs.delta
   pkgs.direnv
@@ -39,7 +37,6 @@
   pkgs.sops
   pkgs.tig
   pkgs.tmux
-  pkgs.vim
   pkgs.yq-go
   pkgs.zoxide
 ] ++ lib.optionals pkgs.stdenv.isDarwin [
