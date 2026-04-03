@@ -602,6 +602,26 @@ __main() {
   #-----------------------------------------------------------------------------
 
   # functions and aliases {{{
+  dd() {
+    local of_val
+
+    for arg in "$@"
+    do
+      case "$arg" in
+        of=*) of_val="${arg#of=}" ;;
+      esac
+    done
+
+    if [[ "$of_val" == /dev/* ]]
+    then
+      echo "Warning: output target '$of_val' is a device. Proceed? [y/N]: "
+      read -r ans
+      [ "$ans" = "y" ] || return 1
+    fi
+
+    command dd "$@"
+  }
+
   git() {
     local git_dir original_hooks_path
     git_dir="$(command git rev-parse --git-dir 2>/dev/null)"
