@@ -30,6 +30,7 @@
   pkgs.mmv-go
   pkgs.neovim
   pkgs.nmap
+  pkgs.nono
   pkgs.pinact
   pkgs.proto
   pkgs.ripgrep
@@ -40,6 +41,7 @@
   pkgs.yq-go
   pkgs.zoxide
 ] ++ lib.optionals pkgs.stdenv.isDarwin [
+  pkgs.container
   pkgs.mas
 ] ++ lib.optionals pkgs.stdenv.isLinux [
   pkgs.trash-cli
