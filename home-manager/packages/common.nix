@@ -1,8 +1,8 @@
-{ pkgs, lib }:
+{ pkgs, pkgs-unstable, lib }:
 [
   pkgs.age
-  pkgs.ast-grep
-  pkgs.atuin
+  pkgs-unstable.ast-grep
+  pkgs-unstable.atuin
   pkgs.bash
   pkgs.bash-completion
   pkgs.bash-preexec
@@ -11,7 +11,7 @@
   pkgs.bws
   pkgs.curl
   pkgs.delta
-  pkgs.direnv
+  pkgs-unstable.direnv
   pkgs.fac
   pkgs.fd
   pkgs.fswatch
@@ -21,18 +21,18 @@
   pkgs.gibo
   pkgs.git
   pkgs.git-crypt
-  pkgs.gitleaks
+  pkgs-unstable.gitleaks
   pkgs.gnupg
   pkgs.glow
   pkgs.gron
   pkgs.jq
-  pkgs.jujutsu
+  pkgs-unstable.jujutsu
   pkgs.mmv-go
-  pkgs.neovim
+  pkgs-unstable.neovim
   pkgs.nmap
-  pkgs.nono
-  pkgs.pinact
-  pkgs.proto
+  pkgs-unstable.nono
+  pkgs-unstable.pinact
+  pkgs-unstable.proto
   pkgs.ripgrep
   pkgs.rsync
   pkgs.sops
@@ -41,7 +41,7 @@
   pkgs.yq-go
   pkgs.zoxide
 ] ++ lib.optionals pkgs.stdenv.isDarwin [
-  pkgs.container
+  pkgs-unstable.container
   pkgs.mas
 ] ++ lib.optionals pkgs.stdenv.isLinux [
   pkgs.trash-cli
