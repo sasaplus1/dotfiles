@@ -9,6 +9,8 @@
   pkgs.bat
   pkgs.bitwarden-cli
   pkgs.bws
+  pkgs-unstable.claude-code
+  pkgs-unstable.codex
   pkgs.curl
   pkgs.delta
   pkgs-unstable.direnv
@@ -30,7 +32,6 @@
   pkgs.mmv-go
   pkgs-unstable.neovim
   pkgs.nmap
-  pkgs-unstable.nono
   pkgs-unstable.pinact
   pkgs-unstable.proto
   pkgs.ripgrep
