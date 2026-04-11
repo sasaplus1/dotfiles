@@ -793,6 +793,10 @@ __main() {
     echo "${path//:/$'\n'}"
   }
 
+  sandbox-log() {
+    log stream --style compact --predicate 'eventMessage CONTAINS "Sandbox:" AND eventMessage CONTAINS "deny"'
+  }
+
   #-----------------------------------------------------------------------------
 
   if type tmux >/dev/null 2>&1
