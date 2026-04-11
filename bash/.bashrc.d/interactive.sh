@@ -1147,7 +1147,7 @@ then
     [ -f "$__bash_preexec" ] && source "$__bash_preexec" && break
   done
   unset __bash_preexec
-  eval "$(atuin init bash)"
+  eval "$(atuin init bash --disable-up-arrow)"
 fi
 # }}}
 
