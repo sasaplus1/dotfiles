@@ -10,6 +10,7 @@ if 1
         \ '/vars.vim',
         \ '/sets.vim',
         \ '/plugin-manager.vim',
+        \ '/treesitter.vim',
         \ '/commands.vim',
         \ '/mappings.vim',
         \ ]

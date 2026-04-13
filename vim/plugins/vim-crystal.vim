@@ -1,6 +1,6 @@
 scriptencoding utf-8
 
-" nvim-treesitterにcrystalがないのでNeovimでも使用する
+" treesitterにcrystalパーサがないのでNeovimでも使用する
 
 call dein#add('vim-crystal/vim-crystal', {
       \ 'lazy' : 1,
