@@ -140,3 +140,9 @@ $RECYCLE.BIN/
 
 # ClaudeCode plan files
 /.claude/plans
+
+# local CLAUDE.md
+/CLAUDE.local.md
+
+# Todo files
+/TODO*.local.md
