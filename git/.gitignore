@@ -141,6 +141,9 @@ $RECYCLE.BIN/
 # ClaudeCode plan files
 /.claude/plans
 
+# ClaudeCode temporary skills
+/.claude/skills/temporary-*
+
 # local CLAUDE.md
 /CLAUDE.local.md
 
