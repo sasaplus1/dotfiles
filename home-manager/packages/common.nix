@@ -23,6 +23,7 @@
   pkgs.gibo
   pkgs.git
   pkgs.git-crypt
+  pkgs-unstable.betterleaks
   pkgs-unstable.gitleaks
   pkgs.gnupg
   pkgs.glow
