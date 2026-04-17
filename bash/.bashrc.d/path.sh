@@ -47,10 +47,6 @@ __main() {
 
   #-----------------------------------------------------------------------------
 
-  # aqua {{{
-  export AQUA_GLOBAL_CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/aquaproj-aqua/aqua.yaml"
-  # }}}
-
   # ghq {{{
   export GHQ_ROOT="$HOME/.ghq"
   # }}}
@@ -107,12 +103,6 @@ __main() {
   # }}}
 
   #-----------------------------------------------------------------------------
-
-  # aqua {{{
-  local -r aqua_home="${XDG_DATA_HOME:-$HOME/.local/share}/aquaproj-aqua"
-  [ -d "$aqua_home" ] &&
-    export PATH="$aqua_home/bin:$PATH"
-  # }}}
 
   # proto {{{
   local -r proto_home="$HOME/.proto"
@@ -208,7 +198,6 @@ __main() {
     printf "export MANPATH='%s'\n" "$MANPATH"
     printf "export INFOPATH='%s'\n" "$INFOPATH"
     # App paths
-    printf "export AQUA_GLOBAL_CONFIG='%s'\n" "$AQUA_GLOBAL_CONFIG"
     printf "export GHQ_ROOT='%s'\n" "$GHQ_ROOT"
     printf "export GOPATH='%s'\n" "$GOPATH"
     [ -n "$HOMEBREW_PREFIX" ] && printf "export HOMEBREW_PREFIX='%s'\n" "$HOMEBREW_PREFIX"
