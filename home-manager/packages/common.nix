@@ -18,7 +18,7 @@
   pkgs.fd
   pkgs.fswatch
   pkgs.fzf
-  pkgs.gh
+  pkgs-unstable.gh
   pkgs.ghq
   pkgs.gibo
   pkgs.git
