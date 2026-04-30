@@ -13,7 +13,7 @@
   pkgs-unstable.codex
   pkgs.curl
   pkgs.delta
-  pkgs-unstable.direnv
+  (pkgs-unstable.direnv.overrideAttrs (_: { doCheck = false; }))
   pkgs.fac
   pkgs.fd
   pkgs.fswatch
