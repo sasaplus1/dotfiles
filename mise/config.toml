@@ -1,0 +1,7 @@
+[settings]
+locked = true
+experimental = false
+status.show_tools = false
+
+[tools]
+"aqua:datadog-labs/pup" = "0.55.0"

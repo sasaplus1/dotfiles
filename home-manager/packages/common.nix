@@ -30,6 +30,7 @@
   pkgs.gron
   pkgs.jq
   pkgs-unstable.jujutsu
+  pkgs-unstable.mise
   pkgs.mmv-go
   pkgs-unstable.neovim
   pkgs.nmap
