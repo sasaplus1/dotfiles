@@ -24,6 +24,15 @@
       pkgs-unstable = import nixpkgs-unstable {
         inherit system;
         config.allowUnfree = true;
+        overlays = [
+          # Disable direnv's checkPhase globally; it hangs on macOS.
+          # This also unifies direnv into a single derivation so that
+          # downstream build inputs (e.g. mise) reuse the same one
+          # and avoid a duplicate rebuild.
+          (final: prev: {
+            direnv = prev.direnv.overrideAttrs (_: { doCheck = false; });
+          })
+        ];
       };
       lib = pkgs.lib;
 
