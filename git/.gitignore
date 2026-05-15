@@ -24,7 +24,7 @@
 .LSOverride
 
 # Icon must end with two \r
-Icon
+Icon
 
 # Thumbnails
 ._*
@@ -149,3 +149,6 @@ $RECYCLE.BIN/
 
 # Todo files
 /TODO*.local.md
+
+# temporary skills
+/.agents/skills/temporary-*
