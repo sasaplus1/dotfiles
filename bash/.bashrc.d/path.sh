@@ -188,6 +188,13 @@ __main() {
     export PATH="$git/usr/bin:$PATH"
   # }}}
 
+  # nekomata {{{
+  local -r nekomata="$HOME/.nekomata"
+  [ -d "$nekomata" ] &&
+    export MANPATH="$nekomata/share/man:$MANPATH" &&
+    export PATH="$nekomata/bin:$PATH"
+  # }}}
+
   #-----------------------------------------------------------------------------
 
   # cache user setting PATHs
