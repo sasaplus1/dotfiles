@@ -182,10 +182,10 @@ __main() {
   # git {{{
   # my git for macOS
   # via https://github.com/sasaplus1/macos-git
-  # local -r git="$GHQ_ROOT/github.com/sasaplus1/macos-git"
-  # [ -x "$git/usr/bin/git" ] &&
-  #   export MANPATH="$git/share/man:$MANPATH" &&
-  #   export PATH="$git/usr/bin:$PATH"
+  local -r git="$GHQ_ROOT/github.com/sasaplus1/macos-git"
+  [ -x "$git/usr/bin/git" ] &&
+    export MANPATH="$git/share/man:$MANPATH" &&
+    export PATH="$git/usr/bin:$PATH"
   # }}}
 
   #-----------------------------------------------------------------------------
