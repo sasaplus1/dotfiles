@@ -77,6 +77,58 @@
           "size": 21308365
         }
       }
+    },
+    {
+      "repo": "microsoft/apm",
+      "tag": "v0.14.0",
+      "assets": {
+        "darwin-amd64": {
+          "name": "apm-darwin-x86_64.tar.gz",
+          "digest": "sha256:3f70f6c0985b344973f5ba6004f0bfc02212e547b95fdce04deb6d8a3ef7ae6d",
+          "size": 24612488
+        },
+        "darwin-arm64": {
+          "name": "apm-darwin-arm64.tar.gz",
+          "digest": "sha256:3bb8b7ce7d4fc68646bfbe96c188e3c0cc278bfe066f68fb52e8929fd0da3938",
+          "size": 23400687
+        },
+        "linux-amd64": {
+          "name": "apm-linux-x86_64.tar.gz",
+          "digest": "sha256:5ca7853e4b8858272da721e1d68548a6c078f7920487298bef901bd6e709a7d1",
+          "size": 15443267
+        },
+        "linux-arm64": {
+          "name": "apm-linux-arm64.tar.gz",
+          "digest": "sha256:3a8340b02851a94760a449d732e5f417b2ba4409689471302af9c5801851ad72",
+          "size": 15273836
+        },
+        "windows-amd64": {
+          "name": "apm-windows-x86_64.zip",
+          "digest": "sha256:51e3d439863620ea51e00bab09dcf22ceb2f8e83a1e70cb0eb50e5a02578f728",
+          "size": 19382800
+        }
+      }
+    },
+    {
+      "repo": "philschmid/mcp-cli",
+      "tag": "v0.3.0",
+      "assets": {
+        "darwin-amd64": {
+          "name": "mcp-cli-darwin-x64",
+          "digest": "sha256:f0e890a666268335005bbba199253ff8f6e6afae76d0adf34fbda708b26acc2e",
+          "size": 63708160
+        },
+        "darwin-arm64": {
+          "name": "mcp-cli-darwin-arm64",
+          "digest": "sha256:be991df0a125e1cf9a022fe6ffce236605522fd1382435ce58ffdf9aba6642f2",
+          "size": 57859200
+        },
+        "linux-amd64": {
+          "name": "mcp-cli-linux-x64",
+          "digest": "sha256:76772f290edaa856cbec967d12c33cb9bf49cff014f55a30d04245cf8970817c",
+          "size": 101135752
+        }
+      }
     }
   ]
 }
