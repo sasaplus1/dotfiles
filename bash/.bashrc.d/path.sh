@@ -136,6 +136,12 @@ __main() {
   export PATH="$go_gopath_bin:$PATH"
   # }}}
 
+  # superradcompany/microsandbox {{{
+  [ -d "$HOME/.microsandbox" ] &&
+    export PATH="$HOME/.microsandbox/bin:$PATH" &&
+    export DYLD_LIBRARY_PATH="$HOME/.microsandbox/lib${DYLD_LIBRARY_PATH:+:$DYLD_LIBRARY_PATH}"
+  # }}}
+
   # adb/android-platform-tools {{{
   local -r android_platform_tools="$HOME/Library/Android/sdk/platform-tools"
   [ -d "$android_platform_tools" ] && export PATH="$android_platform_tools:$PATH"
