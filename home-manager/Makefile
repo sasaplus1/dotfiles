@@ -42,8 +42,8 @@ generations: ## list home-manager generations
 	home-manager generations
 
 .PHONY: install-home-manager
-install-home-manager: ## install home-manager CLI
-	nix profile add nixpkgs#home-manager
+install-home-manager: ## bootstrap home-manager via initial switch (use after Nix install)
+	nix run github:nix-community/home-manager#home-manager -- switch --flake ".#common" --impure
 
 .PHONY: install
 install: ## install Nix
