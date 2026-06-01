@@ -50,12 +50,12 @@ install: ## install Nix
 install: install-nix-$(os)
 
 .PHONY: install-nix-macos
-install-nix-macos: ## [subtarget] install Nix for macOS (Determinate Nix)
-	curl -fsSL https://install.determinate.systems/nix | sh -s -- install
+install-nix-macos: ## [subtarget] install Nix for macOS (NixOS/nix-installer with flakes)
+	curl -sSfL https://artifacts.nixos.org/nix-installer | sh -s -- install --enable-flakes
 
 .PHONY: install-nix-linux
-install-nix-linux: ## [subtarget] install Nix for Linux (official installer)
-	curl -fsSL https://nixos.org/nix/install | sh
+install-nix-linux: ## [subtarget] install Nix for Linux (NixOS/nix-installer with flakes)
+	curl -sSfL https://artifacts.nixos.org/nix-installer | sh -s -- install --enable-flakes
 
 .PHONY: switch
 switch: ## switch to common profile (default)
