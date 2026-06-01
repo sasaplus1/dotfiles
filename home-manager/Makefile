@@ -21,6 +21,10 @@ build: ## build common profile without activating (dry run)
 build-extra: ## build extra profile without activating (dry run)
 	home-manager build --flake ".#extra" --impure
 
+.PHONY: build-music
+build-music: ## build music profile without activating (dry run)
+	home-manager build --flake ".#music" --impure
+
 .PHONY: build-full
 build-full: ## build full profile without activating (dry run)
 	home-manager build --flake ".#full" --impure
@@ -60,6 +64,10 @@ switch: ## switch to common profile (default)
 .PHONY: switch-extra
 switch-extra: ## switch to extra profile
 	home-manager switch --flake ".#extra" --impure
+
+.PHONY: switch-music
+switch-music: ## switch to music profile
+	home-manager switch --flake ".#music" --impure
 
 .PHONY: switch-full
 switch-full: ## switch to full profile

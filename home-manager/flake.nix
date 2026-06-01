@@ -29,6 +29,7 @@
 
       commonPkgs = import ./packages/common.nix { inherit pkgs pkgs-unstable lib; };
       extraPkgs = import ./packages/extra.nix { inherit pkgs lib; };
+      musicPkgs = import ./packages/music.nix { inherit pkgs lib; };
 
       mkHome =
         profilePackages:
@@ -42,7 +43,8 @@
       homeConfigurations = {
         common = mkHome commonPkgs;
         extra = mkHome (commonPkgs ++ extraPkgs);
-        full = mkHome (commonPkgs ++ extraPkgs);
+        music = mkHome (commonPkgs ++ musicPkgs);
+        full = mkHome (commonPkgs ++ extraPkgs ++ musicPkgs);
       };
       packages.${system}.default = (mkHome commonPkgs).activationPackage;
     };
