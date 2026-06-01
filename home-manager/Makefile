@@ -43,7 +43,7 @@ generations: ## list home-manager generations
 
 .PHONY: install-home-manager
 install-home-manager: ## install home-manager CLI
-	nix profile install nixpkgs#home-manager
+	nix profile add nixpkgs#home-manager
 
 .PHONY: install
 install: ## install Nix
