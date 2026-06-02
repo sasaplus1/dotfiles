@@ -17,10 +17,9 @@
   pkgs.ffmpeg-headless
   pkgs.fswatch
   pkgs.fzf
-  pkgs-unstable.gh
   pkgs.ghq
   pkgs.gibo
-  pkgs.git
+  pkgs-unstable.git
   pkgs.git-crypt
   pkgs-unstable.betterleaks
   pkgs-unstable.gitleaks
