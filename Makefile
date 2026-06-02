@@ -101,6 +101,7 @@ symlinks += $(makefile_dir)/home-manager $(dest)/.config/home-manager
 symlinks += $(makefile_dir)/jujutsu/.jjconfig.toml $(dest)/.jjconfig.toml
 # symlinks += $(makefile_dir)/locate/.locate.rc $(dest)/.locate.rc
 # symlinks += $(makefile_dir)/mercurial/.hgrc $(dest)/.hgrc
+symlinks += $(makefile_dir)/nekomata/.nekomata.json $(dest)/.config/nekomata/.nekomata.json
 symlinks += $(makefile_dir)/nekomata/nekomata.lock $(dest)/.config/nekomata/nekomata.lock
 symlinks += $(makefile_dir)/nginx/.cocproxy.nginx.conf $(dest)/.cocproxy.nginx.conf
 # symlinks += $(makefile_dir)/pt/.ptignore $(dest)/.ptignore
