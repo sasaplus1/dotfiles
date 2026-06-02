@@ -9,8 +9,6 @@
   pkgs.bat
   pkgs.bitwarden-cli
   pkgs.bws
-  pkgs-unstable.claude-code
-  pkgs-unstable.codex
   pkgs.curl
   pkgs.delta
   (pkgs-unstable.direnv.overrideAttrs (_: { doCheck = false; }))
