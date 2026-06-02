@@ -11,6 +11,7 @@ auto-install = true
 [plugins]
 crystal = "github://sasaplus1/proto-plugin-crystal"
 perry = "https://raw.githubusercontent.com/sasaplus1/proto-plugins/main/perry/plugin.toml"
+tinygo = "https://raw.githubusercontent.com/sasaplus1/proto-plugins/main/tinygo/plugin.toml"
 zig = "github://konomae/zig-plugin"
 
 [tools.npm]
