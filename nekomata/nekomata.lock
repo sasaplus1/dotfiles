@@ -2,6 +2,32 @@
   "version": 1,
   "tools": [
     {
+      "repo": "anthropics/claude-code",
+      "tag": "v2.1.160",
+      "assets": {
+        "darwin-amd64": {
+          "name": "claude-darwin-x64.tar.gz",
+          "digest": "sha256:e531ea8bfd1fad031dadfb10d5cfbc1deeb7969f7a3e6d3fed5ba292856afdb0",
+          "size": 66206851
+        },
+        "darwin-arm64": {
+          "name": "claude-darwin-arm64.tar.gz",
+          "digest": "sha256:65db148c2162fc65fe39c1a1ec46886f68d6897b08021d54b3cdc3f0c9a4c93b",
+          "size": 64160931
+        },
+        "linux-amd64": {
+          "name": "claude-linux-x64-musl.tar.gz",
+          "digest": "sha256:49ac4b39ccac1b2324d747c69619e9aef0e01b9dde478ce647b905faff6ef4ae",
+          "size": 72065996
+        },
+        "linux-arm64": {
+          "name": "claude-linux-arm64-musl.tar.gz",
+          "digest": "sha256:bde5a6e777f97de7dc08a6037c2a4d0672b0a8a179797a492b65a6c0be71af8e",
+          "size": 71643082
+        }
+      }
+    },
+    {
       "repo": "cli/cli",
       "tag": "v2.92.0",
       "assets": {
@@ -106,6 +132,42 @@
           "name": "apm-windows-x86_64.zip",
           "digest": "sha256:51e3d439863620ea51e00bab09dcf22ceb2f8e83a1e70cb0eb50e5a02578f728",
           "size": 19382800
+        }
+      }
+    },
+    {
+      "repo": "openai/codex",
+      "tag": "rust-v0.136.0",
+      "assets": {
+        "darwin-amd64": {
+          "name": "codex-x86_64-apple-darwin.tar.gz",
+          "digest": "sha256:e2f8eb8c7b076de22482d25e99c07304b35a5ed2e4bf2e91e0257d5b4271c852",
+          "size": 91851334
+        },
+        "darwin-arm64": {
+          "name": "codex-aarch64-apple-darwin.tar.gz",
+          "digest": "sha256:5fe1f6efdcdca11f2c64a52517da24e2aabb972fd43d56d36b106ec75b4d7d3b",
+          "size": 81678755
+        },
+        "linux-amd64": {
+          "name": "codex-x86_64-unknown-linux-musl.tar.gz",
+          "digest": "sha256:dadad6c9db74500ad5431fa178b30288fdbdda6bdf3397634db6e1f5981321cf",
+          "size": 87456772
+        },
+        "linux-arm64": {
+          "name": "codex-aarch64-unknown-linux-musl.tar.gz",
+          "digest": "sha256:9dba0b8054541854b3cc3c12c25f52d6a441c90d87520e5260df56c09ba3eace",
+          "size": 80578509
+        },
+        "windows-amd64": {
+          "name": "codex-x86_64-pc-windows-msvc.exe.tar.gz",
+          "digest": "sha256:9207c061678d9f9e88302f7a0baca4f4ec1cbc7d3a1eca1d2168ac0507c55612",
+          "size": 86496064
+        },
+        "windows-arm64": {
+          "name": "codex-aarch64-pc-windows-msvc.exe.tar.gz",
+          "digest": "sha256:1aa0d3d77dda9e07c766626aba2bf5bf03b93909cacaf6a992919ebad3cd550a",
+          "size": 79208612
         }
       }
     },
