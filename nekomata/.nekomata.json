@@ -1,4 +1,13 @@
 {
   "version": 1,
-  "tools": {}
+  "tools": {
+    "openai/codex": {
+      "rename": [
+        { "from": "codex-aarch64-apple-darwin", "to": "codex" },
+        { "from": "codex-x86_64-apple-darwin", "to": "codex" },
+        { "from": "codex-aarch64-unknown-linux-musl", "to": "codex" },
+        { "from": "codex-x86_64-unknown-linux-musl", "to": "codex" }
+      ]
+    }
+  }
 }
