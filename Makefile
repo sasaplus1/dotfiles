@@ -45,6 +45,7 @@ dotfile_dirs += $(dest)/.config/nekomata
 dotfile_dirs += $(dest)/.config/nvim
 # dotfile_dirs += $(dest)/.config/ranger
 dotfile_dirs += $(dest)/.config/vifm
+dotfile_dirs += $(dest)/.config/whipper
 dotfile_dirs += $(dest)/.ctags.d
 dotfile_dirs += $(dest)/.docker
 dotfile_dirs += $(dest)/.ghq
@@ -122,6 +123,7 @@ symlinks += $(makefile_dir)/vifm/vifmrc $(dest)/.config/vifm/vifmrc
 symlinks += $(makefile_dir)/vim/.vimrc $(dest)/.vimrc
 symlinks += $(makefile_dir)/vim/.vimrc $(dest)/.config/nvim/init.vim
 symlinks += $(makefile_dir)/wezterm/.wezterm.lua $(dest)/.wezterm.lua
+symlinks += $(makefile_dir)/whipper/whipper.conf $(dest)/.config/whipper/whipper.conf
 
 symlinks := $(subst +,\\\ ,$(abspath $(strip $(symlinks))))
 
