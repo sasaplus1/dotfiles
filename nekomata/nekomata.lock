@@ -191,6 +191,42 @@
           "size": 101135752
         }
       }
+    },
+    {
+      "repo": "suzuki-shunsuke/ghtkn",
+      "tag": "v0.2.4",
+      "assets": {
+        "darwin-amd64": {
+          "name": "ghtkn_darwin_amd64.tar.gz",
+          "digest": "sha256:07d8695c71735197f599c2377f9f784da01350cb8629d8f8634f133f6b73f6ce",
+          "size": 4431608
+        },
+        "darwin-arm64": {
+          "name": "ghtkn_darwin_arm64.tar.gz",
+          "digest": "sha256:ddbf283a1330de914b60f7317bd7d3233054c03aab294246b19b018ecab0757a",
+          "size": 4133732
+        },
+        "linux-amd64": {
+          "name": "ghtkn_linux_amd64.tar.gz",
+          "digest": "sha256:a381c7b9c8be70376ade91a6e70166777756e114001bc42f142d481193919e75",
+          "size": 4514025
+        },
+        "linux-arm64": {
+          "name": "ghtkn_linux_arm64.tar.gz",
+          "digest": "sha256:90eb4ec8c93a131f0682c3ec16e03aa5bc15a9d9ee9233659921811f0769a625",
+          "size": 4105360
+        },
+        "windows-amd64": {
+          "name": "ghtkn_windows_amd64.zip",
+          "digest": "sha256:2bbd58ede5a24ba140927ab84cd7f72c57ec93971a0a7d58142af85529007e02",
+          "size": 4470358
+        },
+        "windows-arm64": {
+          "name": "ghtkn_windows_arm64.zip",
+          "digest": "sha256:07d4ea8389f6047ef98542835677d6511f539f1fc2f096985252d6553428248d",
+          "size": 4015436
+        }
+      }
     }
   ]
 }
