@@ -28,6 +28,42 @@
       }
     },
     {
+      "repo": "chojs23/ec",
+      "tag": "v0.3.2",
+      "assets": {
+        "darwin-amd64": {
+          "name": "ec-darwin-amd64",
+          "digest": "sha256:aae697f72002fd54d6631fa47981214ad9e76556fcc75fd68c0f9475150be814",
+          "size": 4092656
+        },
+        "darwin-arm64": {
+          "name": "ec-darwin-arm64",
+          "digest": "sha256:b3121d367fe2573da862c5d97b0ff947ffe37887f2d08f80d38087e3fdd5bfb1",
+          "size": 4009410
+        },
+        "linux-amd64": {
+          "name": "ec-linux-amd64",
+          "digest": "sha256:313a4ce328877686988ba5fb56ecf626da94f5a8e4760181b99a71d835dc3083",
+          "size": 4075812
+        },
+        "linux-arm64": {
+          "name": "ec-linux-arm64",
+          "digest": "sha256:77da582936eebcd968c31e8c27abb2ec5aca181158d5263a5d423dc9ad897cc9",
+          "size": 3997880
+        },
+        "windows-amd64": {
+          "name": "ec-windows-amd64.exe",
+          "digest": "sha256:9e831d0f08ab597799b0d3776706233e4724ab0d9367bb0227e264a946706d4d",
+          "size": 4410368
+        },
+        "windows-arm64": {
+          "name": "ec-windows-arm64.exe",
+          "digest": "sha256:785b45cc9bd8fcfc5b0740bfc01d5ae5adf51aee33f3988a59b219d63270c5c7",
+          "size": 4232192
+        }
+      }
+    },
+    {
       "repo": "cli/cli",
       "tag": "v2.92.0",
       "assets": {
