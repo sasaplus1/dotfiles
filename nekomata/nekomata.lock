@@ -3,27 +3,27 @@
   "tools": [
     {
       "repo": "anthropics/claude-code",
-      "tag": "v2.1.160",
+      "tag": "v2.1.170",
       "assets": {
         "darwin-amd64": {
           "name": "claude-darwin-x64.tar.gz",
-          "digest": "sha256:e531ea8bfd1fad031dadfb10d5cfbc1deeb7969f7a3e6d3fed5ba292856afdb0",
-          "size": 66206851
+          "digest": "sha256:afb9fa2dc924b62745ddf34390269f3fe9c467c46e75c2c0b35bb6fb65e83810",
+          "size": 67480793
         },
         "darwin-arm64": {
           "name": "claude-darwin-arm64.tar.gz",
-          "digest": "sha256:65db148c2162fc65fe39c1a1ec46886f68d6897b08021d54b3cdc3f0c9a4c93b",
-          "size": 64160931
+          "digest": "sha256:76353c44fd106a95f46bb35627943145fd67dcde003f6ffafe09517f8806a4b9",
+          "size": 65425401
         },
         "linux-amd64": {
           "name": "claude-linux-x64-musl.tar.gz",
-          "digest": "sha256:49ac4b39ccac1b2324d747c69619e9aef0e01b9dde478ce647b905faff6ef4ae",
-          "size": 72065996
+          "digest": "sha256:7c2d05bdafa9008a72893e31f805d1a7fbe87cc33221391b418f574dd68265ac",
+          "size": 73308383
         },
         "linux-arm64": {
           "name": "claude-linux-arm64-musl.tar.gz",
-          "digest": "sha256:bde5a6e777f97de7dc08a6037c2a4d0672b0a8a179797a492b65a6c0be71af8e",
-          "size": 71643082
+          "digest": "sha256:d97c1bda288e571b84d0e165adca546a8790cfb3d47b5bdee76d7f4bc5177b96",
+          "size": 72863876
         }
       }
     },
@@ -65,145 +65,145 @@
     },
     {
       "repo": "cli/cli",
-      "tag": "v2.92.0",
+      "tag": "v2.93.0",
       "assets": {
         "darwin-amd64": {
-          "name": "gh_2.92.0_macOS_amd64.zip",
-          "digest": "sha256:ae9bb327ab0d91071bdada79f8f14034a2a0f19b0e001835a782eafa519d2af0",
-          "size": 14919974
+          "name": "gh_2.93.0_macOS_amd64.zip",
+          "digest": "sha256:009425b9d175c482037fe25181817fd6b1ea3ae1f51cfae0e18f29f33d3152ac",
+          "size": 14960426
         },
         "darwin-arm64": {
-          "name": "gh_2.92.0_macOS_arm64.zip",
-          "digest": "sha256:b11c54f6bd7d15ed6590475079e5b2fcf36f45d3991a80041b29c9d0cc1f1d07",
-          "size": 13614671
+          "name": "gh_2.93.0_macOS_arm64.zip",
+          "digest": "sha256:a86be4e0a86c26456cf71177d6572d6f1165cf1679e532b72f7f15918ee51fd2",
+          "size": 13646335
         },
         "linux-386": {
-          "name": "gh_2.92.0_linux_386.tar.gz",
-          "digest": "sha256:65320dc8465c424fd3ae0a114a9753e815db89436ee2d0921641f30705af691d",
-          "size": 13396139
+          "name": "gh_2.93.0_linux_386.tar.gz",
+          "digest": "sha256:701192266df5009821cd50047ae6227c3f7e4fc2353aa4ff6687a284c5d3a56e",
+          "size": 13427144
         },
         "linux-amd64": {
-          "name": "gh_2.92.0_linux_amd64.tar.gz",
-          "digest": "sha256:b57848131bdf0c229cd35e1f2a51aa718199858b2e728410b37e89a428943ec4",
-          "size": 14296784
+          "name": "gh_2.93.0_linux_amd64.tar.gz",
+          "digest": "sha256:02d1290eba130e0b896f3709ffff22e1c75a51475ddb70476a85abc6b5807af0",
+          "size": 14332871
         },
         "linux-arm64": {
-          "name": "gh_2.92.0_linux_arm64.tar.gz",
-          "digest": "sha256:c2248526dd0160c08d3fccca2332c3c1a07c15a78b23978e77735f1b5a18cfee",
-          "size": 13002970
+          "name": "gh_2.93.0_linux_arm64.tar.gz",
+          "digest": "sha256:c55feb33684abba57e9909737340d5b39282257c0363e1edde6785ac4a413be7",
+          "size": 13035187
         },
         "windows-386": {
-          "name": "gh_2.92.0_windows_386.zip",
-          "digest": "sha256:61beecc32f0febb3526891773739a737b73d50f560018b1ecaac973eacaa21c2",
-          "size": 13811241
+          "name": "gh_2.93.0_windows_386.zip",
+          "digest": "sha256:c9181b02ad9448b592b1400a996402e4e5487e34a50a34d205c98db8f74695ca",
+          "size": 13840693
         },
         "windows-amd64": {
-          "name": "gh_2.92.0_windows_amd64.zip",
-          "digest": "sha256:b6a8df3c8c6b9c80f290906387673bc4d272840f3789c5650e0e4e6e75522785",
-          "size": 14468591
+          "name": "gh_2.93.0_windows_amd64.zip",
+          "digest": "sha256:77aa01ed7317295ad550de0ad04f3f276b1ef0e9272e3d002ac28dd99853d211",
+          "size": 14507687
         },
         "windows-arm64": {
-          "name": "gh_2.92.0_windows_arm64.zip",
-          "digest": "sha256:fa4da50182f6d37a0555b4b48e828c57b1b23cbbd1a7e3a9ce6b65513f13836c",
-          "size": 12968037
+          "name": "gh_2.93.0_windows_arm64.zip",
+          "digest": "sha256:1d2ab9d48f01a86c7156dae3008428743d6cd716a51fc50410078d51dec3dea4",
+          "size": 12999446
         }
       }
     },
     {
       "repo": "datadog/pup",
-      "tag": "v0.63.0",
+      "tag": "v1.0.0",
       "assets": {
         "darwin-amd64": {
-          "name": "pup_0.63.0_Darwin_x86_64.tar.gz",
-          "digest": "sha256:4e3f4ed26b1d29401da55061e42ae48a9abe79c8d8a4c70fcb061b2e76ada5f1",
-          "size": 22387892
+          "name": "pup_1.0.0_Darwin_x86_64.tar.gz",
+          "digest": "sha256:d0125eab04ed699e6deda7cb78cdf2e988f0dce6a8a134a167730d3ad1cb1039",
+          "size": 24248901
         },
         "darwin-arm64": {
-          "name": "pup_0.63.0_Darwin_arm64.tar.gz",
-          "digest": "sha256:6c64f5654802e63719e57eae2bde2c906512831c3ffa83e7570d06938881ca21",
-          "size": 21592305
+          "name": "pup_1.0.0_Darwin_arm64.tar.gz",
+          "digest": "sha256:7f9ac8626f9e927f1b1e486cc6cd801aa769e5f36d7bf4781b98f42b7778b97c",
+          "size": 23485492
         },
         "linux-amd64": {
-          "name": "pup_0.63.0_Linux_x86_64.tar.gz",
-          "digest": "sha256:794776698c638561c59dff2b73898b6e269f0e3eeabf6711f6a2693805e685a3",
-          "size": 25556751
+          "name": "pup_1.0.0_Linux_x86_64.tar.gz",
+          "digest": "sha256:f672ee800cb48090df1336fe4fff0b923e6ea22ab7bacf81c60bf1fbe686fe0a",
+          "size": 27634320
         },
         "linux-arm64": {
-          "name": "pup_0.63.0_Linux_arm64.tar.gz",
-          "digest": "sha256:855021b4856dde2e3553ca005f7e79dd0936ffc2d2b5213b6da2be064162dbd0",
-          "size": 25067006
+          "name": "pup_1.0.0_Linux_arm64.tar.gz",
+          "digest": "sha256:2afa4e44b559072b1b871672c93cd4ba1f6913fae20a37bebf61950a946c041b",
+          "size": 26932207
         },
         "windows-amd64": {
-          "name": "pup_0.63.0_Windows_x86_64.zip",
-          "digest": "sha256:15fd281be86846ac0f834e7910214fe77b89b3be3bd83357f424dfbf44ae297c",
-          "size": 21308365
+          "name": "pup_1.0.0_Windows_x86_64.zip",
+          "digest": "sha256:ca1aa9a535dc14c8cd94c7b7a7d32ba9498a0a6eea78c8b1553e1d02ac009aaa",
+          "size": 23186096
         }
       }
     },
     {
       "repo": "microsoft/apm",
-      "tag": "v0.14.0",
+      "tag": "v0.19.0",
       "assets": {
         "darwin-amd64": {
           "name": "apm-darwin-x86_64.tar.gz",
-          "digest": "sha256:3f70f6c0985b344973f5ba6004f0bfc02212e547b95fdce04deb6d8a3ef7ae6d",
-          "size": 24612488
+          "digest": "sha256:485847073e208cd262159ca4e934e39c85b54d02b27c34eda36a6afc801b20b3",
+          "size": 23869322
         },
         "darwin-arm64": {
           "name": "apm-darwin-arm64.tar.gz",
-          "digest": "sha256:3bb8b7ce7d4fc68646bfbe96c188e3c0cc278bfe066f68fb52e8929fd0da3938",
-          "size": 23400687
+          "digest": "sha256:06bfcec4be3aff7d656e901a237e65cb835f244cbc0e02e02c780e72fb6cf294",
+          "size": 22657471
         },
         "linux-amd64": {
           "name": "apm-linux-x86_64.tar.gz",
-          "digest": "sha256:5ca7853e4b8858272da721e1d68548a6c078f7920487298bef901bd6e709a7d1",
-          "size": 15443267
+          "digest": "sha256:93c447da0857da55ff12e7071a5af974c0f85de9717155e7dc06682bc1afe362",
+          "size": 13492497
         },
         "linux-arm64": {
           "name": "apm-linux-arm64.tar.gz",
-          "digest": "sha256:3a8340b02851a94760a449d732e5f417b2ba4409689471302af9c5801851ad72",
-          "size": 15273836
+          "digest": "sha256:1a381f030a475f806c38d51a33b9af5f6e2eaf51cf20fd629f7322da0ca3dd78",
+          "size": 13329092
         },
         "windows-amd64": {
           "name": "apm-windows-x86_64.zip",
-          "digest": "sha256:51e3d439863620ea51e00bab09dcf22ceb2f8e83a1e70cb0eb50e5a02578f728",
-          "size": 19382800
+          "digest": "sha256:e1a42126b891f24cdc32916d60806cd5a86b20f367e16598a5e12fcb3b579406",
+          "size": 18545861
         }
       }
     },
     {
       "repo": "openai/codex",
-      "tag": "rust-v0.136.0",
+      "tag": "rust-v0.139.0",
       "assets": {
         "darwin-amd64": {
           "name": "codex-x86_64-apple-darwin.tar.gz",
-          "digest": "sha256:e2f8eb8c7b076de22482d25e99c07304b35a5ed2e4bf2e91e0257d5b4271c852",
-          "size": 91851334
+          "digest": "sha256:c8b52d7588977f6cd055112faa0f3e6b9ec764473bc1be8efa44f3c8f68d14bf",
+          "size": 95470176
         },
         "darwin-arm64": {
           "name": "codex-aarch64-apple-darwin.tar.gz",
-          "digest": "sha256:5fe1f6efdcdca11f2c64a52517da24e2aabb972fd43d56d36b106ec75b4d7d3b",
-          "size": 81678755
+          "digest": "sha256:c28344255844d83a728c084c2d9e21e168b5d217f6049d3a9a36827903f16fdb",
+          "size": 86062144
         },
         "linux-amd64": {
           "name": "codex-x86_64-unknown-linux-musl.tar.gz",
-          "digest": "sha256:dadad6c9db74500ad5431fa178b30288fdbdda6bdf3397634db6e1f5981321cf",
-          "size": 87456772
+          "digest": "sha256:12ebf70df41dc831061862912ab5e7eacdd112bb17e8ce9b2098cb3d92180081",
+          "size": 90142645
         },
         "linux-arm64": {
           "name": "codex-aarch64-unknown-linux-musl.tar.gz",
-          "digest": "sha256:9dba0b8054541854b3cc3c12c25f52d6a441c90d87520e5260df56c09ba3eace",
-          "size": 80578509
+          "digest": "sha256:2b7407643e0e74c525d84347c9eecec4b3d275af0382142ac42216508bb0b2a2",
+          "size": 82862733
         },
         "windows-amd64": {
           "name": "codex-x86_64-pc-windows-msvc.exe.tar.gz",
-          "digest": "sha256:9207c061678d9f9e88302f7a0baca4f4ec1cbc7d3a1eca1d2168ac0507c55612",
-          "size": 86496064
+          "digest": "sha256:ac8c661f196e2013b9b106be2bc27916fbcc7ca5a1ab827f201fc8239d8b7277",
+          "size": 96696992
         },
         "windows-arm64": {
           "name": "codex-aarch64-pc-windows-msvc.exe.tar.gz",
-          "digest": "sha256:1aa0d3d77dda9e07c766626aba2bf5bf03b93909cacaf6a992919ebad3cd550a",
-          "size": 79208612
+          "digest": "sha256:46bfd6e498774bf31078b488867267e35795fc373bccfd88efb766ac1661fb00",
+          "size": 88708185
         }
       }
     },
@@ -230,37 +230,37 @@
     },
     {
       "repo": "suzuki-shunsuke/ghtkn",
-      "tag": "v0.2.4",
+      "tag": "v0.2.5",
       "assets": {
         "darwin-amd64": {
           "name": "ghtkn_darwin_amd64.tar.gz",
-          "digest": "sha256:07d8695c71735197f599c2377f9f784da01350cb8629d8f8634f133f6b73f6ce",
-          "size": 4431608
+          "digest": "sha256:f9e5094d72a4b91ea806e96ad1b1cc5f4dcf51333a2ca79250f4d35a1cd654c7",
+          "size": 3901620
         },
         "darwin-arm64": {
           "name": "ghtkn_darwin_arm64.tar.gz",
-          "digest": "sha256:ddbf283a1330de914b60f7317bd7d3233054c03aab294246b19b018ecab0757a",
-          "size": 4133732
+          "digest": "sha256:160b3a3ac0a67dde2bb3eba623b608dd3331540647e87f4aa39784cba3c9c521",
+          "size": 3594069
         },
         "linux-amd64": {
           "name": "ghtkn_linux_amd64.tar.gz",
-          "digest": "sha256:a381c7b9c8be70376ade91a6e70166777756e114001bc42f142d481193919e75",
-          "size": 4514025
+          "digest": "sha256:0997a55fc57d8f20cfd476018ed28b9f431463dff779767572fb27ab9004c6cc",
+          "size": 4008311
         },
         "linux-arm64": {
           "name": "ghtkn_linux_arm64.tar.gz",
-          "digest": "sha256:90eb4ec8c93a131f0682c3ec16e03aa5bc15a9d9ee9233659921811f0769a625",
-          "size": 4105360
+          "digest": "sha256:8496b4d4c97f825de2866716a75a57011d2f81eb4f6cbaa6171bc2ff85e1b1d7",
+          "size": 3616704
         },
         "windows-amd64": {
           "name": "ghtkn_windows_amd64.zip",
-          "digest": "sha256:2bbd58ede5a24ba140927ab84cd7f72c57ec93971a0a7d58142af85529007e02",
-          "size": 4470358
+          "digest": "sha256:a542b17ff12f210d6ea9444570cc707452842348979f0ea68161a19b40ac172c",
+          "size": 3955448
         },
         "windows-arm64": {
           "name": "ghtkn_windows_arm64.zip",
-          "digest": "sha256:07d4ea8389f6047ef98542835677d6511f539f1fc2f096985252d6553428248d",
-          "size": 4015436
+          "digest": "sha256:b1997561c309bb459f3ce1a1745ae403bc1d44bcbd3ce82c84d9f23777f7a11f",
+          "size": 3526156
         }
       }
     }
