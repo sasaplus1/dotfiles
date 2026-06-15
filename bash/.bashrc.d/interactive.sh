@@ -1123,6 +1123,7 @@ __main() {
   # return if coding agent
   [ -n "$CLAUDECODE" ] && return 0
   [ -n "$CURSOR_AGENT" ] && return 0
+  [ -n "$CODEX_THREAD_ID" ] && return 0
 
   # always use terminal multiplexer
   if [ -z "$TMUX" ] && [ -z "$VIM_TERMINAL" ] && [ ! -f '/.dockerenv' ] && type tmux >/dev/null 2>&1
