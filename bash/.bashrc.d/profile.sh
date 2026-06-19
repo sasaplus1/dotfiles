@@ -81,6 +81,11 @@ __main() {
     # use vim
     export MANPAGER="$*"
   fi
+
+  #-----------------------------------------------------------------------------
+
+  # https://github.com/suzuki-shunsuke/ghtkn
+  export GHTKN_ENABLE_DEVICE_FLOW=false
 }
 __main "$@"
 
