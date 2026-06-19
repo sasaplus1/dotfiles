@@ -21,6 +21,7 @@
   pkgs.gibo
   pkgs-unstable.git
   pkgs.git-crypt
+  pkgs.git-filter-repo
   pkgs-unstable.betterleaks
   pkgs-unstable.gitleaks
   pkgs.gnupg
