@@ -845,6 +845,46 @@ __main() {
   fi
   # }}}
 
+  if type ghtkn >/dev/null 2>&1
+  then
+    if type gh >/dev/null 2>&1
+    then
+      gh() {
+        if [ -z "${GH_TOKEN:-}" ] && [ -z "${GITHUB_TOKEN:-}" ]
+        then
+          local token
+          if ! token="$(ghtkn get)"
+          then
+            echo "${BASH_SOURCE[0]##*/}: failed to get token with ghtkn get" >&2
+            command gh "$@"
+            return
+          fi
+          env GH_TOKEN="$token" command gh "$@"
+        else
+          command gh "$@"
+        fi
+      }
+    fi
+    if type nekomata >/dev/null 2>&1
+    then
+      nekomata() {
+        if [ -z "${GITHUB_TOKEN:-}" ]
+        then
+          local token
+          if ! token="$(ghtkn get)"
+          then
+            echo "${BASH_SOURCE[0]##*/}: failed to get token with ghtkn get" >&2
+            command nekomata "$@"
+            return
+          fi
+          env GITHUB_TOKEN="$token" command nekomata "$@"
+        else
+          command nekomata "$@"
+        fi
+      }
+    fi
+  fi
+
   #-----------------------------------------------------------------------------
 
   # PS1 {{{
