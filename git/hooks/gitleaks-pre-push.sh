@@ -1,0 +1,41 @@
+#!/bin/bash
+
+if ! command -v gitleaks >/dev/null 2>&1
+then
+  printf 'Error: gitleaks is required to push.\n' >&2
+  exit 1
+fi
+
+z40="0000000000000000000000000000000000000000"
+
+cyan=$'\033[01;36m'
+reset=$'\033[0m'
+yellow=$'\033[33m'
+
+while read -r _local_ref local_sha _remote_ref remote_sha
+do
+  # ブランチ削除の場合はスキップ
+  if [ "$local_sha" = "$z40" ]
+  then
+    continue
+  fi
+
+  # 範囲を決定
+  if [ "$remote_sha" != "$z40" ] && git cat-file -e "$remote_sha" 2>/dev/null
+  then
+    # 理想: remote_shaがローカルに存在する
+    range="$remote_sha..$local_sha"
+  else
+    # フォールバック: originに未到達の全コミットをスキャン
+    # 新規ブランチ、remote_sha欠落、force push等で使用
+    if [ "$remote_sha" = "$z40" ]
+    then
+      printf -- '%sInfo: new branch, scanning commits not yet in origin%s\n' "$cyan" "$reset" >&2
+    else
+      printf -- '%sWarning: remote SHA not found locally, scanning commits not yet in origin%s\n' "$yellow" "$reset" >&2
+    fi
+    range="$local_sha --not --remotes=origin"
+  fi
+
+  gitleaks git --log-opts="$range" --no-banner --verbose || exit 1
+done
