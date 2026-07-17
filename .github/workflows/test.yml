@@ -50,7 +50,7 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - id: find-scripts
-        run: echo "files=$(find bash -type f | sort | tr '\n' ' ')" | tee -a "$GITHUB_OUTPUT"
+        run: echo "files=$(find bash git/hooks -type f | sort | tr '\n' ' ')" | tee -a "$GITHUB_OUTPUT"
       - uses: docker://koalaman/shellcheck:stable@sha256:bb596a0d169b85ddd81d8b6d3a2ff6d5baf5fca10b97f575ebc647c3dff62b3d
         with:
           args: ${{ steps.find-scripts.outputs.files }}
