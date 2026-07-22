@@ -84,6 +84,14 @@
   lineNumber = true
   patternType = extended
 
+[hook "pre-commit-gitleaks"]
+  command = ~/.config/git/hooks/pre-commit-gitleaks.sh
+  event = pre-commit
+
+[hook "pre-push-gitleaks"]
+  command = ~/.config/git/hooks/pre-push-gitleaks.sh
+  event = pre-push
+
 [init]
 	defaultBranch = main
 
