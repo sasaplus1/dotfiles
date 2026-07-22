@@ -39,6 +39,7 @@
   pkgs.sops
   pkgs.tig
   pkgs.tmux
+  pkgs.transcrypt
   pkgs.yq-go
   pkgs.zoxide
 ] ++ lib.optionals pkgs.stdenv.isDarwin [
