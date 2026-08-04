@@ -214,6 +214,15 @@ __main() {
   complete -F __rbenv-completion rbenv
   # }}}
 
+  # kareha-completion {{{
+  __kareha-completion() {
+    unset -f __kareha-completion
+    complete -r kareha
+    eval "$(kareha completion bash)" && return 124
+  }
+  complete -F __kareha-completion kareha
+  # }}}
+
   #-----------------------------------------------------------------------------
 
   # NOTE: lazy load command https://qiita.com/uasi/items/80865646607b966aedc8
