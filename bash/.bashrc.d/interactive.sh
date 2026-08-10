@@ -1118,11 +1118,19 @@ __main() {
       alias ios='open -a "Simulator" || open -a "iOS Simulator" || open -a "iPhone Simulator"'
       ;;
     linux)
+      if [ -n "$WAYLAND_DISPLAY" ] || [ -n "$DISPLAY" ]
+      then
+        alias pbcopy='xsel --clipboard --input'
+        alias pbpaste='xsel --clipboard --output'
+      else
+        # NOTE: no X/Wayland, send to the terminal with OSC 52 instead
+        pbcopy() {
+          printf '\033]52;c;%s\a' "$(base64 -w0)" > /dev/tty
+        }
+      fi
       alias crontab='crontab -i'
       alias ls='ls --color=auto'
       alias grep='grep --color=auto'
-      alias pbcopy='xsel --clipboard --input'
-      alias pbpaste='xsel --clipboard --output'
       ;;
     *)
       ;;

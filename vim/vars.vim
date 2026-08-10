@@ -80,4 +80,8 @@ let g:markdown_fenced_languages = [
       \ 'xml',
       \ ]
 
+if has('nvim')
+  let g:clipboard = 'osc52'
+endif
+
 " vim:ft=vim:fdm=marker:fen:
