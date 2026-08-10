@@ -46,7 +46,7 @@ function! s:install_node() abort
 
   let script = printf(
         \ 'curl -fsSL "https://nodejs.org/download/release/v%s/node-v%s-%s-%s.tar.gz" | ' .
-        \ 'tar fx - -C "%s" --strip-components 1',
+        \ 'tar -xzf - -C "%s" --strip-components 1',
         \ s:node_ver, s:node_ver, os, arch, s:node_dir,
         \ )
 
