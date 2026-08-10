@@ -844,7 +844,9 @@ __main() {
           command gh "$@"
           return
         fi
-        env GH_TOKEN="$token" command gh "$@"
+        # NOTE: env looks up the name in PATH, so it never recurses into this
+        # function. don't add `command` here, env cannot exec a shell builtin
+        env GH_TOKEN="$token" gh "$@"
       else
         command gh "$@"
       fi
@@ -863,7 +865,9 @@ __main() {
           command nekomata "$@"
           return
         fi
-        env GITHUB_TOKEN="$token" command nekomata "$@"
+        # NOTE: env looks up the name in PATH, so it never recurses into this
+        # function. don't add `command` here, env cannot exec a shell builtin
+        env GITHUB_TOKEN="$token" nekomata "$@"
       else
         command nekomata "$@"
       fi
@@ -1166,7 +1170,9 @@ __main() {
     then
       command tmux new-session -e "COLORTERM=${COLORTERM}"
     else
-      env -u COLORTERM command tmux new-session
+      # NOTE: don't add `command` here, env cannot exec a shell builtin.
+      # it only works on macOS because /usr/bin/command exists as a shim
+      env -u COLORTERM tmux new-session
     fi
   fi
 }
