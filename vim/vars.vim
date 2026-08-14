@@ -80,7 +80,7 @@ let g:markdown_fenced_languages = [
       \ 'xml',
       \ ]
 
-if has('nvim')
+if has('nvim') && exists('$SSH_CONNECTION')
   let g:clipboard = 'osc52'
 endif
 
