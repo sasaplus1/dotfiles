@@ -12,11 +12,14 @@
   pkgs.curl
   pkgs.delta
   (pkgs-unstable.direnv.overrideAttrs (_: { doCheck = false; }))
+  pkgs-unstable.dockerfile-pin
+  pkgs-unstable.ec
   pkgs.fac
   pkgs.fd
   pkgs.ffmpeg-headless
   pkgs.fswatch
   pkgs.fzf
+  pkgs-unstable.gh
   pkgs.ghq
   pkgs.gibo
   pkgs-unstable.git
