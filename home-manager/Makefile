@@ -41,9 +41,14 @@ deep-clean: ## collect garbage (delete ALL old generations)
 generations: ## list home-manager generations
 	home-manager generations
 
+# NOTE: running github:nix-community/home-manager directly resolves HEAD to a rev,
+# which hits api.github.com and trips the 60 req/h unauthenticated rate limit.
+# Going through activationPackage uses only the revs already pinned in flake.lock,
+# so neither an API call nor a token is needed. Do not pass access-tokens here:
+# setting it routes tarball downloads through api.github.com as well.
 .PHONY: install-home-manager
 install-home-manager: ## bootstrap home-manager via initial switch (use after Nix install)
-	nix run github:nix-community/home-manager#home-manager -- switch --flake ".#common" --impure
+	"$$(nix build --impure --no-link --print-out-paths '.#homeConfigurations.common.activationPackage')/activate"
 
 .PHONY: install
 install: ## install Nix
