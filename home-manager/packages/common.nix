@@ -22,6 +22,8 @@
   pkgs.fzf
   pkgs-unstable.gh
   pkgs.ghq
+  # not packaged in nixpkgs, so it is built from source here
+  (pkgs.callPackage ./ghtkn.nix { })
   pkgs.gibo
   pkgs-unstable.git
   pkgs.git-crypt
