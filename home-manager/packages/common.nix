@@ -12,6 +12,7 @@
   pkgs.curl
   pkgs.delta
   (pkgs-unstable.direnv.overrideAttrs (_: { doCheck = false; }))
+  pkgs-unstable.docker-sbx
   pkgs-unstable.dockerfile-pin
   pkgs-unstable.ec
   pkgs.fac
