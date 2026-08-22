@@ -90,42 +90,6 @@
       }
     },
     {
-      "repo": "openai/codex",
-      "tag": "rust-v0.148.0",
-      "assets": {
-        "darwin-amd64": {
-          "name": "codex-x86_64-apple-darwin.tar.gz",
-          "digest": "sha256:54591772f242271f802f17b4dda6cecab29229ba71593e962e208549e0da1a3a",
-          "size": 93593227
-        },
-        "darwin-arm64": {
-          "name": "codex-aarch64-apple-darwin.tar.gz",
-          "digest": "sha256:758916aa38efa7ad076a050830fcbef1a7ed6f41efae9c1cceaeef63e428fc2b",
-          "size": 85904015
-        },
-        "linux-amd64": {
-          "name": "codex-x86_64-unknown-linux-musl.tar.gz",
-          "digest": "sha256:1a36f762f6b3bef533bb86345ad9517661c2d84d53996a250cf2ca89d2cfee5a",
-          "size": 96794627
-        },
-        "linux-arm64": {
-          "name": "codex-aarch64-unknown-linux-musl.tar.gz",
-          "digest": "sha256:410c6ae0c763eb39c6da17665e63f9aa4a98e6ee663d81f8e8b779c97cb175ac",
-          "size": 89624716
-        },
-        "windows-amd64": {
-          "name": "codex-x86_64-pc-windows-msvc.exe.tar.gz",
-          "digest": "sha256:69c0189950ca57c0ed81ea68a5be84be1a16d1cb82254b41e840d80ff13de0f4",
-          "size": 97255677
-        },
-        "windows-arm64": {
-          "name": "codex-aarch64-pc-windows-msvc.exe.tar.gz",
-          "digest": "sha256:5456be6ff12b391447c29f6f93f8d1054fa33df4b443cdf52e3f3aa8fa94da78",
-          "size": 89367542
-        }
-      }
-    },
-    {
       "repo": "philschmid/mcp-cli",
       "tag": "v0.3.0",
       "assets": {
