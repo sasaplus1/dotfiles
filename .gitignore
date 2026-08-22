@@ -11,5 +11,7 @@ result-*
 # repository local binaries
 /.bin/*
 
+### sasaplus1/dotfiles
+
 # local environment variables
 /.envrc.local
