@@ -1,4 +1,4 @@
-{ config, lib, pkgs, profilePackages ? [], ... }:
+{ config, lib, pkgs, pkgs-unstable, ghExtensions ? [], profilePackages ? [], ... }:
 
 # NOTE: need --impure
 # $ home-manager switch --flake . --impure
@@ -54,6 +54,16 @@
   #
   home.sessionVariables = {
     # EDITOR = "emacs";
+  };
+
+  # gh is installed here instead of packages/common.nix to manage its
+  # extensions together. Extensions are listed in packages/gh-extensions.nix.
+  # NOTE: ~/.local/share/gh/extensions is replaced by a symlink, so
+  # 'gh extension install' and 'gh extension upgrade' no longer work.
+  programs.gh = {
+    enable = true;
+    package = pkgs-unstable.gh;
+    extensions = ghExtensions;
   };
 
   # Let Home Manager install and manage itself.

@@ -21,7 +21,7 @@
   pkgs.ffmpeg-headless
   pkgs.fswatch
   pkgs.fzf
-  pkgs-unstable.gh
+  # gh is managed by programs.gh in home.nix to install its extensions together.
   pkgs.ghq
   # not packaged in nixpkgs, so it is built from source here
   (pkgs.callPackage ./ghtkn.nix { })

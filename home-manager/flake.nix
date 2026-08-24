@@ -29,6 +29,7 @@
       lib = pkgs.lib;
 
       commonPkgs = import ./packages/common.nix { inherit pkgs pkgs-unstable lib; };
+      ghExtensions = import ./packages/gh-extensions.nix { inherit pkgs-unstable lib; };
       extraPkgs = import ./packages/extra.nix { inherit pkgs lib; };
       musicPkgs = import ./packages/music.nix { inherit pkgs lib; };
 
@@ -37,7 +38,7 @@
         home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
           modules = [ ./home.nix ];
-          extraSpecialArgs = { inherit profilePackages; };
+          extraSpecialArgs = { inherit profilePackages pkgs-unstable ghExtensions; };
         };
     in
     {
