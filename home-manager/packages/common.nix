@@ -45,6 +45,7 @@
   pkgs.ripgrep
   pkgs.rsync
   pkgs.sops
+  pkgs-unstable.sandbox-runtime
   pkgs.tig
   pkgs.tmux
   pkgs.transcrypt
