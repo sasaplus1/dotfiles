@@ -15,6 +15,7 @@ local DPI_CHANGE_FONT_SIZE = 11.0
 
 local prev_dpi = 0
 
+--[[
 wezterm.on('window-focus-changed', function(window, pane)
   local dpi = window:get_dimensions().dpi
 
@@ -29,6 +30,7 @@ wezterm.on('window-focus-changed', function(window, pane)
 
   prev_dpi = dpi
 end)
+]]
 
 -- ウィンドウ背景の不透明度を設定する
 config.window_background_opacity = 0.9
@@ -39,13 +41,49 @@ config.text_background_opacity = 0.9
 -- ベルを無効化する
 config.audible_bell = 'Disabled'
 
+-- Ghosttyの「Ghostty Default Style Dark」テーマ
+config.color_schemes = {
+  ['Ghostty Default Style Dark'] = {
+    foreground = '#ffffff',
+    background = '#282c34',
+    cursor_bg = '#ffffff',
+    cursor_border = '#ffffff',
+    cursor_fg = '#353a44',
+    selection_bg = '#ffffff',
+    selection_fg = '#282c34',
+    ansi = {
+      '#1d1f21',
+      '#cc6566',
+      '#b6bd68',
+      '#f0c674',
+      '#82a2be',
+      '#b294bb',
+      '#8abeb7',
+      '#c4c8c6',
+    },
+    brights = {
+      '#666666',
+      '#d54e53',
+      '#b9ca4b',
+      '#e7c547',
+      '#7aa6da',
+      '#c397d8',
+      '#70c0b1',
+      '#eaeaea',
+    },
+  },
+}
+config.color_scheme = 'Ghostty Default Style Dark'
+
 -- 色を変更する
+--[[
 config.colors = {
   -- カーソルの背景色
   cursor_bg = 'silver',
   -- カーソルの枠の色（フォーカスが外れた時に描画される）
   cursor_border = 'silver',
 }
+]]
 
 -- タブを非表示にする
 config.enable_tab_bar = false
@@ -76,7 +114,10 @@ if is_macos then
   -- フォントを変更する
   config.font = wezterm.font_with_fallback {
     'Menlo',
-    'ヒラギノ角ゴシック',
+    {
+      family = 'Hiragino Sans W4',
+      scale = 0.95,
+    },
   }
   config.font_size = 11
   -- cell_width = 0.996
