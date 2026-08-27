@@ -214,6 +214,15 @@ __main() {
   complete -F __rbenv-completion rbenv
   # }}}
 
+  # sbx-completion {{{
+  __sbx-completion() {
+    unset -f __sbx-completion
+    complete -r sbx
+    eval "$(sbx completion bash)" && return 124
+  }
+  complete -F __sbx-completion sbx
+  # }}}
+
   # kareha-completion {{{
   __kareha-completion() {
     unset -f __kareha-completion
