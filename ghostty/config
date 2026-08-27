@@ -35,4 +35,7 @@ macos-option-as-alt = false
 # https://ghostty.org/docs/help/terminfo#ssh
 shell-integration-features = ssh-env
 
+# xterm-ghosttyを上書き
+term = xterm-256color
+
 # vim:ft=conf:
