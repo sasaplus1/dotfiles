@@ -38,4 +38,8 @@ shell-integration-features = ssh-env
 # xterm-ghosttyを上書き
 term = xterm-256color
 
+# ウィンドウの初期サイズを指定する
+window-width = 80
+window-height = 24
+
 # vim:ft=conf:
