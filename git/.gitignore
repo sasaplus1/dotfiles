@@ -152,3 +152,7 @@ $RECYCLE.BIN/
 
 # temporary skills
 /.agents/skills/temporary-*
+
+# local mise
+/.mise.local.toml
+/mise.local.toml
