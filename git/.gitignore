@@ -154,5 +154,8 @@ $RECYCLE.BIN/
 /.agents/skills/temporary-*
 
 # local mise
-/.mise.local.toml
-/mise.local.toml
+.mise.local.toml
+mise.local.toml
+
+# local direnv
+.envrc.local
