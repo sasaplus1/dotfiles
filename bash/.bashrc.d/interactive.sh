@@ -886,14 +886,6 @@ __main() {
 
   #-----------------------------------------------------------------------------
 
-  # PROMPT_COMMAND {{{
-
-  # share histories to other sessions
-  PROMPT_COMMAND='history -a; history -n'
-  export PROMPT_COMMAND
-
-  # }}}
-
   # PS1 {{{
   __print_status() {
     local -r exit_code=$1
