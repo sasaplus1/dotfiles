@@ -20,7 +20,7 @@ font-family = "Menlo"
 font-family = "Hiragino Sans W4"
 
 # フォントサイズを指定する
-font-size = 11
+font-size = 10.5
 
 # タイピング中にマウスカーソルを非表示にする
 mouse-hide-while-typing
