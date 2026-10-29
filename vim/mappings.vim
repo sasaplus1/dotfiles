@@ -47,9 +47,6 @@ function! s:get_smart_very_magic() abort
   return '/'
 endfunction
 
-" very magicをonにする
-cnoremap <expr> / <SID>get_smart_very_magic()
-
 " / を入力した際の挙動を条件によって変更する
 function! s:expand_path() abort
   if getcmdtype() !=# ':'
@@ -67,8 +64,18 @@ function! s:expand_path() abort
   return '/'
 endfunction
 
-" カレントバッファのパスを挿入する
-cnoremap <expr> / <SID>expand_path()
+function! s:smart_slash() abort
+  " very magicをonにする
+  let result = s:get_smart_very_magic()
+  if result !=# '/'
+    return result
+  endif
+
+  " カレントバッファのパスを挿入する
+  return s:expand_path()
+endfunction
+
+cnoremap <expr> / <SID>smart_slash()
 
 " diff系
 nnoremap ,dg :<C-u>diffget<CR>
