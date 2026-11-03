@@ -1,0 +1,53 @@
+minimumLimaVersion: 2.0.0
+
+images:
+- location: "https://cloud-images.ubuntu.com/releases/resolute/release/ubuntu-26.04-server-cloudimg-arm64.img"
+  arch: "aarch64"
+  digest: "sha256:3e113fdd41f39e13729375173bb2ae793f87dc6db4294e5251ff2476971788ba"
+- location: "https://cloud-images.ubuntu.com/releases/resolute/release/ubuntu-26.04-server-cloudimg-amd64.img"
+  arch: "x86_64"
+  digest: "sha256:9dc7c5363c0146a08ba0c9aa834d82c2c6dfbb1c471ad9a2f0aba1189e21be05"
+
+mounts: []
+
+vmType: "vz"
+
+cpus: 4
+memory: "2GiB"
+disk: "128GiB"
+
+ssh:
+  forwardAgent: true
+
+containerd:
+  system: false
+  user: true
+
+provision:
+  - mode: system
+    script: |
+      #!/bin/bash
+      set -eux -o pipefail
+      apt-get --yes update
+      DEBIAN_FRONTEND=noninteractive \
+        apt-get --yes install --no-install-recommends \
+          ca-certificates \
+          curl \
+          git \
+          keyutils \
+          make
+      rm -rf /var/lib/apt/lists/*
+  - mode: user
+    script: |
+      #!/bin/bash
+      set -eux -o pipefail
+      for file in ~/.bash{_logout,_profile,rc} ~/.profile
+      do
+        [[ -L "$file" ]] || rm -f "$file"
+      done
+      readonly dotfiles_dir="$HOME/.ghq/github.com/sasaplus1/dotfiles"
+      if [[ ! -d "$dotfiles_dir" ]]
+      then
+        git clone https://github.com/sasaplus1/dotfiles.git "$dotfiles_dir"
+      fi
+      make -C "$dotfiles_dir" deploy
