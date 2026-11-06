@@ -80,4 +80,4 @@ switch-full: ## switch to full profile
 
 .PHONY: update
 update: ## update flake inputs
-	NIX_CONFIG="access-tokens = github.com=$$(kareha get || ghtkn get)" nix flake update
+	nix flake update
