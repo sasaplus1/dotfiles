@@ -82,8 +82,15 @@ windo set viewcolumns='-{name}..,{# },12{perms},8{size},{# },16{mtime}'
 
 " keymaps {{{
 
-" 設定ファイルを再読み込みする
+" 設定ファイルを再読み込みする or :restart
 nnoremap <F5> :<C-u>source $MYVIFMRC<CR>
+
+" 1ペインの時には分割しそれ以外の時にはペインを移動する
+nnoremap <silent> <Tab> :<C-u>if layoutis('only')
+        \| vsplit
+        \| else
+        \| execute 'wincmd w'
+        \| endif<CR>
 
 " カレントディレクトリをクリップボードへコピー
 nnoremap yd :!printf "%d" | pbcopy<CR>
