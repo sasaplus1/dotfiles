@@ -41,7 +41,7 @@ set sortnumbers
 set timefmt=%Y/%m/%d\ %H:%M
 
 " xyzzyのファイラーっぽくヘルプを表示しておく
-set statusline=" C:Copy D:Delete J:FuzzyJump K:Mkdir M:Unselect N:New P:SyncToOther Q:Quit R:Rename S:SyncFromOther W:Preview .:ToggleDotfiles \\:Root ~:Home Space:Select"
+set statusline=" C:Copy D:Delete J:FuzzyJump ,J:FuzzyJump K:Mkdir M:Move N:New P:SyncToOther Q:Quit%N R:Rename S:SyncFromOther U:Unselect W:Preview yy:Yank .:ToggleDotfiles \\:Root ~:Home Space:Select"
 
 " コマンドラインのTab補完候補を表示
 set wildmenu
@@ -92,6 +92,13 @@ nnoremap <silent> <Tab> :<C-u>if layoutis('only')
         \| execute 'wincmd w'
         \| endif<CR>
 
+" ファイルを移動する
+nnoremap M :if layoutis('only')
+      \| execute 'put!'
+      \| else
+      \| execute 'move'
+      \| endif<CR>
+
 " カレントディレクトリをクリップボードへコピー
 nnoremap yd :!printf "%d" | pbcopy<CR>
 
@@ -101,12 +108,12 @@ nnoremap yf :!printf "%c:p" | pbcopy<CR>
 nnoremap C :<C-u>copy<CR>
 nnoremap D :<C-u>delete<CR>
 nnoremap K :<C-u>mkdir<Space>
-nnoremap M :<C-u>unselect *<CR>
 nnoremap N :<C-u>edit<Space>
 nnoremap P :<C-u>sync<CR>
 nnoremap Q :<C-u>quit<CR>
 nnoremap R :<C-u>rename<Space>
 nnoremap S :<C-u>cd %D<CR>
+nnoremap U :<C-u>unselect *<CR>
 nnoremap W :<C-u>view<CR>
 nnoremap . :<C-u>set dotfiles!<CR>
 nnoremap \ :<C-u>cd /<CR>
@@ -137,9 +144,14 @@ endif
 
 let g:fuzzy_jump_command = 'cat ' . g:jump_sources . ' | sort -u | fzf --preview="' . g:jump_preview . '" 2>/dev/null'
 
+" 現在のペイン
 command! ccd :execute 'cd' fnameescape(term(g:fuzzy_jump_command))
 
+" 反対側のペイン
+command! ocd :execute 'winrun , cd' fnameescape(term(g:fuzzy_jump_command))
+
 nnoremap J :<C-u>ccd<CR>
+nnoremap <silent> ,J :<C-u>ocd<CR>
 
 " }}}
 
