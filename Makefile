@@ -40,7 +40,6 @@ dotfile_dirs += $(dest)/.config/gh-dash
 dotfile_dirs += $(dest)/.config/ghostty
 dotfile_dirs += $(dest)/.config/git
 dotfile_dirs += $(dest)/.config/git/hooks
-# dotfile_dirs += $(dest)/.config/home-manager
 dotfile_dirs += $(dest)/.config/nekomata
 dotfile_dirs += $(dest)/.config/nvim
 # dotfile_dirs += $(dest)/.config/ranger
