@@ -15,24 +15,9 @@ dest ?= $(HOME)
 # dotfile directories {{{
 
 dotfile_dirs :=
-ifeq ($(os),macos)
-# NOTE: + is space, because GNU Make cannot handle spaces
-# see: https://please-sleep.cou929.nu/gnu-make-spaces-in-pathname.html
-# see: https://savannah.gnu.org/bugs/index.php?712
-# see: https://m-hiyama.hatenablog.com/entry/20140920/1411186147
-dotfile_dirs += $(dest)/Memo
-dotfile_dirs += $(dest)/Library
-dotfile_dirs += $(dest)/Library/Application+Support
-dotfile_dirs += $(dest)/Library/Application+Support/Code
-dotfile_dirs += $(dest)/Library/Application+Support/Code/User
-endif
 dotfile_dirs += $(dest)/.chrome-local-overrides
 dotfile_dirs += $(dest)/.cocproxy
 dotfile_dirs += $(dest)/.config
-ifeq ($(os),linux)
-dotfile_dirs += $(dest)/.config/Code
-dotfile_dirs += $(dest)/.config/Code/User
-endif
 dotfile_dirs += $(dest)/.config/alacritty
 dotfile_dirs += $(dest)/.config/direnv
 dotfile_dirs += $(dest)/.config/direnv/lib
@@ -59,13 +44,28 @@ dotfile_dirs += $(dest)/.pseudo_trash
 # dotfile_dirs += $(dest)/.rbenv
 dotfile_dirs += $(dest)/.ssh
 dotfile_dirs += $(dest)/.ssh/sockets
-ifeq ($(os),linux)
-dotfile_dirs += $(dest)/.urxvt
-endif
 dotfile_dirs += $(dest)/.vim
 dotfile_dirs += $(dest)/.vim/backup
 dotfile_dirs += $(dest)/.vim/swap
 dotfile_dirs += $(dest)/.vim/undo
+
+ifeq ($(os),macos)
+# NOTE: + is space, because GNU Make cannot handle spaces
+# see: https://please-sleep.cou929.nu/gnu-make-spaces-in-pathname.html
+# see: https://savannah.gnu.org/bugs/index.php?712
+# see: https://m-hiyama.hatenablog.com/entry/20140920/1411186147
+dotfile_dirs += $(dest)/Memo
+dotfile_dirs += $(dest)/Library
+dotfile_dirs += $(dest)/Library/Application+Support
+dotfile_dirs += $(dest)/Library/Application+Support/Code
+dotfile_dirs += $(dest)/Library/Application+Support/Code/User
+endif
+
+ifeq ($(os),linux)
+dotfile_dirs += $(dest)/.config/Code
+dotfile_dirs += $(dest)/.config/Code/User
+dotfile_dirs += $(dest)/.urxvt
+endif
 
 dotfile_dirs := $(subst +,\\\ ,$(abspath $(strip $(dotfile_dirs))))
 
@@ -74,14 +74,6 @@ dotfile_dirs := $(subst +,\\\ ,$(abspath $(strip $(dotfile_dirs))))
 # symlinks {{{
 
 symlinks :=
-ifeq ($(os),macos)
-symlinks += $(makefile_dir)/vscode/settings.json $(dest)/Library/Application+Support/Code/User/settings.json
-endif
-ifeq ($(os),linux)
-symlinks += $(makefile_dir)/vscode/settings.json $(dest)/.config/Code/User/settings.json
-symlinks += $(makefile_dir)/xdg/user-dirs.dirs $(dest)/.config/user-dirs.dirs
-symlinks += $(makefile_dir)/X11/.Xdefaults $(dest)/.Xdefaults
-endif
 symlinks += $(makefile_dir)/alacritty/alacritty.toml $(dest)/.config/alacritty/alacritty.toml
 symlinks += $(makefile_dir)/bash/.bash_logout $(dest)/.bash_logout
 symlinks += $(makefile_dir)/bash/.bash_profile $(dest)/.bash_profile
@@ -122,6 +114,16 @@ symlinks += $(makefile_dir)/vim/.vimrc $(dest)/.vimrc
 symlinks += $(makefile_dir)/vim/.vimrc $(dest)/.config/nvim/init.vim
 symlinks += $(makefile_dir)/wezterm/.wezterm.lua $(dest)/.wezterm.lua
 symlinks += $(makefile_dir)/whipper/whipper.conf $(dest)/.config/whipper/whipper.conf
+
+ifeq ($(os),macos)
+symlinks += $(makefile_dir)/vscode/settings.json $(dest)/Library/Application+Support/Code/User/settings.json
+endif
+
+ifeq ($(os),linux)
+symlinks += $(makefile_dir)/vscode/settings.json $(dest)/.config/Code/User/settings.json
+symlinks += $(makefile_dir)/xdg/user-dirs.dirs $(dest)/.config/user-dirs.dirs
+symlinks += $(makefile_dir)/X11/.Xdefaults $(dest)/.Xdefaults
+endif
 
 symlinks := $(subst +,\\\ ,$(abspath $(strip $(symlinks))))
 
