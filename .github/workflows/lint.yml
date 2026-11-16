@@ -5,11 +5,15 @@ on:
     paths:
       - '.github/workflows/*'
 
+permissions: {}
+
 jobs:
   lint-workflow-files:
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
     name: lint workflow files
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - uses: docker://rhysd/actionlint:latest@sha256:b1934ee5f1c509618f2508e6eb47ee0d3520686341fec936f3b79331f9315667
