@@ -153,24 +153,71 @@ mode_targets += 700 $(dest)/.ssh/sockets
 
 #-------------------------------------------------------------------------------
 
+define deploy_cp
+  if [ -e "$$1" ] || [ -L "$$1" ]
+  then
+    :
+  else
+    cp -v "$$0" "$$1"
+  fi
+endef
+export deploy_cp
+
+define deploy_ln
+  if [ "$$(readlink "$$1")" = "$$0" ]
+  then
+    :
+  elif [ -e "$$1" ] || [ -L "$$1" ]
+  then
+    echo "already exists: $$1" >&2
+  else
+    ln -nsv "$$0" "$$1"
+  fi
+endef
+export deploy_ln
+
+define test_cp
+  if [ ! -f "$$1" ]
+  then
+    echo "not found: $$1" >&2
+    exit 1
+  fi
+endef
+export test_cp
+
+define test_mode
+  if [ "$$(find "$$1" -prune -perm "$$0" -print)" != "$$1" ]
+  then
+    echo "incorrect permissions: $$1" >&2
+    exit 1
+  fi
+endef
+export test_mode
+
+#-------------------------------------------------------------------------------
+
 .PHONY: all
 all: ## output targets
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(makefile) | awk 'BEGIN { FS = ":.*?## " }; { printf "\033[36m%-30s\033[0m %s\n", $$1, $$2 }'
 
+.PHONY: debug
+debug:
+	@printf -- '%s\n' $(symlinks) | xargs -n 2 bash -c 'printf -- "src: <%s>\ndst: <%s>\n\n" "$$0" "$$1"'
+
 .PHONY: deploy
 deploy: ## deploy dotfiles
 	-@printf -- '%s\n' $(dotfile_dirs) | xargs -n 1 bash -c 'mkdir -pv "$$0"'
-	-@printf -- '%s\n' $(symlinks)     | xargs -n 2 bash -c 'ln -nsv "$$0" "$$1"'
-	-@printf -- '%s\n' $(copy_targets) | xargs -n 2 bash -c 'cp -nv "$$0" "$$1"'
+	-@printf -- '%s\n' $(symlinks)     | xargs -n 2 bash -c "$$deploy_ln"
+	-@printf -- '%s\n' $(copy_targets) | xargs -n 2 bash -c "$$deploy_cp"
 	-@printf -- '%s\n' $(mode_targets) | xargs -n 2 bash -c 'chmod -v "$$0" "$$1"'
 	@echo 'done.'
 
 .PHONY: test
 test: ## check deployed files
-	@printf -- '%s\n' $(dotfile_dirs) | xargs -n 1 bash -c '[ -d "$$0" ] || echo "$$0 is not found"'
-	@printf -- '%s\n' $(symlinks)     | xargs -n 2 bash -c '[ -L "$$1" ] || echo "$$1 is not found"'
-	@printf -- '%s\n' $(copy_targets) | xargs -n 2 bash -c '[ -f "$$1" ] || echo "$$1 is not found"'
-	@printf -- '%s\n' $(mode_targets) | xargs -n 2 bash -c '[ "$$(find "$$1" -prune -perm "$$0" -print)" = "$$1" ] || echo "$$1 has incorrect permissions"'
+	@printf -- '%s\n' $(dotfile_dirs) | xargs -n 1 bash -c '[ -d "$$0" ] || echo "$$0 is not found" >&2'
+	@printf -- '%s\n' $(symlinks)     | xargs -n 2 bash -c '[ -L "$$1" ] || echo "$$1 is not found" >&2'
+	@printf -- '%s\n' $(copy_targets) | xargs -n 2 bash -c "$$test_cp"
+	@printf -- '%s\n' $(mode_targets) | xargs -n 2 bash -c "$$test_mode"
 	@echo 'done.'
 
 .PHONY: vars
