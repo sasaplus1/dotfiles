@@ -143,6 +143,14 @@ copy_targets := $(abspath $(strip $(copy_targets)))
 
 # }}}
 
+# mode {{{
+
+mode_targets :=
+mode_targets += 700 $(dest)/.ssh
+mode_targets += 700 $(dest)/.ssh/sockets
+
+# }}}
+
 #-------------------------------------------------------------------------------
 
 .PHONY: all
@@ -154,7 +162,7 @@ deploy: ## deploy dotfiles
 	-@printf -- '%s\n' $(dotfile_dirs) | xargs -n 1 bash -c 'mkdir -pv "$$0"'
 	-@printf -- '%s\n' $(symlinks)     | xargs -n 2 bash -c 'ln -nsv "$$0" "$$1"'
 	-@printf -- '%s\n' $(copy_targets) | xargs -n 2 bash -c 'cp -nv "$$0" "$$1"'
-	@chmod 0700 $(dest)/.ssh $(dest)/.ssh/sockets
+	-@printf -- '%s\n' $(mode_targets) | xargs -n 2 bash -c 'chmod -v "$$0" "$$1"'
 	@echo 'done.'
 
 .PHONY: test
@@ -162,6 +170,7 @@ test: ## check deployed files
 	@printf -- '%s\n' $(dotfile_dirs) | xargs -n 1 bash -c '[ -d "$$0" ] || echo "$$0 is not found"'
 	@printf -- '%s\n' $(symlinks)     | xargs -n 2 bash -c '[ -L "$$1" ] || echo "$$1 is not found"'
 	@printf -- '%s\n' $(copy_targets) | xargs -n 2 bash -c '[ -f "$$1" ] || echo "$$1 is not found"'
+	@printf -- '%s\n' $(mode_targets) | xargs -n 2 bash -c '[ "$$(find "$$1" -prune -perm "$$0" -print)" = "$$1" ] || echo "$$1 has incorrect permissions"'
 	@echo 'done.'
 
 .PHONY: vars
