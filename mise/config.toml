@@ -1,0 +1,13 @@
+[tools]
+"aqua:azu/dockerfile-pin" = "1.6.0"
+"aqua:moonrepo/proto" = "0.64.0"
+"github:chojs23/ec" = "0.4.3"
+"npm:@anthropic-ai/sandbox-runtime" = { version = "0.0.83", os = ["macos"] }
+ast-grep = "0.51.3"
+atuin = "18.24.8"
+betterleaks = "1.10.1"
+codex = "0.169.0"
+ghtkn = "0.4.3"
+gitleaks = "8.30.1"
+neovim = "0.12.6"
+pinact = "5.0.2"
