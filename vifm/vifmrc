@@ -19,6 +19,9 @@ set ignorecase
 " 検索文字に大文字が含まれていれば区別する
 set smartcase
 
+" 隠しファイルを表示する
+set dotfiles
+
 " Vifm内臓のファイル操作を使う
 set syscalls
 
