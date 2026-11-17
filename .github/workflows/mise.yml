@@ -1,0 +1,42 @@
+name: mise
+
+on:
+  push:
+    paths:
+      - '.github/workflows/mise.yml'
+      - 'mise/**'
+  pull_request:
+    paths:
+      - '.github/workflows/mise.yml'
+      - 'mise/**'
+
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  mise:
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
+    name: mise (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - macos-latest
+          - ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    env:
+      MISE_GLOBAL_CONFIG_FILE: ${{ github.workspace }}/mise/config.toml
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - uses: jdx/mise-action@236a21c3b91f5db6d4e174b348674a0f0caac06d # v5.2.9
+        with:
+          cache: false
+      - run: mise ls --current
