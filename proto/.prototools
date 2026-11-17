@@ -1,6 +1,6 @@
 node = "~24"
 npm = "~12.2.0"
-pnpm = "~10"
+pnpm = "~11.28.0"
 
 [settings]
 auto-clean = true
