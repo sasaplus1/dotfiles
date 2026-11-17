@@ -13,7 +13,7 @@ mounts: []
 vmType: "vz"
 
 cpus: 4
-memory: "2GiB"
+memory: "4GiB"
 disk: "128GiB"
 
 ssh:
@@ -46,7 +46,7 @@ provision:
         [[ -L "$file" ]] || rm -f "$file"
       done
       readonly dotfiles_dir="$HOME/.ghq/github.com/sasaplus1/dotfiles"
-      if [[ ! -d "$dotfiles_dir" ]]
+      if [ ! -d "$dotfiles_dir" ]
       then
         git clone https://github.com/sasaplus1/dotfiles.git "$dotfiles_dir"
       fi
