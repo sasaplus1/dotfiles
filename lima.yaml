@@ -41,7 +41,7 @@ provision:
     script: |
       #!/bin/bash
       set -eux -o pipefail
-      for file in ~/.bash{_logout,_profile,rc} ~/.profile
+      for file in "$HOME"/.bash{_logout,_profile,rc} "$HOME"/.profile
       do
         [[ -L "$file" ]] || rm -f "$file"
       done
