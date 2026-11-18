@@ -87,9 +87,16 @@ __main() {
 
   # nix(by devbox) {{{
   # NOTE: https://github.com/NixOS/nix/issues/13255
-  local -r nix=/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
-  # shellcheck disable=SC1090
-  [ -r "$nix" ] && unset __ETC_PROFILE_NIX_SOURCED && source "$nix"
+  local -r nix=/nix/var/nix/profiles/default
+  if [ -r "$nix/etc/profile.d/nix-daemon.sh" ] && [[ ":$PATH:" != *":$nix/bin:"* ]]
+  then
+    local -r xdg_data_dirs="${XDG_DATA_DIRS-}"
+    unset __ETC_PROFILE_NIX_SOURCED
+    # shellcheck disable=SC1091
+    source "$nix/etc/profile.d/nix-daemon.sh"
+    # NOTE: nix-daemon.sh appends to XDG_DATA_DIRS even if already present
+    [[ ":$xdg_data_dirs:" == *":$nix/share:"* ]] && export XDG_DATA_DIRS="$xdg_data_dirs"
+  fi
   # }}}
 
   #-----------------------------------------------------------------------------
