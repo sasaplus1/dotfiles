@@ -41,9 +41,7 @@ __main() {
   # ex: Terminal.app = Apple_Terminal, 440
   # ex: VSCode       = vscode, 1.68.1
   export ORIGINAL_TERM_PROGRAM="$TERM_PROGRAM"
-  readonly ORIGINAL_TERM_PROGRAM
   export ORIGINAL_TERM_PROGRAM_VERSION="$TERM_PROGRAM_VERSION"
-  readonly ORIGINAL_TERM_PROGRAM_VERSION
 
   #-----------------------------------------------------------------------------
 
@@ -77,11 +75,9 @@ __main() {
 
   local -r macports_prefix=/opt/local
   export __MACPORTS_PREFIX=$macports_prefix
-  readonly __MACPORTS_PREFIX
 
   local -r dotlocal_prefix="$HOME/.local"
   export __DOTLOCAL_PREFIX=$dotlocal_prefix
-  readonly __DOTLOCAL_PREFIX
 
   #-----------------------------------------------------------------------------
 
@@ -354,7 +350,6 @@ __main() {
     __FZF_COMPLETION_LOADED=$fzf_completion_loaded
 
   readonly fzf_completion_loaded
-  readonly __FZF_COMPLETION_LOADED
 
   # NOTE: Don't override default key bindings
   # local -r fzf_key_bindings=(
