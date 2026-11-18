@@ -7,9 +7,6 @@ __main() {
   #-----------------------------------------------------------------------------
 
   # shellcheck disable=SC1091
-  [ -r "$HOME/.cache/sh_user_path" ] && source "$HOME/.cache/sh_user_path"
-
-  # shellcheck disable=SC1091
   source "$HOME/.bashrc.d/profile.sh"
 
   # return if not interactive

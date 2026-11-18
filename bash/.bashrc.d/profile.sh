@@ -8,16 +8,9 @@ __main() {
   export __PROFILE_SOURCED=1
   readonly __PROFILE_SOURCED
 
-  local -r sh_path="$(readlink -f "$HOME/.bashrc.d/path.sh")"
-  local -r sh_user_path="$HOME/.cache/sh_user_path"
-  if [ -r "$sh_user_path" ] && [ "$sh_user_path" -nt "$sh_path" ]
-  then
-    # shellcheck disable=SC1090
-    source "$sh_user_path"
-  else
-    # shellcheck disable=SC1090
-    [ -r "$sh_path" ] && source "$sh_path"
-  fi
+  local -r sh_path="$HOME/.bashrc.d/path.sh"
+  # shellcheck disable=SC1090
+  [ -r "$sh_path" ] && source "$sh_path"
 
   #-----------------------------------------------------------------------------
 
