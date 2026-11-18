@@ -111,7 +111,8 @@ __main() {
     "$HOME/snap/bitwarden/current/.bitwarden-ssh-agent.sock" \
     "$HOME/.var/app/com.bitwarden.desktop/data/.bitwarden-ssh-agent.sock"
   do
-    [ -S "$sock" ] && __ssh_agent_alive "$sock" && break
+    # NOTE: ssh-add -l to Bitwarden takes ~80ms, so trust the inherited socket
+    [ -S "$sock" ] && { [ "$sock" = "$SSH_AUTH_SOCK" ] || __ssh_agent_alive "$sock"; } && break
     sock=
   done
 
