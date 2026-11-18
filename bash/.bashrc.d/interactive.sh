@@ -1015,9 +1015,9 @@ __main() {
     local prompt=
 
     # architecture
-    # `uname -m` prints `x86_64` when `arch -x86_64 /bin/bash` executed
-    # NOTE: `uname -m` is cannot cache
-    [ -n "$__APPLE_SILICON" ] && [ "$(uname -m)" != 'arm64' ] &&
+    # NOTE: HOSTTYPE is the architecture of the running bash binary,
+    # so it is x86_64 under `arch -x86_64 /bin/bash` without running uname
+    [ -n "$__APPLE_SILICON" ] && [ "$HOSTTYPE" == 'x86_64' ] &&
       prompt="${prompt} ${red}[x86_64]${reset}"
 
     # exit code
