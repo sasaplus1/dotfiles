@@ -273,15 +273,23 @@ __main() {
     local -r name="$1"
     shift
 
-    local bin
-    bin="$(command readlink -f "$(type -P "$name")" 2>/dev/null)"
-    [ -z "$bin" ] && return 1
+    local cmd
+    cmd="$(type -P "$name")" || return 1
 
     local -r dir="${XDG_CACHE_HOME:-$HOME/.cache}/bash-init"
-    local -r file="$dir/$name${bin//\//%}"
+    local file
+    for file in "$dir/$name%"*
+    do
+      break
+    done
 
-    if [ ! -s "$file" ] || [ "$bin" -nt "$file" ]
+    local bin="${file#"$dir/$name"}"
+    bin="${bin//%//}"
+
+    if [ ! -s "$file" ] || [ ! "$cmd" -ef "$bin" ] || [ "$bin" -nt "$file" ]
     then
+      bin="$(command readlink -f "$cmd")"
+      file="$dir/$name${bin//\//%}"
       command mkdir -p "$dir"
       command rm -f "$dir/$name%"*
       if ! "$bin" "$@" > "$file.tmp"
