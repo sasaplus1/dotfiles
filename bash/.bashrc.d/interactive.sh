@@ -1182,6 +1182,11 @@ __main() {
   # export NO_PROXY=$no_proxy
   # }}}
 
+  # stop flow mode (disable C-s and C-q)
+  # stty stop undef
+  # stty start undef
+  [ -t 0 ] && type stty >/dev/null 2>&1 && stty -ixon
+
   # return if terminal multiplexer used
   [[ "$TERM" =~ ^(screen|tmux) ]] && return 0
 
