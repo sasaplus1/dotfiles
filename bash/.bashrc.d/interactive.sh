@@ -1008,7 +1008,8 @@ __main() {
       # break if git repository found
       [ -n "$repo_type" ] && break
 
-      cwd="$(cd "${cwd}/.." && pwd)"
+      cwd="${cwd%/*}"
+      [ -z "$cwd" ] && cwd=/
     done
 
     local prompt=
