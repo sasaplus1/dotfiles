@@ -94,15 +94,49 @@ __main() {
 
   #-----------------------------------------------------------------------------
 
-  # Bitwarden as ssh-agent {{{
+  # ssh-agent {{{
+  __ssh_agent_alive() {
+    # NOTE: ssh-add exits with 2 only when it cannot connect to the agent
+    SSH_AUTH_SOCK="$1" command ssh-add -l >/dev/null 2>&1
+    [ $? -ne 2 ]
+  }
+
+  local sock
   for sock in \
     "$HOME/.bitwarden-ssh-agent.sock" \
     "$HOME/Library/Containers/com.bitwarden.desktop/Data/.bitwarden-ssh-agent.sock" \
     "$HOME/snap/bitwarden/current/.bitwarden-ssh-agent.sock" \
     "$HOME/.var/app/com.bitwarden.desktop/data/.bitwarden-ssh-agent.sock"
   do
-    [ -S "$sock" ] && export SSH_AUTH_SOCK="$sock" && break
+    [ -S "$sock" ] && __ssh_agent_alive "$sock" && break
+    sock=
   done
+
+  if [ -n "$sock" ]
+  then
+    export SSH_AUTH_SOCK="$sock"
+  elif [ -z "$SSH_AUTH_SOCK" ] || ! __ssh_agent_alive "$SSH_AUTH_SOCK"
+  then
+    local -r ssh_agent_info="$HOME/.ssh-agent-info"
+
+    # shellcheck disable=SC1090
+    [ -r "$ssh_agent_info" ] && source "$ssh_agent_info"
+
+    if [ -z "$SSH_AUTH_SOCK" ] || ! __ssh_agent_alive "$SSH_AUTH_SOCK"
+    then
+      unset SSH_AUTH_SOCK SSH_AGENT_PID
+      command rm -f "$ssh_agent_info"
+
+      if type ssh-agent >/dev/null 2>&1
+      then
+        eval "$(command ssh-agent -s)" >/dev/null
+        {
+          printf 'SSH_AUTH_SOCK=%s; export SSH_AUTH_SOCK;\n' "$SSH_AUTH_SOCK"
+          printf 'SSH_AGENT_PID=%s; export SSH_AGENT_PID;\n' "$SSH_AGENT_PID"
+        } > "$ssh_agent_info"
+      fi
+    fi
+  fi
   # }}}
 
   #-----------------------------------------------------------------------------
