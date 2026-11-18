@@ -28,12 +28,12 @@ __main() {
   # local -r cpu="$(uname -m)"
 
   # Is this machine can run Apple Silicon binaries?
-  if [ "$os" == 'macos' ] && arch -arm64e echo -n >/dev/null 2>&1
+  if [ -z "$__APPLE_SILICON" ] && [ "$os" == 'macos' ] && arch -arm64e echo -n >/dev/null 2>&1
   then
-    local -r apple_silicon=1
     export __APPLE_SILICON=1
     readonly __APPLE_SILICON
   fi
+  [ -n "$__APPLE_SILICON" ] && local -r apple_silicon=1
 
   #-----------------------------------------------------------------------------
 
