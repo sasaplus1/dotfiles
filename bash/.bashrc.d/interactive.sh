@@ -268,10 +268,39 @@ __main() {
 
   #-----------------------------------------------------------------------------
 
+  __cached_init() {
+    local -r name="$1"
+    shift
+
+    local bin
+    bin="$(command readlink -f "$(type -P "$name")" 2>/dev/null)"
+    [ -z "$bin" ] && return 1
+
+    local -r dir="${XDG_CACHE_HOME:-$HOME/.cache}/bash-init"
+    local -r file="$dir/$name${bin//\//%}"
+
+    if [ ! -s "$file" ] || [ "$bin" -nt "$file" ]
+    then
+      command mkdir -p "$dir"
+      command rm -f "$dir/$name%"*
+      if ! "$bin" "$@" > "$file.tmp"
+      then
+        command rm -f "$file.tmp"
+        return 1
+      fi
+      command mv "$file.tmp" "$file"
+    fi
+
+    __cached_init_file="$file"
+  }
+
+  #-----------------------------------------------------------------------------
+
   # NOTE: lazy load command https://qiita.com/uasi/items/80865646607b966aedc8
 
   # direnv {{{
-  type direnv >/dev/null 2>&1 && eval "$(direnv hook bash)"
+  # shellcheck disable=SC1090
+  __cached_init direnv hook bash && source "$__cached_init_file"
   # }}}
 
   # proto {{{
@@ -330,7 +359,8 @@ __main() {
   # }}}
 
   # zoxide {{{
-  type zoxide >/dev/null 2>&1 && eval "$(zoxide init bash)"
+  # shellcheck disable=SC1090
+  __cached_init zoxide init bash && source "$__cached_init_file"
   # }}}
 
   # fzf {{{
@@ -1215,7 +1245,8 @@ __main "$@"
 # atuin {{{
 # NOTE: must be in global scope; bash-preexec's precmd_functions/preexec_functions
 # become local and are lost if sourced inside a function
-if type atuin >/dev/null 2>&1
+# NOTE: __cached_init is defined only for interactive shells
+if [[ "$-" =~ i ]] && type atuin >/dev/null 2>&1
 then
   for __bash_preexec in \
     "$HOME/.nix-profile/share/bash/bash-preexec.sh" \
@@ -1226,8 +1257,10 @@ then
     [ -f "$__bash_preexec" ] && source "$__bash_preexec" && break
   done
   unset __bash_preexec
-  eval "$(atuin init bash --disable-up-arrow)"
+  # shellcheck disable=SC1090
+  __cached_init atuin init bash --disable-up-arrow && source "$__cached_init_file"
 fi
+unset __cached_init_file
 # }}}
 
 # vim:ft=sh:fdm=marker:fen:
