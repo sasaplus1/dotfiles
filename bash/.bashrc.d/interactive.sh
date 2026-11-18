@@ -129,7 +129,7 @@ __main() {
 
       if type ssh-agent >/dev/null 2>&1
       then
-        eval "$(command ssh-agent -s)" >/dev/null
+        eval "$(command ssh-agent -s -t 1h)" >/dev/null
         [ -n "$SSH_AGENT_PID" ] && {
           printf 'SSH_AUTH_SOCK=%s; export SSH_AUTH_SOCK;\n' "$SSH_AUTH_SOCK"
           printf 'SSH_AGENT_PID=%s; export SSH_AGENT_PID;\n' "$SSH_AGENT_PID"
