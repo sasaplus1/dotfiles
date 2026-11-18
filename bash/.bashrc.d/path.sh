@@ -15,9 +15,12 @@ __main() {
   # initialize PATHs
   case "$os" in
     macos)
-      eval "$(env -i /usr/libexec/path_helper -s)"
-      MANPATH="$(env -i /usr/bin/manpath 2>/dev/null || echo '/usr/share/man')"
-      export MANPATH
+      eval "$(env -i MANPATH= /usr/libexec/path_helper -s)"
+      MANPATH="${MANPATH%:}"
+      local xcode_manpaths
+      xcode_manpaths="$(/usr/bin/xcode-select --show-manpaths 2>/dev/null)"
+      [ -n "$xcode_manpaths" ] && MANPATH="$MANPATH:${xcode_manpaths//$'\n'/:}"
+      export MANPATH="${MANPATH:-/usr/share/man}"
       ;;
     linux)
       # shellcheck disable=SC2016
