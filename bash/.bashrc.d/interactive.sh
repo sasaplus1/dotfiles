@@ -884,8 +884,8 @@ __main() {
   #-----------------------------------------------------------------------------
 
   # PS1 {{{
-  __print_status() {
-    local -r exit_code=$1
+  __update_prompt() {
+    local -r exit_code=$?
 
     local -r cyan='\e[01;36m'
     local -r green='\e[01;32m'
@@ -1066,46 +1066,32 @@ __main() {
     # in neovim
     [ -n "$NVIM" ] && prompt="${prompt} ${cyan}(neovim)${reset}"
 
-    printf -- '%b' "${prompt}"
+    printf -v __prompt_status -- '%b' "${prompt}"
+
+    local prefix=
+
+    [[ "$SSH_AUTH_SOCK" == *bitwarden* ]] &&
+      prefix="${cyan}[ssh:bitwarden]${reset} "
+
+    # direnv with virtualenv
+    [ -n "$VIRTUAL_ENV" ] && [ -n "$DIRENV_DIR" ] &&
+      prefix="${prefix}(${VIRTUAL_ENV##*/}) "
+
+    printf -v __prompt_prefix -- '%b' "${prefix}"
+
+    return "$exit_code"
   }
 
-  __print_ps1() {
-    local -r green='\e[01;32m'
-    local -r reset='\e[00m'
+  [[ "${PROMPT_COMMAND:-}" != *__update_prompt* ]] &&
+    PROMPT_COMMAND="__update_prompt${PROMPT_COMMAND:+;$PROMPT_COMMAND}"
 
-     # NOTE: need double escape because bash says `missing unicode digit for \u`
-    local -r u='\\u'
+  local green reset
+  printf -v green -- '%b' '\e[01;32m'
+  printf -v reset -- '%b' '\e[00m'
 
-    # /current/dir error (git:branch or revision) (yarn:lerna) (vim)
-    # username@hostname$ _
-    printf -- '%b' "${green}\w${reset}\$(__print_status \$?)\n${u}@\h$ "
-  }
-
-  # ssh-agent
-  __show_ssh_agent() {
-    local -r cyan='\e[01;36m'
-    local -r reset='\e[00m'
-
-    if [[ "$SSH_AUTH_SOCK" == *bitwarden* ]]
-    then
-      printf -- '%b' "${cyan}[ssh:bitwarden]${reset} "
-    fi
-  }
-  export -f __show_ssh_agent
-
-  # direnv with virtualenv
-  __show_virtual_env() {
-    if [ -n "$VIRTUAL_ENV" ] && [ -n "$DIRENV_DIR" ]
-    then
-      echo "($(basename "$VIRTUAL_ENV")) "
-    fi
-  }
-  export -f __show_virtual_env
-
-  # NOTE: SC2155
-  # https://github.com/koalaman/shellcheck/wiki/SC2155
-  PS1=$(__print_ps1)
-  PS1='$(__show_ssh_agent)$(__show_virtual_env)'$PS1
+  # [ssh:bitwarden] (venv) /current/dir error (git:branch or revision) (yarn:lerna) (vim)
+  # username@hostname$ _
+  PS1='${__prompt_prefix}'"${green}"'\w'"${reset}"'${__prompt_status}\n\u@\h$ '
   export PS1
   # }}}
 
