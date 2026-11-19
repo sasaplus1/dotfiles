@@ -373,9 +373,12 @@ __main() {
   # }}}
 
   # fzf {{{
+  local fzf_prefix
+  fzf_prefix="$(type -P fzf)" && fzf_prefix="${fzf_prefix%/bin/fzf}"
   for fzf_completion in \
-    "$macports_prefix/share/fzf/shell/completion.bash" \
-    "$HOMEBREW_PREFIX/opt/fzf/shell/completion.bash"
+    "$fzf_prefix/share/fzf/completion.bash" \
+    "$fzf_prefix/share/fzf/shell/completion.bash" \
+    "$fzf_prefix/opt/fzf/shell/completion.bash"
   do
     # shellcheck disable=SC1090
     [ -r "$fzf_completion" ] && source "$fzf_completion" && break
