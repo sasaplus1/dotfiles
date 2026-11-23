@@ -7,9 +7,6 @@ __main() {
   #-----------------------------------------------------------------------------
 
   # shellcheck disable=SC1091
-  [ -r "$HOME/.cache/sh_user_path" ] && source "$HOME/.cache/sh_user_path"
-
-  # shellcheck disable=SC1091
   source "$HOME/.bashrc.d/profile.sh"
 
   # return if not interactive
@@ -31,22 +28,20 @@ __main() {
   # local -r cpu="$(uname -m)"
 
   # Is this machine can run Apple Silicon binaries?
-  if [ "$os" == 'macos' ] && arch -arm64e echo -n >/dev/null 2>&1
+  if [ -z "$__APPLE_SILICON" ] && [ "$os" == 'macos' ] && arch -arm64e echo -n >/dev/null 2>&1
   then
-    local -r apple_silicon=1
     export __APPLE_SILICON=1
     readonly __APPLE_SILICON
   fi
+  [ -n "$__APPLE_SILICON" ] && local -r apple_silicon=1
 
   #-----------------------------------------------------------------------------
 
   # NOTE: tmux overwrite TERM_PROGRAM and TERM_PROGRAM_VERSION
   # ex: Terminal.app = Apple_Terminal, 440
   # ex: VSCode       = vscode, 1.68.1
-  export ORIGINAL_TERM_PROGRAM="$TERM_PROGRAM"
-  readonly ORIGINAL_TERM_PROGRAM
-  export ORIGINAL_TERM_PROGRAM_VERSION="$TERM_PROGRAM_VERSION"
-  readonly ORIGINAL_TERM_PROGRAM_VERSION
+  export ORIGINAL_TERM_PROGRAM="${ORIGINAL_TERM_PROGRAM-$TERM_PROGRAM}"
+  export ORIGINAL_TERM_PROGRAM_VERSION="${ORIGINAL_TERM_PROGRAM_VERSION-$TERM_PROGRAM_VERSION}"
 
   #-----------------------------------------------------------------------------
 
@@ -80,32 +75,72 @@ __main() {
 
   local -r macports_prefix=/opt/local
   export __MACPORTS_PREFIX=$macports_prefix
-  readonly __MACPORTS_PREFIX
 
   local -r dotlocal_prefix="$HOME/.local"
   export __DOTLOCAL_PREFIX=$dotlocal_prefix
-  readonly __DOTLOCAL_PREFIX
 
   #-----------------------------------------------------------------------------
 
   # nix(by devbox) {{{
   # NOTE: https://github.com/NixOS/nix/issues/13255
-  local -r nix=/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
-  # shellcheck disable=SC1090
-  [ -r "$nix" ] && unset __ETC_PROFILE_NIX_SOURCED && source "$nix"
+  local -r nix=/nix/var/nix/profiles/default
+  if [ -r "$nix/etc/profile.d/nix-daemon.sh" ] && [[ ":$PATH:" != *":$nix/bin:"* ]]
+  then
+    local -r xdg_data_dirs="${XDG_DATA_DIRS-}"
+    unset __ETC_PROFILE_NIX_SOURCED
+    # shellcheck disable=SC1091
+    source "$nix/etc/profile.d/nix-daemon.sh"
+    # NOTE: nix-daemon.sh appends to XDG_DATA_DIRS even if already present
+    [[ ":$xdg_data_dirs:" == *":$nix/share:"* ]] && export XDG_DATA_DIRS="$xdg_data_dirs"
+  fi
   # }}}
 
   #-----------------------------------------------------------------------------
 
-  # Bitwarden as ssh-agent {{{
+  # ssh-agent {{{
+  __ssh_agent_alive() {
+    # NOTE: ssh-add exits with 2 only when it cannot connect to the agent
+    SSH_AUTH_SOCK="$1" command ssh-add -l >/dev/null 2>&1
+    [ $? -ne 2 ]
+  }
+
+  local sock
   for sock in \
     "$HOME/.bitwarden-ssh-agent.sock" \
     "$HOME/Library/Containers/com.bitwarden.desktop/Data/.bitwarden-ssh-agent.sock" \
     "$HOME/snap/bitwarden/current/.bitwarden-ssh-agent.sock" \
     "$HOME/.var/app/com.bitwarden.desktop/data/.bitwarden-ssh-agent.sock"
   do
-    [ -S "$sock" ] && export SSH_AUTH_SOCK="$sock" && break
+    # NOTE: ssh-add -l to Bitwarden takes ~80ms, so trust the inherited socket
+    [ -S "$sock" ] && { [ "$sock" = "$SSH_AUTH_SOCK" ] || __ssh_agent_alive "$sock"; } && break
+    sock=
   done
+
+  if [ -n "$sock" ]
+  then
+    export SSH_AUTH_SOCK="$sock"
+  elif [ -z "$SSH_AUTH_SOCK" ] || ! __ssh_agent_alive "$SSH_AUTH_SOCK"
+  then
+    local -r ssh_agent_info="$HOME/.ssh-agent-info"
+
+    # shellcheck disable=SC1090
+    [ -r "$ssh_agent_info" ] && source "$ssh_agent_info"
+
+    if [ -z "$SSH_AUTH_SOCK" ] || ! __ssh_agent_alive "$SSH_AUTH_SOCK"
+    then
+      unset SSH_AUTH_SOCK SSH_AGENT_PID
+      command rm -f "$ssh_agent_info"
+
+      if type ssh-agent >/dev/null 2>&1
+      then
+        eval "$(command ssh-agent -s -t 1h)" >/dev/null
+        [ -n "$SSH_AGENT_PID" ] && {
+          printf 'SSH_AUTH_SOCK=%s; export SSH_AUTH_SOCK;\n' "$SSH_AUTH_SOCK"
+          printf 'SSH_AGENT_PID=%s; export SSH_AGENT_PID;\n' "$SSH_AGENT_PID"
+        } > "$ssh_agent_info"
+      fi
+    fi
+  fi
   # }}}
 
   #-----------------------------------------------------------------------------
@@ -234,10 +269,47 @@ __main() {
 
   #-----------------------------------------------------------------------------
 
+  __cached_init() {
+    local -r name="$1"
+    shift
+
+    local cmd
+    cmd="$(type -P "$name")" || return 1
+
+    local -r dir="${XDG_CACHE_HOME:-$HOME/.cache}/bash-init"
+    local file
+    for file in "$dir/$name%"*
+    do
+      break
+    done
+
+    local bin="${file#"$dir/$name"}"
+    bin="${bin//%//}"
+
+    if [ ! -s "$file" ] || [ ! "$cmd" -ef "$bin" ] || [ "$bin" -nt "$file" ]
+    then
+      bin="$(command readlink -f "$cmd")"
+      file="$dir/$name${bin//\//%}"
+      command mkdir -p "$dir"
+      command rm -f "$dir/$name%"*
+      if ! "$bin" "$@" > "$file.tmp"
+      then
+        command rm -f "$file.tmp"
+        return 1
+      fi
+      command mv "$file.tmp" "$file"
+    fi
+
+    __cached_init_file="$file"
+  }
+
+  #-----------------------------------------------------------------------------
+
   # NOTE: lazy load command https://qiita.com/uasi/items/80865646607b966aedc8
 
   # direnv {{{
-  type direnv >/dev/null 2>&1 && eval "$(direnv hook bash)"
+  # shellcheck disable=SC1090
+  __cached_init direnv hook bash && source "$__cached_init_file"
   # }}}
 
   # proto {{{
@@ -296,13 +368,17 @@ __main() {
   # }}}
 
   # zoxide {{{
-  type zoxide >/dev/null 2>&1 && eval "$(zoxide init bash)"
+  # shellcheck disable=SC1090
+  __cached_init zoxide init bash && source "$__cached_init_file"
   # }}}
 
   # fzf {{{
+  local fzf_prefix
+  fzf_prefix="$(type -P fzf)" && fzf_prefix="${fzf_prefix%/bin/fzf}"
   for fzf_completion in \
-    "$macports_prefix/share/fzf/shell/completion.bash" \
-    "$HOMEBREW_PREFIX/opt/fzf/shell/completion.bash"
+    "$fzf_prefix/share/fzf/completion.bash" \
+    "$fzf_prefix/share/fzf/shell/completion.bash" \
+    "$fzf_prefix/opt/fzf/shell/completion.bash"
   do
     # shellcheck disable=SC1090
     [ -r "$fzf_completion" ] && source "$fzf_completion" && break
@@ -316,7 +392,6 @@ __main() {
     __FZF_COMPLETION_LOADED=$fzf_completion_loaded
 
   readonly fzf_completion_loaded
-  readonly __FZF_COMPLETION_LOADED
 
   # NOTE: Don't override default key bindings
   # local -r fzf_key_bindings=(
@@ -887,8 +962,8 @@ __main() {
   #-----------------------------------------------------------------------------
 
   # PS1 {{{
-  __print_status() {
-    local -r exit_code=$1
+  __update_prompt() {
+    local -r exit_code=$?
 
     local -r cyan='\e[01;36m'
     local -r green='\e[01;32m'
@@ -1011,15 +1086,16 @@ __main() {
       # break if git repository found
       [ -n "$repo_type" ] && break
 
-      cwd="$(cd "${cwd}/.." && pwd)"
+      cwd="${cwd%/*}"
+      [ -z "$cwd" ] && cwd=/
     done
 
     local prompt=
 
     # architecture
-    # `uname -m` prints `x86_64` when `arch -x86_64 /bin/bash` executed
-    # NOTE: `uname -m` is cannot cache
-    [ -n "$__APPLE_SILICON" ] && [ "$(uname -m)" != 'arm64' ] &&
+    # NOTE: HOSTTYPE is the architecture of the running bash binary,
+    # so it is x86_64 under `arch -x86_64 /bin/bash` without running uname
+    [ -n "$__APPLE_SILICON" ] && [ "$HOSTTYPE" == 'x86_64' ] &&
       prompt="${prompt} ${red}[x86_64]${reset}"
 
     # exit code
@@ -1068,46 +1144,32 @@ __main() {
     # in neovim
     [ -n "$NVIM" ] && prompt="${prompt} ${cyan}(neovim)${reset}"
 
-    printf -- '%b' "${prompt}"
+    printf -v __prompt_status -- '%b' "${prompt}"
+
+    local prefix=
+
+    [[ "$SSH_AUTH_SOCK" == *bitwarden* ]] &&
+      prefix="${cyan}[ssh:bitwarden]${reset} "
+
+    # direnv with virtualenv
+    [ -n "$VIRTUAL_ENV" ] && [ -n "$DIRENV_DIR" ] &&
+      prefix="${prefix}(${VIRTUAL_ENV##*/}) "
+
+    printf -v __prompt_prefix -- '%b' "${prefix}"
+
+    return "$exit_code"
   }
 
-  __print_ps1() {
-    local -r green='\e[01;32m'
-    local -r reset='\e[00m'
+  [[ "${PROMPT_COMMAND:-}" != *__update_prompt* ]] &&
+    PROMPT_COMMAND="__update_prompt${PROMPT_COMMAND:+;$PROMPT_COMMAND}"
 
-     # NOTE: need double escape because bash says `missing unicode digit for \u`
-    local -r u='\\u'
+  local green reset
+  printf -v green -- '%b' '\e[01;32m'
+  printf -v reset -- '%b' '\e[00m'
 
-    # /current/dir error (git:branch or revision) (yarn:lerna) (vim)
-    # username@hostname$ _
-    printf -- '%b' "${green}\w${reset}\$(__print_status \$?)\n${u}@\h$ "
-  }
-
-  # ssh-agent
-  __show_ssh_agent() {
-    local -r cyan='\e[01;36m'
-    local -r reset='\e[00m'
-
-    if [[ "$SSH_AUTH_SOCK" == *bitwarden* ]]
-    then
-      printf -- '%b' "${cyan}[ssh:bitwarden]${reset} "
-    fi
-  }
-  export -f __show_ssh_agent
-
-  # direnv with virtualenv
-  __show_virtual_env() {
-    if [ -n "$VIRTUAL_ENV" ] && [ -n "$DIRENV_DIR" ]
-    then
-      echo "($(basename "$VIRTUAL_ENV")) "
-    fi
-  }
-  export -f __show_virtual_env
-
-  # NOTE: SC2155
-  # https://github.com/koalaman/shellcheck/wiki/SC2155
-  PS1=$(__print_ps1)
-  PS1='$(__show_ssh_agent)$(__show_virtual_env)'$PS1
+  # [ssh:bitwarden] (venv) /current/dir error (git:branch or revision) (yarn:lerna) (vim)
+  # username@hostname$ _
+  PS1='${__prompt_prefix}'"${green}"'\w'"${reset}"'${__prompt_status}\n\u@\h$ '
   export PS1
   # }}}
 
@@ -1164,6 +1226,11 @@ __main() {
   # export NO_PROXY=$no_proxy
   # }}}
 
+  # stop flow mode (disable C-s and C-q)
+  # stty stop undef
+  # stty start undef
+  [ -t 0 ] && type stty >/dev/null 2>&1 && stty -ixon
+
   # return if terminal multiplexer used
   [[ "$TERM" =~ ^(screen|tmux) ]] && return 0
 
@@ -1190,7 +1257,8 @@ __main "$@"
 # atuin {{{
 # NOTE: must be in global scope; bash-preexec's precmd_functions/preexec_functions
 # become local and are lost if sourced inside a function
-if type atuin >/dev/null 2>&1
+# NOTE: __cached_init is defined only for interactive shells
+if [[ "$-" =~ i ]] && type atuin >/dev/null 2>&1
 then
   for __bash_preexec in \
     "$HOME/.nix-profile/share/bash/bash-preexec.sh" \
@@ -1201,8 +1269,10 @@ then
     [ -f "$__bash_preexec" ] && source "$__bash_preexec" && break
   done
   unset __bash_preexec
-  eval "$(atuin init bash --disable-up-arrow)"
+  # shellcheck disable=SC1090
+  __cached_init atuin init bash --disable-up-arrow && source "$__cached_init_file"
 fi
+unset __cached_init_file
 # }}}
 
 # vim:ft=sh:fdm=marker:fen:

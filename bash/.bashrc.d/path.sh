@@ -12,38 +12,25 @@ __main() {
 
   #-----------------------------------------------------------------------------
 
-  local -r sh_base_path="$HOME/.cache/sh_base_path"
-
-  if [ -r "$sh_base_path" ]
-  then
-    # shellcheck disable=SC1090
-    source "$sh_base_path"
-  else
-    # initialize PATHs
-    case "$os" in
-      macos)
-        eval "$(env -i /usr/libexec/path_helper -s)"
-        MANPATH="$(env -i /usr/bin/manpath 2>/dev/null || echo '/usr/share/man')"
-        export MANPATH
-        ;;
-      linux)
-        # shellcheck disable=SC2016
-        PATH="$(env -i /bin/sh -c 'echo $PATH')"
-        export PATH
-        MANPATH="$(env -i /usr/bin/manpath 2>/dev/null || echo '/usr/local/share/man:/usr/share/man')"
-        export MANPATH
-        ;;
-    esac
-    export INFOPATH=
-    # cache base PATHs
-    command mkdir -p "$HOME/.cache"
-    {
-      echo '#!/bin/sh'
-      printf "export PATH='%s'\n" "$PATH"
-      printf "export MANPATH='%s'\n" "$MANPATH"
-      printf "export INFOPATH='%s'\n" "$INFOPATH"
-    } > "$sh_base_path"
-  fi
+  # initialize PATHs
+  case "$os" in
+    macos)
+      eval "$(env -i MANPATH= /usr/libexec/path_helper -s)"
+      MANPATH="${MANPATH%:}"
+      local xcode_manpaths
+      xcode_manpaths="$(/usr/bin/xcode-select --show-manpaths 2>/dev/null)"
+      [ -n "$xcode_manpaths" ] && MANPATH="$MANPATH:${xcode_manpaths//$'\n'/:}"
+      export MANPATH="${MANPATH:-/usr/share/man}"
+      ;;
+    linux)
+      # shellcheck disable=SC2016
+      PATH="$(env -i /bin/sh -c 'echo $PATH')"
+      export PATH
+      MANPATH="$(env -i /usr/bin/manpath 2>/dev/null || echo '/usr/local/share/man:/usr/share/man')"
+      export MANPATH
+      ;;
+  esac
+  export INFOPATH=
 
   #-----------------------------------------------------------------------------
 
@@ -200,22 +187,6 @@ __main() {
     export MANPATH="$nekomata/share/man:$MANPATH" &&
     export PATH="$nekomata/bin:$PATH"
   # }}}
-
-  #-----------------------------------------------------------------------------
-
-  # cache user setting PATHs
-  command mkdir -p "$HOME/.cache"
-  {
-    echo '#!/bin/sh'
-    printf "export PATH='%s'\n" "$PATH"
-    printf "export MANPATH='%s'\n" "$MANPATH"
-    printf "export INFOPATH='%s'\n" "$INFOPATH"
-    # App paths
-    printf "export GHQ_ROOT='%s'\n" "$GHQ_ROOT"
-    printf "export GOPATH='%s'\n" "$GOPATH"
-    [ -n "$HOMEBREW_PREFIX" ] && printf "export HOMEBREW_PREFIX='%s'\n" "$HOMEBREW_PREFIX"
-    [ -n "$PROTO_HOME" ] && printf "export PROTO_HOME='%s'\n" "$PROTO_HOME"
-  } > "$HOME/.cache/sh_user_path"
 }
 __main "$@"
 
