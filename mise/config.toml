@@ -1,5 +1,5 @@
 [tools]
-"aqua:azu/dockerfile-pin" = "1.6.0"
+"aqua:azu/dockerfile-pin" = "1.7.0"
 "aqua:moonrepo/proto" = "0.64.0"
 "github:chojs23/ec" = "0.4.3"
 "npm:@anthropic-ai/sandbox-runtime" = { version = "0.0.83", os = ["macos"] }
