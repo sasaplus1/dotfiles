@@ -98,6 +98,12 @@ __main() {
     export PATH="$PROTO_HOME/shims:$PROTO_HOME/bin:$PROTO_HOME/tools/node/globals/bin:$PATH"
   # }}}
 
+  # mise {{{
+  local -r mise_data_dir="${MISE_DATA_DIR:-$HOME/.local/share/mise}"
+  [ -d "$mise_data_dir/shims" ] &&
+    export PATH="$mise_data_dir/shims:$PATH"
+  # }}}
+
   # rust/cargo {{{
   local -r cargo_home="$HOME/.cargo"
   # shellcheck disable=SC1091
