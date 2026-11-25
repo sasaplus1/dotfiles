@@ -1,3 +1,7 @@
+[settings]
+pin = true
+lockfile = true
+
 [tools]
 "aqua:azu/dockerfile-pin" = "1.7.0"
 "aqua:moonrepo/proto" = "0.64.0"
