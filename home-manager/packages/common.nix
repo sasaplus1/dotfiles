@@ -34,10 +34,7 @@
   pkgs.tmux
   pkgs.transcrypt
   pkgs.vifm
-  (pkgs.vim-full.override {
-    guiSupport = "none";
-    waylandSupport = false;
-  })
+  pkgs.vim-full
   pkgs.yq-go
   pkgs.zoxide
 ] ++ lib.optionals pkgs.stdenv.isDarwin [
