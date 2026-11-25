@@ -10,6 +10,7 @@ lockfile = true
 ast-grep = "0.51.3"
 atuin = "18.24.8"
 betterleaks = "1.10.1"
+claude = "2.1.331"
 codex = "0.169.0"
 ghtkn = "0.4.3"
 gitleaks = "8.30.1"
