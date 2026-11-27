@@ -286,13 +286,31 @@ __main() {
     local bin="${file#"$dir/$name"}"
     bin="${bin//%//}"
 
-    if [ ! -s "$file" ] || [ ! "$cmd" -ef "$bin" ] || [ "$bin" -nt "$file" ]
+    local is_mise_shim=
+    [[ "$cmd" == "${MISE_DATA_DIR:-$HOME/.local/share/mise}/shims/"* ]] &&
+      is_mise_shim=1
+
+    local is_stale=
+    if [ -n "$is_mise_shim" ]
     then
-      bin="$(command readlink -f "$cmd")"
+      local -r mise_config="${MISE_CONFIG_DIR:-${XDG_CONFIG_HOME:-$HOME/.config}/mise}/config.toml"
+      { [ -x "$bin" ] && [ ! "$mise_config" -nt "$file" ]; } || is_stale=1
+    else
+      { [ "$cmd" -ef "$bin" ] && [ ! "$bin" -nt "$file" ]; } || is_stale=1
+    fi
+
+    if [ ! -s "$file" ] || [ -n "$is_stale" ]
+    then
+      if [ -n "$is_mise_shim" ]
+      then
+        bin="$(command mise which "$name")" || return 1
+      else
+        bin="$(command readlink -f "$cmd")"
+      fi
       file="$dir/$name${bin//\//%}"
       command mkdir -p "$dir"
       command rm -f "$dir/$name%"*
-      if ! "$bin" "$@" > "$file.tmp"
+      if ! "$cmd" "$@" > "$file.tmp"
       then
         command rm -f "$file.tmp"
         return 1
