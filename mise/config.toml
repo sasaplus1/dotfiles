@@ -8,7 +8,7 @@ lockfile = true
 "github:chojs23/ec" = "0.4.3"
 "npm:@anthropic-ai/sandbox-runtime" = { version = "0.0.83", os = ["macos"] }
 ast-grep = "0.51.3"
-atuin = "18.24.8"
+atuin = "18.25.0"
 betterleaks = "1.10.1"
 claude = "2.1.331"
 codex = "0.169.0"
