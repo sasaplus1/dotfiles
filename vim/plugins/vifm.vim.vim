@@ -8,6 +8,11 @@ function! s:hook_add() abort
   let g:loaded_netrwFileHandlers = 1
   let g:loaded_netrwPlugin = 1
   let g:loaded_netrwSettings = 1
+  " ターミナルバッファを使う
+  if has('terminal')
+    let g:vifm_embed_term = 1
+  endif
+  let g:vifm_embed_split = 1
   " ,vfでVifmを開く
   nnoremap <silent> ,vf :<C-u>execute 'Vifm' fnameescape(expand('%:p:h'))<CR>
 " }}}
